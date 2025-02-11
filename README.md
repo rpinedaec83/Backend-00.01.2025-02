@@ -23,3 +23,7 @@ Sandro Begazo
 
 Marco Delgado
 
+Dhayro Kong
+
+Said Alferez
+
