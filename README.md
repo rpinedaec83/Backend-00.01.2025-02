@@ -27,6 +27,8 @@ Dhayro Kong
 
 Said Alferez
 
+Adrian Choquehuanca 
+
 Luis Guerrero
 
 Flavio Ascama Rojo
