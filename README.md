@@ -33,5 +33,11 @@ Luis Guerrero
 
 Flavio Ascama Rojo
 
-Emerson Jerzy
 Alfredo Navarro
+
+Sofia Miranda
+
+Emerson Jerzy
+
+Alfredo Navarro
+
