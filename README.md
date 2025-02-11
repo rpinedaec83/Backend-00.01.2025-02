@@ -32,3 +32,5 @@ Adrian Choquehuanca
 Luis Guerrero
 
 Flavio Ascama Rojo
+
+Alfredo Navarro
