@@ -29,3 +29,6 @@ Said Alferez
 
 Emerson Jerzy
 
+Luis Guerrero
+
+Flavio Ascama Rojo
