@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="es" class="no-js">
+<head itemscope itemtype="http://schema.org/WebSite"> <meta itemprop="name" content="IONOS Digital Guide"/> <meta charset="utf-8"><link rel="preconnect" href="https://cdn.ionos.de/"><link rel="preconnect" href="https://shop-api.ionos.com/"><link rel="preconnect" href="https://dpm.demdex.net/"><link rel="preconnect" href="https://1and1internetag.demdex.net/"><script src="https://cdn.ionos.de/guides/9c2134ba72b4/047afaab1ab6/launch-bffa846ee117.min.js" async nonce=""></script><!-- Guides Datalayer -->
+<script id="guides_datalayer" nonce="">
+(function() {
+    var dataLayer = {"application":"T3.DG.US","market":"US","guide":"DG","context":"prod","shopname":"dg-us","internalPageName":"hosting","land":"us","s_account":"iaglive","prop1":"hosting","prop5":"dg-hosting","prop6":"dg-us","prop7":"www.ionos.com","prop11":"New contract shop","prop16":"","prop17":"us","prop21":"","prop23":"","prop51":"","prop73":"iaglive","mcorgid":"AC42148954F5FEDA0A4C98BC@AdobeOrg","ns":"1und1internetag","eVar1":"digitalguide","eVar2":"hosting","eVar6":"dg-hosting","eVar7":"dg-us","eVar13":"New contract shop","eVar23":"","eVar24":"","eVar25":"","eVar45":"us","eVar72":"","eVar74":"","eVar79":"","eVar91":"","eVar97":"","eVar98":"","eVar99":"","eVar83":"es-US"};
+
+    function addToDataLayer(key, value) {
+        if (typeof value === 'object' && value !== null) {
+            dataLayer[key] = value;
+        } else {
+            dataLayer[key] = value.toString();
+        }
+    }
+
+    function isValidJson(str) {
+        try {
+            JSON.parse(str);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    const handler = {
+        get: function(target, prop) {
+            if (prop in target) {
+                if (isValidJson(target[prop])) {
+                    return JSON.parse(target[prop]);
+                }
+                return target[prop];
+            } else if (prop in methods) {
+                return methods[prop];
+            }
+            return null;
+        }
+    };
+
+    const methods = {
+        push: function(key, value) {
+            if (typeof key === 'object') {
+                for (var k in key) {
+                    if (key.hasOwnProperty(k)) {
+                        addToDataLayer(k, key[k]);
+                    }
+                }
+            } else if (typeof key === 'string') {
+                addToDataLayer(key, value);
+            }
+        },
+        set: function(key, value) {
+            if (typeof key === 'string') {
+                addToDataLayer(key, value);
+            }
+        },
+        get: function(key) {
+            if (typeof key === 'string') {
+                return dataLayer[key] || null;
+            }
+            return null;
+        },
+        getAll: function() {
+            return { ...dataLayer };
+        }
+    };
+
+    const proxy = new Proxy(dataLayer, handler);
+
+    window.guidesDataLayer = proxy;
+})();
+
+    guidesDataLayer.push({'prop23': window.navigator.userAgent});
+    var preparedUrlSearchParams = decodeURI(location.search.replace(/\?/g, "").replace(/&/g, "\",\"").replace(/=/g,"\":\""));
+    var urlSearchParams = JSON.parse(preparedUrlSearchParams ? '{"' + preparedUrlSearchParams + '"}' : '{}');
+    var utmSource = urlSearchParams.utm_source || '';
+    var utmCampaign = urlSearchParams.utm_campaign || '';
+    var utmTerm = urlSearchParams.utm_term || '';
+    var utmMedium = urlSearchParams.utm_medium || '';
+    var utmContent = urlSearchParams.utm_content || '';
+    if (utmSource || utmCampaign) {
+        guidesDataLayer.push({'eVar25': utmSource + '|' + utmCampaign});
+    }
+    if (utmTerm || utmMedium || utmContent) {
+        guidesDataLayer.push({'eVar72': utmTerm + '|' + utmMedium + '|' + utmContent});
+    }
+
+    
+</script>
+<!-- Guides Datalayer --><link class="preload" rel="preload" href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Fonts/Overpass/overpass-regular.1738925219.woff2" as="font" type="font/woff2" crossorigin="anonymous"/><link class="preload" rel="preload" href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Fonts/OpenSans/opensans-regular.1738925219.woff2" as="font" type="font/woff2" crossorigin="anonymous"/><link class="preload" rel="preload" href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Fonts/OpenSans/opensans-semibold.1738925219.woff2" as="font" type="font/woff2" crossorigin="anonymous"/><link class="preload" rel="preload" href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Fonts/OpenSans/opensans-bold.1738925219.woff2" as="font" type="font/woff2" crossorigin="anonymous"/><link rel="preload" class="preload" href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg" as="image"/><link  as="image" href="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_acf4f87c19.webp" imagesrcset="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_1f136d555b.webp 513w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_1c8bf4a939.webp 483w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_13e6744538.webp 416w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_e79afd7711.webp 348w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_6bf5ca7aed.webp 524w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_c21768cf81.webp 396w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_374f9ef01b.webp 304w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_ab425fddd3.webp 304w" imagesizes="(min-width: 1680px) 513px,(min-width: 1400px) 483px,(min-width: 1200px) 416px,(min-width: 768px) 348px,(min-width: 576px) 524px,(min-width: 412px) 396px,(min-width: 320px) 304px,(max-width:319px) 304px" rel="preload" /><link  as="style" href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Css/ionos/styles.bundled.1738925219.css" rel="preload" /><link  as="style" href="https://www.ionos.com/modules/hosting-common/script/privacy/bundle.css" rel="preload" />
+<!-- build by IONOS SE This website is powered by TYPO3 - inspiring people to share! TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL. TYPO3 is copyright 1998-2025 of Kasper Skaarhoj. Extensions are copyright of their respective owners. Information and contribution at https://typo3.org/
+--> <title>Alojamiento web de la A a la Z - IONOS</title>
+<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
+<meta name="generator" content="TYPO3 CMS">
+<meta name="description" content="¿Quieres saber qué es CMS o cómo alojar un blog o una tienda online en la web? Conoce a fondo el mundo del hosting con nuestros consejos técnicos.">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=5.0">
+<meta name="robots" content="index,follow">
+<meta property="og:image" content="https://www.ionos.com/es-us/digitalguide/fileadmin/DigitalGuide/Teaser/hosting-t.jpg">
+<meta property="og:image:url" content="https://www.ionos.com/es-us/digitalguide/fileadmin/DigitalGuide/Teaser/hosting-t.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:description" content="¿Quieres saber qué es CMS o cómo alojar un blog o una tienda online en la web? Conoce a fondo el mundo del hosting con nuestros consejos técnicos.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hosting">
+<meta property="og:site_name" content="IONOS Digital Guide">
+<meta property="og:locale" content="es_US">
+<meta property="og:url" content="https://www.ionos.com/es-us/digitalguide/hosting/">
+<meta name="twitter:card" content="summary">
+<meta name="meta-category" content="Digital Guide">
+<meta name="apple-mobile-web-app-capable" content="no"> <link class="preload" href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Css/ionos/styles.bundled.1738925219.css" rel="stylesheet" >
+<link class="preload" href="https://www.ionos.com/modules/hosting-common/script/privacy/bundle.css" rel="stylesheet" >
+<style>
+        
+        @font-face {
+        font-family:'Open Sans Regular';
+        font-weight:400;
+        font-display:swap;
+        src:url('https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Fonts/OpenSans/opensans-regular.1738925219.woff2')format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD,U+2713,U+2714,U+2718,U+0308
+        }
+        @font-face {
+        font-family:'Open Sans';
+        font-weight:400;
+        font-display:swap;
+        src:url('https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Fonts/OpenSans/opensans-regular.1738925219.woff2')format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD,U+2713,U+2714,U+2718,U+0308
+        }
+        @font-face {
+        font-family:'Open Sans Semi Bold';
+        font-weight:600;
+        font-display:swap;
+        src:url('https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Fonts/OpenSans/opensans-semibold.1738925219.woff2')format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD,U+2713,U+2714,U+2718,U+0308
+        }
+        @font-face {
+        font-family:'Open Sans';
+        font-weight:600;
+        font-display:swap;
+        src:url('https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Fonts/OpenSans/opensans-semibold.1738925219.woff2')format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD,U+2713,U+2714,U+2718,U+0308
+        }
+        @font-face {
+        font-family:'Open Sans Bold';
+        font-weight:700;
+        font-display:swap;
+        src:url('https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Fonts/OpenSans/opensans-bold.1738925219.woff2')format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD,U+2713,U+2714,U+2718,U+0308
+        }
+        @font-face {
+        font-family:'Open Sans';
+        font-weight:700;
+        font-display:swap;
+        src:url('https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Fonts/OpenSans/opensans-bold.1738925219.woff2')format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD,U+2713,U+2714,U+2718,U+0308
+        }
+
+        
+        @font-face {
+        font-family:'Overpass Regular';
+        font-weight:400;
+        font-display:swap;
+        src:url('https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Fonts/Overpass/overpass-regular.1738925219.woff2')format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD,U+2713,U+2714,U+2718,U+0308
+        }
+        @font-face {
+        font-family:'Overpass';
+        font-weight:400;
+        font-display:swap;
+        src:url('https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Fonts/Overpass/overpass-regular.1738925219.woff2')format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD,U+2713,U+2714,U+2718,U+0308
+        }
+        @font-face {
+        font-family:'Overpass Semi Bold';
+        font-weight:600;
+        font-display:swap;
+        src:url('https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Fonts/Overpass/overpass-semibold.1738925219.woff2')format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD,U+2713,U+2714,U+2718,U+0308
+        }
+        @font-face {
+        font-family:'Overpass';
+        font-weight:600;
+        font-display:swap;
+        src:url('https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Fonts/Overpass/overpass-semibold.1738925219.woff2')format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD,U+2713,U+2714,U+2718,U+0308
+        }
+        @font-face {
+        font-family:'Overpass Bold';
+        font-weight:700;
+        font-display:swap;
+        src:url('https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Fonts/Overpass/overpass-bold.1738925219.woff2')format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD,U+2713,U+2714,U+2718,U+0308
+        }
+        @font-face {
+        font-family:'Overpass';
+        font-weight:700;
+        font-display:swap;
+        src:url('https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Fonts/Overpass/overpass-bold.1738925219.woff2')format('woff2');
+        unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD,U+2713,U+2714,U+2718,U+0308
+        }
+    </style> <script>/* src: https://github.com/taylorhakes/promise-polyfill */!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t():"function"==typeof define&&define.amd?define(t):t()}(0,function(){"use strict";function e(e){var t=this.constructor;return this.then(function(n){return t.resolve(e()).then(function(){return n})},function(n){return t.resolve(e()).then(function(){return t.reject(n)})})}function t(e){return new this(function(t,n){function r(e,n){if(n&&("object"==typeof n||"function"==typeof n)){var f=n.then;if("function"==typeof f)return void f.call(n,function(t){r(e,t)},function(n){o[e]={status:"rejected",reason:n},0==--i&&t(o)})}o[e]={status:"fulfilled",value:n},0==--i&&t(o)}if(!e||"undefined"==typeof e.length)return n(new TypeError(typeof e+" "+e+" is not iterable(cannot read property Symbol(Symbol.iterator))"));var o=Array.prototype.slice.call(e);if(0===o.length)return t([]);for(var i=o.length,f=0;o.length>f;f++)r(f,o[f])})}function n(e,t){this.name="AggregateError",this.errors=e,this.message=t||""}function r(e){var t=this;return new t(function(r,o){if(!e||"undefined"==typeof e.length)return o(new TypeError("Promise.any accepts an array"));var i=Array.prototype.slice.call(e);if(0===i.length)return o();for(var f=[],u=0;i.length>u;u++)try{t.resolve(i[u]).then(r)["catch"](function(e){f.push(e),f.length===i.length&&o(new n(f,"All promises were rejected"))})}catch(c){o(c)}})}function o(e){return!(!e||"undefined"==typeof e.length)}function i(){}function f(e){if(!(this instanceof f))throw new TypeError("Promises must be constructed via new");if("function"!=typeof e)throw new TypeError("not a function");this._state=0,this._handled=!1,this._value=undefined,this._deferreds=[],s(e,this)}function u(e,t){for(;3===e._state;)e=e._value;0!==e._state?(e._handled=!0,f._immediateFn(function(){var n=1===e._state?t.onFulfilled:t.onRejected;if(null!==n){var r;try{r=n(e._value)}catch(o){return void a(t.promise,o)}c(t.promise,r)}else(1===e._state?c:a)(t.promise,e._value)})):e._deferreds.push(t)}function c(e,t){try{if(t===e)throw new TypeError("A promise cannot be resolved with itself.");if(t&&("object"==typeof t||"function"==typeof t)){var n=t.then;if(t instanceof f)return e._state=3,e._value=t,void l(e);if("function"==typeof n)return void s(function(e,t){return function(){e.apply(t,arguments)}}(n,t),e)}e._state=1,e._value=t,l(e)}catch(r){a(e,r)}}function a(e,t){e._state=2,e._value=t,l(e)}function l(e){2===e._state&&0===e._deferreds.length&&f._immediateFn(function(){e._handled||f._unhandledRejectionFn(e._value)});for(var t=0,n=e._deferreds.length;n>t;t++)u(e,e._deferreds[t]);e._deferreds=null}function s(e,t){var n=!1;try{e(function(e){n||(n=!0,c(t,e))},function(e){n||(n=!0,a(t,e))})}catch(r){if(n)return;n=!0,a(t,r)}}n.prototype=Error.prototype;var d=setTimeout;f.prototype["catch"]=function(e){return this.then(null,e)},f.prototype.then=function(e,t){var n=new this.constructor(i);return u(this,new function(e,t,n){this.onFulfilled="function"==typeof e?e:null,this.onRejected="function"==typeof t?t:null,this.promise=n}(e,t,n)),n},f.prototype["finally"]=e,f.all=function(e){return new f(function(t,n){function r(e,o){try{if(o&&("object"==typeof o||"function"==typeof o)){var u=o.then;if("function"==typeof u)return void u.call(o,function(t){r(e,t)},n)}i[e]=o,0==--f&&t(i)}catch(c){n(c)}}if(!o(e))return n(new TypeError("Promise.all accepts an array"));var i=Array.prototype.slice.call(e);if(0===i.length)return t([]);for(var f=i.length,u=0;i.length>u;u++)r(u,i[u])})},f.any=r,f.allSettled=t,f.resolve=function(e){return e&&"object"==typeof e&&e.constructor===f?e:new f(function(t){t(e)})},f.reject=function(e){return new f(function(t,n){n(e)})},f.race=function(e){return new f(function(t,n){if(!o(e))return n(new TypeError("Promise.race accepts an array"));for(var r=0,i=e.length;i>r;r++)f.resolve(e[r]).then(t,n)})},f._immediateFn="function"==typeof setImmediate&&function(e){setImmediate(e)}||function(e){d(e,0)},f._unhandledRejectionFn=function(e){void 0!==console&&console&&console.warn("Possible Unhandled Promise Rejection:",e)};var p=function(){if("undefined"!=typeof self)return self;if("undefined"!=typeof window)return window;if("undefined"!=typeof global)return global;throw Error("unable to locate global object")}();"function"!=typeof p.Promise?p.Promise=f:(p.Promise.prototype["finally"]||(p.Promise.prototype["finally"]=e),p.Promise.allSettled||(p.Promise.allSettled=t),p.Promise.any||(p.Promise.any=r))});
+</script>
+<script>
+        
+                
+                
+            
+
+window.promisedConsentScriptsBefore = window.promisedConsentScriptsBefore || [];
+window.promisedConsentScriptsAfter = window.promisedConsentScriptsAfter || [];
+
+
+// Define a whitelist of allowed URLs or domains
+const allowedUrls = [
+  /^https:\/\/(.*\.)?ionos\.(de|at|com|ca|co\.uk|mx|it|fr|es)$/,
+  /^https:\/\/(.*\.)?uicdn\.net$/,
+  /^https:\/\/(.*\.)?(youtube(-nocookie)?\.com|youtu\.be)$/,
+  /^https:\/\/(.*\.)?server\.lan$/,
+  /^https:\/\/(.*\.)?ddev\.site$/
+];
+
+// Function to validate the URL
+function isValidUrl(url) {
+  try {
+    const parsedUrl = new URL(url);
+    return allowedUrls.some(pattern => pattern.test(parsedUrl.origin));
+  } catch (e) {
+    console.error(url + ' is an invalid url');
+    return false;
+  }
+}
+
+// Function to load a script
+function loadScript(url) {
+  return new Promise((resolve, reject) => {
+    if (!isValidUrl(url)) {
+      return reject(new Error(`Forbidden url: ${url}`));
+    }
+    const script = document.createElement('script');
+    script.src = url;
+    script.async = true;
+    script.onload = () => resolve(script);
+    script.onerror = () => reject(new Error(`Failed to load script: ${url}`));
+    document.head.appendChild(script);
+  });
+}
+
+// Function to execute scripts or functions with specific data for each
+function executeScripts(scriptsWithData) {
+  return scriptsWithData.reduce((promise, { scriptOrFunction, data = {} }) => {
+    return promise.then(() => {
+      if (typeof scriptOrFunction === 'string') {
+        if (typeof window[scriptOrFunction] === 'function') {
+          return Promise.resolve(window[scriptOrFunction](data));
+        } else {
+          return loadScript(scriptOrFunction);
+        }
+      } else if (typeof scriptOrFunction === 'function') {
+        return Promise.resolve(scriptOrFunction(data));
+      }
+    });
+  }, Promise.resolve());
+}
+
+function loadPromisedConsentScripts({ consentUrl, consentType, before = [], after = [] }) {
+  executeScripts(before)
+    .then(() => {
+      return new Promise((resolve) => {
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", () => resolve(loadScript(consentUrl)));
+        } else {
+          resolve(loadScript(consentUrl));
+        }
+      });
+    })
+    .then(() => {
+      const consentLoaded = new CustomEvent('consentLoaded');
+      if (typeof window.privacyConsent === 'undefined') {
+        if (consentType === 'default') {
+          window.privacyConsent = new window.PrivacyConsent({defaultConsent: {[window.PrivacyConsentEnum.TECHNICAL]: true, [window.PrivacyConsentEnum.MARKETING]: true, [window.PrivacyConsentEnum.STATISTICS]: true, [window.PrivacyConsentEnum.PARTNERSHIPS]: true}});
+        } else if (consentType === 'whitelist') {
+          window.privacyConsent = new window.PrivacyConsent({whitelist: true});
+        } else {
+          window.privacyConsent = new window.PrivacyConsent();
+        }
+        window.privacyConsent.initialize();
+      }
+      if (typeof window.privacyConsent !== 'undefined') {
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", function() {
+            let consentBodyTag = document.querySelector('body');
+            consentBodyTag.dataset.consentLoaded = 1;
+          });
+        } else {
+          let consentBodyTag = document.querySelector('body');
+          consentBodyTag.dataset.consentLoaded = 1;
+        }
+        window.privacyConsent.initialize();
+        window.dispatchEvent(consentLoaded);
+      }
+    })
+    .then(() => {
+      if (typeof window.privacyConsent !== 'undefined') {
+        return executeScripts(after);
+      } else {
+        throw new Error('window.privacyConsent is undefined (execute scripts)');
+      }
+    })
+    .then(() => {
+      if (typeof window.privacyConsent !== 'undefined') {
+        window.privacyConsent.initialize();
+      } else {
+        throw new Error('window.privacyConsent is undefined (last initialize)');
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
+window.loadPromisedConsentScripts = loadPromisedConsentScripts;
+
+
+
+
+        
+    
+
+
+const salesChannelControllerIdentifier = 'salesChannelGuides';
+const guidesDataLayerName = 'guidesDataLayer';
+
+let getTld = function (dl = {}) {
+  let host = (window.location.host);
+  if (dl.hasOwnProperty('prop7') && dl.prop7) {
+    host = dl.prop7;
+  }
+  let hostArray = host.split('.');
+  let tld = hostArray[hostArray.length - 1];
+  if (host.indexOf('.co.uk') !== -1) {
+    tld = hostArray[hostArray.length - 2] + '.' + hostArray[hostArray.length - 1];
+  }
+  return (tld !== 'site' && tld !== 'lan') ? tld : 'de';
+}
+
+let getCookieDomain = function (dl = {}) {
+  let host = (window.location.host);
+  if (dl.hasOwnProperty('prop7') && dl.prop7) {
+    host = dl.prop7;
+  }
+  var hostArray = host.split('.');
+  if (hostArray[hostArray.length - 1] === 'uk') {
+    return '.' + hostArray[hostArray.length - 3] + '.' + hostArray[hostArray.length - 2] + '.' + hostArray[hostArray.length - 1]
+  }
+  return '.' + hostArray[hostArray.length - 2] + '.' + hostArray[hostArray.length - 1];
+}
+
+let setCookie = function (cname, cvalue, tInSecs, dl = {}) {
+  const d = new Date();
+  d.setTime(d.getTime() + (tInSecs * 1000));
+  let expires = 'expires='+ d.toUTCString();
+  document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/' + ';domain=' + getCookieDomain(dl);
+}
+
+let getParams = function () {
+  var preparedUrlSearchParams = decodeURI(location.search.replace(/\?/g, "").replace(/&/g, "\",\"").replace(/=/g,"\":\""));
+  return JSON.parse(preparedUrlSearchParams ? '{"' + preparedUrlSearchParams + '"}' : '{}');
+}
+
+let listCookies = function () {
+  var theCookies = document.cookie.split(';');
+  var returnCookies = [];
+  var cookieKeyValuePair = {};
+  var cookieString = '';
+  for (var i = 0; i <= theCookies.length; i++) {
+    if (typeof theCookies[i] !== 'undefined') {
+      cookieString = theCookies[i].trim();
+      cookieKeyValuePair = cookieString.match(/([^=]+?)[=\s](.*)/i);
+      if (cookieKeyValuePair !== null && cookieKeyValuePair.length === 3) {
+        returnCookies.push({
+          'name': cookieKeyValuePair['1'],
+          'value': cookieKeyValuePair['2']
+        });
+      }
+    }
+  }
+  return returnCookies;
+}
+
+let getSalesChannelController = function(salesChannelControllerIdentifier, url) {
+  if (sessionStorage.getItem(salesChannelControllerIdentifier)) {
+    return data = JSON.parse(sessionStorage.getItem(salesChannelControllerIdentifier));
+  } else {
+    let salesChannelControllerApplicationArray = (typeof window.guidesDataLayer.application !== 'undefined') ? window.guidesDataLayer.application.split('.') : [];
+    let salesChannelControllerOrigin = salesChannelControllerApplicationArray !== null && salesChannelControllerApplicationArray.length >= 3 ? salesChannelControllerApplicationArray[2] : 'DE';
+    let salesChannelControllerPath = salesChannelControllerApplicationArray !== null && salesChannelControllerApplicationArray.length >= 2 && salesChannelControllerApplicationArray[1] === 'SG' ? '/startupguide/' : '/digitalguide/';
+    let salesChannelControllerReferrer = document.referrer || '';
+    let salesChannelController = {};
+    salesChannelController.origin = salesChannelControllerOrigin === 'AT' ? 'DE' : salesChannelControllerOrigin;
+    salesChannelController.path = salesChannelControllerPath;
+    salesChannelController.cookies = {};
+    salesChannelController.requestParameter = {};
+    salesChannelController.referer = salesChannelControllerReferrer;
+    salesChannelController.requestParameter = getParams();
+    salesChannelController.cookies = listCookies();
+    console.info('fetch SCC');
+    return fetch(url, {
+      cache: 'no-store',
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(salesChannelController)
+    })
+      .then((response) => {
+        console.info('fetch SCC done');
+        return response.json();
+      })
+      .then((data) => {
+        setSalesChannelController(salesChannelControllerIdentifier, data);
+        return data;
+      })
+      .catch((error) => {
+        console.info('missing data from salesChannelController');
+        throw error;
+      });
+  }
+}
+
+let setSalesChannelController = function(salesChannelControllerIdentifier, data) {
+  sessionStorage.setItem(salesChannelControllerIdentifier, JSON.stringify(data));
+}
+
+let processSalesChannelController = function(config) {
+  let sCCId = config.salesChannelControllerIdentifier || salesChannelControllerIdentifier;
+  try {
+    if (sCCId && config.url) {
+      setSalesChannelController(sCCId, getSalesChannelController(sCCId, config.url));
+    }
+  } catch (e) {
+    console.error(e, 'we have a problem with the sales channel controller ' + sCCId)
+  }
+
+  let salesChannelControllerDataString = sessionStorage.getItem(sCCId) || '';
+  if (salesChannelControllerDataString) {
+    let salesChannelControllerData = JSON.parse(salesChannelControllerDataString);
+    // @Todo: After successful testing, remove comment from following line
+    // processActionsAndUpdateDl(salesChannelControllerData, guidesDataLayerName);
+  }
+}
+
+function processActionsAndUpdateDl (data, dlName) {
+  if (typeof data.actions !== 'undefined' && data.actions.length >= 1 && window[dlName] !== 'undefined') {
+    for (var i = 0; i <= data.actions.length; i++) {
+      if (typeof data.actions[i] !== 'undefined' && data.actions[i].hasOwnProperty('action') && data.actions[i].hasOwnProperty('actionAttributes')) {
+        if (data.actions[i].action === 'ADD_COOKIE') {
+          if (data.actions[i].actionAttributes['cookie.name'] && data.actions[i].actionAttributes['cookie.value'] && data.actions[i].actionAttributes['cookie.lifetime']) {
+            setCookie(
+              data.actions[i].actionAttributes['cookie.name'],
+              data.actions[i].actionAttributes['cookie.value'],
+              data.actions[i].actionAttributes['cookie.lifetime'],
+              data
+            );
+          }
+        }
+        if (data.actions[i].action === 'ADD_ACTIONCODE') {
+          if (data.actions[i].actionAttributes['actioncode.code']) {
+            window[dlName].eVar23 = window[dlName].eVar23 || data.actions[i].actionAttributes['actioncode.code'];
+            window[dlName].eVar74 = window[dlName].eVar23;
+          }
+        }
+        if (data.actions[i].action === 'ADD_MEDIUMCODE') {
+          if (data.actions[i].actionAttributes['mediumcode.code']) {
+            window[dlName].eVar22 = data.actions[i].actionAttributes['mediumcode.code'] || window[dlName].eVar22;
+            window[dlName].eVar24 = window[dlName].eVar24 || data.actions[i].actionAttributes['mediumcode.code'];
+          }
+        }
+        if (data.actions[i].action === 'ADD_TRACKINGCODE_COMP') {
+          var itcChannel = '';
+          var itcProduct = '';
+          var itcCampaign = '';
+
+          if (data.actions[i].actionAttributes.channelcode) {
+            window[dlName].eVar97 = window[dlName].eVar97 || data.actions[i].actionAttributes.channelcode;
+            itcChannel = window[dlName].eVar97;
+          }
+          if (data.actions[i].actionAttributes.productcode) {
+            window[dlName].eVar98 = window[dlName].eVar98 || data.actions[i].actionAttributes.productcode;
+            itcProduct = window[dlName].eVar98;
+          }
+          if (data.actions[i].actionAttributes.campaigncode) {
+            window[dlName].eVar99 = window[dlName].eVar99 || data.actions[i].actionAttributes.campaigncode;
+            itcCampaign = window[dlName].eVar99;
+          }
+        }
+      }
+    }
+  }
+}
+window.processSalesChannelController = processSalesChannelController;
+
+window.promisedConsentScriptsBefore.push({
+    scriptOrFunction: 'processSalesChannelController',
+    data: {
+        salesChannelControllerIdentifier: 'salesChannelGuidesPreview',
+        url: 'https://www.ionos.com/shop-api/api/v1/saleschannel'
+    }
+});
+
+
+
+let jentisFn = function () {
+  const jentisConfig = new Map([
+    ['de', {endpoint: 'https://6zqtim.ionos.de', project: 'ionos_de', jsFile: 'aljmf5.js'}],
+    ['uk', {endpoint: 'https://xxwre7.ionos.co.uk', project: 'ionos_co_uk', jsFile: 'akbbdz.js'}],
+    ['us', {endpoint: 'https://54ft7i.ionos.com', project: 'ionos_com', jsFile: '48gpcp.js'}],
+    ['ca', {endpoint: 'https://nsupig.ionos.ca', project: 'ionos_ca', jsFile: 'j05pa0.js'}],
+    ['fr', {endpoint: 'https://948si5.ionos.fr', project: 'ionos_fr', jsFile: 'b44g5k.js'}],
+    ['es', {endpoint: 'https://v0v7kq.ionos.es', project: 'ionos_es', jsFile: 'bp6upp.js'}],
+    ['it', {endpoint: 'https://kt8986.ionos.it', project: 'ionos_it', jsFile: 'td7zu1.js'}],
+    ['mx', {endpoint: 'https://e5xnsj.ionos.mx', project: 'ionos_mx', jsFile: 'tvjenp.js'}],
+    ['at', {endpoint: 'https://6kudki.ionos.at', project: 'ionos_at', jsFile: '9t1jfx.js'}],
+  ]);
+
+  let country = window.guidesDataLayer.market.toLowerCase();
+  const jentisRuntimeConfig = jentisConfig.has(country) ? jentisConfig.get(country) : null;
+  if (jentisRuntimeConfig === null) {
+    throw new Error('Jentis runtime configuration not available!');
+  }
+
+  (function (sCDN, sCDNProject, sCDNWorkspace, sCDNVers) {
+    if (
+      window.localStorage !== null &&
+      typeof window.localStorage === "object" &&
+      typeof window.localStorage.getItem === "function" &&
+      window.sessionStorage !== null &&
+      typeof window.sessionStorage === "object" &&
+      typeof window.sessionStorage.getItem === "function"
+    ) {
+      sCDNVers =
+        window.sessionStorage.getItem("jts_preview_version") ||
+        window.localStorage.getItem("jts_preview_version") ||
+        sCDNVers;
+    }
+    window.jentis = window.jentis || {};
+    window.jentis.config = window.jentis.config || {};
+    window.jentis.config.frontend = window.jentis.config.frontend || {};
+    window.jentis.config.frontend.cdnhost = sCDN + "/get/" + sCDNWorkspace + "/web/" + sCDNVers + "/";
+    window.jentis.config.frontend.vers = sCDNVers;
+    window.jentis.config.frontend.env = sCDNWorkspace;
+    window.jentis.config.frontend.project = sCDNProject;
+    window._jts = window._jts || [];
+    var f = document.getElementsByTagName("script")[0];
+    var j = document.createElement("script");
+    j.async = true;
+    j.src = window.jentis.config.frontend.cdnhost + jentisRuntimeConfig.jsFile;
+    f.parentNode.insertBefore(j, f);
+  })(jentisRuntimeConfig.endpoint, jentisRuntimeConfig.project, "live", "_");
+  window?.ionos?.datalayer?.initConsent();
+}
+
+const jentisPageView = function () {
+  const dataLayerNs = window.ionos.datalayer.pageview;
+  dataLayerNs.applicationName = window.guidesDataLayer.shopname;
+  dataLayerNs.subShopname = null;
+  dataLayerNs.page = window.guidesDataLayer.prop1;
+  dataLayerNs.productArea = window.guidesDataLayer.eVar1;
+  dataLayerNs.section = window.guidesDataLayer.eVar6;
+  dataLayerNs.hashedIp = null;
+  dataLayerNs.loginStatus = null;
+  dataLayerNs.hashedCustomerId = null;
+  window.dataLayerNs = dataLayerNs;
+
+  sendData = () => {
+    window?.ionos?.datalayer?.initConsent();
+    window?.ionos?.datalayer?.pageview?.sendData();
+  };
+
+  window.privacyConsent.invoke(
+    sendData,
+    window.PrivacyConsentEnum.STATISTICS,
+    window.privacyConsent,
+    true,
+  );
+
+  window.privacyConsent.initialize();
+  window?.ionos?.datalayer?.initConsent();
+}
+
+window.jentisFn = jentisFn;
+window.jentisPageView = jentisPageView;
+
+window.promisedConsentScriptsBefore.push({scriptOrFunction: 'jentisFn'});
+window.promisedConsentScriptsAfter.push({scriptOrFunction: 'https://var.uicdn.net/shopsshort/ionos-datalayer/datalayer.min.js'});
+window.promisedConsentScriptsAfter.push({scriptOrFunction: 'jentisPageView'});
+
+
+
+
+
+
+let hubspot = function () {
+  let hubspotFn = function () {
+    var n = document.createElement("script");
+    n.setAttribute("id", 'hs-script-loader');
+    n.async = true;
+    n.defer = true;
+    n.setAttribute("src", 'https://js-eu1.hs-scripts.com/8230984.js');
+    window.document.head.appendChild(n);
+  };
+  window.privacyConsent.invoke(
+    hubspotFn,
+    PrivacyConsentEnum.STATISTICS,
+    window.privacyConsent,
+    true
+  );
+  window.privacyConsent.initialize();
+}
+window.hubspot = hubspot;
+
+window.promisedConsentScriptsAfter.push({scriptOrFunction: 'hubspot'});
+
+
+
+function consentRelatedScriptsInsertAfter(newNode, existingNode) {
+  existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
+}
+
+let consentRelatedScripts = function() {
+  var consentRelatedScriptsFn = document.querySelectorAll('script[type="text/plain"][data-consent]');
+  console.info(consentRelatedScriptsFn);
+  var consentedFunctions = [];
+  consentRelatedScriptsFn.forEach(function (item) {
+    var consentCategoryFromDataSet = item.dataset.consent || '';
+    if (consentCategoryFromDataSet !== '') {
+      var consentCategory = consentCategoryFromDataSet.toUpperCase();
+      if (!(consentCategory in consentedFunctions)) {
+        consentedFunctions[consentCategory] = [];
+      }
+      consentedFunctions[consentCategory].push(item);
+    }
+  })
+
+  var activateConsentRelatedScripts = [];
+  for (var consentCategory in consentedFunctions) {
+    activateConsentRelatedScripts[consentCategory] = function() {
+      consentedFunctions[consentCategory].forEach(function(item) {
+        var newScriptContent = item.text;
+        const newScript = document.createElement("script");
+        newScript.text = newScriptContent;
+        newScript.type = "text/javascript";
+        newScript.dataset.consentGiven = true;
+        consentRelatedScriptsInsertAfter(newScript, item);
+      });
+    };
+    window.privacyConsent.invoke(
+      activateConsentRelatedScripts[consentCategory],
+      PrivacyConsentEnum[consentCategory],
+      window.privacyConsent,
+      false
+    );
+    window.privacyConsent.initialize();
+  }
+}
+window.consentRelatedScripts = consentRelatedScripts;
+window.consentRelatedScriptsInsertAfter = consentRelatedScriptsInsertAfter;
+
+window.promisedConsentScriptsAfter.push({scriptOrFunction: 'consentRelatedScripts'});
+
+
+
+window.promisedConsentScriptsBefore = window.promisedConsentScriptsBefore || [];
+window.promisedConsentScriptsAfter = window.promisedConsentScriptsAfter || [];
+loadPromisedConsentScripts({
+    consentUrl: 'https://www.ionos.com/modules/hosting-common/script/privacy/bundle.js',
+    consentType: 'default',
+    before: window.promisedConsentScriptsBefore,
+    after: window.promisedConsentScriptsAfter
+});
+
+
+
+</script>
+<script>
+"use strict";
+if (typeof ready !== 'function') {
+var ready=function(e){"loading"!==document.readyState?e():document.addEventListener?document.addEventListener("DOMContentLoaded",e):document.attachEvent("onreadystatechange",function(){"complete"===document.readyState&&e()})};
+}
+/** Polyfill for NodeList.forEach */
+if ('NodeList' in window && !NodeList.prototype.forEach) {NodeList.prototype.forEach = function (callback, thisArg) {thisArg = thisArg || window;for (var i = 0; i < this.length; i++) callback.call(thisArg, this[i], i, this);};}
+/** Polyfill for HTMLCollection.forEach */
+if ('HTMLCollection' in window && !HTMLCollection.prototype.forEach) {HTMLCollection.prototype.forEach = function (callback, thisArg) {thisArg = thisArg || window;for (var i = 0; i < this.length; i++) callback.call(thisArg, this[i], i, this);};}
+/** Array.prototype.includes() polyfill @author Chris Ferdinandi @license MIT */
+if (!Array.prototype.includes) {Array.prototype.includes = function (search, start) {'use strict';if (search instanceof RegExp) throw TypeError('first argument must not be a RegExp');if (start === undefined) start = 0;return this.indexOf(search, start) !== -1;};}
+/** Polyfill for Element.matches */
+if (Element && !Element.prototype.matches) {Element.prototype.matches = Element.prototype.matchesSelector || Element.prototype.mozMatchesSelector || Element.prototype.msMatchesSelector || Element.prototype.oMatchesSelector || Element.prototype.webkitMatchesSelector;}
+    </script> <link class="finalUrl" rel="shortcut icon" href="/favicon.ico" sizes="16x16 24x24 32x32 48x48 64x64 72x72 96x96" type="image/x-icon"><link class="finalUrl" rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16"><link class="finalUrl" rel="icon" type="image/png" href="/favicon-24x24.png" sizes="24x24"><link class="finalUrl" rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32"><link class="finalUrl" rel="icon" type="image/png" href="/favicon-48x48.png" sizes="48x48"><link class="finalUrl" rel="icon" type="image/png" href="/favicon-64x64.png" sizes="64x64"><link class="finalUrl" rel="icon" type="image/png" href="/favicon-72x72.png" sizes="72x72"><link class="finalUrl" rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96"><link class="finalUrl" rel="icon" type="image/png" href="/favicon-256x256.png" sizes="256x256"><link class="finalUrl" rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml"><link class="finalUrl" rel="apple-touch-icon" type="image/png" href="/apple-touch-icon-180x180.png"><meta name="apple-mobile-web-app-title" content="IONOS Digital Guide"><meta name="msapplication-TileColor" content="#0b2a63"><meta name="theme-color" content="#001b41"><link class="finalUrl" rel="manifest" href="/site.webmanifest"><link rel="preload" class="preload" href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg" as="image"/> <link rel="canonical" href="https://www.ionos.com/es-us/digitalguide/hosting/"/> <link rel="alternate" hreflang="de" href="https://www.ionos.de/digitalguide/hosting/"/>
+<link rel="alternate" hreflang="de-AT" href="https://www.ionos.at/digitalguide/hosting/"/>
+<link rel="alternate" hreflang="de-DE" href="https://www.ionos.de/digitalguide/hosting/"/>
+<link rel="alternate" hreflang="en-CA" href="https://www.ionos.ca/digitalguide/hosting/"/>
+<link rel="alternate" hreflang="en-GB" href="https://www.ionos.co.uk/digitalguide/hosting/"/>
+<link rel="alternate" hreflang="en-US" href="https://www.ionos.com/digitalguide/hosting/"/>
+<link rel="alternate" hreflang="es" href="https://www.ionos.com/es-us/digitalguide/hosting/"/>
+<link rel="alternate" hreflang="es-AR" href="https://www.ionos.com/es-us/digitalguide/hosting/"/>
+<link rel="alternate" hreflang="es-ES" href="https://www.ionos.es/digitalguide/hosting/"/>
+<link rel="alternate" hreflang="es-MX" href="https://www.ionos.mx/digitalguide/hosting/"/>
+<link rel="alternate" hreflang="fr" href="https://www.ionos.fr/digitalguide/hebergement/"/>
+<link rel="alternate" hreflang="it" href="https://www.ionos.it/digitalguide/hosting/"/>
+<link rel="alternate" hreflang="pt" href="https://www.ionos.com/pt-br/digitalguide/hospedagem/"/>
+<link rel="alternate" hreflang="x-default" href="https://www.ionos.com/digitalguide/hosting/"/>
+</head>
+<body class="position-relative page-4" id="page-4"> <nav id="navigation-main" class="navbar brand-header-bg brand-header-color position-fixed fixed-top contain-style" data-bs-theme="dark"><span class="scroll-indicator d-block fixed-top w-100"><span class="d-block brand-scroll-indicator-bg"></span></span><div class="container-fluid container-sm"><a data-linkid="guides.header.logo" class="navbar-brand mx-0 d-flex align-items-center link-internal" href="https://www.ionos.com/es-us/digitalguide/" target="_top" title="Digital Guide" data-guides-target-uid="1"><svg class="d-inline-block m-0 brand-logo brand-header-color"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#ionos-logo" /></svg><span class="brand-entity d-inline-block m-0 ms-3 brand-header-color lh-1">Digital Guide</span></a><form id="search-bar" class="search-form input-group input-group-sm w-auto mx-5 d-none d-lg-flex flex-fill" role="search" action="https://www.ionos.com/es-us/digitalguide/buscar/" method="POST" autocomplete="off"><span class="input-group-text rounded-start-5 border-0 px-0 brand-header-search-bg"><button class="btn btn-sm brand-header-search-bg brand-header-muted-color" type="submit" id="navbar-search" data-linkid="guides.navigation.module.search.btn"><svg width="16" height="16"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-search"></use></svg><span class="visually-hidden">Buscar</span></button></span><input class="form-control rounded-end-5 border-0 ps-1 brand-header-search-bg brand-header-muted-color" type="text" name="search" onkeyup="javascript:localStorage.setItem('searchTerm', cleanupSearchString(this.value))" placeholder="Buscar" autocomplete="off" aria-label="Buscar" aria-describedby="navbar-search" spellcheck="false" ></form><button class="btn btn-sm btn-cta px-3 ms-auto me-5 d-none d-sm-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbar-products" aria-controls="navbar-products" aria-labelledby="navbar-products"> Productos IONOS </button><div class="offcanvas offcanvas-top brand-header-bg brand-header-color" data-bs-hideresize="true" tabindex="-1" id="navbar-products" aria-labelledby="navbar-products"><div class="offcanvas-header"><span class="offcanvas-title h5 brand-header-color" id="offcanvas-label-navigation-products">Productos IONOS</span><button type="button" class="btn-close brand-header-color navbar-toggler" data-bs-dismiss="offcanvas" aria-label="Close"></button></div><div class="offcanvas-body pt-0 position-relative align-items-center"><ul class="nav"><li class="nav-item col-12 col-sm-6 col-lg-4 col-xxl-2 px-1 my-2"><span class="nav-link disabled brand-header-muted-color">Dominios</span><ul class="nav flex-column mt-2 pt-2 border-top brand-header-border-color"><li class="nav-item"><a href="https://www.ionos.com/domains/domain-names" target="_top" data-linkid="guides.navigation.products.dominios.dominios" class="nav-link link-internal">Dominios</a></li><li class="nav-item"><a href="https://www.ionos.com/domains/domain-check" target="_top" data-linkid="guides.navigation.products.dominios.domain-check" class="nav-link link-internal">Domain Check</a></li><li class="nav-item"><a href="https://www.ionos.com/domains/domain-transfer" target="_top" data-linkid="guides.navigation.products.dominios.transferencia-de-dominio" class="nav-link link-internal">Transferencia de dominio</a></li><li class="nav-item"><a href="https://www.ionos.com/domains/free-domain-name" target="_top" data-linkid="guides.navigation.products.dominios.dominio-gratis" class="nav-link link-internal">Dominio gratis</a></li><li class="nav-item"><a href="https://www.ionos.com/security/ssl-certificate" target="_top" data-linkid="guides.navigation.products.dominios.certificados-ssl" class="nav-link link-internal">Certificados SSL</a></li></ul></li><li class="nav-item col-12 col-sm-6 col-lg-4 col-xxl-2 px-1 my-2"><span class="nav-link disabled brand-header-muted-color">Páginas web &amp; Tiendas online</span><ul class="nav flex-column mt-2 pt-2 border-top brand-header-border-color"><li class="nav-item"><a href="https://www.ionos.com/websites/website-builder" target="_top" data-linkid="guides.navigation.products.paginas-web-tiendas-online.crear-una-pagina-web" class="nav-link link-internal">Crear una página web</a></li><li class="nav-item"><a href="https://www.ionos.com/websites/custom-made-website" target="_top" data-linkid="guides.navigation.products.paginas-web-tiendas-online.diseno-de-pagina-web" class="nav-link link-internal">Diseño de página web</a></li><li class="nav-item"><a href="https://www.ionos.com/ecommerce-solutions/ecommerce-website-builder" target="_top" data-linkid="guides.navigation.products.paginas-web-tiendas-online.ecommerce-website-builder" class="nav-link link-internal">eCommerce Website Builder</a></li></ul></li><li class="nav-item col-12 col-sm-6 col-lg-4 col-xxl-2 px-1 my-2"><span class="nav-link disabled brand-header-muted-color">Hosting &amp; WordPress</span><ul class="nav flex-column mt-2 pt-2 border-top brand-header-border-color"><li class="nav-item"><a href="https://www.ionos.com/hosting/web-hosting" target="_top" data-linkid="guides.navigation.products.hosting-wordpress.hosting" class="nav-link link-internal">Hosting</a></li><li class="nav-item"><a href="https://www.ionos.com/hosting/wordpress-hosting" target="_top" data-linkid="guides.navigation.products.hosting-wordpress.wordpress-hosting" class="nav-link link-internal">WordPress Hosting</a></li></ul></li><li class="nav-item col-12 col-sm-6 col-lg-4 col-xxl-2 px-1 my-2"><span class="nav-link disabled brand-header-muted-color">Office</span><ul class="nav flex-column mt-2 pt-2 border-top brand-header-border-color"><li class="nav-item"><a href="https://www.ionos.com/office-solutions/create-an-email-address" target="_top" data-linkid="guides.navigation.products.office.correo-electronico-profesional" class="nav-link link-internal">Correo electrónico profesional</a></li><li class="nav-item"><a href="https://www.ionos.com/office-solutions/hidrive-cloud-storage" target="_top" data-linkid="guides.navigation.products.office.almacenamiento-online-hidrive" class="nav-link link-internal">Almacenamiento online HiDrive</a></li><li class="nav-item"><a href="https://www.ionos.com/office-solutions/microsoft-office" target="_top" data-linkid="guides.navigation.products.office.microsoft-365-office-365" class="nav-link link-internal">Microsoft 365 / Office 365</a></li></ul></li><li class="nav-item col-12 col-sm-6 col-lg-4 col-xxl-2 px-1 my-2"><span class="nav-link disabled brand-header-muted-color">Servidores</span><ul class="nav flex-column mt-2 pt-2 border-top brand-header-border-color"><li class="nav-item"><a href="https://www.ionos.com/cloud/cloud-servers" target="_top" data-linkid="guides.navigation.products.servidores.cloud-server" class="nav-link link-internal">Cloud Server</a></li><li class="nav-item"><a href="https://www.ionos.com/servers/vps" target="_top" data-linkid="guides.navigation.products.servidores.servidores-virtuales-vps" class="nav-link link-internal">Servidores virtuales (VPS)</a></li><li class="nav-item"><a href="https://www.ionos.com/servers/dedicated-servers" target="_top" data-linkid="guides.navigation.products.servidores.servidores-dedicados" class="nav-link link-internal">Servidores dedicados</a></li><li class="nav-item"><a href="https://cloud.ionos.com/" target="_top" data-linkid="guides.navigation.products.servidores.cloud-empresarial" class="nav-link link-internal">Cloud Empresarial</a></li></ul></li><li class="nav-item col-12 col-sm-6 col-lg-4 col-xxl-2 px-1 my-2"><span class="nav-link disabled brand-header-muted-color">Herramientas</span><ul class="nav flex-column mt-2 pt-2 border-top brand-header-border-color"><li class="nav-item"><a href="https://www.ionos.com/tools/business-name-generator" target="_top" data-linkid="guides.navigation.products.herramientas.generador-de-nombres-de-empresa" class="nav-link link-internal">Generador de nombres de empresa</a></li><li class="nav-item"><a href="https://www.ionos.com/tools/logo-maker" target="_top" data-linkid="guides.navigation.products.herramientas.logo-creator" class="nav-link link-internal">Logo Creator</a></li><li class="nav-item"><a href="https://www.ionos.com/tools/favicon-generator" target="_top" data-linkid="guides.navigation.products.herramientas.favicon-generator" class="nav-link link-internal">Favicon Generator</a></li><li class="nav-item"><a href="https://www.ionos.com/tools/whois-domain-lookup" target="_top" data-linkid="guides.navigation.products.herramientas.whois-lookup" class="nav-link link-internal">Whois Lookup</a></li><li class="nav-item"><a href="https://www.ionos.com/tools/website-checker" target="_top" data-linkid="guides.navigation.products.herramientas.website-checker" class="nav-link link-internal">Website Checker</a></li><li class="nav-item"><a href="https://www.ionos.com/tools/seo-check" target="_top" data-linkid="guides.navigation.products.herramientas.seo-check" class="nav-link link-internal">SEO Check</a></li><li class="nav-item"><a href="https://www.ionos.com/tools/ssl-checker" target="_top" data-linkid="guides.navigation.products.herramientas.ssl-checker" class="nav-link link-internal">SSL Checker</a></li><li class="nav-item"><a href="https://www.ionos.com/tools/ip-address" target="_top" data-linkid="guides.navigation.products.herramientas.ip-address-check" class="nav-link link-internal">IP Address Check</a></li></ul></li></ul></div></div><button class="navbar-toggler border-0 collapsed" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbar-main" aria-controls="navbar-main" aria-labelledby="navbar-main"><span class="navbar-toggler-icon"></span></button><div class="offcanvas offcanvas-top brand-header-bg brand-header-color" data-bs-hideresize="true" tabindex="-1" id="navbar-main" aria-labelledby="navbar-main"><div class="offcanvas-header"><span class="offcanvas-title h5 brand-header-color" id="offcanvas-label-navigation-main">Menú principal</span><button type="button" class="btn-close brand-header-color navbar-toggler" data-bs-dismiss="offcanvas" aria-label="Close"></button></div><div class="offcanvas-body pt-0 position-relative align-items-center"><div class="row"><div class="col-12 col-sm-6 align-self-center order-1 px-3 py-1"><form id="search-navigation" class="search-form input-group input-group-sm w-auto" role="search" action="https://www.ionos.com/es-us/digitalguide/buscar/" method="POST" autocomplete="off"><span class="input-group-text rounded-start-5 border-0 px-0 brand-header-search-bg"><button class="btn btn-sm brand-header-search-bg brand-header-muted-color" type="submit" id="offcanvas-search" data-linkid="guides.navigation.module.search.btn"><svg width="16" height="16"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-search"></use></svg><span class="visually-hidden">Buscar</span></button></span><input class="form-control rounded-end-5 border-0 ps-1 brand-header-search-bg brand-header-muted-color" type="text" name="search" onkeyup="javascript:localStorage.setItem('searchTerm', cleanupSearchString(this.value))" placeholder="Buscar" autocomplete="off" aria-label="Buscar" aria-describedby="navbar-search" spellcheck="false" ></form></div><div class="col-12 col-sm-6 align-self-center order-3 order-sm-2 px-3"><button class="btn btn-sm btn-cta px-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbar-products" aria-controls="navbar-products" aria-labelledby="navbar-products">Productos IONOS</button></div><div class="col-12 order-2 order-sm-3"><ul class="nav"><li class="nav-item col-12 col-sm-6 col-lg-4 col-xxl-2 px-1 my-2"><a href="https://www.ionos.com/es-us/digitalguide/paginas-web/" target="_top" data-linkid="guides.navigation.main.paginas-web" title="Páginas web" class="nav-link link-internal">Páginas web</a><ul class="nav flex-column mt-2 pt-2 border-top brand-header-border-color"><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/paginas-web/creacion-de-paginas-web/" target="_top" data-linkid="guides.navigation.main.paginas-web.creacion-de-paginas-web" title="Creación de páginas web" class="nav-link link-internal">Creación de páginas web</a></li><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/paginas-web/diseno-web/" target="_top" data-linkid="guides.navigation.main.paginas-web.diseno-web" title="Diseño web" class="nav-link link-internal">Diseño web</a></li><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/paginas-web/desarrollo-web/" target="_top" data-linkid="guides.navigation.main.paginas-web.desarrollo-web" title="Desarrollo web" class="nav-link link-internal">Desarrollo web</a></li><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/paginas-web/derecho-digital/" target="_top" data-linkid="guides.navigation.main.paginas-web.derecho-digital" title="Derecho digital" class="nav-link link-internal">Derecho digital</a></li></ul></li><li class="nav-item col-12 col-sm-6 col-lg-4 col-xxl-2 px-1 my-2"><span class="nav-link active" title="Hosting" aria-current="page">Hosting</span><ul class="nav flex-column mt-2 pt-2 border-top brand-header-border-color"><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/hosting/cms/" target="_top" data-linkid="guides.navigation.main.hosting.cms" title="CMS" class="nav-link link-internal">CMS</a></li><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/hosting/blogs/" target="_top" data-linkid="guides.navigation.main.hosting.blogs" title="Blogs" class="nav-link link-internal">Blogs</a></li><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/hosting/cuestiones-tecnicas/" target="_top" data-linkid="guides.navigation.main.hosting.cuestiones-tecnicas" title="Cuestiones técnicas" class="nav-link link-internal">Cuestiones técnicas</a></li></ul></li><li class="nav-item col-12 col-sm-6 col-lg-4 col-xxl-2 px-1 my-2"><a href="https://www.ionos.com/es-us/digitalguide/servidores/" target="_top" data-linkid="guides.navigation.main.servidores" title="Servidores" class="nav-link link-internal">Servidores</a><ul class="nav flex-column mt-2 pt-2 border-top brand-header-border-color"><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/servidores/know-how/" target="_top" data-linkid="guides.navigation.main.servidores.know-how" title="Know How" class="nav-link link-internal">Know How</a></li><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/servidores/configuracion/" target="_top" data-linkid="guides.navigation.main.servidores.configuracion" title="Configuración" class="nav-link link-internal">Configuración</a></li><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/servidores/seguridad/" target="_top" data-linkid="guides.navigation.main.servidores.seguridad" title="Seguridad" class="nav-link link-internal">Seguridad</a></li><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/servidores/herramientas/" target="_top" data-linkid="guides.navigation.main.servidores.herramientas" title="Herramientas" class="nav-link link-internal">Herramientas</a></li></ul></li><li class="nav-item col-12 col-sm-6 col-lg-4 col-xxl-2 px-1 my-2"><a href="https://www.ionos.com/es-us/digitalguide/dominios/" target="_top" data-linkid="guides.navigation.main.dominios" title="Dominios" class="nav-link link-internal">Dominios</a><ul class="nav flex-column mt-2 pt-2 border-top brand-header-border-color"><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/dominios/extensiones-de-dominio/" target="_top" data-linkid="guides.navigation.main.dominios.extensiones-de-dominio" title="Extensiones de dominio" class="nav-link link-internal">Extensiones de dominio</a></li><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/dominios/gestion-de-dominios/" target="_top" data-linkid="guides.navigation.main.dominios.gestion-de-dominios" title="Gestión de dominios" class="nav-link link-internal">Gestión de dominios</a></li><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/dominios/noticias-sobre-dominos/" target="_top" data-linkid="guides.navigation.main.dominios.noticias-sobre-dominos" title="Noticias sobre dominos" class="nav-link link-internal">Noticias sobre dominos</a></li><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/dominios/consejos-sobre-dominios/" target="_top" data-linkid="guides.navigation.main.dominios.consejos-sobre-dominios" title="Consejos sobre dominios" class="nav-link link-internal">Consejos sobre dominios</a></li></ul></li><li class="nav-item col-12 col-sm-6 col-lg-4 col-xxl-2 px-1 my-2"><a href="https://www.ionos.com/es-us/digitalguide/online-marketing/" target="_top" data-linkid="guides.navigation.main.online-marketing" title="Online Marketing" class="nav-link link-internal">Online Marketing</a><ul class="nav flex-column mt-2 pt-2 border-top brand-header-border-color"><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/online-marketing/vender-en-internet/" target="_top" data-linkid="guides.navigation.main.online-marketing.vender-en-internet" title="Vender en Internet" class="nav-link link-internal">Vender en Internet</a></li><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/online-marketing/marketing-para-motores-de-busqueda/" target="_top" data-linkid="guides.navigation.main.online-marketing.marketing-para-motores-de-busqueda" title="Marketing para motores de búsqueda" class="nav-link link-internal">Marketing para motores de búsqueda</a></li><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/online-marketing/redes-sociales/" target="_top" data-linkid="guides.navigation.main.online-marketing.redes-sociales" title="Redes sociales" class="nav-link link-internal">Redes sociales</a></li><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/online-marketing/analisis-web/" target="_top" data-linkid="guides.navigation.main.online-marketing.analisis-web" title="Análisis web" class="nav-link link-internal">Análisis web</a></li></ul></li><li class="nav-item col-12 col-sm-6 col-lg-4 col-xxl-2 px-1 my-2"><a href="https://www.ionos.com/es-us/digitalguide/correo-electronico/" target="_top" data-linkid="guides.navigation.main.correo-electronico" title="Correo electrónico" class="nav-link link-internal">Correo electrónico</a><ul class="nav flex-column mt-2 pt-2 border-top brand-header-border-color"><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/correo-electronico/e-mail-marketing/" target="_top" data-linkid="guides.navigation.main.correo-electronico.e-mail-marketing" title="E-mail marketing" class="nav-link link-internal">E-mail marketing</a></li><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/correo-electronico/seguridad-correo-electronico/" target="_top" data-linkid="guides.navigation.main.correo-electronico.seguridad-correo-electronico" title="Seguridad correo electrónico" class="nav-link link-internal">Seguridad correo electrónico</a></li><li class="nav-item"><a href="https://www.ionos.com/es-us/digitalguide/correo-electronico/cuestiones-tecnicas/" target="_top" data-linkid="guides.navigation.main.correo-electronico.cuestiones-tecnicas" title="Cuestiones técnicas" class="nav-link link-internal">Cuestiones técnicas</a></li></ul></li></ul></div></div></div></div></div></nav> <nav aria-label="breadcrumb" class="d-none d-md-flex my-2 my-lg-5 container-fluid container-sm contain-style"> <script type="application/ld+json">{"@context": "http://schema.org","@type": "BreadcrumbList","itemListElement": [{"@type":"ListItem","position":1,"name":"IONOS","item":"https:\/\/www.ionos.com"},{"@type":"ListItem","position":2,"name":"Digital Guide","item":"https:\/\/www.ionos.com\/es-us\/digitalguide\/"},{"@type":"ListItem","position":3,"name":"Hosting"}]}</script> <ol class="breadcrumb m-0"> <li class="breadcrumb-item m-0 p-0"><a class="text-decoration-none link-internal" href="https://www.ionos.com" title="IONOS" data-linkid="guides.navigation.breadcrumb.ionos" target="_top">IONOS</a></li> <li class="breadcrumb-item m-0 p-0"><svg width="16" height="16" class="mx-1 brand-breadcrumb-icon-color"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-breadcrumb-divider"/></svg><a data-linkid="guides.navigation.breadcrumb.digital-guide" class="text-decoration-none link-internal" title="Digital Guide" href="https://www.ionos.com/es-us/digitalguide/" target="_top">Digital Guide</a></li> <li class="breadcrumb-item active m-0 p-0" aria-current="page"><svg width="16" height="16" class="mx-1 brand-breadcrumb-icon-color"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-breadcrumb-divider"/></svg>Hosting</li> </ol> </nav> <main class="my-2 my-lg-5 container-fluid container-sm contain-style"> <div class="row gap-4 contain-style"> <section class="col-12 col-lg-9 contain-style"> <div class="row contain-style g-grid"><div class="col col-12 col-md-6"><article class="card brand-card-bg rounded-4 overflow-hidden contain-style h-100 w-100" id="article-36214"><img src="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_acf4f87c19.webp" width="1200" height="630" srcset="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_1f136d555b.webp 513w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_1c8bf4a939.webp 483w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_13e6744538.webp 416w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_e79afd7711.webp 348w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_6bf5ca7aed.webp 524w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_c21768cf81.webp 396w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_374f9ef01b.webp 304w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/5/csm_cgi-skripte-auf--apache-aktivieren_ab425fddd3.webp 304w" sizes="(min-width: 1680px) 513px,(min-width: 1400px) 483px,(min-width: 1200px) 416px,(min-width: 768px) 348px,(min-width: 576px) 524px,(min-width: 412px) 396px,(min-width: 320px) 304px,(max-width:319px) 304px" title="Los 5 pasos necesarios para instalar MariaDB en Ubuntu 20.04" alt="Los 5 pasos necesarios para instalar MariaDB en Ubuntu 20.04" loading="eager" decoding="sync" class="img-fluid d-block mx-auto img-format-landscape card-img-top h-auto rounded-top-4" ><span class="media-credits d-flex position-absolute top-0 end-0 start-unset bottom-unset w-auto h-auto fs-sm"><span class="media-artist">ra2 studio</span><span class="media-source">Shutterstock</span></span><div class="card-body d-flex flex-column p-3"><h2 class="h4 card-title mt-0 mb-3 position-static"><a data-linkid="guides.overview.article.teaser.instalacion-de-mariadb-en-ubuntu-20-04" class="stretched-link brand-card-color text-decoration-none link-internal" title="Los 5 pasos necesarios para instalar MariaDB en Ubuntu 20.04" href="https://www.ionos.com/es-us/digitalguide/hosting/cuestiones-tecnicas/instalacion-de-mariadb-en-ubuntu-2004/" target="_top"> Los 5 pasos necesarios para instalar MariaDB en Ubuntu 20.04 </a></h2><p class="card-text brand-card-color mt-auto mb-0">Como MariaDB es un reemplazo de MySQL, también puedes utilizar esta bifurcación (“fork” en inglés) como parte de tu servidor LAMP sin ningún problema. Te explicamos cómo instalar MariaDB en Ubuntu 20.04, qué configuraciones y medidas de seguridad se recomiendan y cómo puedes…</p><div class="mt-2 minh-5 d-flex flex-nowrap overflow-hidden"><ul class="nav d-flex flex-nowrap card-tags-fade-end w-100 gap-2"><li><span class="btn btn-sm btn-default">MariaDB</span></li></ul></div><div class="read-more px-0 pb-0 pt-1 m-0 position-relative end-0 text-end lh-1 d-flex align-items-center justify-content-end"><span class="d-inline-block me-1">Leer más</span><svg width="16" height="16" class="icon-arrow-right"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-arrow-right"></use></svg></div></div></article></div><div class="col col-12 col-md-6"><article class="card brand-card-bg rounded-4 overflow-hidden contain-style h-100 w-100" id="article-36211"><img src="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/9/1/csm_docker-images-erstellen_830c6ccaca.webp" width="1200" height="630" srcset="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/9/1/csm_docker-images-erstellen_26cb9c321c.webp 513w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/9/1/csm_docker-images-erstellen_fece0b84fa.webp 483w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/9/1/csm_docker-images-erstellen_3d7402a301.webp 416w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/9/1/csm_docker-images-erstellen_0d24df56d6.webp 348w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/9/1/csm_docker-images-erstellen_1dc46a9579.webp 524w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/9/1/csm_docker-images-erstellen_2324f2d5f5.webp 396w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/9/1/csm_docker-images-erstellen_f706f5e1b0.webp 304w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/9/1/csm_docker-images-erstellen_e2c87a5c7e.webp 304w" sizes="(min-width: 1680px) 513px,(min-width: 1400px) 483px,(min-width: 1200px) 416px,(min-width: 768px) 348px,(min-width: 576px) 524px,(min-width: 412px) 396px,(min-width: 320px) 304px,(max-width:319px) 304px" title="Los 5 pasos para instalar MariaDB en Debian 10" alt="Los 5 pasos para instalar MariaDB en Debian 10" loading="lazy" decoding="async" class="img-fluid d-block mx-auto img-format-landscape card-img-top h-auto rounded-top-4" ><div class="card-body d-flex flex-column p-3"><h2 class="h4 card-title mt-0 mb-3 position-static"><a data-linkid="guides.overview.article.teaser.instalacion-de-mariadb-en-debian-10" class="stretched-link brand-card-color text-decoration-none link-internal" title="Los 5 pasos para instalar MariaDB en Debian 10" href="https://www.ionos.com/es-us/digitalguide/hosting/cuestiones-tecnicas/instalacion-de-mariadb-en-debian-10/" target="_top"> Los 5 pasos para instalar MariaDB en Debian 10 </a></h2><p class="card-text brand-card-color mt-auto mb-0">Si quieres instalar MariaDB en Debian 10, puedes hacerlo sin ningún problema. La propia Debian confía en el sistema de gestión de bases de datos y, por tanto, proporciona los paquetes necesarios. En este artículo, explicamos cómo puedes llevar a cabo la instalación tú mismo, qué…</p><div class="mt-2 minh-5 d-flex flex-nowrap overflow-hidden"><ul class="nav d-flex flex-nowrap card-tags-fade-end w-100 gap-2"><li><span class="btn btn-sm btn-default">MariaDB</span></li></ul></div><div class="read-more px-0 pb-0 pt-1 m-0 position-relative end-0 text-end lh-1 d-flex align-items-center justify-content-end"><span class="d-inline-block me-1">Leer más</span><svg width="16" height="16" class="icon-arrow-right"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-arrow-right"></use></svg></div></div></article></div><div class="col col-12 col-md-6"><article class="card brand-card-bg rounded-4 overflow-hidden contain-style h-100 w-100" id="article-3494"><img src="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/d/csm_abschreibung_f827a3c1fb.webp" width="1200" height="630" srcset="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/d/csm_abschreibung_e4a24c3245.webp 513w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/d/csm_abschreibung_0031664c53.webp 483w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/d/csm_abschreibung_088ebf25c2.webp 416w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/d/csm_abschreibung_e98e92b23a.webp 348w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/d/csm_abschreibung_30ddd169f9.webp 524w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/d/csm_abschreibung_bd8471d719.webp 396w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/d/csm_abschreibung_b6c2afc348.webp 304w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/d/csm_abschreibung_f2e3fa4ca7.webp 304w" sizes="(min-width: 1680px) 513px,(min-width: 1400px) 483px,(min-width: 1200px) 416px,(min-width: 768px) 348px,(min-width: 576px) 524px,(min-width: 412px) 396px,(min-width: 320px) 304px,(max-width:319px) 304px" title="WordPress: precio real de una página web en el CMS" alt="WordPress: precio real de una página web en el CMS" loading="lazy" decoding="async" class="img-fluid d-block mx-auto img-format-landscape card-img-top h-auto rounded-top-4" ><div class="card-body d-flex flex-column p-3"><h2 class="h4 card-title mt-0 mb-3 position-static"><a data-linkid="guides.overview.article.teaser.cual-es-el-precio-de-wordpress" class="stretched-link brand-card-color text-decoration-none link-internal" title="WordPress: precio real de una página web en el CMS" href="https://www.ionos.com/es-us/digitalguide/hosting/blogs/cual-es-el-precio-de-wordpress/" target="_top"> WordPress: precio real de una página web en el CMS </a></h2><p class="card-text brand-card-color mt-auto mb-0">El hecho de que WordPress esté disponible de forma gratuita es un mito muy extendido que se cumple únicamente en situaciones muy concretas. Solo el hosting y el dominio ya implican una serie de gastos con los que hay que contar. Aquí te revelamos las condiciones en las que…</p><div class="mt-2 minh-5 d-flex flex-nowrap overflow-hidden"><ul class="nav d-flex flex-nowrap card-tags-fade-end w-100 gap-2"><li><span class="btn btn-sm btn-default">Wordpress</span></li><li><span class="btn btn-sm btn-default">Gastos</span></li></ul></div><div class="read-more px-0 pb-0 pt-1 m-0 position-relative end-0 text-end lh-1 d-flex align-items-center justify-content-end"><span class="d-inline-block me-1">Leer más</span><svg width="16" height="16" class="icon-arrow-right"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-arrow-right"></use></svg></div></div></article></div><div class="col col-12 col-md-6"><article class="card brand-card-bg rounded-4 overflow-hidden contain-style h-100 w-100" id="article-1153"><img src="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/d/csm_pingback-trackback-t_8de6266a42.webp" width="1200" height="630" srcset="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/d/csm_pingback-trackback-t_581f8b3089.webp 513w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/d/csm_pingback-trackback-t_a684e2bd22.webp 483w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/d/csm_pingback-trackback-t_39a66fba65.webp 416w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/d/csm_pingback-trackback-t_bfc0a1461d.webp 348w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/d/csm_pingback-trackback-t_76c62e373f.webp 524w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/d/csm_pingback-trackback-t_f6cc666750.webp 396w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/d/csm_pingback-trackback-t_3c4dd1c956.webp 304w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/6/d/csm_pingback-trackback-t_2ecf2cb62f.webp 304w" sizes="(min-width: 1680px) 513px,(min-width: 1400px) 483px,(min-width: 1200px) 416px,(min-width: 768px) 348px,(min-width: 576px) 524px,(min-width: 412px) 396px,(min-width: 320px) 304px,(max-width:319px) 304px" title="Pingbacks y Trackbacks" alt="Pingbacks y Trackbacks" loading="lazy" decoding="async" class="img-fluid d-block mx-auto img-format-landscape card-img-top h-auto rounded-top-4" ><div class="card-body d-flex flex-column p-3"><h2 class="h4 card-title mt-0 mb-3 position-static"><a data-linkid="guides.overview.article.teaser.pingback-y-trackback-conceptos-basicos" class="stretched-link brand-card-color text-decoration-none link-internal" title="Pingbacks y Trackbacks" href="https://www.ionos.com/es-us/digitalguide/hosting/blogs/pingback-y-trackback-conceptos-basicos/" target="_top"> Pingbacks y Trackbacks </a></h2><p class="card-text brand-card-color mt-auto mb-0">En la gestión de un blog popular el intercambio continuo de información con otros blogueros, con gestores de páginas web y con la comunidad de Internet en general, tiene un valor inestimable. Hacerse visible con textos propios en las entradas de otros blogs no solo es una medida…</p><div class="mt-2 minh-5 d-flex flex-nowrap overflow-hidden"><ul class="nav d-flex flex-nowrap card-tags-fade-end w-100 gap-2"><li><span class="btn btn-sm btn-default">SEO</span></li></ul></div><div class="read-more px-0 pb-0 pt-1 m-0 position-relative end-0 text-end lh-1 d-flex align-items-center justify-content-end"><span class="d-inline-block me-1">Leer más</span><svg width="16" height="16" class="icon-arrow-right"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-arrow-right"></use></svg></div></div></article></div><div class="col col-12 col-md-6"><article class="card brand-card-bg rounded-4 overflow-hidden contain-style h-100 w-100" id="article-332"><img src="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/1/csm_cms-t_77fac71fa0.webp" width="1200" height="630" srcset="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/1/csm_cms-t_04d9a72c88.webp 513w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/1/csm_cms-t_a0da7a7ff7.webp 483w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/1/csm_cms-t_71900ae11b.webp 416w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/1/csm_cms-t_7bc1d802e0.webp 348w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/1/csm_cms-t_903d018ab4.webp 524w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/1/csm_cms-t_04175cf20e.webp 396w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/1/csm_cms-t_e3e425f123.webp 304w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/2/1/csm_cms-t_2e52ac2680.webp 304w" sizes="(min-width: 1680px) 513px,(min-width: 1400px) 483px,(min-width: 1200px) 416px,(min-width: 768px) 348px,(min-width: 576px) 524px,(min-width: 412px) 396px,(min-width: 320px) 304px,(max-width:319px) 304px" title="¿Qué es WordPress?: un CMS no solo para blogs" alt="¿Qué es WordPress?: un CMS no solo para blogs" loading="lazy" decoding="async" class="img-fluid d-block mx-auto img-format-landscape card-img-top h-auto rounded-top-4" ><span class="media-credits d-flex position-absolute top-0 end-0 start-unset bottom-unset w-auto h-auto fs-sm"><span class="media-artist">Gustavo Frazao</span><span class="media-source">Shutterstock</span></span><div class="card-body d-flex flex-column p-3"><h2 class="h4 card-title mt-0 mb-3 position-static"><a data-linkid="guides.overview.article.teaser.que-es-wordpress-una-perspectiva-sobre-el-cms" class="stretched-link brand-card-color text-decoration-none link-internal" title="¿Qué es WordPress?: un CMS no solo para blogs" href="https://www.ionos.com/es-us/digitalguide/hosting/cms/que-es-wordpress-una-perspectiva-sobre-el-cms/" target="_top"> ¿Qué es WordPress?: un CMS no solo para blogs </a></h2><p class="card-text brand-card-color mt-auto mb-0">WordPress se dio a conocer como CMS para blogs. Desde entonces, se ha convertido en un reconocido sistema de gestión de contenidos, con el que puedes desarrollar proyectos web de gran envergadura. Dada su notoriedad y la posición privilegiada que ocupa en el mercado, las…</p><div class="mt-2 minh-5 d-flex flex-nowrap overflow-hidden"><ul class="nav d-flex flex-nowrap card-tags-fade-end w-100 gap-2"><li><span class="btn btn-sm btn-default">Wordpress</span></li><li><span class="btn btn-sm btn-default">Glosario</span></li></ul></div><div class="read-more px-0 pb-0 pt-1 m-0 position-relative end-0 text-end lh-1 d-flex align-items-center justify-content-end"><span class="d-inline-block me-1">Leer más</span><svg width="16" height="16" class="icon-arrow-right"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-arrow-right"></use></svg></div></div></article></div><div class="col col-12 col-md-6"><article class="card brand-card-bg rounded-4 overflow-hidden contain-style h-100 w-100" id="article-1922"><img src="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/a/csm_adblocker-t_28ff664074.webp" width="1200" height="630" srcset="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/a/csm_adblocker-t_1f00b58d37.webp 513w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/a/csm_adblocker-t_8c3fac121b.webp 483w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/a/csm_adblocker-t_e9e2a73073.webp 416w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/a/csm_adblocker-t_90ff1234fa.webp 348w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/a/csm_adblocker-t_012ea40324.webp 524w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/a/csm_adblocker-t_66f65c37a5.webp 396w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/a/csm_adblocker-t_9c7e7a9227.webp 304w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/a/csm_adblocker-t_73dd5c421b.webp 304w" sizes="(min-width: 1680px) 513px,(min-width: 1400px) 483px,(min-width: 1200px) 416px,(min-width: 768px) 348px,(min-width: 576px) 524px,(min-width: 412px) 396px,(min-width: 320px) 304px,(max-width:319px) 304px" title="Modo mantenimiento en Wordpress" alt="Modo mantenimiento en Wordpress" loading="lazy" decoding="async" class="img-fluid d-block mx-auto img-format-landscape card-img-top h-auto rounded-top-4" ><div class="card-body d-flex flex-column p-3"><h2 class="h4 card-title mt-0 mb-3 position-static"><a data-linkid="guides.overview.article.teaser.el-modo-de-mantenimiento-de-wordpress" class="stretched-link brand-card-color text-decoration-none link-internal" title="Modo mantenimiento en Wordpress" href="https://www.ionos.com/es-us/digitalguide/hosting/cms/el-modo-de-mantenimiento-de-wordpress/" target="_top"> Modo mantenimiento en Wordpress </a></h2><p class="card-text brand-card-color mt-auto mb-0">Para evitar que los usuarios de tu web reciban un mensaje de error o se encuentren con una página en blanco mientras realizas cambios, debes activar el modo de mantenimiento de WordPress. Al poner WordPress en mantenimiento, crearás una página estática que informa a los lectores…</p><div class="mt-2 minh-5 d-flex flex-nowrap overflow-hidden"><ul class="nav d-flex flex-nowrap card-tags-fade-end w-100 gap-2"><li><span class="btn btn-sm btn-default">Wordpress</span></li><li><span class="btn btn-sm btn-default">Glosario</span></li></ul></div><div class="read-more px-0 pb-0 pt-1 m-0 position-relative end-0 text-end lh-1 d-flex align-items-center justify-content-end"><span class="d-inline-block me-1">Leer más</span><svg width="16" height="16" class="icon-arrow-right"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-arrow-right"></use></svg></div></div></article></div><div class="col col-12 col-md-6"><article class="card brand-card-bg rounded-4 overflow-hidden contain-style h-100 w-100" id="article-3771"><img src="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/8/1/csm_wordpress-sitemap_20b638223c.webp" width="1200" height="630" srcset="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/8/1/csm_wordpress-sitemap_fa739e31f4.webp 513w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/8/1/csm_wordpress-sitemap_d5c738c828.webp 483w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/8/1/csm_wordpress-sitemap_a4c3e66798.webp 416w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/8/1/csm_wordpress-sitemap_ae6b4a9494.webp 348w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/8/1/csm_wordpress-sitemap_83e789c265.webp 524w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/8/1/csm_wordpress-sitemap_8c8bda774a.webp 396w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/8/1/csm_wordpress-sitemap_f4585edb6f.webp 304w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/8/1/csm_wordpress-sitemap_7eb718ea61.webp 304w" sizes="(min-width: 1680px) 513px,(min-width: 1400px) 483px,(min-width: 1200px) 416px,(min-width: 768px) 348px,(min-width: 576px) 524px,(min-width: 412px) 396px,(min-width: 320px) 304px,(max-width:319px) 304px" title="Crear el sitemap de WordPress con plugins" alt="Crear el sitemap de WordPress con plugins" loading="lazy" decoding="async" class="img-fluid d-block mx-auto img-format-landscape card-img-top h-auto rounded-top-4" ><div class="card-body d-flex flex-column p-3"><h2 class="h4 card-title mt-0 mb-3 position-static"><a data-linkid="guides.overview.article.teaser.sitemap-de-wordpress" class="stretched-link brand-card-color text-decoration-none link-internal" title="Crear el sitemap de WordPress con plugins" href="https://www.ionos.com/es-us/digitalguide/hosting/blogs/sitemap-de-wordpress/" target="_top"> Crear el sitemap de WordPress con plugins </a></h2><p class="card-text brand-card-color mt-auto mb-0">Un sitemap de WordPress mejora la clasificación de un sitio web en los buscadores, dado que proporciona los datos de forma estructurada. Pero ¿cuál es la forma más fácil de crear un sitemap y que ofrece WordPress? Los plugins de WordPress permiten alcanzar los objetivos…</p><div class="mt-2 minh-5 d-flex flex-nowrap overflow-hidden"><ul class="nav d-flex flex-nowrap card-tags-fade-end w-100 gap-2"><li><span class="btn btn-sm btn-default">Wordpress</span></li><li><span class="btn btn-sm btn-default">Tutoriales</span></li></ul></div><div class="read-more px-0 pb-0 pt-1 m-0 position-relative end-0 text-end lh-1 d-flex align-items-center justify-content-end"><span class="d-inline-block me-1">Leer más</span><svg width="16" height="16" class="icon-arrow-right"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-arrow-right"></use></svg></div></div></article></div><div class="col col-12 col-md-6"><article class="card brand-card-bg rounded-4 overflow-hidden contain-style h-100 w-100" id="article-3651"><img src="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/b/csm_website-mit-wordpress-erstellen-t_f5b69fdec1.webp" width="1200" height="630" srcset="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/b/csm_website-mit-wordpress-erstellen-t_d358308452.webp 513w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/b/csm_website-mit-wordpress-erstellen-t_28bbeafb2d.webp 483w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/b/csm_website-mit-wordpress-erstellen-t_ff0d3169c4.webp 416w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/b/csm_website-mit-wordpress-erstellen-t_2ce4541b69.webp 348w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/b/csm_website-mit-wordpress-erstellen-t_063a3bdae6.webp 524w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/b/csm_website-mit-wordpress-erstellen-t_2b9cc34cbc.webp 396w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/b/csm_website-mit-wordpress-erstellen-t_47ba3f243a.webp 304w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/4/b/csm_website-mit-wordpress-erstellen-t_633efba5f9.webp 304w" sizes="(min-width: 1680px) 513px,(min-width: 1400px) 483px,(min-width: 1200px) 416px,(min-width: 768px) 348px,(min-width: 576px) 524px,(min-width: 412px) 396px,(min-width: 320px) 304px,(max-width:319px) 304px" title="WordPress" alt="WordPress" loading="lazy" decoding="async" class="img-fluid d-block mx-auto img-format-landscape card-img-top h-auto rounded-top-4" ><span class="media-credits d-flex position-absolute top-0 end-0 start-unset bottom-unset w-auto h-auto fs-sm"><span class="media-artist">vectorfusionart</span><span class="media-source">Shutterstock</span></span><div class="card-body d-flex flex-column p-3"><h2 class="h4 card-title mt-0 mb-3 position-static"><a data-linkid="guides.overview.article.teaser.que-es-wordpress" class="stretched-link brand-card-color text-decoration-none link-internal" title="WordPress" href="https://www.ionos.com/es-us/digitalguide/hosting/blogs/que-es-wordpress/" target="_top"> WordPress </a></h2><p class="card-text brand-card-color mt-auto mb-0">Si quieres crear un sitio web, probablemente te preguntes tarde o temprano qué es WordPress. Es normal: más de 455 millones de webs (y cada vez más) han sido creadas con WordPress. Este software gratuito de código abierto no solo permite crear webs profesionales sin conocimientos…</p><div class="mt-2 minh-5 d-flex flex-nowrap overflow-hidden"><ul class="nav d-flex flex-nowrap card-tags-fade-end w-100 gap-2"><li><span class="btn btn-sm btn-default">Wordpress</span></li></ul></div><div class="read-more px-0 pb-0 pt-1 m-0 position-relative end-0 text-end lh-1 d-flex align-items-center justify-content-end"><span class="d-inline-block me-1">Leer más</span><svg width="16" height="16" class="icon-arrow-right"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-arrow-right"></use></svg></div></div></article></div><div class="col col-12 col-md-6"><article class="card brand-card-bg rounded-4 overflow-hidden contain-style h-100 w-100" id="article-3386"><img src="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/b/a/csm_wordpress-blog-erstellen-t_d17650f44f.webp" width="1200" height="630" srcset="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/b/a/csm_wordpress-blog-erstellen-t_06cb690840.webp 513w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/b/a/csm_wordpress-blog-erstellen-t_f84c250c6c.webp 483w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/b/a/csm_wordpress-blog-erstellen-t_988cf9850b.webp 416w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/b/a/csm_wordpress-blog-erstellen-t_0f43f83715.webp 348w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/b/a/csm_wordpress-blog-erstellen-t_334c926315.webp 524w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/b/a/csm_wordpress-blog-erstellen-t_b3f7966b7d.webp 396w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/b/a/csm_wordpress-blog-erstellen-t_f4ad00a76e.webp 304w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/b/a/csm_wordpress-blog-erstellen-t_3001d23f15.webp 304w" sizes="(min-width: 1680px) 513px,(min-width: 1400px) 483px,(min-width: 1200px) 416px,(min-width: 768px) 348px,(min-width: 576px) 524px,(min-width: 412px) 396px,(min-width: 320px) 304px,(max-width:319px) 304px" title="Crear un blog en WordPress" alt="Crear un blog en WordPress" loading="lazy" decoding="async" class="img-fluid d-block mx-auto img-format-landscape card-img-top h-auto rounded-top-4" ><div class="card-body d-flex flex-column p-3"><h2 class="h4 card-title mt-0 mb-3 position-static"><a data-linkid="guides.overview.article.teaser.blog-con-wordpress" class="stretched-link brand-card-color text-decoration-none link-internal" title="Crear un blog en WordPress" href="https://www.ionos.com/es-us/digitalguide/hosting/blogs/blog-con-wordpress/" target="_top"> Crear un blog en WordPress </a></h2><p class="card-text brand-card-color mt-auto mb-0">El blog de WordPress: esta versión online del diario físico está experimentando un renacimiento. Pero ¿cómo crear este tipo de blog con WordPress? ¿Dónde alojarlo y qué nombre de dominio se recomienda utilizar? ¿Qué aspectos técnicos, de contenido y legales deben tenerse en…</p><div class="mt-2 minh-5 d-flex flex-nowrap overflow-hidden"><ul class="nav d-flex flex-nowrap card-tags-fade-end w-100 gap-2"><li><span class="btn btn-sm btn-default">Wordpress</span></li><li><span class="btn btn-sm btn-default">Tutoriales</span></li></ul></div><div class="read-more px-0 pb-0 pt-1 m-0 position-relative end-0 text-end lh-1 d-flex align-items-center justify-content-end"><span class="d-inline-block me-1">Leer más</span><svg width="16" height="16" class="icon-arrow-right"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-arrow-right"></use></svg></div></div></article></div><div class="col col-12 col-md-6"><article class="card brand-card-bg rounded-4 overflow-hidden contain-style h-100 w-100" id="article-3608"><img src="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/f/6/csm_postgresql-verbindung-zum-server-konnte-nicht-hergestellt-werden_3824cd3c0c.webp" width="1200" height="630" srcset="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/f/6/csm_postgresql-verbindung-zum-server-konnte-nicht-hergestellt-werden_374890976d.webp 513w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/f/6/csm_postgresql-verbindung-zum-server-konnte-nicht-hergestellt-werden_732aced8c3.webp 483w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/f/6/csm_postgresql-verbindung-zum-server-konnte-nicht-hergestellt-werden_50cbb716ff.webp 416w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/f/6/csm_postgresql-verbindung-zum-server-konnte-nicht-hergestellt-werden_9cd453b7c5.webp 348w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/f/6/csm_postgresql-verbindung-zum-server-konnte-nicht-hergestellt-werden_1cc32af12b.webp 524w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/f/6/csm_postgresql-verbindung-zum-server-konnte-nicht-hergestellt-werden_852a0b4e36.webp 396w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/f/6/csm_postgresql-verbindung-zum-server-konnte-nicht-hergestellt-werden_497bedcb00.webp 304w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/f/6/csm_postgresql-verbindung-zum-server-konnte-nicht-hergestellt-werden_77c5ec2940.webp 304w" sizes="(min-width: 1680px) 513px,(min-width: 1400px) 483px,(min-width: 1200px) 416px,(min-width: 768px) 348px,(min-width: 576px) 524px,(min-width: 412px) 396px,(min-width: 320px) 304px,(max-width:319px) 304px" title="Actualizar WordPress" alt="Actualizar WordPress" loading="lazy" decoding="async" class="img-fluid d-block mx-auto img-format-landscape card-img-top h-auto rounded-top-4" ><div class="card-body d-flex flex-column p-3"><h2 class="h4 card-title mt-0 mb-3 position-static"><a data-linkid="guides.overview.article.teaser.actualizar-wordpress" class="stretched-link brand-card-color text-decoration-none link-internal" title="Actualizar WordPress" href="https://www.ionos.com/es-us/digitalguide/hosting/blogs/actualizar-wordpress/" target="_top"> Actualizar WordPress </a></h2><p class="card-text brand-card-color mt-auto mb-0">Es necesario actualizar WordPress para mantener tu web protegida y también para garantizar el funcionamiento sin problemas. Además, hay varias opciones para actualizar tu página de WordPress. A continuación, explicamos por qué son importantes las actualizaciones periódicas,…</p><div class="mt-2 minh-5 d-flex flex-nowrap overflow-hidden"><ul class="nav d-flex flex-nowrap card-tags-fade-end w-100 gap-2"><li><span class="btn btn-sm btn-default">Wordpress</span></li><li><span class="btn btn-sm btn-default">Tutoriales</span></li></ul></div><div class="read-more px-0 pb-0 pt-1 m-0 position-relative end-0 text-end lh-1 d-flex align-items-center justify-content-end"><span class="d-inline-block me-1">Leer más</span><svg width="16" height="16" class="icon-arrow-right"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-arrow-right"></use></svg></div></div></article></div><div id="load-more-container-4" class="col-12 load-more-container mt-2 mt-lg-5 d-flex justify-content-center"><button onclick="loadMore('https://www.ionos.com/es-us/digitalguide/hosting/items.json?tx_guides_loadarticleslist%5Baction%5D=list&tx_guides_loadarticleslist%5BcontentUid%5D=0&tx_guides_loadarticleslist%5Bcontroller%5D=LoadArticles&tx_guides_loadarticleslist%5BcurrentPageUid%5D=4&tx_guides_loadarticleslist%5BfirstResult%5D=10&tx_guides_loadarticleslist%5BhideArticles%5D=&tx_guides_loadarticleslist%5BhideTopArticles%5D=1&tx_guides_loadarticleslist%5Blayout%5D=0&tx_guides_loadarticleslist%5BmaxResults%5D=10&tx_guides_loadarticleslist%5BstickyArticles%5D=&cHash=518dacb2e54e60bc48be083b4909d3a5', 'load-more-articles-button-4', 'load-more-container-4')" id="load-more-articles-button-4" class="btn btn-cta load-more-button" data-linkid="guides.overview.load-articles.cargar-mas-articulos">Cargar más artículos</button></div></div> <div class="col-12 mt-5"> <div id="c581979" class="textmedia" data-ctype="textmedia"> <h1> Hosting </h1> </div> <div id="c581980" class="textmedia" data-ctype="textmedia"> <h3> Guía de hosting IONOS: los mejores consejos de alojamiento web </h3> <div class="ce-textpic ce-right ce-intext"> <div class="ce-bodytext"> <p>El alojamiento web de un proyecto online es cada vez más fácil gracias a programas y sistemas de gestión de contenidos de funcionamiento intuitivo. Sin embargo, nunca está de más tener conocimientos básicos al respecto. Nuestra guía de alojamiento web se concentra exactamente en este punto. En IONOS Digital Guide encontrarás todo tipo de información sobre los diferentes programas, herramientas, plugins, conceptos y tipos de hosting en general. Con contenidos relevantes y un lenguaje sencillo y profesional, los artículos presentados en esta guía están dirigidos a principiantes y expertos por igual.
+</p>
+<h3><strong>La estructura de la guía: hosting en tres categorías </strong></h3>
+<p>La categoría de alojamiento web es parte de los seis segmentos que componen IONOS Digital Guide y se clasifica, a su vez, en tres subcategorías. Una de ellas está dedicada a los CMS o sistemas de gestión de contenidos, que facilitan la administración y creación de páginas web. El apartado “blogs” contiene información útil con el ánimo de asesorar y orientar en el proceso de creación y gestión de un blog. Ofrecemos además, consejos valiosos sobre extensiones y mejoras para WordPress, una de las plataformas más utilizadas a nivel mundial, así como para otras soluciones disponibles en el mercado. Por último, presentamos información y consejos sobre los aspectos técnicos del alojamiento web. Esta sección cubre los diferentes tipos de hosting, aquellos programas que facilitan la labor de alojar grandes proyectos online y, en general, todo lo que necesitas saber sobre la administración de una página web. </p>
+<h3><strong>Guía de hosting para principiantes y profesionales</strong></h3>
+<h3><strong></strong></h3>
+<p><strong> </strong>Nuestra guía sobre alojamiento web no está destinada únicamente a proporcionar conocimientos básicos sobre el tema, sino que también pretende servir como medio de profundización para aquellos usuarios con experiencia. Entre estos temas se incluyen el alojamiento web compartido o series con consejos sobre cómo ganar dinero o alcanzar el éxito con un blog, así como también pueden encontrarse artículos sobre “Los diez mejores trucos con .htaccess” o sobre “Cómo gestionar la indexación de una web con robots.txt”, que presuponen conocimientos específicos. Esta variedad de temas hace que nuestra guía sobre alojamiento web sea muy completa y permita a cualquier persona interesada acercarse tanto a los conocimientos básicos como a los comandos avanzados para la administración de una web. IONOS Digital Guide consigue, así, satisfacer las necesidades de PYMES, blogueros, desarrolladores web y entusiastas de la tecnología. </p> </div> </div> </div> </div> </section> <aside class="sidebar col-12 col-lg contain-style mw-sm-50 mx-auto"> <div id="c188840" class="mx-auto sticky-xl-top guides_box_sidebar" data-ctype="guides_box_sidebar"> <div class="mx-auto w-auto position-relative d-flex flex-column rounded-4 brand-box-bg p-3 sidebar-sticky-box shadow"><h3 class="h4">Productos asociados</h3><div class="row d-flex flex-wrap align-items-center mb-2 sidebar-sticky-box-inhalt"><div class="col-4"><img src="https://www.ionos.com/es-us/digitalguide/fileadmin/DigitalGuide/Product_Icons/webhosting.svg" width="168" height="128" title="" alt="webhosting.svg" loading="lazy" decoding="async" class="img-fluid d-block mx-auto img-format-landscape " ></div><div class="col"><div class="sidebar-sticky-box-text"> Hosting </div></div></div><button class="btn btn-cta btn-block stretched-link" type="button" onclick="globalSBSitecat('event114');window.open('https://www.ionos.com/hosting/web-hosting','_top')" role="button" data-linkid="guides.products.guides-box-sidebar.btn.hosting.ver-tarifas"> Ver tarifas </button></div> </div> <div id="c624182" class="mx-auto guides_ias_replacement" data-ctype="guides_ias_replacement"> <a href="https://www.ionos.com/" target="_top" data-linkid="guides.sidebar.cta-image.20240729-es-seo-dg-fallback-600x500-png" class="mx-auto d-flex flex-column link-internal"> <div class="mx-auto my-0 position-relative d-none d-md-flex rounded-4 overflow-hidden"> <img src="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/0/6/csm_20240729_ES-SEO-DG-Fallback_600x500_e170fba52c.webp" width="600" height="500" srcset="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/0/6/csm_20240729_ES-SEO-DG-Fallback_600x500_8acd0fe183.webp 600w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/0/6/csm_20240729_ES-SEO-DG-Fallback_600x500_0b949075a7.webp 524w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/0/6/csm_20240729_ES-SEO-DG-Fallback_600x500_e56a455f17.webp 396w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/0/6/csm_20240729_ES-SEO-DG-Fallback_600x500_f2e31df76e.webp 304w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/0/6/csm_20240729_ES-SEO-DG-Fallback_600x500_f2e31df76e.webp 304w" sizes="(min-width: 1200px) 600px,(min-width: 576px) 524px,(min-width: 412px) 396px,(min-width: 320px) 304px,(max-width:319px) 304px" title="" alt="20240729_ES-SEO-DG-Fallback_600x500.png" loading="lazy" decoding="async" class="img-fluid d-block mx-auto img-format-landscape m-0 p-0" > </div> <div class="mx-auto my-0 p-0 position-relative d-flex d-md-none rounded-4 overflow-hidden"> <img src="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/0/6/csm_20240729_ES-SEO-DG-Fallback_600x500_e170fba52c.webp" width="600" height="500" srcset="https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/0/6/csm_20240729_ES-SEO-DG-Fallback_600x500_8acd0fe183.webp 600w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/0/6/csm_20240729_ES-SEO-DG-Fallback_600x500_0b949075a7.webp 524w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/0/6/csm_20240729_ES-SEO-DG-Fallback_600x500_e56a455f17.webp 396w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/0/6/csm_20240729_ES-SEO-DG-Fallback_600x500_f2e31df76e.webp 304w,https://www.ionos.com/es-us/digitalguide/fileadmin/_processed_/0/6/csm_20240729_ES-SEO-DG-Fallback_600x500_f2e31df76e.webp 304w" sizes="(min-width: 1200px) 600px,(min-width: 576px) 524px,(min-width: 412px) 396px,(min-width: 320px) 304px,(max-width:319px) 304px" title="" alt="20240729_ES-SEO-DG-Fallback_600x500.png" loading="lazy" decoding="async" class="img-fluid d-block mx-auto img-format-landscape m-0 p-0" > </div> </a> </div> <div id="c566405" class="menu_pages" data-ctype="menu_pages"> <div class="row g-grid mx-auto"><div class="h3"> Artículos Favoritos </div><article class="col-12 position-relative d-flex flex-column rounded-4 brand-box-bg p-2"><div class="h6 position-static"><a data-linkid="guides.sidebar.menu-pages.como-crear-un-correo-con-dominio-propio" class="stretched-link text-decoration-none brand-box-color link-internal" title="Cómo crear un correo con dominio propio" href="https://www.ionos.com/es-us/digitalguide/correo-electronico/cuestiones-tecnicas/como-crear-un-correo-con-dominio-propio/" target="_top"> Cómo crear un correo con dominio propio </a></div><p>¿Cómo crear un correo con dominio propio? Transmite profesionalidad y favorece la&hellip;</p><div class="read-more p-0 m-0 position-relative end-0 text-end lh-1 d-flex align-items-center justify-content-end"><span class="d-inline-block me-1">Leer más</span><svg width="16" height="16" class="icon-arrow-right"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-arrow-right"></use></svg></div></article><article class="col-12 position-relative d-flex flex-column rounded-4 brand-box-bg p-2"><div class="h6 position-static"><a data-linkid="guides.sidebar.menu-pages.como-comprar-un-dominio" class="stretched-link text-decoration-none brand-box-color link-internal" title="¿Cómo comprar un dominio?" href="https://www.ionos.com/es-us/digitalguide/dominios/consejos-sobre-dominios/como-comprar-un-dominio/" target="_top"> ¿Cómo comprar un dominio? </a></div><p>¿Cómo registrar un dominio web con los dominios de primer y segundo nivel deseados? ¿Cómo&hellip;</p><div class="read-more p-0 m-0 position-relative end-0 text-end lh-1 d-flex align-items-center justify-content-end"><span class="d-inline-block me-1">Leer más</span><svg width="16" height="16" class="icon-arrow-right"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-arrow-right"></use></svg></div></article><article class="col-12 position-relative d-flex flex-column rounded-4 brand-box-bg p-2"><div class="h6 position-static"><a data-linkid="guides.sidebar.menu-pages.tipos-de-dominios-los-conoces" class="stretched-link text-decoration-none brand-box-color link-internal" title="Tipos de dominios: ¿los conoces?" href="https://www.ionos.com/es-us/digitalguide/dominios/extensiones-de-dominio/tipos-de-dominios/" target="_top"> Tipos de dominios: ¿los conoces? </a></div><p>¿Qué tipos de dominios hay en Internet? ¿Qué diferencia hay entre los dominios de primer&hellip;</p><div class="read-more p-0 m-0 position-relative end-0 text-end lh-1 d-flex align-items-center justify-content-end"><span class="d-inline-block me-1">Leer más</span><svg width="16" height="16" class="icon-arrow-right"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-arrow-right"></use></svg></div></article><article class="col-12 position-relative d-flex flex-column rounded-4 brand-box-bg p-2"><div class="h6 position-static"><a data-linkid="guides.sidebar.menu-pages.prompt-engineering-definicion-ejemplos-y-buenas-practicas" class="stretched-link text-decoration-none brand-box-color link-internal" title="Prompt engineering: definición, ejemplos y buenas prácticas" href="https://www.ionos.com/es-us/digitalguide/paginas-web/creacion-de-paginas-web/prompt-engineering/" target="_top"> Prompt engineering: definición, ejemplos y buenas prácticas </a></div><p>¿Qué es prompt engineering?, ¿cómo obtener mejores resultados de ChatGPT y otras&hellip;</p><div class="read-more p-0 m-0 position-relative end-0 text-end lh-1 d-flex align-items-center justify-content-end"><span class="d-inline-block me-1">Leer más</span><svg width="16" height="16" class="icon-arrow-right"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-arrow-right"></use></svg></div></article><article class="col-12 position-relative d-flex flex-column rounded-4 brand-box-bg p-2"><div class="h6 position-static"><a data-linkid="guides.sidebar.menu-pages.7-tipos-de-paginas-web-que-sitio-web-necesitas" class="stretched-link text-decoration-none brand-box-color link-internal" title="7 tipos de páginas web: ¿qué sitio web necesitas?" href="https://www.ionos.com/es-us/digitalguide/paginas-web/creacion-de-paginas-web/tipos-de-paginas-web/" target="_top"> 7 tipos de páginas web: ¿qué sitio web necesitas? </a></div><p>Dentro de los tipos de página web, elegir un formato adecuado es fundamental para el éxito&hellip;</p><div class="read-more p-0 m-0 position-relative end-0 text-end lh-1 d-flex align-items-center justify-content-end"><span class="d-inline-block me-1">Leer más</span><svg width="16" height="16" class="icon-arrow-right"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-arrow-right"></use></svg></div></article></div> </div> </aside> </div> <aside class="accordion my-2 my-lg-5 contain-style" id="tagCloudArea"><div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tagCloud" aria-expanded="false" aria-controls="tagCloud"> Otros temas </button></h3><div id="tagCloud" class="accordion-collapse collapse" data-bs-parent="tagCloudArea"><div class="accordion-body"><ul class="nav d-flex flex-wrap gap-2 z-1"><li><a data-linkid="guides.article.module.tags.adwords" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/adwords/" target="_top">AdWords</a></li><li><a data-linkid="guides.article.module.tags.albaranes" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/albaranes/" target="_top">Albaranes</a></li><li><a data-linkid="guides.article.module.tags.analisis-de-datos" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/analisis-de-datos/" target="_top">Análisis de Datos</a></li><li><a data-linkid="guides.article.module.tags.apache" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/apache/" target="_top">Apache</a></li><li><a data-linkid="guides.article.module.tags.base-de-datos" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/base-de-datos/" target="_top">Base de Datos</a></li><li><a data-linkid="guides.article.module.tags.big-data" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/big-data/" target="_top">Big Data</a></li><li><a data-linkid="guides.article.module.tags.branding" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/branding/" target="_top">Branding</a></li><li><a data-linkid="guides.article.module.tags.cifrado" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/cifrado/" target="_top">Cifrado</a></li><li><a data-linkid="guides.article.module.tags.comparativa" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/vergleich/" target="_top">Comparativa</a></li><li><a href="https://www.ionos.com/es-us/digitalguide/hub/conocimiento-web/" target="_top" data-linkid="guides.article.module.tags.conocimiento-web" class="btn btn-sm btn-default z-1 link-internal" title="Conocimiento Web" data-guides-target-uid="37118">Conocimiento Web</a></li><li><a data-linkid="guides.article.module.tags.crm" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/crm/" target="_top">CRM</a></li><li><a data-linkid="guides.article.module.tags.css" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/css/" target="_top">CSS</a></li><li><a data-linkid="guides.article.module.tags.digitalizacion" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/digitalizacion/" target="_top">Digitalización</a></li><li><a data-linkid="guides.article.module.tags.dns" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/dns/" target="_top">DNS</a></li><li><a data-linkid="guides.article.module.tags.docker" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/docker/" target="_top">Docker</a></li><li><a data-linkid="guides.article.module.tags.e-commerce" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/e-commerce/" target="_top">E-Commerce</a></li><li><a data-linkid="guides.article.module.tags.excel" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/excel/" target="_top">Excel</a></li><li><a data-linkid="guides.article.module.tags.facebook" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/facebook/" target="_top">Facebook</a></li><li><a data-linkid="guides.article.module.tags.framework" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/framework/" target="_top">Framework</a></li><li><a data-linkid="guides.article.module.tags.ftp" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/ftp/" target="_top">FTP</a></li><li><a data-linkid="guides.article.module.tags.game-server" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/gameserver/" target="_top">Game Server</a></li><li><a data-linkid="guides.article.module.tags.gastos" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/gastos/" target="_top">Gastos</a></li><li><a data-linkid="guides.article.module.tags.gestion-de-existencias" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/gestion-de-existencias/" target="_top">Gestión de existencias</a></li><li><a data-linkid="guides.article.module.tags.git" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/git/" target="_top">Git</a></li><li><a data-linkid="guides.article.module.tags.glosario" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/glosario/" target="_top">Glosario</a></li><li><a data-linkid="guides.article.module.tags.google" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/google/" target="_top">Google</a></li><li><a data-linkid="guides.article.module.tags.google-analytics" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/google-analytics/" target="_top">Google Analytics</a></li><li><a data-linkid="guides.article.module.tags.guia" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/guia/" target="_top">Guía</a></li><li><a data-linkid="guides.article.module.tags.html" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/html/" target="_top">HTML</a></li><li><a data-linkid="guides.article.module.tags.http" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/http/" target="_top">HTTP</a></li><li><a data-linkid="guides.article.module.tags.instagram" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/instagram/" target="_top">Instagram</a></li><li><a data-linkid="guides.article.module.tags.inteligencia-artificial" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/inteligencia-artificial/" target="_top">Inteligencia artificial</a></li><li><a data-linkid="guides.article.module.tags.java" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/java/" target="_top">Java</a></li><li><a data-linkid="guides.article.module.tags.javascript" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/javascript/" target="_top">JavaScript</a></li><li><a data-linkid="guides.article.module.tags.kubernetes" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/kubernetes/" target="_top">Kubernetes</a></li><li><a data-linkid="guides.article.module.tags.libros-contables" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/libros-contables/" target="_top">Libros contables</a></li><li><a data-linkid="guides.article.module.tags.linux" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/linux/" target="_top">Linux</a></li><li><a data-linkid="guides.article.module.tags.magento" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/magento/" target="_top">Magento</a></li><li><a data-linkid="guides.article.module.tags.mariadb" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/mariadb/" target="_top">MariaDB</a></li><li><a data-linkid="guides.article.module.tags.marketing-de-contenidos" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/marketing-de-contenidos/" target="_top">Marketing de Contenidos</a></li><li><a data-linkid="guides.article.module.tags.mongodb" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/mongodb/" target="_top">MongoDB</a></li><li><a data-linkid="guides.article.module.tags.mysql" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/mysql/" target="_top">MySQL</a></li><li><a data-linkid="guides.article.module.tags.newsletter" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/newsletter/" target="_top">Newsletter</a></li><li><a data-linkid="guides.article.module.tags.nextcloud" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/nextcloud/" target="_top">Nextcloud</a></li><li><a data-linkid="guides.article.module.tags.nube" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/nube/" target="_top">Nube</a></li><li><a data-linkid="guides.article.module.tags.optimizacion-de-la-tasa-de-conversion" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/optimizacion-de-la-tasa-de-conversion/" target="_top">Optimización de la Tasa de Conversión</a></li><li><a data-linkid="guides.article.module.tags.outlook" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/outlook/" target="_top">Outlook</a></li><li><a data-linkid="guides.article.module.tags.pequeno-empresario" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/pequeno-empresario/" target="_top">Pequeño empresario</a></li><li><a data-linkid="guides.article.module.tags.php" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/php/" target="_top">PHP</a></li><li><a data-linkid="guides.article.module.tags.pinterest" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/pinterest/" target="_top">Pinterest</a></li><li><a data-linkid="guides.article.module.tags.plug-ins-de-wordpress" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/plug-ins-de-wordpress/" target="_top">Plug-ins de WordPress</a></li><li><a data-linkid="guides.article.module.tags.postgresql" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/postgresql/" target="_top">PostgreSQL</a></li><li><a data-linkid="guides.article.module.tags.proteccion-de-datos" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/proteccion-de-datos/" target="_top">Protección de Datos</a></li><li><a data-linkid="guides.article.module.tags.publicidad-de-display" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/publicidad-de-display/" target="_top">Publicidad de Display</a></li><li><a data-linkid="guides.article.module.tags.python" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/python/" target="_top">Python</a></li><li><a data-linkid="guides.article.module.tags.python-pandas" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/python-pandas/" target="_top">Python Pandas</a></li><li><a data-linkid="guides.article.module.tags.rhel" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/rhel/" target="_top">RHEL</a></li><li><a data-linkid="guides.article.module.tags.salario-y-sueldo" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/salario-y-sueldo/" target="_top">Salario y sueldo</a></li><li><a data-linkid="guides.article.module.tags.sea" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/sea/" target="_top">SEA</a></li><li><a data-linkid="guides.article.module.tags.seguridad" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/seguridad/" target="_top">Seguridad</a></li><li><a data-linkid="guides.article.module.tags.seo" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/seo/" target="_top">SEO</a></li><li><a data-linkid="guides.article.module.tags.sitios-web-especiales" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/sitios-web-especiales/" target="_top">Sitios web especiales</a></li><li><a data-linkid="guides.article.module.tags.snapchat" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/snapchat/" target="_top">Snapchat</a></li><li><a data-linkid="guides.article.module.tags.sostenibilidad" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/sostenibilidad/" target="_top">Sostenibilidad</a></li><li><a data-linkid="guides.article.module.tags.sql" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/sql/" target="_top">SQL</a></li><li><a data-linkid="guides.article.module.tags.ssl" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/ssl/" target="_top">SSL</a></li><li><a data-linkid="guides.article.module.tags.tienda-online" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/tienda-online/" target="_top">Tienda Online</a></li><li><a data-linkid="guides.article.module.tags.tlds" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/tlds/" target="_top">TLDs</a></li><li><a data-linkid="guides.article.module.tags.tutoriales" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/tutoriales/" target="_top">Tutoriales</a></li><li><a data-linkid="guides.article.module.tags.twitter" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/twitter/" target="_top">Twitter</a></li><li><a data-linkid="guides.article.module.tags.typescript" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/typescript/" target="_top">TypeScript</a></li><li><a data-linkid="guides.article.module.tags.typo3" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/typo3/" target="_top">TYPO3</a></li><li><a data-linkid="guides.article.module.tags.vps" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/vps/" target="_top">VPS</a></li><li><a data-linkid="guides.article.module.tags.whatsapp" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/whatsapp/" target="_top">WhatsApp</a></li><li><a data-linkid="guides.article.module.tags.windows" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/windows/" target="_top">Windows</a></li><li><a data-linkid="guides.article.module.tags.woocommerce" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/woocommerce/" target="_top">WooCommerce</a></li><li><a href="https://www.ionos.com/es-us/digitalguide/hub/wordpress/" target="_top" data-linkid="guides.article.module.tags.wordpress" class="btn btn-sm btn-default z-1 link-internal" title="Wordpress" data-guides-target-uid="37092">Wordpress</a></li><li><a data-linkid="guides.article.module.tags.youtube" class="btn btn-sm btn-default z-1 link-internal" href="https://www.ionos.com/es-us/digitalguide/tags/youtube/" target="_top">YouTube</a></li></ul></div></div></div></aside> </main> <footer class="d-flex flex-wrap justify-content-center align-items-center brand-footer-bg brand-footer-color mt-2 mt-lg-5 py-6 py-lg-12 contain-style" data-bs-theme="dark"><div class="container-fluid container-sm"><div class="row pb-4 pb-lg-8"><div class="col-12 col-md-4 col-lg-3 d-flex flex-column order-last order-md-first pt-4 pt-md-0"><a href="https://www.ionos.com" title="IONOS Inc." class="m-0 d-block link-internal" data-linkid="guides.footer.logo" target="_top"><svg class="d-inline-block m-0 brand-logo brand-footer-color"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#ionos-logo" /></svg></a><span class="brand-footer-muted-color pt-2">Tu solución digital</span></div><div class="col-12 col-md-8 col-lg-9"><ul class="nav justify-content-start justify-content-md-end flex-column flex-md-row ms-n2 ms-md-0"><li class="nav-item"><a href="https://www.ionos.com/about" target="_top" data-linkid="guides.footer.navigation.sobre-ionos" title="Sobre IONOS" class="nav-link link-internal"> Sobre IONOS </a></li><li class="nav-item"><a href="https://www.ionos.com/newsroom/" target="_top" data-linkid="guides.footer.navigation.sala-de-prensa" title="Sala de prensa" class="nav-link link-internal"> Sala de prensa </a></li><li class="nav-item"> Startup Guide </li><li class="nav-item"><a href="https://www.ionos.com/help/" target="_top" data-linkid="guides.footer.navigation.centro-de-ayuda" title="Centro de ayuda" class="nav-link link-internal"> Centro de ayuda </a></li><li class="nav-item"><a href="https://www.ionos.com/terms-gtc/general-terms-and-conditions/" target="_top" data-linkid="guides.footer.navigation.condiciones-generales" title="Condiciones Generales" class="nav-link link-internal"> Condiciones Generales </a></li><li class="nav-item"><a href="https://www.ionos.com/terms-gtc/privacy-policy/" target="_top" data-linkid="guides.footer.navigation.politica-de-privacidad" title="Política de privacidad" class="nav-link link-internal"> Política de privacidad </a></li></ul></div></div><div class="row pt-4 pt-lg-8 border-top brand-footer-border-color align-items-center"><div class="copyright brand-footer-muted-color col-12 col-md-4 order-last order-md-first">© 2025 <a href="https://www.ionos.com" title="IONOS Inc." data-linkid="guides.footer.logo" target="_top" class="link-internal">IONOS Inc.</a></div><div class="col-12 col-md-8"><ul class="nav justify-content-start justify-content-md-end flex-nowrap ms-n2 ms-md-0"><li class="nav-item"><a data-linkid="guides.footer.module.channels-and-rss.rss" class="nav-link link-internal" title="RSS" target="_top" href="https://www.ionos.com/es-us/digitalguide/hosting/feed.rss"><svg class="d-inline-block" width="20" height="20"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#icon-rss" /></svg></a></li><li class="nav-item"><a href="https://ionos.ly/IONOS_IN" title="LinkedIn" class="nav-link link-external" target="_blank" data-linkid="guides.footer.module.channels-and-rss.linkedin" rel="noopener noreferrer"><svg class="d-inline-block" width="24" height="24"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#linkedin-logo" /></svg></a></li><li class="nav-item"><a href="https://ionos.ly/IONOS_FB_US" title="facebook" class="nav-link link-external" target="_blank" data-linkid="guides.footer.module.channels-and-rss.facebook" rel="noopener noreferrer"><svg class="d-inline-block" width="24" height="24"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#facebook-logo" /></svg></a></li><li class="nav-item"><a href="https://ionos.ly/IONOS_YT_US" title="YouTube" class="nav-link link-external" target="_blank" data-linkid="guides.footer.module.channels-and-rss.youtube" rel="noopener noreferrer"><svg class="d-inline-block" width="24" height="24"><use xlink:href="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Images/icons-sprite.svg#youtube-logo" /></svg></a></li></ul></div></div></div></footer><div id="cookieinfo-container" class="show"><div class="cookieinfo container p-relative"><div class="row align-items-center"><div class="col"><div class="cookieinfo-text"> Utilizamos cookies propias y de terceros para mejorar nuestros servicios y mostrarle publicidad relacionada con sus preferencias mediante el análisis de sus hábitos de navegación. Si continua navegando, consideramos que acepta su uso. Puede obtener más información, o bien conocer cómo cambiar la configuración de su navegador en nuestra. <a href="https://www.ionos.com/cookies" target="_top" class="link-internal"> Política de Cookies. </a></div></div><div class="col-auto"><button id="cookieinfo-close" class="chars px-20 py-12 c-pointer">OK</button></div></div></div></div><span id="top" class="d-block visually-hidden position-absolute top-0 end-0 start-0">Page top</span> <script async="async" src="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/Vendor/bootstrap/dist/js/bootstrap.bundle.min.1738925219.js"></script>
+<script async="async" src="https://www.ionos.com/es-us/digitalguide/_assets/b76f27cb02ebc538ac6fbabcf1a88e7f/JavaScript/scrollProgressRelated.min.1738925219.js"></script>
+<script type="module">
+function cleanupSearchString(string) {
+  if (string) {
+    return string.replaceAll(/[^_.\w\s\-\p{Alphabetic}\p{Mark}\p{Decimal_Number}\p{Connector_Punctuation}\p{Join_Control}]+/gu, '');
+  }
+  return string;
+}
+
+function filterResults(searchTerm) {
+  const results = document.querySelectorAll('#article-result-list .article-result');
+
+  if (!searchTerm || searchTerm.trim() === '') {
+    results.forEach(result => {
+      result.style.display = 'none';
+    });
+    return;
+  }
+
+  const searchWords = searchTerm.trim().toLowerCase().split(/\s+/).filter(word => word.length > 0);
+
+  results.forEach(result => {
+    const text = result.textContent.toLowerCase();
+    const foundAllWords = searchWords.every(word => text.includes(word));
+    result.style.display = foundAllWords ? 'block' : 'none';
+  });
+
+  // Update all search term inputs with the current search term
+  document.querySelectorAll('.search-form input').forEach(input => {
+    input.value = searchTerm;
+  });
+}
+
+function handleFormSubmit(event) {
+  event.preventDefault();
+  const searchTerm = cleanupSearchString(event.target.querySelector('.search-form input').value);
+  localStorage.setItem('searchTerm', searchTerm.trim());
+
+  filterResults(searchTerm);
+
+  if (event.target.action !== window.location.href) {
+    window.location.href = event.target.action;
+  }
+}
+
+function setupSearchForms() {
+  const searchForms = document.querySelectorAll('.search-form');
+  searchForms.forEach(form => {
+    form.addEventListener('submit', handleFormSubmit);
+    form.querySelectorAll('.search-form input').forEach(input => {
+      const searchTerm = localStorage.getItem('searchTerm');
+      input.value = searchTerm ? searchTerm : '';
+      input.addEventListener('input', function() {
+        filterResults(this.value.toLowerCase());
+      });
+    });
+
+    const searchTerm = localStorage.getItem('searchTerm');
+    if (searchTerm) {
+      filterResults(searchTerm.toLowerCase());
+    }
+  });
+}
+
+window.cleanupSearchString = cleanupSearchString;
+window.filterResults = filterResults;
+window.handleFormSubmit = handleFormSubmit;
+window.setupSearchForms = setupSearchForms;
+
+setupSearchForms();
+localStorage.setItem('searchTerm', '');
+
+</script>
+<script type="module">
+                    "use strict";
+let loadMore = function (url, buttonId, elementToReplaceById) {
+  let loadingClass = 'loading';
+  let loadMoreButton = document.getElementById(buttonId);
+  if (!loadMoreButton.classList.contains(loadingClass)) {
+    loadMoreButton.classList.add(loadingClass);
+    loadMoreButton.disabled = true;
+  }
+
+  fetch(url)
+  .then(response => {
+    if (response.ok) {
+      return response.text();
+    } else {
+      throw new Error('Network response was not ok.');
+    }
+  })
+  .then(data => {
+    let content = JSON.parse(data);
+    document.getElementById(elementToReplaceById).outerHTML = content.content;
+    console.info('loaded: ', url);
+    let button = document.getElementById(buttonId);
+    if (button.classList.contains(loadingClass)) {
+      button.classList.remove(loadingClass);
+      button.disabled = false;
+    }
+  })
+  .catch(error => console.error('Fetch error:', error));
+}
+window.loadMore = loadMore;
+
+                </script>
+<script>
+        var cookieinfoContainer = document.querySelector('#cookieinfo-container');
+        var cookieinfoContainerButton = document.querySelector('#cookieinfo-close');
+        function getCookieByName(name) {
+        function escape(s) {
+        return s.replace(/([.*+?\^$(){}|\[\]\/\\])/g, '\\$1');
+        }
+        var match = document.cookie.match(RegExp('(?:^|;\\s*)' + escape(name) + '=([^;]*)'));
+        return match ? match[1] : null;
+        }
+        function setCookieByName(cookieName, cookieValue, cookieDurationInDays, cookieDomain, cookieDomainPath) {
+        var now = new Date();
+        now.setTime(now.getTime() + +cookieDurationInDays * 24 * 60 * 60 * 1000);
+        var expires = now.toUTCString();
+        var cookie = cookieName + '=' + cookieValue + ';expires=' + expires + ';domain=' + cookieDomain + ';path=' + cookieDomainPath + ';SameSite=lax';
+        document.cookie = cookie;
+        }
+        function checkCookieInfoContainer() {
+        var cookieinfoContainerAccepted = getCookieByName('banner-cookieinfo');
+        if (cookieinfoContainerAccepted) {
+        cookieinfoContainer.classList.remove('show');
+        }
+        }
+        function getCookieDomainAndPath() {
+        var currentHostArray = window.location.host.split('.');
+        var domain = currentHostArray[currentHostArray.length - 2];
+        var tld = currentHostArray[currentHostArray.length - 1];
+        if (window.location.host.indexOf('.co.uk') !== -1) {
+        domain = currentHostArray[currentHostArray.length - 3];
+        tld = currentHostArray[currentHostArray.length - 2] + '.' + currentHostArray[currentHostArray.length - 1];
+        }
+        var cookieDomainPath = '/';
+        if (tld === 'com') {
+        var href = window.location.href;
+        if (href.indexOf('/pt-br/') !== -1) {
+        cookieDomainPath = '/pt-br/';
+        }
+        }
+        var cookieDomain = '.' + domain + '.' + tld;
+        return [cookieDomain, cookieDomainPath];
+        }
+        var dismissAndSetCookie = function () {
+        var cookieDomain = getCookieDomainAndPath()[0];
+        var cookieDomainPath = getCookieDomainAndPath()[1];
+        setCookieByName('banner-cookieinfo', '1', 30, cookieDomain, cookieDomainPath);
+        checkCookieInfoContainer();
+        };
+        checkCookieInfoContainer();
+        cookieinfoContainerButton.addEventListener("click", dismissAndSetCookie);
+    </script>
+<script>window.addEventListener('load', (event) => {
+  window.addEventListener('resize', function() {
+    if (window.innerWidth < 992) {
+      const modals = Array.from(document.querySelectorAll('.modal.lightbox'));
+      const modalInstances = modals.map(modal => bootstrap.Modal.getInstance(modal));
+      modalInstances.filter(Boolean).forEach(modalInstance => modalInstance.hide());
+    }
+  });
+  let tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+  let tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+});
+</script>
+<script>
+    var globalSBSitecat = function (eventName){
+        if (typeof window.s === "object" && typeof window.s.t === 'function') {
+            if (eventName) {
+                if (s.events2) {
+                    if (s.events2.indexOf(eventName) === -1) {
+                        s.events2 + ',' + eventName;
+                    }
+                } else {
+                    s.events2 = eventName;
+                }
+                s.t(s);
+                console.info('globalSBSitecat: ' + eventName + ' sent');
+            } else {
+                console.info('globalSBSitecat: eventName is missing');
+            }
+        }
+    };
+    var globalSBSitecatNPV = function (eventName){
+        if (typeof window.s === "object" && typeof window.s.t === 'function') {
+            if (eventName) {
+                if (s.events2) {
+                    if (s.events2.indexOf(eventName) === -1) {
+                        s.events2 + ',' + eventName;
+                    }
+                } else {
+                    s.events2 = eventName;
+                }
+                s.tl(s);
+                console.info('globalSBSitecatNPV: ' + eventName + ' sent');
+            } else {
+                console.info('globalSBSitecat: eventName is missing');
+            }
+        }
+    };
+    var websiteSBSitecat = function () {globalSBSitecat('event114')};
+</script>
+<script>
+    var boxLinks = document.querySelectorAll('.content [class*="-box"] a, #content [class*="-box"] a, .content [class*="box-"] a, #content [class*="box-"] a') || {};
+    for (var i = 0, len = boxLinks.length; i < len; i++) {
+        boxLinks[i].addEventListener('click', globalSBSitecatNPV('event115'), boxLinks[i].href, false);
+    }
+
+    var nonBoxLinks = document.querySelectorAll('*:not([class*="-box"]):not([class*="box-"]) a') || {};
+    for (var i = 0, len = boxLinks.length; i < len; i++) {
+        nonBoxLinks[i].addEventListener('click', globalSBSitecatNPV('event116'), nonBoxLinks[i].href, false);
+    }
+</script>
+<script type="module">document.addEventListener("DOMContentLoaded", function() {
+  const tableResponsiveElements = document.querySelectorAll('.table-responsive');
+
+  function addListenerMulti(el, s, fn) {
+    s.split(',').forEach(e => el.addEventListener(e, fn, false));
+  }
+
+  function setupScrollButtons(table, scrollLeftButton, scrollRightButton) {
+    const averageTdWidth = () => Array.from(table.querySelectorAll('td')).reduce((acc, td) => acc + td.offsetWidth, 0) / table.querySelectorAll('td').length;
+
+    scrollLeftButton.addEventListener('click', function() {
+      table.scrollLeft -= averageTdWidth(); // Scroll the average td width
+    });
+
+    scrollRightButton.addEventListener('click', function() {
+      table.scrollLeft += averageTdWidth(); // Scroll the average td width
+    });
+
+    if (table.scrollLeft === 0) {
+      scrollLeftButton.setAttribute('disabled', 'disabled');
+    } else {
+      scrollLeftButton.removeAttribute('disabled');
+    }
+
+    if (table.scrollLeft + table.clientWidth >= table.scrollWidth) {
+      scrollRightButton.setAttribute('disabled', 'disabled');
+    } else {
+      scrollRightButton.removeAttribute('disabled');
+    }
+
+    addListenerMulti(table, "scroll", function() {
+      if (table.scrollLeft === 0) {
+        scrollLeftButton.setAttribute('disabled', 'disabled');
+      } else {
+        scrollLeftButton.removeAttribute('disabled');
+      }
+
+      if (table.scrollLeft + table.clientWidth >= table.scrollWidth) {
+        scrollRightButton.setAttribute('disabled', 'disabled');
+      } else {
+        scrollRightButton.removeAttribute('disabled');
+      }
+    })
+  }
+
+  tableResponsiveElements.forEach(function(tableResponsive) {
+    if (tableResponsive.scrollWidth > tableResponsive.clientWidth) {
+      const container = document.createElement('div');
+      container.classList.add('table-responsive-scroll-container');
+
+      const scrollButtonClass = 'table-responsive-scroll-button';
+
+      const scrollLeftButton = document.createElement('button');
+      scrollLeftButton.setAttribute('aria-label', 'Scroll Left');
+      scrollLeftButton.classList.add(scrollButtonClass, 'scroll-left');
+
+      const scrollRightButton = document.createElement('button');
+      scrollRightButton.setAttribute('aria-label', 'Scroll Right');
+      scrollRightButton.classList.add(scrollButtonClass, 'scroll-right');
+
+      setupScrollButtons(tableResponsive, scrollLeftButton, scrollRightButton);
+
+      container.appendChild(scrollLeftButton);
+      container.appendChild(scrollRightButton);
+
+      const clonedTable = tableResponsive.cloneNode(true);
+      container.appendChild(clonedTable);
+
+      tableResponsive.parentNode.replaceChild(container, tableResponsive); // Replace original with container
+
+      const clonedTableResponsive = container.querySelector('.table-responsive');
+      setupScrollButtons(clonedTableResponsive, scrollLeftButton, scrollRightButton);
+    }
+  });
+});
+</script> </body>
+</html>
