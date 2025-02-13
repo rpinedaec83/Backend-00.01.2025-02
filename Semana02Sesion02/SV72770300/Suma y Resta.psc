@@ -1,10 +1,10 @@
 Algoritmo Sumadora
 	
-	Escribir "Digita el primer número"
+	Escribir "Digita el primer nï¿½mero"
 	Leer n1
-	Escribir  "Digita el segundo número"
+	Escribir  "Digita el segundo nï¿½mero"
 	Leer  n2
-	Escribir  "Digita la operación: 1 para sumar, 2 para restar"
+	Escribir  "Digita la operaciï¿½n: 1 para sumar, 2 para restar"
 	leer operacion
 	
 	respuesta = 0
