@@ -1,5 +1,5 @@
 Proceso Algoritmo1_Tres_digitos	
-	Definir num como Real
+	Definir num como Real //Numero a evaluar
 	Definir Llave como Caracter
 	Llave="" //Permite cerrar el bucle
 	Escribir "[+++++++++++[INICIO]+++++++++++]"
