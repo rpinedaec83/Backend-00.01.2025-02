@@ -9,6 +9,7 @@ Proceso OrdenarTresNumeros
     Leer num3
 	
     // Comparaciones para ordenar de menor a mayor
+    // usamos una variable auxiliar para cambiar ubicacion
     Si num1 > num2 Entonces
         aux <- num1
         num1 <- num2

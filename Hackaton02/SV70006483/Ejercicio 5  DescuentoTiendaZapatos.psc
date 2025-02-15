@@ -10,7 +10,7 @@ Proceso DescuentoTiendaZapatos
     // Calcular el total sin descuento
     total <- cantidad * precio_unitario
 	
-    // Determinar el descuento según la cantidad comprada
+    // Determinar el descuento según la cantidad comprada, iniciando del descuento mayo
     Si cantidad > 30 Entonces
         descuento <- total * 0.40  // 40% de descuento
 		porcentaje <- 40
@@ -27,6 +27,7 @@ Proceso DescuentoTiendaZapatos
 	FinSi
 			
 
+	// Calcular el total con descuento aplicado
 	total_pagar <- total - descuento
 	
 	Escribir "Total sin descuento: $", total
