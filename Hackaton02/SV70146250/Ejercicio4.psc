@@ -1,6 +1,6 @@
 Proceso Algoritmo4_menor_a_MAYOR
-	Definir num1, num2, num3, temporal como Real
-	Definir digito como Entero
+	Definir num1, num2, num3  como Real
+	Definir temporal como Entero
 	Definir Llave como Caracter
 	Llave="" //Permite cerrar el bucle
 	Escribir "[+++++++++++[INICIO]+++++++++++]"
