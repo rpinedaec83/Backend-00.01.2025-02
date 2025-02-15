@@ -4,7 +4,7 @@ Proceso ContarDigitos
 	Definir contadorPunto, contadorMenos Como Entero
 	
 	Escribir "-----------------------------------------------------------"
-	Escribir "--- Contare para ti, si un número contiene tres digitos ---"
+	Escribir "--- Contare para ti, si un numero contiene tres digitos ---"
 	Escribir "-----------------------------------------------------------"
 	Repetir
 		Leer dato
@@ -49,14 +49,14 @@ Proceso ContarDigitos
 			FinSi
 		Fin Para
 		
-		//---Verificando si es número---
+		//---Verificando si es numero---
 		Si verificarDato = Falso Entonces
-			Escribir "--> El dato: (", datoLimpio,") no es un número"
+			Escribir "--> El dato: (", datoLimpio,") no es un numero"
 		FinSi
 		
 		Si verificarDato = Verdadero Entonces
 			Si contadorMenos > 1 O contadorPunto > 1 Entonces
-				Escribir "--> El dato: (", datoLimpio,") no es un número"
+				Escribir "--> El dato: (", datoLimpio,") no es un numero"
 			SiNo
 				Para i <- 1 Hasta Longitud(datoLimpio) Con Paso 1 Hacer
 					a <- SubCadena(datoLimpio,i,i)
@@ -74,15 +74,15 @@ Proceso ContarDigitos
 				Fin Para
 				
 				Si datoLimpio = '-.' O datoLimpio = '.-' O verificarDato = Falso Entonces
-					Escribir "--> El dato: (", datoLimpio,") no es un número"
+					Escribir "--> El dato: (", datoLimpio,") no es un numero"
 				SiNo
 					Si verificarDato = Verdadero Entonces
 						Si Longitud(datoSinPuntoComa) = 3 Entonces
-							Escribir "--- El número: (", datoLimpio,") tiene 3 digitos ---"
+							Escribir "--- El numero: (", datoLimpio,") tiene 3 digitos ---"
 							Escribir "--- Autor: cristian_manuel@outlook.com  ---"
 						Sino
 							verificarMenos = Falso
-							Escribir "--> El número: (", datoLimpio,") no es de 3 digitos"
+							Escribir "--> El numero: (", datoLimpio,") no es de 3 digitos"
 						FinSi
 					FinSi
 				FinSi

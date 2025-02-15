@@ -104,16 +104,16 @@ SubProceso f1 <- verificarNumero ( data )
 		FinSi
 	Fin Para
 	
-	//---Verificando si es número---
+	//---Verificando si es numero---
 	Si verificarDato = Falso Entonces
 		resultado =  Concatenar("El dato: (", datoLimpio)
-		resultado = Concatenar(resultado, ") no es un número")
+		resultado = Concatenar(resultado, ") no es un numero")
 	FinSi
 	
 	Si verificarDato = Verdadero Entonces
 		Si contadorMenos > 1 O contadorPunto > 1 Entonces
 			resultado =  Concatenar("El dato: (", datoLimpio)
-			resultado = Concatenar(resultado, ") no es un número")
+			resultado = Concatenar(resultado, ") no es un numero")
 		SiNo
 			Para i <- 1 Hasta Longitud(datoLimpio) Con Paso 1 Hacer
 				a <- SubCadena(datoLimpio,i,i)
@@ -132,18 +132,18 @@ SubProceso f1 <- verificarNumero ( data )
 			
 			Si datoLimpio = '-.' O datoLimpio = '.-' O verificarDato = Falso Entonces
 				resultado =  Concatenar("El dato: (", datoLimpio)
-				resultado = Concatenar(resultado, ") no es un número")
+				resultado = Concatenar(resultado, ") no es un numero")
 			SiNo
 				Si verificarDato = Verdadero Y contadorMenos = 0 Y contadorPunto = 0 Entonces
 					resultado = datoLimpio
 				SiNo
 					Si contadorMenos > 0 Entonces
-						resultado =  Concatenar("El número: (", datoLimpio)
+						resultado =  Concatenar("El numero: (", datoLimpio)
 						resultado = Concatenar(resultado, ") es negativo")
 					FinSi
 					
 					Si contadorPunto > 0 Entonces
-						resultado =  Concatenar("El número: (", datoLimpio)
+						resultado =  Concatenar("El numero: (", datoLimpio)
 						resultado = Concatenar(resultado, ") no es un entero")
 					FinSi
 				FinSi

@@ -13,13 +13,13 @@ Proceso sueldoMensual
 	Escribir "|-------- Calculadora de pagos por Horas Extras ---------|"
 	Escribir "|--- (Las horas extras se calculan a partir de 40 h.) ---|"
 	Escribir "----------------------------------------------------------"
-	Escribir "|    ---> Ingresa el número de horas trabajadas <---     |"
+	Escribir "|    ---> Ingresa el numero de horas trabajadas <---     |"
 	Escribir "----------------------------------------------------------"
 	Repetir
 		Leer dato
 		numEntero <- verificarNumero (dato)
 		
-		//---Conversión de dato a número---
+		//---Conversiun de dato a numero---
 		Para i <- 1 Hasta Longitud(numEntero) Con Paso 1 Hacer
 			x <- SubCadena(numEntero,i,i)
 			Si x <> 'E' Entonces
@@ -68,7 +68,7 @@ Proceso sueldoMensual
 								Escribir "----------------------------"
 								Escribir "-> Autor: cristian_manuel@outlook.com <-"
 							SiNo
-								Escribir "---> Las horas de trabajo mínimo son de 24 h."
+								Escribir "---> Las horas de trabajo minimo son de 24 h."
 							FinSi
 						FinSi
 					FinSi
@@ -80,7 +80,7 @@ Proceso sueldoMensual
 	Hasta Que validarOperacion = Verdadero
 FinProceso
 
-//---Funcion que valida la cadena en números Enteros---
+//---Funcion que valida la cadena en numeros Enteros---
 SubProceso f1 <- verificarNumero ( data )
 	Definir dato, datoLimpio, datoConPuntoComa, resultado Como Caracter
 	Definir verificarDato, verificarMenos Como Logico
@@ -128,16 +128,16 @@ SubProceso f1 <- verificarNumero ( data )
 		FinSi
 	Fin Para
 	
-	//---Verificando si es número---
+	//---Verificando si es numero---
 	Si verificarDato = Falso Entonces
 		resultado =  Concatenar("El dato: (", datoLimpio)
-		resultado = Concatenar(resultado, ") no es un número")
+		resultado = Concatenar(resultado, ") no es un numero")
 	FinSi
 	
 	Si verificarDato = Verdadero Entonces
 		Si contadorMenos > 1 O contadorPunto > 1 Entonces
 			resultado =  Concatenar("El dato: (", datoLimpio)
-			resultado = Concatenar(resultado, ") no es un número")
+			resultado = Concatenar(resultado, ") no es un numero")
 		SiNo
 			Para i <- 1 Hasta Longitud(datoLimpio) Con Paso 1 Hacer
 				a <- SubCadena(datoLimpio,i,i)
@@ -156,18 +156,18 @@ SubProceso f1 <- verificarNumero ( data )
 			
 			Si datoLimpio = '-.' O datoLimpio = '.-' O verificarDato = Falso Entonces
 				resultado =  Concatenar("El dato: (", datoLimpio)
-				resultado = Concatenar(resultado, ") no es un número")
+				resultado = Concatenar(resultado, ") no es un numero")
 			SiNo
 				Si verificarDato = Verdadero Y contadorMenos = 0 Y contadorPunto = 0 Entonces
 					resultado = datoLimpio
 				SiNo
 					Si contadorMenos > 0 Entonces
-						resultado =  Concatenar("El número: (", datoLimpio)
+						resultado =  Concatenar("El numero: (", datoLimpio)
 						resultado = Concatenar(resultado, ") es negativo")
 					FinSi
 					
 					Si contadorPunto > 0 Entonces
-						resultado =  Concatenar("El número: (", datoLimpio)
+						resultado =  Concatenar("El numero: (", datoLimpio)
 						resultado = Concatenar(resultado, ") no es un entero")
 					FinSi
 				FinSi

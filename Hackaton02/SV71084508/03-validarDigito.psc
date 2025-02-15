@@ -4,7 +4,7 @@ Proceso verificarDigito
 	Definir contadorPunto, contadorMenos Como Entero
 	
 	Escribir "------------------------------------------------------------"
-	Escribir "--- Te dire si un número termina en 4, ingresa un número ---"
+	Escribir "--- Te dire si un numero termina en 4, ingresa un numero ---"
 	Escribir "------------------------------------------------------------"
 	Repetir
 		Leer dato
@@ -49,15 +49,15 @@ Proceso verificarDigito
 			FinSi
 		Fin Para
 		
-		//---Verificando si es número---
+		//---Verificando si es numero---
 		Si verificarDato = Falso Entonces
-			Escribir "--> El dato: (", datoLimpio,") no es un número"
+			Escribir "--> El dato: (", datoLimpio,") no es un numero"
 		FinSi
 		
 		Si verificarDato = Verdadero Entonces
 			Si contadorMenos > 1 O contadorPunto > 1 Entonces
 				verificarDato = Falso
-				Escribir "--> El dato: (", datoLimpio,") no es un número"
+				Escribir "--> El dato: (", datoLimpio,") no es un numero"
 			SiNo
 				datoSinPuntoComa = ''
 				Para i <- 1 Hasta Longitud(datoLimpio) Con Paso 1 Hacer
@@ -77,7 +77,7 @@ Proceso verificarDigito
 				
 				Si datoLimpio = '-.' O datoLimpio = '.-' O verificarDato = Falso Entonces
 					verificarDato = Falso
-					Escribir "--> El dato: (", datoLimpio,") no es un número"
+					Escribir "--> El dato: (", datoLimpio,") no es un numero"
 				SiNo
 					Si verificarDato = Verdadero Entonces
 						Para i <- 1 Hasta Longitud(datoSinPuntoComa) Con Paso 1 Hacer
@@ -89,7 +89,7 @@ Proceso verificarDigito
 									Escribir "--- Autor: cristian_manuel@outlook.com  ---"
 								Sino
 									verificarDato = Falso
-									Escribir "--> El número: (", datoLimpio,") no termina en 4"
+									Escribir "--> El numero: (", datoLimpio,") no termina en 4"
 								FinSi
 							FinSi
 						Fin Para

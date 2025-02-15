@@ -8,20 +8,20 @@ Proceso tiendaDescuento
 	validarOperacion = Falso
 	
 	Escribir "---------------------------------------------------------------"
-	Escribir "--> Tienda de Zapatos en ¡Promoción!"
+	Escribir "--> Tienda de Zapatos en Promocion!"
 	Escribir "--> se aplican descuentos a partir de:"
 	Escribir "---------------------------------------------------------------"
-	Escribir "--- a) Más de 10          ->  Descuento del 10%"
+	Escribir "--- a) Mas de 10          ->  Descuento del 10%"
 	Escribir "--- b) Entre 20 y 30      ->  Descuento del 20%"
-	Escribir "--- c) Más de 30          ->  Descuento del 40%"
+	Escribir "--- c) Mas de 30          ->  Descuento del 40%"
 	Escribir "---------------------------------------------------------------"
-	Escribir "--- Cuantos pares de zapatillas vas a comprar, ingrea un número"
+	Escribir "--- Cuantos pares de zapatillas vas a comprar, ingrea un numero"
 	Escribir "---------------------------------------------------------------"
 	Repetir
 		Leer dato
 		numEntero <- verificarNumero (dato)
 		
-		//---Conversión de dato a número---
+		//---Conversiun de dato a numero---
 		Para i <- 1 Hasta Longitud(numEntero) Con Paso 1 Hacer
 			x <- SubCadena(numEntero,i,i)
 			Si x <> 'E' Entonces
@@ -81,7 +81,7 @@ Proceso tiendaDescuento
 								Escribir "----------------------------"
 								Escribir "--- Autor: cristian_manuel@outlook.com ---"
 							SiNo
-								Escribir "---> La Unidad mínima de Venta, es uno"
+								Escribir "---> La Unidad minima de Venta, es uno"
 							FinSi
 						FinSi
 					FinSi
@@ -93,7 +93,7 @@ Proceso tiendaDescuento
 	Hasta Que validarOperacion = Verdadero
 FinProceso
 
-//---Funcion que valida la cadena en números Enteros---
+//---Funcion que valida la cadena en numeros Enteros---
 SubProceso f1 <- verificarNumero ( data )
 	Definir dato, datoLimpio, datoConPuntoComa, resultado Como Caracter
 	Definir verificarDato, verificarMenos Como Logico
@@ -141,16 +141,16 @@ SubProceso f1 <- verificarNumero ( data )
 		FinSi
 	Fin Para
 	
-	//---Verificando si es número---
+	//---Verificando si es numero---
 	Si verificarDato = Falso Entonces
 		resultado =  Concatenar("El dato: (", datoLimpio)
-		resultado = Concatenar(resultado, ") no es un número")
+		resultado = Concatenar(resultado, ") no es un numero")
 	FinSi
 	
 	Si verificarDato = Verdadero Entonces
 		Si contadorMenos > 1 O contadorPunto > 1 Entonces
 			resultado =  Concatenar("El dato: (", datoLimpio)
-			resultado = Concatenar(resultado, ") no es un número")
+			resultado = Concatenar(resultado, ") no es un numero")
 		SiNo
 			Para i <- 1 Hasta Longitud(datoLimpio) Con Paso 1 Hacer
 				a <- SubCadena(datoLimpio,i,i)
@@ -169,18 +169,18 @@ SubProceso f1 <- verificarNumero ( data )
 			
 			Si datoLimpio = '-.' O datoLimpio = '.-' O verificarDato = Falso Entonces
 				resultado =  Concatenar("El dato: (", datoLimpio)
-				resultado = Concatenar(resultado, ") no es un número")
+				resultado = Concatenar(resultado, ") no es un numero")
 			SiNo
 				Si verificarDato = Verdadero Y contadorMenos = 0 Y contadorPunto = 0 Entonces
 					resultado = datoLimpio
 				SiNo
 					Si contadorMenos > 0 Entonces
-						resultado =  Concatenar("El número: (", datoLimpio)
+						resultado =  Concatenar("El numero: (", datoLimpio)
 						resultado = Concatenar(resultado, ") es negativo")
 					FinSi
 					
 					Si contadorPunto > 0 Entonces
-						resultado =  Concatenar("El número: (", datoLimpio)
+						resultado =  Concatenar("El numero: (", datoLimpio)
 						resultado = Concatenar(resultado, ") no es un entero")
 					FinSi
 				FinSi

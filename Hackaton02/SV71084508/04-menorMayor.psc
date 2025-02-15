@@ -5,13 +5,13 @@ Proceso menorMayor
 	cant <- 0
 	
 	Escribir "---------------------------------------------------------------"
-	Escribir "--- Ordenare para ti, tres números enteros de menor a mayor ---"
+	Escribir "--- Ordenare para ti, tres numeros enteros de menor a mayor ---"
 	Escribir "---------------------------------------------------------------"
 	Repetir
 		Leer dato
 		numEntero <- verificarNumero (dato)
 		
-		//---Conversión de dato a número---
+		//---Conversiun de dato a numero---
 		Para i <- 1 Hasta Longitud(numEntero) Con Paso 1 Hacer
 			a <- SubCadena(numEntero,i,i)
 			Si a <> 'E' Entonces
@@ -23,13 +23,13 @@ Proceso menorMayor
 						cant = cant + 1
 						Num[cant] <- n
 						Si cant = 1 Entonces
-							Escribir "--> Primer número: (", n, ") registrado exitosamente"
+							Escribir "--> Primer numero: (", n, ") registrado exitosamente"
 						FinSi
 						Si cant = 2 Entonces
-							Escribir "--> Segundo número: (", n, ") registrado exitosamente"
+							Escribir "--> Segundo numero: (", n, ") registrado exitosamente"
 						FinSi
 						Si cant = 3 Entonces
-							Escribir "--> Tercer número: (", n, ") registrado exitosamente"
+							Escribir "--> Tercer numero: (", n, ") registrado exitosamente"
 						FinSi
 					FinSi
 				FinSi
@@ -43,7 +43,7 @@ Proceso menorMayor
 	posicionDos = 1
 	posicionTres = 1
 	
-	//---Ordenando los números---
+	//---Ordenando los numeros---
 	Para i <- 1 Hasta cant Con Paso 1 Hacer
 		Si i = 1 Entonces
 			Si Num[i] > Num[2] Entonces
@@ -112,12 +112,12 @@ Proceso menorMayor
 	Fin Para
 	
 	Escribir "----------------------------------"
-	Escribir "--- Los números ordenados son: ---"
+	Escribir "--- Los numeros ordenados son: ---"
 	Escribir "--> [ ", a, ",", b, ",", c, " ] <--"
 	Escribir "--- Autor: cristian_manuel@outlook.com  ---"
 FinProceso
 
-//---Funcion que valida la cadena en números Enteros---
+//---Funcion que valida la cadena en numeros Enteros---
 SubProceso f1 <- verificarNumero ( data )
 	Definir dato, datoLimpio, datoConPuntoComa, resultado Como Caracter
 	Definir verificarDato, verificarMenos Como Logico
@@ -165,16 +165,16 @@ SubProceso f1 <- verificarNumero ( data )
 		FinSi
 	Fin Para
 	
-	//---Verificando si es número---
+	//---Verificando si es numero---
 	Si verificarDato = Falso Entonces
 		resultado =  Concatenar("El dato: (", datoLimpio)
-		resultado = Concatenar(resultado, ") no es un número")
+		resultado = Concatenar(resultado, ") no es un numero")
 	FinSi
 	
 	Si verificarDato = Verdadero Entonces
 		Si contadorMenos > 1 O contadorPunto > 1 Entonces
 			resultado =  Concatenar("El dato: (", datoLimpio)
-			resultado = Concatenar(resultado, ") no es un número")
+			resultado = Concatenar(resultado, ") no es un numero")
 		SiNo
 			Para i <- 1 Hasta Longitud(datoLimpio) Con Paso 1 Hacer
 				a <- SubCadena(datoLimpio,i,i)
@@ -193,12 +193,12 @@ SubProceso f1 <- verificarNumero ( data )
 			
 			Si datoLimpio = '-.' O datoLimpio = '.-' O verificarDato = Falso Entonces
 				resultado =  Concatenar("El dato: (", datoLimpio)
-				resultado = Concatenar(resultado, ") no es un número")
+				resultado = Concatenar(resultado, ") no es un numero")
 			SiNo
 				Si verificarDato = Verdadero Y contadorPunto = 0 Entonces
 					resultado = datoLimpio
 				SiNo
-					resultado =  Concatenar("El número: (", datoLimpio)
+					resultado =  Concatenar("El numero: (", datoLimpio)
 					resultado = Concatenar(resultado, ") no es un entero")
 				FinSi
 			FinSi

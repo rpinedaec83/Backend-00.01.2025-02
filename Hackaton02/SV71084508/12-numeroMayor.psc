@@ -5,13 +5,13 @@ Proceso numeroMayor
 	cant <- 0
 	
 	Escribir "---------------------------------------------------------"
-	Escribir "--- Te dire cual número es mayor, ingresa los números ---"
+	Escribir "--- Te dire cual numero es mayor, ingresa los numeros ---"
 	Escribir "---------------------------------------------------------"
 	Repetir
 		Leer dato
 		numEntero <- verificarNumero (dato)
 		
-		//---Conversión de dato a número---
+		//---Conversiun de dato a numero---
 		Para i <- 1 Hasta Longitud(numEntero) Con Paso 1 Hacer
 			a <- SubCadena(numEntero,i,i)
 			Si a <> 'E' Entonces
@@ -23,10 +23,10 @@ Proceso numeroMayor
 						cant = cant + 1
 						Num[cant] <- n
 						Si cant = 1 Entonces
-							Escribir "--> Primer número: (", n, ") registrado exitosamente"
+							Escribir "--> Primer numero: (", n, ") registrado exitosamente"
 						FinSi
 						Si cant = 2 Entonces
-							Escribir "--> Segundo número: (", n, ") registrado exitosamente"
+							Escribir "--> Segundo numero: (", n, ") registrado exitosamente"
 						FinSi
 					FinSi
 				FinSi
@@ -39,7 +39,7 @@ Proceso numeroMayor
 	posicionUno = 1
 	posicionDos = 1
 	
-	//---Ordenando los números---
+	//---Ordenando los numeros---
 	Para i <- 1 Hasta cant Con Paso 1 Hacer
 		Si i = 1 Entonces
 			Si Num[i] > Num[2] Entonces
@@ -76,7 +76,7 @@ Proceso numeroMayor
 	Fin Para
 	
 	Escribir "----------------------------------"
-	Escribir "--- Los números son: ---"
+	Escribir "--- Los numeros son: ---"
 	Escribir "--> [ ", n1, ", ", n2, " ] <--"
 	Escribir "----------------------------------"
 	Escribir "|---> El mayor es: ", b, " <---"
@@ -84,7 +84,7 @@ Proceso numeroMayor
 	Escribir "-> Autor: cristian_manuel@outlook.com <-"
 FinProceso
 
-//---Funcion que valida la cadena en números Enteros---
+//---Funcion que valida la cadena en numeros Enteros---
 SubProceso f1 <- verificarNumero ( data )
 	Definir dato, datoLimpio, datoConPuntoComa, resultado Como Caracter
 	Definir verificarDato, verificarMenos Como Logico
@@ -132,16 +132,16 @@ SubProceso f1 <- verificarNumero ( data )
 		FinSi
 	Fin Para
 	
-	//---Verificando si es número---
+	//---Verificando si es numero---
 	Si verificarDato = Falso Entonces
 		resultado =  Concatenar("El dato: (", datoLimpio)
-		resultado = Concatenar(resultado, ") no es un número")
+		resultado = Concatenar(resultado, ") no es un numero")
 	FinSi
 	
 	Si verificarDato = Verdadero Entonces
 		Si contadorMenos > 1 O contadorPunto > 1 Entonces
 			resultado =  Concatenar("El dato: (", datoLimpio)
-			resultado = Concatenar(resultado, ") no es un número")
+			resultado = Concatenar(resultado, ") no es un numero")
 		SiNo
 			Para i <- 1 Hasta Longitud(datoLimpio) Con Paso 1 Hacer
 				a <- SubCadena(datoLimpio,i,i)
@@ -160,7 +160,7 @@ SubProceso f1 <- verificarNumero ( data )
 			
 			Si datoLimpio = '-.' O datoLimpio = '.-' O verificarDato = Falso Entonces
 				resultado =  Concatenar("El dato: (", datoLimpio)
-				resultado = Concatenar(resultado, ") no es un número")
+				resultado = Concatenar(resultado, ") no es un numero")
 			SiNo
 				Si verificarDato = Verdadero Entonces
 					resultado = datoLimpio

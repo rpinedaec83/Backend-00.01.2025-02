@@ -4,7 +4,7 @@ Proceso numeroNegativo
 	Definir contadorPunto, contadorMenos Como Entero
 	
 	Escribir "------------------------------------------------------------------"
-	Escribir "--- Te dire si un número entero es negativo, ingresa un número ---"
+	Escribir "--- Te dire si un numero entero es negativo, ingresa un numero ---"
 	Escribir "------------------------------------------------------------------"
 	Repetir
 		Leer dato
@@ -49,14 +49,14 @@ Proceso numeroNegativo
 			FinSi
 		Fin Para
 		
-		//---Verificando si es número---
+		//---Verificando si es numero---
 		Si verificarDato = Falso Entonces
-			Escribir "--> El dato: (", datoLimpio,") no es un número"
+			Escribir "--> El dato: (", datoLimpio,") no es un numero"
 		FinSi
 		
 		Si verificarDato = Verdadero Entonces
 			Si contadorMenos > 1 O contadorPunto > 1 Entonces
-				Escribir "--> El dato: (", datoLimpio,") no es un número"
+				Escribir "--> El dato: (", datoLimpio,") no es un numero"
 			SiNo
 				Para i <- 1 Hasta Longitud(datoLimpio) Con Paso 1 Hacer
 					a <- SubCadena(datoLimpio,i,i)
@@ -74,23 +74,23 @@ Proceso numeroNegativo
 				Fin Para
 				
 				Si datoLimpio = '-.' O datoLimpio = '.-' O verificarDato = Falso Entonces
-					Escribir "--> El dato: (", datoLimpio,") no es un número"
+					Escribir "--> El dato: (", datoLimpio,") no es un numero"
 				SiNo
 					Si verificarDato = Verdadero Y verificarMenos = Verdadero Y contadorPunto = 0 Entonces
 						Para i <- 1 Hasta Longitud(datoLimpio) Con Paso 1 Hacer
 							a <- SubCadena(datoLimpio,i,i)
 							Si i = 1 Entonces
 								Si a = '-' Entonces
-									Escribir "--- El número: (", datoLimpio,") es negativo ---"
+									Escribir "--- El numero: (", datoLimpio,") es negativo ---"
 									Escribir "--- Autor: cristian_manuel@outlook.com  ---"
 								Sino
 									verificarMenos = Falso
-									Escribir "El número: (", datoLimpio,") no es negativo"
+									Escribir "El numero: (", datoLimpio,") no es negativo"
 								FinSi
 							FinSi
 						Fin Para
 					SiNo
-						Escribir "--> El número: ", "( ", datoLimpio," )", " no es un entero"
+						Escribir "--> El numero: ", "( ", datoLimpio," )", " no es un entero"
 					FinSi
 				FinSi
 			FinSi
