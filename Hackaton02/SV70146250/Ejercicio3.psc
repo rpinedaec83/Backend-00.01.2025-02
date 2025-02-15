@@ -1,4 +1,4 @@
-Proceso Algoritmo3_
+Proceso Algoritmo3_Evalua_Termina_4
 	Definir num como Caracter
 	Definir digito como Entero
 	Definir Llave como Caracter
@@ -24,7 +24,7 @@ Proceso Algoritmo3_
 		Escribir "[=============================]"
 		Escribir "PRESIONE [ENTER] PARA CONTINUAR"
 		Escribir "PARA TERMINAR ESCRIBA: SALIR"
-		Leer Llave //
+		Leer Llave //Escribe o Presiona Enter
 		Escribir "[=============================]"
 	Hasta Que Llave=="SALIR" //La condicion para cerrar el bucle
 	Escribir "[++++++++++++[FIN]+++++++++++++]"
