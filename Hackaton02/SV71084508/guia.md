@@ -41,16 +41,16 @@ en automatico.
 ```
 
 ```sh
-Muchas funcionalidades de uso diario (validadciones) se tienen que hacer 
+Muchas funcionalidades de uso diario (validaciones) se tienen que hacer 
 de nuevo, a diferencia de JS que integra metodos para manejar 
-datos rapidamente
+datos rapidamente.
 ```
 
 ```sh
 Tomar la entrada de datos como caractes, y a partir de las entradas 
-comenzar a parsear y filtrar
+comenzar a parsear y filtrar.
 ```
 ```sh
-No tiene herramientas de excepción o cacheo de errores, es por eso que 
-es frecuente que los algoritmos en PSeInt tengan bastante validación 
+No tiene herramientas de excepción o cacheo de errores, por tal motivo 
+es frecuente que los algoritmos en PSeInt tengan muchas validaciones. 
 ```
