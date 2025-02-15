@@ -1,15 +1,15 @@
 Proceso verificar_tres_digitos
-		// Leer el número
-		Escribir "Ingresa un número:"
+		// Leer el nï¿½mero
+		Escribir "Ingresa un nï¿½mero:"
 		Leer numero
 		
-		// Verificar si el número tiene tres dígitos
+		// Verificar si el nï¿½mero tiene tres dï¿½gitos
 		Si numero >= 100 y numero <= 999 o numero <= -100 y numero >= -999 Entonces
-			Escribir "El número tiene tres dígitos."
+			Escribir "El nï¿½mero tiene tres dï¿½gitos."
 		Sino
-			Escribir "El número no tiene tres dígitos."
+			Escribir "El nï¿½mero no tiene tres dï¿½gitos."
 		FinSi	
 
 FinProceso
 
-///comentario 
+///comentario sabado
