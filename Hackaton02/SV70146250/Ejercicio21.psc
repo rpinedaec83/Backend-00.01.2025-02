@@ -8,6 +8,7 @@ Proceso Algoritmo21_Factorial_Tradicional
 		
 		Escribir "Ingrese un numero: "
 		Leer num 
+		factorial=0 //Para que al repetir el bucle no siga agregando
 		//Validacion NO negativo
 		Si num < 0 O TRUNC(num) <> num Entonces
 			Escribir "ERROR: *DEBE SER ENTERO NO NEGATIVO*"

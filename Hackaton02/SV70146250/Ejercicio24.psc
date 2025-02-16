@@ -1,4 +1,4 @@
-Proceso Algoritmo22_Suma_n_primeros_numeros
+Proceso Algoritmo24_Suma_Pares_Hasta_1000
 	Definir num como Real
 	Definir suma, contador como Entero
 	Definir Llave como Caracter
@@ -6,19 +6,22 @@ Proceso Algoritmo22_Suma_n_primeros_numeros
 	Escribir "[+++++++++++[INICIO]+++++++++++]"
 	Repetir //Comienza el bucle
 		
-		Escribir "Ingrese un numero: "
-		Leer num 
+		//Escribir "Ingrese un numero: "
+		//Leer num 
+		num=1000 //El maximo rango de los pares a tomar
 		suma=0 //Para que al repetir el bucle no siga agregando
 		//Validacion NO negativo
 		Si num < 0 O TRUNC(num) <> num Entonces
 			Escribir "ERROR: *DEBE SER ENTERO NO NEGATIVO*"
 		SiNo
-			Escribir "Lista de numeros (+): "
+			Escribir "Lista Pares (+): "		//Lista de los pares a sumar
 			Para contador=1 Hasta num Con Paso 1 Hacer
+				Si contador MOD 2 == 0 Entonces
 					suma=suma+contador
 					Escribir "         ",contador
+				FinSi
 			FinPara
-			Escribir  "Suma de ",num,"° primeros numeros es: "
+			Escribir  "Suma de pares hasta ",num," es: "
 			Escribir "              ",suma
 		FinSi
 		

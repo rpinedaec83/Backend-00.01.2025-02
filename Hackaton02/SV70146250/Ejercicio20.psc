@@ -8,7 +8,11 @@ Proceso Algoritmo20_Evaluacion_de_4_Digitos
 		
 		Escribir "Ingrese 4 numeros enteros positivos: "
 		Leer num1, num2, num3, num4
+		//Evitando que en el bucle se sigan acumulando valores en estas variables
 		pares=0
+		mayr=0	
+		media=0
+		suma=0
 		//Validacion de entero y positivos
 		Si num1 < 1 O TRUNC(num1) <> num1 O num2 < 1 O TRUNC(num2) <> num2 O num3 < 1 O TRUNC(num3) <> num3 O num4 < 1 O TRUNC(num4) <> num4 Entonces
 			Escribir  "*ERROR: DEBE SER ENTERO POSITIVO"

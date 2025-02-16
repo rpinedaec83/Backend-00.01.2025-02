@@ -8,6 +8,7 @@ Proceso Algoritmo23_Suma_Impares_Menor_Igual_n
 		
 		Escribir "Ingrese un numero: "
 		Leer num 
+		suma=0 //Para que al repetir el bucle no siga agregando
 		//Validacion NO negativo
 		Si num < 0 O TRUNC(num) <> num Entonces
 			Escribir "ERROR: *DEBE SER ENTERO NO NEGATIVO*"
