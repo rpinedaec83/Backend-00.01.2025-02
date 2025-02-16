@@ -1,6 +1,7 @@
-//28. Hacer un algoritmo en Pseint para calcular la suma de los primeros cien nÃºmeros con un ciclo repetir.
+//28. Hacer un algoritmo en Pseint para calcular la suma de los primeros cien números con un ciclo repetir.
 
 Proceso Ejercicio28
+	Definir suma, i Como Entero
 	suma = 0
     i = 1
     
@@ -9,6 +10,6 @@ Proceso Ejercicio28
         i <- i + 1
     Hasta Que i > 100
     
-    Escribir "La suma de los primeros 100 nï¿½meros es: ", suma
+    Escribir "La suma de los primeros 100 n?meros es: ", suma
 
 FinProceso

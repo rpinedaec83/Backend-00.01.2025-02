@@ -1,7 +1,8 @@
-//38. Hacer un algoritmo en Pseint que nos permita saber si un nÃºmero es un nÃºmero perfecto.
+//38. Hacer un algoritmo en Pseint que nos permita saber si un número es un número perfecto.
 
 Proceso Ejercicio38
-	Escribir "Ingrese un nï¿½mero:"
+	Definir  num,suma Como Entero
+	Escribir "Ingrese un n?mero:"
     Leer num
     
     suma = 0
@@ -12,8 +13,8 @@ Proceso Ejercicio38
     Fin Para
     
     Si suma = num Entonces
-        Escribir num, " es un nï¿½mero perfecto."
+        Escribir num, " es un n?mero perfecto."
     Sino
-        Escribir num, " no es un nï¿½mero perfecto."
+        Escribir num, " no es un n?mero perfecto."
     Fin Si
 FinProceso

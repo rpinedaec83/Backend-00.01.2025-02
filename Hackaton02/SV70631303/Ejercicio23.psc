@@ -1,7 +1,8 @@
-//23. Hacer un algoritmo en Pseint para calcular la suma de los nÃºmeros impares menores o iguales a n.
+//23. Hacer un algoritmo en Pseint para calcular la suma de los números impares menores o iguales a n.
 
 Proceso Ejercicio23
-	Escribir "Ingrese un nï¿½mero:"
+	Definir n, suma, i Como Entero
+	Escribir "Ingrese un n?mero:"
     Leer n
     
     suma = 0
@@ -9,6 +10,6 @@ Proceso Ejercicio23
         suma = suma + i
     Fin Para
     
-    Escribir "La suma de los nï¿½meros impares hasta ", n, " es: ", suma
+    Escribir "La suma de los n?meros impares hasta ", n, " es: ", suma
 
 FinProceso

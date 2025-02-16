@@ -1,23 +1,38 @@
-//32. Se quiere saber cu√°l es la ciudad con la poblaci√≥n de m√°s personas, son tres provincias y once ciudades,
-hacer un algoritmo en Pseint que nos permita saber eso.
+//32. Se quiere saber cu·l es la ciudad con la poblaciÛn de m·s personas, son tres provincias y once ciudades,
+//hacer un algoritmo en Pseint que nos permita saber eso.
 
 Proceso Ejercicio32
-	mayorPoblacion = 0
+    Definir provincias, ciudades, poblacion Como Entero
+    Definir nombreCiudadMax, nombreProvinciaMax Como Cadena
+    Definir poblacionMax Como Entero
+	Definir nombreCiudad Como Cadena
+	Definir poblacionCiudad Como Entero
+	Definir nombreProvincia Como Cadena
+	
+    poblacionMax <- 0
+    nombreCiudadMax <- ""
+    nombreProvinciaMax <- ""
     
-    Para i <- 1 Hasta 11 Hacer
-        Escribir "Ingrese el nombre de la provincia:"
-        Leer provincia
-        Escribir "Ingrese el nombre de la ciudad:"
-        Leer ciudad
-        Escribir "Ingrese la poblaciÔøΩn de ", ciudad, ":"
-        Leer poblacion
+    Para provincias <- 1 Hasta 3 Hacer
+        Escribir "Ingrese el nombre de la Provincia ", provincias, ": "
+        Leer nombreProvincia
         
-        Si poblacion > mayorPoblacion Entonces
-            mayorPoblacion = poblacion
-            ciudadMayor = ciudad
-            provinciaMayor = provincia
-        Fin Si
-    Fin Para
+        Para ciudades <- 1 Hasta 11 Hacer
+            
+            Escribir "Ingrese el nombre de la ciudad ", ciudades, " de la provincia ", nombreProvincia, ": "
+            Leer nombreCiudad
+            
+            Escribir "Ingrese la poblaciÛn de ", nombreCiudad, ": "
+            Leer poblacionCiudad
+            
+            Si poblacionCiudad > poblacionMax Entonces
+                poblacionMax <- poblacionCiudad
+                nombreCiudadMax <- nombreCiudad
+                nombreProvinciaMax <- nombreProvincia
+            FinSi
+        FinPara
+    FinPara
     
-    Escribir "La ciudad con mayor poblaciÔøΩn es ", ciudadMayor, " en la provincia ", provinciaMayor, " con ", mayorPoblacion, " habitantes."
+    Escribir "La ciudad con mayor poblaciÛn es ", nombreCiudadMax, " en la provincia de ", nombreProvinciaMax, " con ", poblacionMax, " habitantes."
+
 FinProceso

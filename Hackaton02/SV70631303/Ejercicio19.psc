@@ -1,38 +1,42 @@
-//19. Hacer un algoritmo en Pseint para una heladerÃ­a se tienen 4 tipos de empleados
-//ordenados de la siguiente forma con su nÃºmero identificador
+//19. Hacer un algoritmo en Pseint para una heladería se tienen 4 tipos de empleados
+//ordenados de la siguiente forma con su número identificador
 //y salario diario correspondiente:
 
-//    Cajero (56$/dÃ­a).
+//    Cajero (56$/día).
 
-//    Servidor (64$/dÃ­a).
+//    Servidor (64$/día).
 
-//    Preparador de mezclas (80$/dÃ­a).
+//    Preparador de mezclas (80$/día).
 
-//    Mantenimiento (48$/dÃ­a).
+//    Mantenimiento (48$/día).
 
-//El dueÃ±o de la tienda desea tener un programa donde sÃ³lo ingrese dos nÃºmeros enteros
-//que representen al nÃºmero identificador del empleado y la cantidad de dÃ­as que trabajÃ³
-//en la semana (6 dÃ­as mÃ¡ximos). Y el programa le mostrarÃ¡ por pantalla la cantidad de dinero que el dueÃ±o le debe pagar al empleado que ingresÃ³
+//El dueño de la tienda desea tener un programa donde sólo ingrese dos números enteros
+//que representen al número identificador del empleado y la cantidad de días que trabajó
+//en la semana (6 días máximos). Y el programa le mostrará por pantalla la cantidad de dinero que el dueño le debe pagar al empleado que ingresó
 
 Proceso Ejercicio19
+	Definir idEmpleado, dias, salarioDia, totalPagar Como Real
+    
 	Escribir "Ingrese el identificador del empleado (1-Cajero, 2-Servidor, 3-Preparador, 4-Mantenimiento):"
     Leer idEmpleado
-    Escribir "Ingrese los dï¿½as trabajados (mï¿½x 6):"
+    Escribir "Ingrese los d?as trabajados (m?x 6):"
     Leer dias
     
-    Segun idEmpleado Hacer
-        1: salarioDia = 56
-        2: salarioDia = 64
-        3: salarioDia = 80
-        4: salarioDia = 48
-        De Otro Modo:
-            Escribir "Identificador invï¿½lido."
-	FinSegun
-
-	Si dias > 6 Entonces
-		Escribir "Error, el limite son 6 dï¿½as"
+	Si (idEmpleado == 1 O idEmpleado == 2 O idEmpleado == 3 O idEmpleado == 4) Entonces
+		Si dias > 6 Entonces
+			Escribir "El limite son 6 días de trabajo"
+		SiNo
+			Segun idEmpleado Hacer
+				1: salarioDia = 56
+				2: salarioDia = 64
+				3: salarioDia = 80
+				De Otro Modo:
+					salarioDia = 48
+			FinSegun
+			totalPagar = salarioDia * dias
+			Escribir "El total a pagar es: ", totalPagar
+		FinSi
 	SiNo
-		totalPagar = salarioDia * dias
-		Escribir "El total a pagar es: ", totalPagar
-	Fin Si
+		Escribir "No esta registrado en el sistema ese identificador de empleado"
+	FinSi
 FinProceso

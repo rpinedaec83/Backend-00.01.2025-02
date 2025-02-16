@@ -1,7 +1,8 @@
 //36. Hacer un algoritmo en Pseint para calcular la serie de Fibonacci.
 
 Proceso Ejercicio36
-	Escribir "Ingrese la cantidad de t�rminos de la serie Fibonacci:"
+	Definir n,a,b,temp Como Entero
+	Escribir "Ingrese la cantidad de t?rminos de la serie Fibonacci:"
     Leer n
     
     a = 0

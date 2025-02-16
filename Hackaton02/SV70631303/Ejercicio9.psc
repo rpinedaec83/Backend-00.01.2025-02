@@ -1,9 +1,11 @@
 //9. Hacer un algoritmo en Pseint para determinar el aumento de un trabajador,
-// se debe tomar en cuenta que si ganaba m√°s de $2000
-//tendr√° un aumento del 5%, si generaba menos de $2000 su aumento ser√°
+// se debe tomar en cuenta que si ganaba m·s de $2000
+//tendr· un aumento del 5%, si generaba menos de $2000 su aumento ser·
 //de un 10%.
 
 Proceso Ejercicio9
+	Definir salario, aumento, nuevoSalario Como Real
+    
 	Escribir "Ingrese el salario actual:"
     Leer salario
     

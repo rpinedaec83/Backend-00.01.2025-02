@@ -1,7 +1,8 @@
-//21. Hacer un algoritmo en Pseint que permita calcular el factorial de un nÃºmero.
+//21. Hacer un algoritmo en Pseint que permita calcular el factorial de un número.
 
 Proceso Ejercicio21
-	Escribir "Ingrese un nï¿½mero:"
+	Definir n, i, fact Como Entero
+	Escribir "Ingrese un n?mero:"
     Leer n
     
     fact = 1

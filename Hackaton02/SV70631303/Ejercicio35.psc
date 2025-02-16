@@ -1,7 +1,8 @@
-//35. Hacer un algoritmo en Pseint que nos permita saber cuÃ¡l es el nÃºmero mayor y menor, se debe ingresar sÃ³lo veinte nÃºmeros.
+//35. Hacer un algoritmo en Pseint que nos permita saber cuál es el número mayor y menor, se debe ingresar sólo veinte números.
 
 Proceso Ejercicio35
-	Escribir "Ingrese 20 nï¿½meros:"
+	Definir num,mayor,menor Como Real
+	Escribir "Ingrese 20 n?meros:"
     Leer num
     mayor = num
     menor = num
@@ -15,6 +16,6 @@ Proceso Ejercicio35
             menor = num
         Fin Si
     Fin Para
-    Escribir "El nï¿½mero mayor es: ", mayor
-    Escribir "El nï¿½mero menor es: ", menor
+    Escribir "El n?mero mayor es: ", mayor
+    Escribir "El n?mero menor es: ", menor
 FinProceso

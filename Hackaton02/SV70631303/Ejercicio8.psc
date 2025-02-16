@@ -1,7 +1,8 @@
 //8. Hacer un algoritmo en Pseint para calcular el promedio de tres notas
-//y determinar si el estudiante aprobÃ³ o no.
+//y determinar si el estudiante aprobó o no.
 
 Proceso Ejercicio8
+	Definir primeraNota,segundaNota,terceraNota,promedio Como Real
 	Escribir "Introduce la primera nota: "
 	Leer primeraNota
 	Escribir "Introduce la segunda nota: "

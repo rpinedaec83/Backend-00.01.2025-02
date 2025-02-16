@@ -1,4 +1,4 @@
-//25. Hacer un algoritmo en Pseint para calcular el factorial de un nÃºmero de una forma distinta.
+//25. Hacer un algoritmo en Pseint para calcular el factorial de un número de una forma distinta.
 
 SubProceso returnValue <- Factorial ( num )
 	Si num = 0 Entonces
@@ -9,7 +9,8 @@ SubProceso returnValue <- Factorial ( num )
 Fin SubProceso
 
 Proceso Ejercicio25
-	Escribir "Ingrese un nï¿½mero:"
+	Definir num Como Entero
+	Escribir "Ingrese un n?mero:"
 	Leer num
 	Escribir "El factorial de ", num, " es: " Factorial(num)
 FinProceso

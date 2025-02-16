@@ -2,6 +2,7 @@
 //y nos calcule la hora dentro de un segundo.
 
 Proceso Ejercicio17
+	Definir horas, minutos, segundos Como Entero
 	Escribir "Ingrese la hora:"
     Leer horas
     Escribir "Ingrese los minutos:"

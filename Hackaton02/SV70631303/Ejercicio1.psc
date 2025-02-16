@@ -1,11 +1,16 @@
 //1. Hacer un algoritmo en Pseint que lea un número por el teclado y determinar si tiene tres dígitos.
 
 Proceso Ejercicio1
+	Definir numeroALeer Como Entero
 	Escribir "Digite un número: "
 	leer numeroALeer
 	si 99<numeroALeer Y numeroALeer<1000 Entonces
 		Escribir "Es de 3 digitos"
 	SiNo
-		Escribir "No es de 3 digitos"
+		Si -99>numeroALeer Y numeroALeer>-1000 Entonces
+			Escribir "Es de 3 digitos, pero negativo"
+		SiNo
+			Escribir "No es de 3 digitos"
+		FinSi
 	FinSi
 FinProceso

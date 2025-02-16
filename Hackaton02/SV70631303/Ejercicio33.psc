@@ -1,8 +1,9 @@
 //33. Hacer un algoritmo en Pseint que permita al usuario continuar con el programa.
 
 Proceso Ejercicio33
+	Definir respuesta Como Caracter
 	Repetir
-        Escribir "�Desea continuar? (S/N)"
+        Escribir "?Desea continuar? (S/N)"
         Leer respuesta
     Hasta Que respuesta = "N" O respuesta = "n"
     

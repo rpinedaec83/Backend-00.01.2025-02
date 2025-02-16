@@ -1,11 +1,12 @@
-//4. Hacer un algoritmo en Pseint que lea tres nÃºmeros enteros y los muestre de menor a mayor.
+//4. Hacer un algoritmo en Pseint que lea tres números enteros y los muestre de menor a mayor.
 
 Proceso Ejercicio4
-	Escribir "Ingrese el primer nï¿½mero: "
+	Definir num1,num2,num3,temp Como Entero
+	Escribir "Ingrese el primer n?mero: "
 	Leer num1
-	Escribir "Ingrese el segundo nï¿½mero: "
+	Escribir "Ingrese el segundo n?mero: "
 	Leer num2
-	Escribir "Ingrese el tercer nï¿½mero: "
+	Escribir "Ingrese el tercer n?mero: "
 	Leer num3
 	
 	Si num1 > num2 Entonces
@@ -26,6 +27,6 @@ Proceso Ejercicio4
 		num3 = temp
 	FinSi
 	
-	Escribir "Los nï¿½meros ordenados de menor a mayor son: ", num1, ", ", num2, ", ", num3
+	Escribir "Los n?meros ordenados de menor a mayor son: ", num1, ", ", num2, ", ", num3
 
 FinProceso
