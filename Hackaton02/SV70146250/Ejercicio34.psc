@@ -1,24 +1,17 @@
-Proceso Algoritmo27_Media_Numeros_Positivos_Hasta_Agregar_Negativo
-	Definir num, suma, contador como Real
+Proceso Algoritmo34_Tablas_Multiplica_1_9
+	definir i, j Como Entero
 	Definir Llave como Caracter
 	Llave="" //Permite cerrar el bucle
 	Escribir "[+++++++++++[INICIO]+++++++++++]"
 	Repetir //Comienza el bucle
-		contador=0
-		Repetir
-			Escribir "Ingrese numero NO negativo o finalizara: "
-			Leer num 
-			Si num>=0 Entonces
-				suma=suma+num
-				contador=contador+1
-			FinSi
-		Hasta Que num<0
-		Si contador>0 Entonces
-			Escribir "Se ingresaron ",contador," numeros positivos"
-			Escribir "Media de numeros ingresados es: ", suma/contador
-		SiNo
-			Escribir "No se ingresaron numeros positivos"
-		FinSi
+		
+		Para i=1 hasta 9 con paso 1 hacer
+			Escribir "Tabla del ",i,")"
+			Para j=1 hasta 10 con paso 1 Hacer
+				Escribir i," x ",j," = ", i*j
+			FinPara
+			Escribir "------------"
+		FinPara
 		
 		//Menu para continuar o salir
 		Escribir "[=============================]"

@@ -26,7 +26,7 @@ Proceso Algoritmo21_Factorial_Tradicional
 		Escribir "PARA TERMINAR ESCRIBA: SALIR"
 		Leer Llave //Escribe o Presiona Enter
 		Escribir "[=============================]"
-	Hasta Que Llave=="SALIR" //La condicion para cerrar el bucle
+	Hasta Que Mayusculas(Llave)=="SALIR" //La condicion para cerrar el bucle
 	Escribir "[++++++++++++[FIN]+++++++++++++]"
 	
 FinProceso
