@@ -59,3 +59,17 @@ Adrian Choquehuanca
 Luis Guerrero
 
 Flavio Ascama Rojo
+
+Leonardo Franco
+
+Alfredo Navarro
+
+Felicitas Castro
+
+Sofia Miranda
+
+Emerson Jerzy
+
+Alfredo Navarro
+
+Juana Marcelo 
