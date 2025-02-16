@@ -13,7 +13,7 @@ Proceso  Algoritmo40_Aproxima_Nilakantha_para_Pi
 		//Validacion pendiente
 		Para i=1 hasta iteraciones Hacer 
 			termino = 4/(n*(n+1)*(n+2))
-			pi2 =pi2+(signo*termino)	//Metodo Nilakantha, en un ciclo
+			pi2 =pi2+(signo*termino)	// Metodo Nilakantha, en un ciclo
 			signo = signo *(-1)
 			n=n+2
 		FinPara
