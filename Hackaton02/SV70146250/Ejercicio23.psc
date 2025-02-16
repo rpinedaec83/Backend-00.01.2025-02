@@ -1,4 +1,4 @@
-Proceso Algoritmo22_Suma_n_primeros_numeros
+Proceso Algoritmo23_Suma_Impares_Menor_Igual_n
 	Definir num como Real
 	Definir suma, contador como Entero
 	Definir Llave como Caracter
@@ -12,12 +12,14 @@ Proceso Algoritmo22_Suma_n_primeros_numeros
 		Si num < 0 O TRUNC(num) <> num Entonces
 			Escribir "ERROR: *DEBE SER ENTERO NO NEGATIVO*"
 		SiNo
-			Escribir "Lista de numeros (+): "
+			Escribir "Lista de Impares (+): "
 			Para contador=1 Hasta num Con Paso 1 Hacer
+				Si contador MOD 2 <> 0 Entonces
 					suma=suma+contador
 					Escribir "         ",contador
+				FinSi
 			FinPara
-			Escribir  "Suma de ",num,"° primeros numeros es: "
+			Escribir  "Suma de menores iguales a ",num," es: "
 			Escribir "              ",suma
 		FinSi
 		
