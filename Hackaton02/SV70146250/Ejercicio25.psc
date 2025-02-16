@@ -22,7 +22,6 @@ Proceso Algoritmo25_Factorial_Distinto
 				factorial = factorial *contador; //Calculo
 				contador = contador+1 //Para que pase al siguiente valor sumando 1
 			FinMientras
-			
 			Escribir "El factorial es: ", factorial
 		FinSi
 		
