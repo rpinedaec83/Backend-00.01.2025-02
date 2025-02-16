@@ -1,11 +1,11 @@
-Proceso Algoritmo11_MAYOR
+Proceso Algoritmo11_MAYOR_DE_3
 	Definir num1, num2, num3, temporal  como Real
 	Definir Llave como Caracter
 	Llave="" //Permite cerrar el bucle
 	Escribir "[+++++++++++[INICIO]+++++++++++]"
 	Repetir //Comienza el bucle
 		
-		Escribir "Ingrese 3 numeros enteros: "
+		Escribir "Ingrese 3 numeros: "
 		Leer num1, num2, num3
 			//Evaluaciones - Se puede optimizar para reducir procedimientos
 			Si num1>num2 Entonces //Si num1 es mayor a num2, intercambiarlos
