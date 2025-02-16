@@ -1,6 +1,7 @@
 Proceso Algoritmo5_Venta_AlMayor_Zapatos
 	Definir  precio como Entero
 	Definir  cantidadZapatos, totalPagar, totalOriginal, descuento como Real
+	Definir Llave como Cadena
 	precio=80 //Cada par de zapatos cuesta 80
 	Llave="" //Permite cerrar el bucle
 	Escribir "[+++++++++++[INICIO]+++++++++++]"
@@ -12,8 +13,10 @@ Proceso Algoritmo5_Venta_AlMayor_Zapatos
 		Escribir " *SOLO ADMITEN ENTEROS POSITIVOS*"
 	 SiNo
 	  Si TRUNC(cantidadZapatos)<>cantidadZapatos Entonces	//Valida si es decimal y advierte
-			 Escribir " *SOLO ADMITEN ENTEROS POSITIVOS*"
-      SiNo 		//Si el dato ingresado es valdiado procede con los calculos
+		  Escribir " *SOLO ADMITEN ENTEROS POSITIVOS*"
+		  
+		  //Si el dato ingresado es valdiado procede con los calculos
+      SiNo 		
 			totalOriginal = cantidadZapatos*precio  // Calculo total sin descuentos para todos
 			descuento=totalOriginal *0				// Calculo de la cantidad a descontar
 			totalPagar = totalOriginal*(1-0)		// Calculo del total a pagar
