@@ -8,16 +8,16 @@ Proceso tienda_de_helados
 		Escribir "Introduce el tipo de membresía (A, B, C): "
 		Leer tipo_membresia
 		
-		// Convertir la entrada a mayúsculas para evitar problemas con minúsculas
+		// Convertir la entrada a mayúsculas 
 		tipo_membresia <- Mayusculas(tipo_membresia)
 		
-		// Determinar el descuento según el tipo de membresía
-		Si tipo_membresia = "A" Entonces
-			descuento <- 0.10  // 10% de descuento
+		
+		Si tipo_membresia = "A" Entonces  // Determinar el descuento según el tipo de membresía
+			descuento <- 0.10  // 10% 
 		  Sino Si tipo_membresia = "B" Entonces
-				descuento <- 0.15  // 15% de descuento
+				descuento <- 0.15  // 15%
 			     Sino Si tipo_membresia = "C" Entonces
-						descuento <- 0.20  // 20% de descuento
+						descuento <- 0.20  // 20% 
 						Sino
 							descuento <- 0  // Si no es A, B o C, no hay descuento
 								Escribir "Tipo de membresía no válido. No se aplica descuento."
@@ -26,7 +26,7 @@ Proceso tienda_de_helados
 							
 		FinSi
 			
-				// Calcular el total con el descuento, solo si el tipo de membresía es válido
+				// Calcular el total con el descuento
 				Si descuento > 0 Entonces
 					total_comprado <- precio_helado - (precio_helado * descuento)
 					  Sino

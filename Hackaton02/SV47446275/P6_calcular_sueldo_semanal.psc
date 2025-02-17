@@ -6,10 +6,10 @@ Proceso  calcular_sueldo_semanal
 		Leer horas_trabajadas
 		
 		Si horas_trabajadas <= 40 Entonces
-			sueldo_base <- horas_trabajadas * 20  // Se paga 20 soles por cada hora trabajada
+			sueldo_base <- horas_trabajadas * 20  // 20 soles por cada hora trabajada
 			sueldo_total <- sueldo_base
 		Sino
-			horas_extras <- horas_trabajadas - 40  // Calcular las horas extras
+			horas_extras <- horas_trabajadas - 40  // horas extras
 			sueldo_base <- 40 * 20  // Las primeras 40 horas se pagan a 20 soles
 			sueldo_total <- sueldo_base + (horas_extras * 25)  // Las horas extras se pagan a 25 soles
 		FinSi
