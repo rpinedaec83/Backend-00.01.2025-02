@@ -2,33 +2,6 @@
 Repo Backend 00.01.2025-02
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## La primera vez
 git remote add fuentes https://github.com/rpinedaec83/Backend-00.01.2025-02.git
 
