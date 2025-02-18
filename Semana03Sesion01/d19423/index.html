@@ -11,5 +11,16 @@
     <h2>Este es un subtitulo</h2>
 
     <h6>Este es un h6</h6>
+    <button onclick="alert('Hola desde el boton')" >Haz Click</button>
+    <br>
+    <button id="btnOtro">Otro Click</button>
+
+    <script>
+        document.getElementById('btnOtro').addEventListener('click', function(){
+            alert('Hola desde el boton Otro');
+        });
+    </script>
+    <script src="js/script.js"></script>
+
 </body>
 </html>
