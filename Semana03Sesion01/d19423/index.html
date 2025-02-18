@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <H1>Hola desde la pagina web</H1>
+    <h2>Este es un subtitulo</h2>
+
+    <h6>Este es un h6</h6>
+    <button onclick="alert('Hola desde el boton')" >Haz Click</button>
+    <br>
+    <button id="btnOtro">Otro Click</button>
+    <button id="descargar" disabled>descargar</button>
+
+    <script>
+        document.getElementById('btnOtro').addEventListener('click', function(){
+            alert('Hola desde el boton Otro');
+        });
+    </script>
+    <script src="js/script.js"></script>
+
+</body>
+</html>
