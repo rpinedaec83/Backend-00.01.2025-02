@@ -281,3 +281,4 @@ console.log(objPersona.nombre)
 console.log(objPersona.padre.nombre)
 
 console.log(arrPersonas)
+
