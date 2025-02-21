@@ -60,7 +60,6 @@ document.getElementById("btn-ejercicio-02").addEventListener('click', function (
     };
 });
 
-
 document.getElementById("btn-ejercicio-03").addEventListener('click', function () {
     ejercicio = document.getElementById("btn-ejercicio-03").textContent;
     let n = parseInt(prompt(`${ejercicio}
@@ -338,6 +337,30 @@ document.getElementById("btn-ejercicio-09").addEventListener('click', function (
 document.getElementById("btn-ejercicio-10").addEventListener('click', function () {
 
     ejercicio = document.getElementById("btn-ejercicio-10").textContent;
+
+    let n = parseInt(prompt(`${ejercicio}
+    Digite un número por favor`));
+
+    if (Number.isNaN(n)) {
+        alert(`El dato ingresado no es un número.
+        Por favor ingrese el dato solicitado correctamente`);
+    }
+
+    else {
+
+        if (n % 2 == 0) {
+            alert(`El número ${n} es par`)
+        } else {
+            alert(`El número ${n} es impar`)
+        }
+
+    }
+
+});
+
+document.getElementById("btn-ejercicio-11").addEventListener('click', function () {
+
+    ejercicio = document.getElementById("btn-ejercicio-11").textContent;
 
     let n = parseInt(prompt(`${ejercicio}
     Digite un número por favor`));
