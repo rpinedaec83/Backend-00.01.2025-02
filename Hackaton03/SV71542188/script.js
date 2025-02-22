@@ -609,3 +609,18 @@ function ejercicio38() {
         alert("El número " + numero + " no es un número perfecto.");
     }
 }
+
+function ejercicio39() {
+    let iteraciones = parseInt(prompt("Ingrese el número de iteraciones para la aproximación de pi:"));
+    if (iteraciones <= 0) {
+        alert("Por favor ingrese un número positivo.");
+        return;
+    }
+    let pi = 0;
+    let signo = 1;
+    for (let i = 0; i < iteraciones; i++) {
+        pi += signo * (4 / (2 * i + 1));
+        signo *= -1;
+    }
+    alert("La aproximación de pi con " + iteraciones + " iteraciones es: " + pi);
+}
