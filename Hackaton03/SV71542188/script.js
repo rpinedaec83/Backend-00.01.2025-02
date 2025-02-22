@@ -19,5 +19,14 @@ function ejercicio02(){
 }
 
 function ejercicio03(){
+    let numero = parseInt(prompt("Ingrese un número:"));
+    if (numero % 10 === 4) {
+        alert("El número termina en 4");
+    } else {
+        alert("El número no termina en 4");
+    }
+}
 
+function ejercicio04(){
+    
 }
