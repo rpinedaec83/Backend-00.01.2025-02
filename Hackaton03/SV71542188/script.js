@@ -524,10 +524,8 @@ function ejercicio32() {
 function ejercicio33() {
     let continuar = true;
     while (continuar) {
-        // Aquí puedes colocar el código del programa que deseas ejecutar
         let numero = parseInt(prompt("Ingrese un número para realizar alguna operación:"));
         alert("El número ingresado es: " + numero);
-        // Preguntar al usuario si desea continuar
         let respuesta = prompt("¿Desea continuar? (si/no)").toLowerCase();
         if (respuesta !== 'si') {
             continuar = false;
@@ -538,10 +536,29 @@ function ejercicio33() {
 
 function ejercicio34() {
     for (let i = 1; i <= 9; i++) {
-        console.log(`Tabla de multiplicar del ${i}:`);
+        alert(`Tabla de multiplicar del ${i}:`);
         for (let j = 1; j <= 10; j++) {
-            console.log(`${i} x ${j} = ${i * j}`);
+            alert(`${i} x ${j} = ${i * j}`);
         }
-        console.log(''); // Línea en blanco para separar las tablas
+        alert(''); 
     }
+}
+
+function ejercicio35() {
+    let numeros = [];
+    for (let i = 0; i < 20; i++) {
+        numeros.push(parseInt(prompt(`Ingrese el número ${i + 1}:`)));
+    }
+    let mayor = numeros[0];
+    let menor = numeros[0];
+    for (let num of numeros) {
+        if (num > mayor) {
+            mayor = num;
+        }
+        if (num < menor) {
+            menor = num;
+        }
+    }
+    alert("El número mayor es: " + mayor);
+    alert("El número menor es: " + menor);
 }
