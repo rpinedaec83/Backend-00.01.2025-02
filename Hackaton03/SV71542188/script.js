@@ -575,3 +575,18 @@ function ejercicio36() {
     }
     alert("Los primeros " + n + " términos de la serie de Fibonacci son: " + fibonacci.slice(0, n).join(", "));
 }
+
+function ejercicio37() {
+    let a = parseInt(prompt("Ingrese el primer número:"));
+    let b = parseInt(prompt("Ingrese el segundo número:"));
+    function mcd(a, b) {
+        while (b !== 0) {
+            let temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+    let resultado = mcd(a, b);
+    alert("El M.C.D. de " + a + " y " + b + " es: " + resultado);
+}
