@@ -161,3 +161,112 @@ function ejercicio14() {
   // == comprar
   //  === comprar pero tambien el tipo de dato
 }
+
+function ejercicio17() {
+  /**
+   * 
+17. Hacer un algoritmo en JavaScript
+ donde se ingrese una hora y nos calcule 
+ la hora dentro de un segundo.
+   */
+  console.log("==========ejercicio 17=================");
+
+  let horas, minutos, segundos;
+
+  horas = 23;
+  minutos = 59;
+  segundos = 59;
+
+  // segundos = segundos+1;
+  segundos++;
+
+  if (segundos == 60) {
+    segundos = 0;
+    minutos = minutos + 1;
+  }
+  if (minutos == 60) {
+    minutos = 0;
+    horas += 1;
+  }
+
+  if (horas == 24) {
+    horas = 0;
+  }
+  console.log(
+    "La hora dentro  de un segundo será: Horas: ",
+    horas,
+    " minutos: ",
+    minutos,
+    "  segundos: ",
+    segundos
+  );
+}
+function ejercicio22() {
+  //Hacer un algoritmo en JavaScript para calcular
+  // la suma de los n primeros números.
+  console.log("==========ejercicio 22=================");
+  let suma = 0;
+  const n = 39;
+  for (let i = 1; i <= n; i++) {
+    suma += i;
+  }
+
+  console.log("La suma  de los  n ", n, " primeros numeros es: ", suma);
+}
+
+function ejercicio23() {
+  // Hacer un algoritmo en JavaScript para calcular
+  // la suma de los números impares menores o iguales a n.
+  console.log("==========ejercicio 23=================");
+  let suma = 0;
+  const n = 39;
+  for (let i = 1; i <= n; i++) {
+    if (i % 2 != 0) {
+      suma += i;
+    }
+  }
+
+  console.log(
+    "La suma  de los numeros impares menores o igulaes a ",
+    n,
+    " es: ",
+    suma
+  );
+}
+
+function ejercicio25() {
+  // Hacer un algoritmo en
+  // JavaScript para calcular el
+  // factorial de un número de una forma distinta.
+  console.log("==========ejercicio 25=================");
+
+  let n, factorial, contador;
+
+  n = 5;
+  factorial = 1;
+  contador = 1;
+
+  while (contador <= n) {
+    factorial = factorial * contador;
+    contador = contador + 1;
+  }
+  console.log("El factorial del numero: ", n, " es: ", factorial);
+}
+
+function ejercicio28() {
+  // Hacer un algoritmo en JavaScript para
+  //  calcular la suma de los primeros
+  // cien números con un ciclo repetir.
+
+  console.log("==========ejercicio 28=================");
+  let suma, contador;
+
+  suma = 0;
+  contador = 1;
+  do {
+    suma = suma + contador;
+    contador = contador + 1;
+  } while (contador <= 100);
+
+  console.log("La suma de los 100 primeros numeros es ", suma);
+}
