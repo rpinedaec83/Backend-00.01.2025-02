@@ -521,3 +521,17 @@ function ejercicio32() {
     alert("La ciudad con la mayor población es: " + ciudadMayorPoblacion.nombre + " con una población de " + ciudadMayorPoblacion.poblacion);
 }
 
+function ejercicio33() {
+    let continuar = true;
+    while (continuar) {
+        // Aquí puedes colocar el código del programa que deseas ejecutar
+        let numero = parseInt(prompt("Ingrese un número para realizar alguna operación:"));
+        alert("El número ingresado es: " + numero);
+        // Preguntar al usuario si desea continuar
+        let respuesta = prompt("¿Desea continuar? (si/no)").toLowerCase();
+        if (respuesta !== 'si') {
+            continuar = false;
+        }
+    }
+    alert("Programa terminado.");
+}
