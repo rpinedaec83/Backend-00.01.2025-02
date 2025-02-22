@@ -445,3 +445,13 @@ function ejercicio27() {
         alert("La media de los números positivos ingresados es: " + media.toFixed(2));
     }
 }
+
+function ejercicio28() {
+    let suma = 0;
+    let i = 1;
+    do {
+        suma += i;
+        i++;
+    } while (i <= 100);
+    alert("La suma de los primeros cien números es: " + suma);
+}
