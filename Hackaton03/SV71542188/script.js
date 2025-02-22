@@ -590,3 +590,22 @@ function ejercicio37() {
     let resultado = mcd(a, b);
     alert("El M.C.D. de " + a + " y " + b + " es: " + resultado);
 }
+
+function ejercicio38() {
+    let numero = parseInt(prompt("Ingrese un número para verificar si es un número perfecto:"));
+    if (numero <= 0) {
+        alert("Por favor ingrese un número positivo.");
+        return;
+    }
+    let sumaDivisores = 0;
+    for (let i = 1; i <= numero / 2; i++) {
+        if (numero % i === 0) {
+            sumaDivisores += i;
+        }
+    }
+    if (sumaDivisores === numero) {
+        alert("El número " + numero + " es un número perfecto.");
+    } else {
+        alert("El número " + numero + " no es un número perfecto.");
+    }
+}
