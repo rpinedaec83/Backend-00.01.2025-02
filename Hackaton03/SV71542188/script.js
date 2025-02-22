@@ -347,3 +347,15 @@ function ejercicio20() {
         }
     }
 }
+function ejercicio21() {
+    let numero = parseInt(prompt("Ingrese un número para calcular su factorial:"));
+    if (numero < 0) {
+        alert("El factorial no está definido para números negativos.");
+        return;
+    }
+    let factorial = 1;
+    for (let i = 1; i <= numero; i++) {
+        factorial *= i;
+    }
+    alert("El factorial de " + numero + " es: " + factorial);
+}
