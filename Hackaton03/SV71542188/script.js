@@ -426,3 +426,22 @@ function ejercicio26() {
     alert("El cociente es: " + cociente);
     alert("El resto es: " + resto);
 }
+
+function ejercicio27() {
+    let suma = 0;
+    let contador = 0;
+    while (true) {
+        let numero = parseFloat(prompt("Ingrese un número positivo (o un número negativo para terminar):"));
+        if (numero < 0) {
+            break;
+        }
+        suma += numero;
+        contador++;
+    }
+    if (contador === 0) {
+        alert("No se ingresaron números positivos.");
+    } else {
+        let media = suma / contador;
+        alert("La media de los números positivos ingresados es: " + media.toFixed(2));
+    }
+}
