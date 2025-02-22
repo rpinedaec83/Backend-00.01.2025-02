@@ -275,6 +275,8 @@ let objPersona={
 
 let objPersona2={
     nombre: "David",
+    imagen:"https://plamoscale.com/images/fog1labs1/thumbs/70.jpg",
+    
     segundoNombre: "David",
     apellido: "Lopez",
     edad: 25,
