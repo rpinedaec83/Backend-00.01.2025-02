@@ -57,3 +57,49 @@ function ejercicio05(){
     alert("El descuento aplicado es: $" + totalDescuento.toFixed(2));
     alert("El total a pagar es: $" + totalPagar.toFixed(2)); 
 }
+
+function ejercicio06(){
+    const pagoPorHora = 20;
+    const pagoPorHoraExtra = 25;
+    const horasNormales = 40;
+
+    let horasTrabajadas = parseInt(prompt("Ingrese el número de horas trabajadas en la semana:"));
+    let sueldoSemanal;
+
+    if (horasTrabajadas <= horasNormales) {
+        sueldoSemanal = horasTrabajadas * pagoPorHora;
+    } else {
+        let horasExtras = horasTrabajadas - horasNormales;
+        sueldoSemanal = (horasNormales * pagoPorHora) + (horasExtras * pagoPorHoraExtra);
+    }
+
+    alert("El sueldo semanal es: $" + sueldoSemanal.toFixed(2));
+}
+
+function ejercicio07(){
+    const precioHelado = parseFloat(prompt("Ingrese el precio del helado:"));
+    const tipoMembresia = prompt("Ingrese el tipo de membresía (A, B, C):").toUpperCase();
+    let descuento = 0;
+
+    switch (tipoMembresia) {
+        case 'A':
+            descuento = 0.10;
+            break;
+        case 'B':
+            descuento = 0.15;
+            break;
+        case 'C':
+            descuento = 0.20;
+            break;
+        default:
+            alert("Tipo de membresía no válida");
+            return;
+    }
+
+    let totalDescuento = precioHelado * descuento;
+    let totalPagar = precioHelado - totalDescuento;
+
+    alert("El precio del helado es: $" + precioHelado.toFixed(2));
+    alert("El descuento aplicado es: $" + totalDescuento.toFixed(2));
+    alert("El total a pagar es: $" + totalPagar.toFixed(2));
+}
