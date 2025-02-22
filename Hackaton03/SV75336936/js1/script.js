@@ -24,3 +24,22 @@ function ejercicio02(){
         console.log('El número no es negativo.')
     }
 }
+
+function ejercicio03(){
+
+    
+        let num = parseInt(prompt('Ingrese un numero: ', numero));
+        
+        if (isNaN(num)) {
+            alert('Por favor, ingrese un número válido.')
+            console.log('Por favor, ingrese un número válido.')
+        } else if (numero.endsWith('4')) {
+            alert('El número termina en 4.')
+            console.log('El número termina en 4.')
+        } else if (num) {
+            console.log('El número no termina en 4.');
+            console.log('El número no termina en 4.')
+        }
+        
+
+}
