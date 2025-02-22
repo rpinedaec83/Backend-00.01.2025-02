@@ -271,3 +271,21 @@ function ejercicio17(){
     }
     alert("La hora un segundo después es: " + hora.toString().padStart(2, '0') + ":" + minutos.toString().padStart(2, '0') + ":" + segundos.toString().padStart(2, '0'));
 }
+
+function ejercicio18(){
+    let cantidadCDs = parseInt(prompt("Ingrese la cantidad de CDs que desea comprar:"));
+    let precioPorCD;
+    if (cantidadCDs <= 9) {
+        precioPorCD = 10;
+    } else if (cantidadCDs <= 99) {
+        precioPorCD = 8;
+    } else if (cantidadCDs <= 499) {
+        precioPorCD = 7;
+    } else {
+        precioPorCD = 6;
+    }
+    let precioTotal = cantidadCDs * precioPorCD;
+    let gananciaVendedor = precioTotal * 0.0825;
+    alert("El precio total para el cliente es: $" + precioTotal.toFixed(2));
+    alert("La ganancia para el vendedor es: $" + gananciaVendedor.toFixed(2));
+}
