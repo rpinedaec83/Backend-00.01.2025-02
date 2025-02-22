@@ -28,5 +28,10 @@ function ejercicio03(){
 }
 
 function ejercicio04(){
-    
+    let numeros = [];
+    for (let i = 0; i < 3; i++) {
+        numeros.push(parseInt(prompt("Ingrese un número:")));
+    }
+    numeros.sort((a, b) => a - b);
+    alert("Los números de menor a mayor son: " + numeros.join(", "));
 }
