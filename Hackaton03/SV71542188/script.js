@@ -322,3 +322,38 @@ function ejercicio19() {
     let salarioTotal = salarioDiario * diasTrabajados;
     alert("El salario total a pagar al empleado es: $" + salarioTotal.toFixed(2));
 }
+
+function ejercicio20() {
+    let numeros = [];
+    for (let i = 0; i < 4; i++) {
+        numeros.push(parseInt(prompt(`Ingrese el número ${i + 1}:`)));
+    }
+
+    // ¿Cuántos números son Pares?
+    let pares = numeros.filter(num => num % 2 === 0).length;
+    alert(`Cantidad de números pares: ${pares}`);
+
+    // ¿Cuál es el mayor de todos?
+    let mayor = Math.max(...numeros);
+    alert(`El número mayor es: ${mayor}`);
+
+    // Si el tercero es par, calcular el cuadrado del segundo.
+    if (numeros[2] % 2 === 0) {
+        let cuadradoSegundo = Math.pow(numeros[1], 2);
+        alert(`El cuadrado del segundo número es: ${cuadradoSegundo}`);
+    }
+
+    // Si el primero es menor que el cuarto, calcular la media de los 4 números.
+    if (numeros[0] < numeros[3]) {
+        let media = numeros.reduce((a, b) => a + b, 0) / numeros.length;
+        alert(`La media de los 4 números es: ${media}`);
+    }
+
+    // Si el segundo es mayor que el tercero, verificar si el tercero está comprendido entre los valores 50 y 700.
+    if (numeros[1] > numeros[2]) {
+        if (numeros[2] >= 50 && numeros[2] <= 700) {
+            let suma = numeros.reduce((a, b) => a + b, 0);
+            alert(`La suma de los 4 números es: ${suma}`);
+        }
+    }
+}
