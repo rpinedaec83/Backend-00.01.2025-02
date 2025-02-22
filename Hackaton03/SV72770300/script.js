@@ -351,7 +351,7 @@ document.getElementById("btn-ejercicio-09").addEventListener('click', function (
         }
 
         alert(`${ejercicio}
-        Aumento del trabajador: $${aumentoTrabajador}
+        Aumento del trabajador: $${aumentoTrabajador.toFixed(2)}
         Total: $${totalTrabajador}`);
 
     }
@@ -883,5 +883,270 @@ document.getElementById("btn-ejercicio-20").addEventListener('click', function (
     Cuadrado del segundo si el tercer número es par: ${numeroTercerPar}
     Si el primero es menor que el cuarto, la media es: ${media}
     Segundo número mayor que el tercero, tercer número comprendido entre 50 y 700: ${suma}`);
+
+});
+
+document.getElementById("btn-ejercicio-21").addEventListener('click', function () {
+
+    ejercicio = document.getElementById("btn-ejercicio-21").textContent;
+
+    let n = parseInt(prompt(`${ejercicio}
+    Digite un número por favor`));
+
+    let resultado = n;
+
+    if (Number.isNaN(n)) {
+        alert(`${ejercicio}
+        El dato no es un número.
+        Por favor ingrese el dato solicitado correctamente`);
+
+    } else {
+        if (n == 0) {
+            alert(`${ejercicio}
+            Factorial de ${n} es: 1`);
+        } else {
+            for (let i = 1; i < n - 1; i++) {
+                resultado = resultado * (n - i);
+            }
+
+            alert(`${ejercicio}
+            Factorial de ${n} es: ${resultado}`);
+        }
+    }
+});
+
+document.getElementById("btn-ejercicio-22").addEventListener('click', function () {
+
+    ejercicio = document.getElementById("btn-ejercicio-22").textContent;
+
+    let cantidadNumeros = parseInt(prompt(`${ejercicio}
+    Digite la cantidad de números a sumarse consecutivamente`));
+
+    let suma = 0;
+
+    if (Number.isNaN(cantidadNumeros)) {
+        alert(`${ejercicio}
+        El dato no es un número.
+        Por favor ingrese el dato solicitado correctamente`);
+
+    } else {
+        for (let i = 0; i < cantidadNumeros; i++) {
+            suma = suma + (i + 1);
+        }
+
+        alert(`${ejercicio}
+        Suma de los ${cantidadNumeros} primeros números es: ${suma}`);
+    }
+});
+
+document.getElementById("btn-ejercicio-23").addEventListener('click', function () {
+
+    ejercicio = document.getElementById("btn-ejercicio-23").textContent;
+
+    let totalNumeros = parseInt(prompt(`${ejercicio}
+    Digite un número para hacer la suma de los números impares`));
+
+    let suma = 0;
+
+    if (Number.isNaN(totalNumeros)) {
+        alert(`${ejercicio}
+        El dato no es un número.
+        Por favor ingrese el dato solicitado correctamente`);
+
+    } else {
+
+        if (totalNumeros > 0) {
+            for (let i = 0; i < totalNumeros; i++) {
+
+                if ((i + 1) % 2 == 1) {
+                    suma = suma + (i + 1);
+                } else {
+                    suma = suma;
+                }
+            }
+
+            alert(`${ejercicio}
+            Suma de números impares menores o iguales a ${totalNumeros} es: ${suma}`);
+
+        } else {
+            alert(`${ejercicio}
+            Por favor, digite un número mayor a 0`);
+        }
+    }
+});
+
+document.getElementById("btn-ejercicio-24").addEventListener('click', function () {
+
+    ejercicio = document.getElementById("btn-ejercicio-24").textContent;
+
+    let suma = 0;
+
+    for (let i = 0; i < 1000; i++) {
+
+        if ((i + 1) % 2 == 0) {
+            suma = suma + (i + 1);
+        }
+    }
+    alert(`${ejercicio}
+    Suma de números pares hasta 1000 es: ${suma}`);
+});
+
+document.getElementById("btn-ejercicio-25").addEventListener('click', function () {
+
+    ejercicio = document.getElementById("btn-ejercicio-25").textContent;
+
+    let n = parseInt(prompt(`${ejercicio}
+    Digite un número por favor`));
+
+    if (Number.isNaN(n)) {
+        alert(`${ejercicio}
+        El dato no es un número.
+        Por favor ingrese el dato solicitado correctamente`);
+    } else {
+        if (n == 0) {
+            alert(`${ejercicio}
+            Factorial de ${n} es: 1`);
+        } else {
+
+            let factorial = [n];
+            let resultado = n;
+
+            for (let i = n - 1; i > 0; i--) {
+                factorial[i] = i;
+                resultado = resultado * factorial[i];
+            }
+
+            alert(`${ejercicio}
+            Factorial de ${n} es: ${resultado}`);
+        }
+    }
+});
+
+document.getElementById("btn-ejercicio-26").addEventListener('click', function () {
+
+    let dividendo, divisor, resto, cociente;
+
+    ejercicio = document.getElementById("btn-ejercicio-26").textContent;
+
+    dividendo = parseInt(prompt(`${ejercicio}
+    Digite un número a divir por favor`));
+
+    divisor = parseInt(prompt(`${ejercicio}
+    Digite el divisor por favor`));
+
+
+    if (Number.isNaN(dividendo) || Number.isNaN(divisor)) {
+        alert(`${ejercicio}
+        El dato o los datos no son un número.
+        Por favor ingrese el dato solicitado correctamente`);
+    } else {
+        if (divisor == 0) {
+            alert(`${ejercicio}
+            El divisor no puede ser 0. Por favor, verificar.`);
+        } else {
+
+            resto = dividendo;
+            cociente = 0;
+
+            while (resto >= divisor) {
+                resto = resto - divisor;
+                cociente = cociente + 1;
+            }
+
+            alert(`${ejercicio}
+            Resto: ${resto}
+            Cociente: ${cociente}`);
+        }
+    }
+});
+
+document.getElementById("btn-ejercicio-27").addEventListener('click', function () {
+
+    let suma = 0, contador = 0, n, controlador = true;
+
+    ejercicio = document.getElementById("btn-ejercicio-27").textContent;
+
+    do {
+
+        n = parseInt(prompt(`${ejercicio}
+        Digite un número`));
+
+        if (Number.isNaN(n)) {
+            alert(`${ejercicio}
+            El dato no es un número.
+            Por favor ingrese el dato solicitado correctamente`);
+            controlador = false;
+        } else {
+
+            if (n >= 0) {
+                suma = suma + n;
+                contador++;
+                controlador;
+            }
+        }
+
+    } while (n > 0 && controlador);
+
+    if (controlador) {
+        alert(`Media: ${(suma / (contador - 1)).toFixed(2)}`);
+    }
+
+});
+
+document.getElementById("btn-ejercicio-28").addEventListener('click', function () {
+
+    let suma = 0;
+
+    ejercicio = document.getElementById("btn-ejercicio-28").textContent;
+
+    let i = 0;
+
+    do {
+
+        suma = suma + (i + 1);
+
+        i++;
+
+    } while (i != 100);
+
+    alert(`${ejercicio}
+    Suma: ${suma}`);
+
+});
+
+document.getElementById("btn-ejercicio-29").addEventListener('click', function () {
+
+    let suma = 0;
+
+    ejercicio = document.getElementById("btn-ejercicio-29").textContent;
+
+    let i = 0;
+
+    while (i < 100) {
+
+        suma = suma + (i + 1);
+
+        i++;
+    }
+
+    alert(`${ejercicio}
+    Suma: ${suma}`);
+
+});
+
+document.getElementById("btn-ejercicio-30").addEventListener('click', function () {
+
+    let suma = 0;
+
+    ejercicio = document.getElementById("btn-ejercicio-30").textContent;
+
+    for (let i = 0; i < 100; i++) {
+
+        suma = suma + (i + 1);
+
+    }
+
+    alert(`${ejercicio}
+    Suma: ${suma}`);
 
 });
