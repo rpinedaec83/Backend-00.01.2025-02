@@ -409,3 +409,20 @@ function ejercicio25() {
     }
     alert("El factorial de " + numero + " es: " + factorial);
 }
+
+function ejercicio26() {
+    let dividendo = parseInt(prompt("Ingrese el dividendo:"));
+    let divisor = parseInt(prompt("Ingrese el divisor:"));
+    if (divisor === 0) {
+        alert("El divisor no puede ser cero.");
+        return;
+    }
+    let cociente = 0;
+    let resto = dividendo;
+    while (resto >= divisor) {
+        resto -= divisor;
+        cociente++;
+    }
+    alert("El cociente es: " + cociente);
+    alert("El resto es: " + resto);
+}
