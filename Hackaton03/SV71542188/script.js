@@ -289,3 +289,36 @@ function ejercicio18(){
     alert("El precio total para el cliente es: $" + precioTotal.toFixed(2));
     alert("La ganancia para el vendedor es: $" + gananciaVendedor.toFixed(2));
 }
+
+function ejercicio19() {
+    let identificador = parseInt(prompt("Ingrese el identificador del empleado (1: Cajero, 2: Servidor, 3: Preparador de mezclas, 4: Mantenimiento):"));
+    let diasTrabajados = parseInt(prompt("Ingrese la cantidad de días trabajados en la semana (máximo 6):"));
+
+    if (diasTrabajados < 0 || diasTrabajados > 6) {
+        alert("Cantidad de días trabajados no válida. Por favor ingrese un valor entre 0 y 6.");
+        return;
+    }
+
+    let salarioDiario;
+
+    switch (identificador) {
+        case 1:
+            salarioDiario = 56;
+            break;
+        case 2:
+            salarioDiario = 64;
+            break;
+        case 3:
+            salarioDiario = 80;
+            break;
+        case 4:
+            salarioDiario = 48;
+            break;
+        default:
+            alert("Identificador de empleado no válido.");
+            return;
+    }
+
+    let salarioTotal = salarioDiario * diasTrabajados;
+    alert("El salario total a pagar al empleado es: $" + salarioTotal.toFixed(2));
+}
