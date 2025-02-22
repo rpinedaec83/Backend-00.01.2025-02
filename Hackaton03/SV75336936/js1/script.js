@@ -26,20 +26,18 @@ function ejercicio02(){
 }
 
 function ejercicio03(){
+    alert("EJERCICIO 03");
+    let numStr = prompt('Ingrese un número: '); // Guardamos la entrada como string
+    let num = parseInt(numStr);
 
-    
-        let num = parseInt(prompt('Ingrese un numero: ', numero));
-        
-        if (isNaN(num)) {
-            alert('Por favor, ingrese un número válido.')
-            console.log('Por favor, ingrese un número válido.')
-        } else if (numero.endsWith('4')) {
-            alert('El número termina en 4.')
-            console.log('El número termina en 4.')
-        } else if (num) {
-            console.log('El número no termina en 4.');
-            console.log('El número no termina en 4.')
-        }
-        
-
+    if (isNaN(num)) {
+        alert('Por favor, ingrese un número válido.');
+        console.log('Por favor, ingrese un número válido.');
+    } else if (numStr.endsWith('4')) { // Comprobamos el último carácter de la cadena
+        alert('El número termina en 4.');
+        console.log('El número termina en 4.');
+    } else {
+        alert('El número no termina en 4.');
+        console.log('El número no termina en 4.');
+    }
 }
