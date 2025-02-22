@@ -178,3 +178,26 @@ function ejercicio13(){
     }
 }
 
+function ejercicio14(){
+    let numero = parseInt(prompt("Ingrese un número del 1 al 9:"));
+    if (numero < 1 || numero > 9) {
+        alert("El número debe estar entre 1 y 9");
+        return;
+    }
+    let esPrimo = true;
+    if (numero === 1) {
+        esPrimo = false;
+    } else {
+        for (let i = 2; i <= Math.sqrt(numero); i++) {
+            if (numero % i === 0) {
+                esPrimo = false;
+                break;
+            }
+        }
+    }
+    if (esPrimo) {
+        alert("El número " + numero + " es primo");
+    } else {
+        alert("El número " + numero + " no es primo");
+    }
+}
