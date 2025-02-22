@@ -394,3 +394,18 @@ function ejercicio24() {
     }
     alert("La suma de todos los números pares hasta el 1000 es: " + sumaPares);
 }
+
+function ejercicio25() {
+    let numero = parseInt(prompt("Ingrese un número para calcular su factorial:"));
+    if (numero < 0) {
+        alert("El factorial no está definido para números negativos.");
+        return;
+    }
+    let factorial = 1;
+    let i = 1;
+    while (i <= numero) {
+        factorial *= i;
+        i++;
+    }
+    alert("El factorial de " + numero + " es: " + factorial);
+}
