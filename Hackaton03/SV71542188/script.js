@@ -497,3 +497,27 @@ function ejercicio31() {
     alert("La media de los números pares es: " + mediaPares.toFixed(2));
     alert("La media de los números impares es: " + mediaImpares.toFixed(2));
 }
+
+function ejercicio32() {
+    let ciudades = [
+        { nombre: "Ciudad1", provincia: "Provincia1", poblacion: 500000 },
+        { nombre: "Ciudad2", provincia: "Provincia1", poblacion: 300000 },
+        { nombre: "Ciudad3", provincia: "Provincia1", poblacion: 200000 },
+        { nombre: "Ciudad4", provincia: "Provincia2", poblacion: 600000 },
+        { nombre: "Ciudad5", provincia: "Provincia2", poblacion: 400000 },
+        { nombre: "Ciudad6", provincia: "Provincia2", poblacion: 100000 },
+        { nombre: "Ciudad7", provincia: "Provincia3", poblacion: 700000 },
+        { nombre: "Ciudad8", provincia: "Provincia3", poblacion: 500000 },
+        { nombre: "Ciudad9", provincia: "Provincia3", poblacion: 300000 },
+        { nombre: "Ciudad10", provincia: "Provincia3", poblacion: 200000 },
+        { nombre: "Ciudad11", provincia: "Provincia3", poblacion: 100000 }
+    ];
+    let ciudadMayorPoblacion = ciudades[0];
+    for (let ciudad of ciudades) {
+        if (ciudad.poblacion > ciudadMayorPoblacion.poblacion) {
+            ciudadMayorPoblacion = ciudad;
+        }
+    }
+    alert("La ciudad con la mayor población es: " + ciudadMayorPoblacion.nombre + " con una población de " + ciudadMayorPoblacion.poblacion);
+}
+
