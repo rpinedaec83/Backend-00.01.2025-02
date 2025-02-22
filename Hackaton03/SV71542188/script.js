@@ -373,3 +373,16 @@ function ejercicio22() {
     }
     alert("La suma de los primeros " + n + " números es: " + suma);
 }
+
+function ejercicio23() {
+    let n = parseInt(prompt("Ingrese un número para calcular la suma de los números impares menores o iguales a n:"));
+    if (n < 0) {
+        alert("Por favor ingrese un número positivo.");
+        return;
+    }
+    let sumaImpares = 0;
+    for (let i = 1; i <= n; i += 2) {
+        sumaImpares += i;
+    }
+    alert("La suma de los números impares menores o iguales a " + n + " es: " + sumaImpares);
+}
