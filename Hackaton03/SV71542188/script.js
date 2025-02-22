@@ -562,3 +562,16 @@ function ejercicio35() {
     alert("El número mayor es: " + mayor);
     alert("El número menor es: " + menor);
 }
+
+function ejercicio36() {
+    let n = parseInt(prompt("Ingrese el número de términos de la serie de Fibonacci que desea calcular:"));
+    if (n <= 0) {
+        alert("Por favor ingrese un número positivo.");
+        return;
+    }
+    let fibonacci = [0, 1];
+    for (let i = 2; i < n; i++) {
+        fibonacci[i] = fibonacci[i - 1] + fibonacci[i - 2];
+    }
+    alert("Los primeros " + n + " términos de la serie de Fibonacci son: " + fibonacci.slice(0, n).join(", "));
+}
