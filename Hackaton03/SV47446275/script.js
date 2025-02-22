@@ -9,3 +9,5 @@ function ejercicio01(){
         alert("No tiene 3 digitos")
     }
 }
+
+// hola mundo 
