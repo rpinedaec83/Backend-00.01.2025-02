@@ -119,5 +119,22 @@ function ejercicio08(){
     }
 
 function ejercicio09(){
+    let salarioActual = parseFloat(prompt("Ingrese el salario actual del trabajador:"));
+    let aumento = 0;
+
+    if (salarioActual > 2000) {
+        aumento = 0.05;
+    } else {
+        aumento = 0.10;
+    }
+
+    let montoAumento = salarioActual * aumento;
+    let nuevoSalario = salarioActual + montoAumento;
+
+    alert("El aumento es de: $" + montoAumento.toFixed(2));
+    alert("El nuevo salario es de: $" + nuevoSalario.toFixed(2));
+}
+
+function ejercicio10(){
     
 }
