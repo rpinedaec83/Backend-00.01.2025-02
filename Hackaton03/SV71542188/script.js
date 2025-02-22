@@ -624,3 +624,20 @@ function ejercicio39() {
     }
     alert("La aproximación de pi con " + iteraciones + " iteraciones es: " + pi);
 }
+
+function ejercicio40() {
+    let iteraciones = parseInt(prompt("Ingrese el número de iteraciones para la aproximación de pi:"));
+    if (iteraciones <= 0) {
+        alert("Por favor ingrese un número positivo.");
+        return;
+    }
+    let pi = 3;
+    let signo = 1;
+    for (let i = 1; i <= iteraciones; i++) {
+        let numerador = 4;
+        let denominador = (2 * i) * (2 * i + 1) * (2 * i + 2);
+        pi += signo * (numerador / denominador);
+        signo *= -1;
+    }
+    alert("La aproximación de pi con " + iteraciones + " iteraciones es: " + pi);
+}
