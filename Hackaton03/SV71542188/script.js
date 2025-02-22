@@ -103,3 +103,21 @@ function ejercicio07(){
     alert("El descuento aplicado es: $" + totalDescuento.toFixed(2));
     alert("El total a pagar es: $" + totalPagar.toFixed(2));
 }
+
+function ejercicio08(){
+    let n1 = parseInt(prompt("Ingrese la primera nota:")); 
+    let n2 = parseInt(prompt("Ingrese la segunda nota:"));
+    let n3 = parseInt(prompt("Ingrese la tercera nota:"));
+    let promedio = (n1 + n2 + n3) / 3;
+    if(promedio >= 13)
+        alert("Aprobado");
+    else
+        alert("Desaprobado");{
+        }
+    alert("El promedio de las notas es: " + promedio.toFixed(2));
+    alert("El estudiante se encuentra " + (promedio >= 13 ? "Aprobado" : "Desaprobado"));
+    }
+
+function ejercicio09(){
+    
+}
