@@ -508,8 +508,8 @@ document.getElementById("btn-ejercicio-14").addEventListener('click', function (
 
     ejercicio = document.getElementById("btn-ejercicio-14").textContent;
 
-    let n = prompt(`${ejercicio}
-    Digite un número entre 1 y 10`);
+    let n = parseInt(prompt(`${ejercicio}
+    Digite un número entre 1 y 10`));
     let contador = 0
 
     if (Number.isNaN(n)) {
@@ -1149,4 +1149,352 @@ document.getElementById("btn-ejercicio-30").addEventListener('click', function (
     alert(`${ejercicio}
     Suma: ${suma}`);
 
+});
+
+document.getElementById("btn-ejercicio-31").addEventListener('click', function () {
+
+    let suma = 0, contador = 0, n, controlador = true;
+
+    ejercicio = document.getElementById("btn-ejercicio-31").textContent;
+
+    let i = 0;
+
+    do {
+
+        n = parseInt(prompt(`${ejercicio}
+        Ingrese ${i + 1}° número`));
+
+        if (Number.isNaN(n)) {
+            alert(`${ejercicio}
+            El dato no es un número.
+            Por favor ingrese el dato solicitado correctamente`);
+            i--;
+        } else {
+
+            if (n % 2 == 0 || n % 2 == 1) {
+                suma = suma + n;
+                contador++;
+            }
+        }
+
+        i++;
+
+    } while (i < 10);
+
+    alert(`${ejercicio}
+    Media: ${suma / contador}`);
+
+});
+
+document.getElementById("btn-ejercicio-32").addEventListener('click', function () {
+
+    let provincia, ciudad, ciudadMayorPoblacion;
+    let poblacion, mayorPoblacion = 0;
+
+    ejercicio = document.getElementById("btn-ejercicio-32").textContent;
+
+    let i,j = 0;
+
+    for (i = 0; i < 3; i++) {
+       
+        provincia = prompt(`${ejercicio}
+        Digite el nombre de la ${i + 1}° provincia`);
+        
+        for (j = 0; j < 11; j++) {
+            
+            ciudad = prompt(`${ejercicio}
+            Digite el nombre de la ${j + 1}° ciudad de la provincia ${provincia}`);
+
+            poblacion = prompt(`${ejercicio}
+            Digite la población de la ciudad ${ciudad}`);
+            
+            if (poblacion > mayorPoblacion) {
+                ciudadMayorPoblacion = ciudad;
+                mayorPoblacion = poblacion;
+            }
+        }
+    }
+
+    alert(`${ejercicio}
+    La ciudad con mayor población es: ${ciudadMayorPoblacion} con una población de ${mayorPoblacion}`);
+
+});
+
+document.getElementById("btn-ejercicio-33").addEventListener('click', function () {
+
+    ejercicio = document.getElementById("btn-ejercicio-33").textContent;
+
+    let confirmar;
+
+    do {
+
+        prompt(`${ejercicio}
+        Digite cualquier dato`);
+
+        confirmar = prompt(`${ejercicio}
+        ¿Desea continuar en el programa? (S/N)`);
+
+    } while (confirmar != "S" && confirmar != "s");
+
+    if (confirmar == "S" || confirmar == "s") {
+        alert(`${ejercicio}
+        Agradecemos su experiencia en el programa. ¡Hasta luego!`);
+    }
+});
+
+document.getElementById("btn-ejercicio-34").addEventListener('click', function () {
+
+    ejercicio = document.getElementById("btn-ejercicio-34").textContent;
+
+    let tabla = [];
+
+    for (let i = 1; i < 11; i++) {
+
+        tabla[i] = []
+
+        console.log(`${ejercicio}
+        -------------------------Tabla ${i}------------------------`);
+
+        for (let j = 1; j < 11; j++) {
+
+            tabla[i][j] = i * j;
+
+            console.log(`${i} X ${j} = ${tabla[i][j]}`);
+        }
+    }
+
+});
+
+document.getElementById("btn-ejercicio-35").addEventListener('click', function () {
+
+    ejercicio = document.getElementById("btn-ejercicio-35").textContent;
+
+    let arrayNumeros = [20];
+
+    let numeroMayor = 0;
+
+    let i = 0;
+
+    while (i < 20) {
+
+        let numero = parseInt(prompt(`${ejercicio}
+        Digite ${i + 1}° número`));
+
+        if (Number.isNaN(numero)) {
+            alert(`${ejercicio}
+            El dato no es un número.
+            Por favor ingrese el dato solicitado correctamente`);
+            i--;
+        } else {
+
+            arrayNumeros[i] = numero;
+        }
+
+        i++;
+    }
+
+    for (let j = 0; j < 20; j++) {
+
+        if (arrayNumeros[j] > numeroMayor) {
+            numeroMayor = arrayNumeros[j]
+        }
+
+    }
+
+    let numeroMenor = numeroMayor;
+
+    for (let a = 1; a < arrayNumeros.length; a++) {
+
+        if (arrayNumeros[a] < numeroMenor) {
+            numeroMenor = arrayNumeros[a];
+        }
+
+    }
+
+    alert(`${ejercicio}
+    Número mayor: ${numeroMayor}
+    Número menor: ${numeroMenor}`)
+
+});
+
+document.getElementById("btn-ejercicio-36").addEventListener('click', function () {
+
+    ejercicio = document.getElementById("btn-ejercicio-36").textContent;
+
+    let n = parseInt(prompt(`${ejercicio}
+    Digite el número de términos de la serie de Fibonacci`))
+
+    let a = 0, b = 1;
+
+    if (Number.isNaN(n)) {
+        alert(`${ejercicio}
+        El dato no es un número.
+        Por favor ingrese el dato solicitado correctamente`);
+    } else {
+
+        for (let i = 0; i < n; i++) {
+            alert(`${ejercicio}
+        ${a} + ${b} = ${a + b}`);
+            c = a + b;
+            a = b;
+            b = c;
+        }
+    }
+
+});
+
+document.getElementById("btn-ejercicio-37").addEventListener('click', function () {
+
+    let residuo, cociente, a, b;
+
+    ejercicio = document.getElementById("btn-ejercicio-37").textContent;
+
+    let n1 = parseInt(prompt(`${ejercicio}
+    Digite el 1º número`))
+
+    let n2 = parseInt(prompt(`${ejercicio}
+    Digite el 2º número`))
+
+    a = n1;
+    b = n2;
+
+    if (Number.isNaN(n1) || Number.isNaN(n2)) {
+        alert(`${ejercicio}
+        El dato o los datos no son un número.
+        Por favor ingrese el dato solicitado correctamente`);
+    } else {
+
+        while (b !== 0) {
+            residuo = a % b;
+            a = b;
+            b = residuo;
+        }
+
+        alert(`${ejercicio}
+        M.C.D (${n1};${n2}) es: ${a}`)
+    }
+
+});
+
+document.getElementById("btn-ejercicio-38").addEventListener('click', function () {
+
+    ejercicio = document.getElementById("btn-ejercicio-38").textContent;
+
+    let numero = parseInt(prompt(`${ejercicio}
+    Digite un número para verificar si es un número perfecto`))
+
+    let sumaDivisores = 0;
+
+    if (Number.isNaN(numero)) {
+        alert(`${ejercicio}
+        El dato no es un número.
+        Por favor ingrese el dato solicitado correctamente`);
+    } else {
+
+        for (let i = 0; i < numero; i++) {
+
+            if (numero % i == 0) {
+                sumaDivisores = sumaDivisores + i;
+            }
+        }
+
+        if (sumaDivisores == numero) {
+            alert(`${ejercicio}
+            El múmero: ${numero} es perfecto`);
+        } else {
+            alert(`${ejercicio}
+            El múmero: ${numero} no es perfecto`);
+        }
+    }
+
+});
+
+document.getElementById("btn-ejercicio-39").addEventListener('click', function () {
+
+    ejercicio = document.getElementById("btn-ejercicio-39").textContent;
+
+    let cantidadSerie = parseInt(prompt(`${ejercicio}
+    Digite el número de series para la aproximación del número pi`))
+
+    let sumatoriaSerie = 0;
+
+    if (Number.isNaN(cantidadSerie)) {
+        alert(`${ejercicio}
+        El dato no es un número.
+        Por favor ingrese el dato solicitado correctamente`);
+    } else {
+
+        for (let i = 0; i < cantidadSerie - 1; i++) {
+
+            sumatoriaSerie = sumatoriaSerie + Gregory(i);
+        }
+
+        alert(`${ejercicio}
+        Aproximación del número pi: ${sumatoriaSerie * 4}`);
+    }
+
+    function Gregory(n) {
+
+        return resultado = ((-1) ** n) / (2 * n + 1);
+    }
+});
+
+document.getElementById("btn-ejercicio-39").addEventListener('click', function () {
+
+    ejercicio = document.getElementById("btn-ejercicio-39").textContent;
+
+    let cantidadSerie = parseInt(prompt(`${ejercicio}
+    Digite el número de series para la aproximación del número pi`))
+
+    let sumatoriaSerie = 0;
+
+    if (Number.isNaN(cantidadSerie)) {
+        alert(`${ejercicio}
+        El dato no es un número.
+        Por favor ingrese el dato solicitado correctamente`);
+    } else {
+
+        for (let i = 0; i < cantidadSerie - 1; i++) {
+
+            sumatoriaSerie = sumatoriaSerie + Gregory(i);
+        }
+
+        alert(`${ejercicio}
+        Aproximación del número pi: ${sumatoriaSerie * 4}`);
+    }
+
+    function Gregory(n) {
+
+        return resultado = ((-1) ** n) / (2 * n + 1);
+    }
+});
+
+document.getElementById("btn-ejercicio-40").addEventListener('click', function () {
+
+    ejercicio = document.getElementById("btn-ejercicio-40").textContent;
+
+    var cantidadSerie = parseInt(prompt(`${ejercicio}
+    Digite el número de series para la aproximación del número pi`))
+
+    var sumatoriaSerie = 3;
+
+    if (Number.isNaN(cantidadSerie)) {
+        alert(`${ejercicio}
+        El dato no es un número.
+        Por favor ingrese el dato solicitado correctamente`);
+    } else {
+
+        for (let i = 0; i < cantidadSerie - 1; i++) {
+
+            sumatoriaSerie = sumatoriaSerie + Nilakantha(i);
+        }
+
+        alert(`${ejercicio}
+        Aproximación del número pi: ${sumatoriaSerie}`);
+    }
+
+    function Nilakantha(n) {
+
+        return resultado = ((-1) ** n * 4) / ((2 * n + 3) ** 3 - (2 * n + 3));
+    }
 });
