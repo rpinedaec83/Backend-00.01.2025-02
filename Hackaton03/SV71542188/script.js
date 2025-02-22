@@ -473,3 +473,27 @@ function ejercicio30() {
     }
     alert("La suma de los primeros cien números es: " + suma);
 }
+
+function ejercicio31() {
+    let numeros = [];
+    for (let i = 0; i < 10; i++) {
+        numeros.push(parseInt(prompt(`Ingrese el número ${i + 1}:`)));
+    }
+    let sumaPares = 0;
+    let contadorPares = 0;
+    let sumaImpares = 0;
+    let contadorImpares = 0;
+    for (let num of numeros) {
+        if (num % 2 === 0) {
+            sumaPares += num;
+            contadorPares++;
+        } else {
+            sumaImpares += num;
+            contadorImpares++;
+        }
+    }
+    let mediaPares = contadorPares === 0 ? 0 : sumaPares / contadorPares;
+    let mediaImpares = contadorImpares === 0 ? 0 : sumaImpares / contadorImpares;
+    alert("La media de los números pares es: " + mediaPares.toFixed(2));
+    alert("La media de los números impares es: " + mediaImpares.toFixed(2));
+}
