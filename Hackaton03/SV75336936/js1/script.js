@@ -16,7 +16,7 @@ function ejercicio02(){
     if (num > 0) {
         alert('El número es positivo.')
         console.log('El número es positivo.')
-    } else (num < 0) {
+    } else  {
         lert('El número es negativo.')
         console.log('El número no es negativo.')
     }
