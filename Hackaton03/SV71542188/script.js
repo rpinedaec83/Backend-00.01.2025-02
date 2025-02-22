@@ -167,3 +167,14 @@ function ejercicio12(){
     } else 
         alert("El número mayor es: " + num2);
 }
+
+function ejercicio13(){
+    let letra = prompt("Ingrese una letra:").toLowerCase();
+
+    if (letra === 'a' || letra === 'e' || letra === 'i' || letra === 'o' || letra === 'u') {
+        alert("La letra es una vocal");
+    } else {
+        alert("La letra no es una vocal");
+    }
+}
+
