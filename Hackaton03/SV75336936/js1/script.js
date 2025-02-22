@@ -13,12 +13,9 @@ function ejercicio01(){
 function ejercicio02(){
     let num = parseInt(prompt("Escribe un numero"))
     
-    if (isNaN(num)) {
-        alert('Por favor, ingrese un número válido.')
-        console.log('Por favor, ingrese un número válido.')
-    } else if (num < 0) {
-        alert('El número es negativo.')
-        console.log('El número es negativo.')
+    if (num > 0) {
+        alert('El número es positivo.')
+        console.log('El número es positivo.')
     } else {
         lert('El número es negativo.')
         console.log('El número no es negativo.')
