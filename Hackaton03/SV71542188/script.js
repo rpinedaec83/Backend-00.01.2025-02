@@ -201,3 +201,19 @@ function ejercicio14(){
         alert("El número " + numero + " no es primo");
     }
 }
+
+function ejercicio15(){
+    let opcion = prompt("Seleccione la conversión que desea realizar:\n1. Centímetros a pulgadas\n2. Libras a kilogramos");
+    if (opcion === '1') {
+        let centimetros = parseFloat(prompt("Ingrese la cantidad en centímetros:"));
+        let pulgadas = centimetros / 2.54;
+        alert(centimetros + " centímetros son " + pulgadas.toFixed(2) + " pulgadas");
+    } else if (opcion === '2') {
+        let libras = parseFloat(prompt("Ingrese la cantidad en libras:"));
+        let kilogramos = libras / 2.20462;
+        alert(libras + " libras son " + kilogramos.toFixed(2) + " kilogramos");
+    } else {
+        alert("Opción no válida");
+    }
+}
+
