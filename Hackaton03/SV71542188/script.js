@@ -157,3 +157,13 @@ function ejercicio11(){
     }
     alert("El número mayor es: " + mayor); 
 }
+
+function ejercicio12(){
+    let num1 = parseInt(prompt("Ingrese el primer número:"));
+    let num2 = parseInt(prompt("Ingrese el segundo número:"));
+
+    if (num1 > num2) {
+        alert("El número mayor es: " + num1);
+    } else 
+        alert("El número mayor es: " + num2);
+}
