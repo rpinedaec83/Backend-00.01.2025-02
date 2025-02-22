@@ -347,6 +347,7 @@ function ejercicio20() {
         }
     }
 }
+
 function ejercicio21() {
     let numero = parseInt(prompt("Ingrese un número para calcular su factorial:"));
     if (numero < 0) {
@@ -358,4 +359,17 @@ function ejercicio21() {
         factorial *= i;
     }
     alert("El factorial de " + numero + " es: " + factorial);
+}
+
+function ejercicio22() {
+    let n = parseInt(prompt("Ingrese un número para calcular la suma de los primeros n números:"));
+    if (n < 0) {
+        alert("Por favor ingrese un número positivo.");
+        return;
+    }
+    let suma = 0;
+    for (let i = 1; i <= n; i++) {
+        suma += i;
+    }
+    alert("La suma de los primeros " + n + " números es: " + suma);
 }
