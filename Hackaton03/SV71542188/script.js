@@ -455,3 +455,13 @@ function ejercicio28() {
     } while (i <= 100);
     alert("La suma de los primeros cien números es: " + suma);
 }
+
+function ejercicio29() {
+    let suma = 0;
+    let i = 1;
+    while (i <= 100) {
+        suma += i;
+        i++;
+    }
+    alert("La suma de los primeros cien números es: " + suma);
+}
