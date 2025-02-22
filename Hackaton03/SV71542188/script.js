@@ -247,3 +247,27 @@ function ejercicio16(){
     }
     alert(dia);
 }
+
+function ejercicio17(){
+    let hora = parseInt(prompt("Ingrese la hora (0-23):"));
+    let minutos = parseInt(prompt("Ingrese los minutos (0-59):"));
+    let segundos = parseInt(prompt("Ingrese los segundos (0-59):"));
+
+    if (hora < 0 || hora > 23 || minutos < 0 || minutos > 59 || segundos < 0 || segundos > 59) {
+        alert("Hora no válida. Por favor ingrese valores correctos.");
+        return;
+    }
+    segundos++;
+    if (segundos === 60) {
+        segundos = 0;
+        minutos++;
+    }
+    if (minutos === 60) {
+        minutos = 0;
+        hora++;
+    }
+    if (hora === 24) {
+        hora = 0;
+    }
+    alert("La hora un segundo después es: " + hora.toString().padStart(2, '0') + ":" + minutos.toString().padStart(2, '0') + ":" + segundos.toString().padStart(2, '0'));
+}
