@@ -300,3 +300,120 @@ alert("MAYOR_DE_3");
         alert(`El MAYOR es: ${num3}`)
     }    
 }
+
+function ejercicio12(){
+alert("MAYOR_DE_2");
+    let num1 = Number(prompt("Ingrese el primer numero:"));
+    let num2 = Number(prompt("Ingrese el segundo numero:"));
+    if (!num1 || !num2){ //Validacion que sea un numero no nulo
+        alert("ADVERTENCIA: *SOLO ADMITE NUMEROS NO NULOS *")
+    }else{
+        // Evaluacion
+        if (num1 > num2) {
+            alert(`El MAYOR es: ${num1}`);
+        } else {
+            alert(`El MAYOR es: ${num2}`);
+        }
+    }
+}
+
+function ejercicio13(){
+    alert("Evalua_Vocales");
+    let letra = prompt("Ingrese una caracter:");
+    // Verifica que la entrada sea 1 caracter y que no sea un numero
+    if (letra.length !== 1 || !isNaN(letra)) {
+        alert("ADVERTENCIA: SOLO ADMITE 1 CARACTER");
+    } else {
+        switch (letra.toLowerCase()) {
+            case 'a': 
+            case 'e': 
+            case 'i':
+            case 'o': 
+            case 'u':
+                alert("Es VOCAL");
+                break;
+            default:
+                alert("NO es VOCAL");
+        }
+    }
+}
+
+function ejercicio14(){
+alert("Primo_del_1_10");
+    let num = Number(prompt("Ingresa numero entre 1 y 10:"));
+    if (!num){ //Validacion que sea un numero
+        alert("ADVERTENCIA: *SOLO ADMITE NUMEROS *")
+    }else{
+        // Evalua si el numero es entero y esta en el rango
+        if (num < 1 || num > 10 || Math.trunc(num) !== num) {
+            alert("*DEBE SER ENTERO ENTRE 1 - 10*");
+        } else {
+            if (num === 2 || num === 3 || num === 5 || num === 7) { // Evalua si es primo
+                alert("*SI es PRIMO*");
+            } else {
+                alert("*NO es PRIMO*");
+            }
+        }
+    }
+}
+
+function ejercicio15(){
+alert("Convertidor_CM_in_/_LB_kl")
+    let tipo = prompt(`¿Que desea convertir?
+        CENTIMETROS o LIBRAS`).toUpperCase();
+    let cantidad = Number(prompt("Ingrese cantidad a convertir"));
+    if (!cantidad || !isNaN(tipo)){ //Valida cantidad numero y tipo no numero
+        alert("ADVERTENCIA: *DATOS INVALIDOS *")
+    }else{
+        // Evalua que sea positivo y diferente de 0
+        if (cantidad <= 0) {
+            alert(`ERROR: ${cantidad} DEBE SER POSITIVO`);
+        } else {
+            if (tipo === "CENTIMETROS") { // Evalua si es conversion de centimetros a pulgadas
+                let pulga = cantidad / 2.54;
+                alert(`> ${cantidad} cm equivale a: ${pulga} in`);
+            } else if (tipo === "LIBRAS") { // Evalua si es conversion de libras a kilos
+                let kilo = cantidad * 0.4536;
+                alert(`> ${cantidad} lb equivale a: ${kilo} kg`);
+            } else {
+                alert(`ERROR: ${tipo} NO ES UN TIPO VALIDO`);
+            }
+        }
+    }
+}
+
+function ejercicio16(){
+alert("Indica_dia_de_Semana")
+    let dia = Number(prompt("Ingresa numero entre 1 y 7:"));
+
+    // Evalua el rango y .isIntger() que sea entero
+    if (dia < 1 || dia > 7 || !Number.isInteger(dia)) {
+        alert("*DEBE SER ENTERO ENTRE 1-7*");
+    } else {
+        let nombreDia;
+        switch (dia) { // Asigna el dia correspondiente
+            case 1:
+                nombreDia = "Domingo";
+                break;
+            case 2:
+                nombreDia = "Lunes";
+                break;
+            case 3:
+                nombreDia = "Martes";
+                break;
+            case 4:
+                nombreDia = "Miercoles";
+                break;
+            case 5:
+                nombreDia = "Jueves";
+                break;
+            case 6:
+                nombreDia = "Viernes";
+                break;
+            case 7:
+                nombreDia = "Sabado";
+                break;
+        }
+        alert(`Es ${nombreDia}`);
+    }
+}
