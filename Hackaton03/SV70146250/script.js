@@ -91,7 +91,7 @@ function ejercicio04(){
         }
         if(num2>num3){
             let temporal=num3
-            num3=num2
+            num3=num2 
             num2=temporal
         }
         alert(`Orden ascendente: ${num1} - ${num2} - ${num3}`)
