@@ -588,3 +588,19 @@ alert("Evaluacion_de_4_Digitos")
         }
       }
 }
+
+function ejercicio21(){
+alert("Factorial_Tradicional");
+    let num = Number(prompt("Ingrese un numero:"));
+    let factorial = 1; // Define factorial como 1
+
+    // Validacion: debe ser entero y no negativo
+    if (num < 0 || !Number.isInteger(num)) {
+         alert("ERROR: *DEBE SER ENTERO NO NEGATIVO*");
+    } else {
+        for (let contador = 1; contador <= num; contador++) {
+            factorial *= contador; // Calculo del factorial
+        }
+        alert(`El factorial es: ${factorial}`);
+    }
+}
