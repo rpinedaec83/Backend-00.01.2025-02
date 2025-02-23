@@ -151,3 +151,44 @@ function ejercicio06(){
     }
 
 }
+
+function ejercicio07(){
+    let Importe = Number(prompt("Ingrese importe de compra ($):"));
+
+// Solicita el tipo de membresia                             .toUpperCase() convierte en Mayus
+let tipoMembresia = prompt("Ingrese tipo de Membresia [A][B][C]:").toUpperCase();
+
+let descuento = 0;
+
+// Valida si el importe es negativo
+if (Importe < 0) {
+    alert(" *IMPORTE NO PUEDE SER NEGATIVO*");
+} else {
+    // Aplica descuento segun el tipo de membresia
+    switch (tipoMembresia) {
+        case 'A':
+            alert("Descuento del 10%");
+            descuento = Importe * 0.1;
+            break;
+        case 'B':
+            alert("Descuento del 15%");
+            descuento = Importe * 0.15;
+            break;
+        case 'C':
+            alert("Descuento del 20%");
+            descuento = Importe * 0.2;
+            break;
+        default:                        //Salto de linea
+            alert("Tipo de Membresia Invalido \n **Sin descuento**");
+            descuento = 0;
+            break;
+    }
+
+    // Calcula el importe final
+    Importe = Importe - descuento;
+
+    // Muestra los resultados
+    alert(`El descuento es: $${descuento}
+        El importe final es: $${Importe}`);
+}
+}
