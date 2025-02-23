@@ -2,7 +2,7 @@
 
 1. Hacer un algoritmo en Pseint que lea un número por el teclado y determinar si tiene tres dígitos.
 
-2. Hacer un algoritmo en Pseint que lea un número entero por el teclado y determinar si es negativo.
+2. 0.
 
 3. Hacer un algoritmo en Pseint que lea un número y determinar si termina en 4.
 
