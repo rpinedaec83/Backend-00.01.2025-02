@@ -230,3 +230,44 @@ alert("Promedio_Aprobad_o_Desaprobado");
         }
     }
 }
+
+function ejercicio09(){
+alert("Determina_Aumento");
+    let sueldo = Number(prompt("Ingrese sueldo:"));
+    if (!sueldo){ //Validacion que sea un numero
+        alert("ADVERTENCIA: *SOLO ADMITE NUMEROS POSITIVOS*") 
+    }else{
+        // Verifica si el sueldo es negativo
+        if (sueldo < 0) {
+            alert("*EL SUELDO DEBE SER POSITIVO*");
+        } else {
+            if (sueldo === 2000) {
+                alert("*No recibira aumento*");
+            } else if (sueldo < 2000) {
+                alert(`Aumento de 10% equivale a: ${sueldo * 0.1}`);
+            } else {
+                alert(`Aumento de 5% equivale a: ${sueldo * 0.05}`);
+            }
+        }
+    }
+}
+
+function ejercicio10(){
+alert("Paridad");
+    let num = Number(prompt("Ingrese numero a evaluar:"));
+    if (!num){ //Validacion que sea un numero
+        alert("ADVERTENCIA: *SOLO ADMITE NUMEROS POSITIVOS*");
+    }else{
+        // Valida si es entero
+        if (Math.trunc(num) !== num) {
+            alert("*NO ES ENTERO*");
+        } else {
+            // Si al dividir por 2, no hay resto, es PAR
+            if (num % 2 === 0) {
+                alert("Es PAR");
+            } else {
+                alert("Es IMPAR"); // Si el resto es diferente de 0, es IMPAR
+            }
+        }
+    }
+}
