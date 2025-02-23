@@ -417,3 +417,174 @@ alert("Indica_dia_de_Semana")
         alert(`Es ${nombreDia}`);
     }
 }
+
+function ejercicio17(){
+alert("Suma_1_segundo");
+    let hors = parseInt(prompt("Ingrese las horas (0-23)"));
+    let minuts = parseInt(prompt("Ingrese los minutos (0-59)"));
+    let segunds = parseInt(prompt("Ingrese los segundos (0-59)"));
+    // Valida que sean positivos y enteros dentro del rango permitido
+    if (hors < 0 || hors > 23 || !hors || 
+        minuts < 0 || minuts > 59 || !minuts ||
+        segunds < 0 || segunds > 59 || !segunds) {
+            alert("*HORA INGRESADA INVALIDA*");
+    }else{
+        segunds =segunds + 1;
+        if (segunds === 60) {
+            segunds = 0;
+            minuts = minuts + 1;
+        }
+
+        if (minuts === 60) {
+            minuts = 0;
+            hors = hors + 1;
+        }
+
+        if (hors === 24) {
+            hors = 0;
+        }
+        alert(`La hora dentro de un segundo sera:
+        Horas: ${hors} | Minutos: ${minuts} | Segundos: ${segunds}`);
+    }
+}
+
+function ejercicio18(){
+alert("CDs_al_Mayor");
+    let unidades = parseInt(prompt("Cantidad de CDs pedido: "));
+    // Evalua que sea entero positivo
+    if (unidades < 1 || !unidades) {
+         alert("*ERROR: CANTIDAD INVALIDA*");
+    } else {
+        let precio;
+        
+        if (unidades >= 1 && unidades <= 9) {
+            precio = 10;
+        } else{
+            if (unidades >= 10 && unidades <= 99) {
+                precio = 8;
+            } else{
+                if (unidades >= 100 && unidades <= 499) {
+                precio = 7;
+                } else {
+                precio = 6;
+                }
+            }
+        }
+    
+        // Calculo de precio total
+        let precioTotal = precio * unidades;
+        let gananciaVendedor = (precioTotal * 0.0825).toFixed(2); //Redondea a dos decimales
+
+        alert(`Precio total del pedido es: $${precioTotal}
+        Ganancia del vendedor es: $${gananciaVendedor}`);
+    
+    }
+}
+
+function ejercicio19(){
+alert("Heladeria_Empleados");
+    let ID = Number(prompt(` [ID] Tipo Empleado
+        -----------------
+        [1] Cajero
+        [2] Servidor
+        [3] Prep. Mezcla
+        [4] Mantenimiento
+    Ingrese ID empleado:`));
+    let dias = Number(prompt("Dias trabajados [1-6]:"));
+        
+        // Evalua ID valido y dias validos
+        if (ID < 1 || ID > 4 || !Number.isInteger(ID) ||
+        dias < 1 || dias > 6 || !Number.isInteger(dias)) {
+            alert("*ERROR: DATA INVALIDA*");
+        } else {
+            let precioDia;
+            switch (ID) { // Segun ID asigna un precio por dia
+                case 1:
+                    precioDia = 56;
+                    break;
+                case 2:
+                    precioDia = 64;
+                    break;
+                case 3:
+                    precioDia = 80;
+                    break;
+                case 4:
+                    precioDia = 48;
+                    break;
+            }
+            let pagoSemana = precioDia * dias; // Calculo de pago semanal
+            alert(`Pago semanal es: $${pagoSemana}`);
+        }
+}
+
+function ejercicio20(){
+alert("Evaluacion_de_4_Digitos")
+    let num1 = Number(prompt("Ingrese el primer numero entero positivo:"));
+    let num2 = Number(prompt("Ingrese el segundo numero entero positivo:"));
+    let num3 = Number(prompt("Ingrese el tercer numero entero positivo:"));
+    let num4 = Number(prompt("Ingrese el cuarto numero entero positivo:"));
+
+    // Validacion de enteros positivos
+    if (
+        num1 < 1 || !Number.isInteger(num1) ||
+        num2 < 1 || !Number.isInteger(num2) ||
+        num3 < 1 || !Number.isInteger(num3) ||
+        num4 < 1 || !Number.isInteger(num4)
+        ) {
+        alert("*ERROR: DEBE SER ENTERO POSITIVO*");
+    } else {
+        let pares = 0;
+        let mayr = num1;
+        let cuadrado2 = 0;
+        let media = 0;
+        let suma = 0;
+      
+        // Contar los pares
+        if (num1 % 2 === 0) pares=pares+1;
+        if (num2 % 2 === 0) pares=pares+1;
+        if (num3 % 2 === 0) {
+            pares=pares+1;
+          cuadrado2 = num2 ** 2;} // Tercer requerimiento
+        if (num4 % 2 === 0) pares=pares+1;
+      
+        // Primer requerimiento: cantidad de pares
+        if (pares === 0) {
+          alert("1) No hay pares.");
+        } else {
+          alert(`1) Hay ${pares} numeros pares.`);
+        }
+      
+        // Segundo requerimiento: encontrar el mayor
+        if (num2 > mayr) mayr = num2;
+        if (num3 > mayr) mayr = num3;
+        if (num4 > mayr) mayr = num4;
+        alert(`2) El mayor de todos es: ${mayr}`);
+      
+        // Tercer requerimiento: cuadrado del segundo si el tercero es par
+        if (cuadrado2 === 0) {
+            alert("3) El tercero no es par.");
+        } else {
+            alert(`3) El cuadrado del segundo es: ${cuadrado2}`);
+        }
+      
+        // Cuarto requerimiento: media si num1 < 4
+        if (num1 < 4) {
+            media = (num1 + num2 + num3 + num4) / 4;
+            alert(`4) La media de los 4 numeros es: ${media}`);
+        } else {
+            alert("4) El primero es mayor o igual que cuatro.");
+        }
+      
+        // Quinto requerimiento: suma si num2 > num3 y num3 esta en [50,700]
+        if (num2 > num3) {
+            if (num3 >= 50 && num3 <= 700) {
+                suma = num1 + num2 + num3 + num4;
+                alert(`5) La suma de los 4 es: ${suma}`);
+            } else {
+                alert("5) El tercero no esta en el rango [50-700]");
+            }
+        } else {
+            alert("5) El tercero es mayor o igual que el segundo");
+        }
+      }
+}
