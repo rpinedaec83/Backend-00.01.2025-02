@@ -76,7 +76,7 @@ function ejercicio04(){
     let num3 = parseInt(prompt("Ingrese 3er numero:"));
 
 
-    if (!num1 || !num2 || !num3){ //Validacion que sea un numero
+    if (!num1 || !num2 || !num3){ //Validacion que sea un numero entero
             alert("ADVERTENCIA: *SOLO ENTEROS*") 
         }else{
         if(num1>num2){
@@ -94,6 +94,39 @@ function ejercicio04(){
             num3=num2 
             num2=temporal
         }
-        alert(`Orden ascendente: ${num1} - ${num2} - ${num3}`)
+        alert(`Orden ascendente: [${num1}] - [${num2}] - [${num3}]`)
+    }
+}
+
+function ejercicio05(){
+    //Number() convierte a numero el dato ingresado
+    let cantidadZapatos = Number(prompt("Ingrese numero de Zapatos comprados:"));
+    let precio = 80; 
+    // Valida si es 0 o negativo
+    if (cantidadZapatos < 1) {
+        alert(" *SOLO ADMITEN ENTEROS POSITIVOS*");
+    } else if (Math.trunc(cantidadZapatos) !== cantidadZapatos) { // Valida si es decimal
+        alert(" *SOLO ADMITEN ENTEROS POSITIVOS*");
+    } else {
+        let totalOriginal = cantidadZapatos * precio // Cálculo total sin descuentos
+        let descuento = 0 // Inicializa el descuento
+        let totalPagar = totalOriginal // Inicializa el total a pagar
+        // Aplica descuentos según la cantidad comprada
+        if (cantidadZapatos >= 10 && cantidadZapatos < 20) {
+            descuento = totalOriginal * 0.1 // 10%
+            totalPagar = totalOriginal * (1 - 0.1)
+        } else if (cantidadZapatos >= 20 && cantidadZapatos < 30) {
+            descuento = totalOriginal * 0.2 // 20%
+            totalPagar = totalOriginal * (1 - 0.2)
+        } else if (cantidadZapatos >= 30) {
+            descuento = totalOriginal * 0.4 // 40%
+            totalPagar = totalOriginal * (1 - 0.4)
+        }
+    
+        // Muestra los resultados con alert()
+        alert(` Cantidad comprada:   ${cantidadZapatos} unidades
+          Total original:       $${totalOriginal}
+            Descuento:         $${descuento}
+            Total a pagar:     $${totalPagar}`);
     }
 }
