@@ -1,3 +1,4 @@
+
 Proceso Ejercicio1
 	leer numeroALeer
 	si (numeroALeer >= 100 o numeroALeer <= -100) Entonces
