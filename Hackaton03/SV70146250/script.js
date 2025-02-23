@@ -11,30 +11,32 @@ function ejercicio01(){
         alert("No tiene 3 digitos")
     }
 */
-let num = prompt("Ingrese un numero:"); // Pedir numero al usuario
-num = parseFloat(num); // Convertir a numero decimal
-if (!num) { //Evalua que el dato ingresado sea Float, igual que el num.
-    alert("Error: Debe ser un numero");
-}else{
-    // Evaluar si no es entero, Math.trunc elimina el decimal
-    if (Math.trunc(num) !== num) { //!== Diferencia estricta
-        alert("OJO: Solo se evalua la parte entera");
-    }
-    // Extraer parte entera y hacer positivo
-    num = Math.trunc(Math.abs(num)); //Math.abs saca el valor absoluto
+alert("Tres_digitos")
+    let num = prompt("Ingrese un numero:"); // Pedir numero al usuario
+    num = parseFloat(num); // Convertir a numero decimal
+    if (!num) { //Evalua que el dato ingresado sea Float, igual que el num.
+        alert("Error: Debe ser un numero");
+    }else{
+        // Evaluar si no es entero, Math.trunc elimina el decimal
+        if (Math.trunc(num) !== num) { //!== Diferencia estricta
+            alert("OJO: Solo se evalua la parte entera");
+        }
+        // Extraer parte entera y hacer positivo
+        num = Math.trunc(Math.abs(num)); //Math.abs saca el valor absoluto
 
-    // Evaluar si tiene 3 digitos
-    if (num >= 100 && num <= 999) {
-        alert("[Tiene 3 Digitos]");
-    } else {
-        alert("[No tiene 3 Digitos]");
+        // Evaluar si tiene 3 digitos
+        if (num >= 100 && num <= 999) {
+            alert("[Tiene 3 Digitos]");
+        } else {
+            alert("[No tiene 3 Digitos]");
+        }
     }
-}
 }
 
 function ejercicio02(){
-let num = parseFloat(prompt("Ingrese un numero entero:")); // Pedir numero, admite decimal
-if (!num) { //Evalua que el dato ingresado sea Float, igual que el num.
+alert("Evalua_negativo");
+    let num = parseFloat(prompt("Ingrese un numero entero:")); // Pedir numero, admite decimal
+    if (!num) { //Evalua que el dato ingresado sea Float, igual que el num.
         alert("Error: Debe ser un numero entero");
     }else{  
     //Evaluar si no es entero para advertir
@@ -46,11 +48,12 @@ if (!num) { //Evalua que el dato ingresado sea Float, igual que el num.
          }else{
              alert("[El numero es NO Negativo]")
          }
-     }
-}
+        }
+    }
 }
 
 function ejercicio03(){
+alert("Evalua_Termina_4");
     let num = prompt("Ingrese un numero:"); // Pedir numero al usuario
     if (!isNaN(num)===false){ //Validacion que sea un numero
         alert("Error: Debe ser un numero ") 
@@ -71,6 +74,7 @@ function ejercicio03(){
 }
 
 function ejercicio04(){
+alert("menor_a_MAYOR");
     let num1 = parseInt(prompt("Ingrese 1er numero:"));
     let num2 = parseInt(prompt("Ingrese 2do numero:"));
     let num3 = parseInt(prompt("Ingrese 3er numero:"));
@@ -99,6 +103,7 @@ function ejercicio04(){
 }
 
 function ejercicio05(){
+alert("Venta_AlMayor_Zapatos");
     //Number() convierte a numero el dato ingresado
     let cantidadZapatos = Number(prompt("Ingrese numero de Zapatos comprados:"));
     let precio = 80; 
@@ -132,63 +137,96 @@ function ejercicio05(){
 }
 
 function ejercicio06(){
+alert("Sueldo_Semanal");
     let cantidadHoras = Number(prompt("Ingrese horas trabajadas en la semana:"));
-
-    // Valida si es negativo
-    if (cantidadHoras < 0) {
-        alert(" *NO ADMITE NEGATIVO*");
-    } else {
-        let SueldoSemana = cantidadHoras * 20; // Pago normal por hora
-    
-        // Si trabaja mas de 40 horas, se calculan horas extra
-        if (cantidadHoras > 40) {
-            let PagoHorasExtra = (cantidadHoras - 40) * 25;
-            SueldoSemana = 800 + PagoHorasExtra; // 800 es el pago base de 40 horas
+    if (!cantidadHoras ){ //Validacion que sea un numero 
+        alert("ADVERTENCIA: *SOLO NUMEROS*") 
+    }else{
+        // Valida si es negativo
+        if (cantidadHoras < 0) {
+            alert(" *NO ADMITE NEGATIVO*");
+        } else {
+            let SueldoSemana = cantidadHoras * 20; // Pago normal por hora
+        
+            // Si trabaja mas de 40 horas, se calculan horas extra
+            if (cantidadHoras > 40) {
+                let PagoHorasExtra = (cantidadHoras - 40) * 25;
+                SueldoSemana = 800 + PagoHorasExtra; // 800 es el pago base de 40 horas
+            }
+        
+            // Muestra el sueldo semanal
+            alert(`Sueldo semanal: $${SueldoSemana}`);
         }
-    
-        // Muestra el sueldo semanal
-        alert(`Sueldo semanal: $${SueldoSemana}`);
     }
-
 }
 
 function ejercicio07(){
+alert("Descuento_Helado");
     let Importe = Number(prompt("Ingrese importe de compra ($):"));
+    if (!Importe){ //Validacion que sea un numero
+        alert("ADVERTENCIA: *SOLO NUMEROS*") 
+    }else{
+        // Solicita el tipo de membresia                             .toUpperCase() convierte en Mayus
+        let tipoMembresia = prompt("Ingrese tipo de Membresia [A][B][C]:").toUpperCase();
 
-// Solicita el tipo de membresia                             .toUpperCase() convierte en Mayus
-let tipoMembresia = prompt("Ingrese tipo de Membresia [A][B][C]:").toUpperCase();
+        let descuento = 0;
 
-let descuento = 0;
+        // Valida si el importe es negativo
+        if (Importe < 0) {
+            alert(" *IMPORTE NO PUEDE SER NEGATIVO*");
+        } else {
+            // Aplica descuento segun el tipo de membresia
+            switch (tipoMembresia) {
+                case 'A':
+                    alert("Descuento del 10%");
+                    descuento = Importe * 0.1;
+                    break;
+                case 'B':
+                    alert("Descuento del 15%");
+                    descuento = Importe * 0.15;
+                    break;
+                case 'C':
+                    alert("Descuento del 20%");
+                    descuento = Importe * 0.2;
+                    break;
+                default:                        //Salto de linea
+                    alert("Tipo de Membresia Invalido \n **Sin descuento**");
+                    descuento = 0;
+                    break;
+            }
 
-// Valida si el importe es negativo
-if (Importe < 0) {
-    alert(" *IMPORTE NO PUEDE SER NEGATIVO*");
-} else {
-    // Aplica descuento segun el tipo de membresia
-    switch (tipoMembresia) {
-        case 'A':
-            alert("Descuento del 10%");
-            descuento = Importe * 0.1;
-            break;
-        case 'B':
-            alert("Descuento del 15%");
-            descuento = Importe * 0.15;
-            break;
-        case 'C':
-            alert("Descuento del 20%");
-            descuento = Importe * 0.2;
-            break;
-        default:                        //Salto de linea
-            alert("Tipo de Membresia Invalido \n **Sin descuento**");
-            descuento = 0;
-            break;
+            // Calcula el importe final
+            Importe = Importe - descuento;
+
+            // Muestra los resultados
+            alert(`El descuento es: $${descuento}
+                El importe final es: $${Importe}`);
+        }
     }
-
-    // Calcula el importe final
-    Importe = Importe - descuento;
-
-    // Muestra los resultados
-    alert(`El descuento es: $${descuento}
-        El importe final es: $${Importe}`);
 }
+
+function ejercicio08(){
+alert("Promedio_Aprobad_o_Desaprobado");
+	let nota1=parseFloat(prompt("Ingrese 1ra nota: "));
+    let nota2=parseFloat(prompt("Ingrese 2da nota: "));
+    let nota3=parseFloat(prompt("Ingrese 3ra nota: "));
+
+    if (!nota1 || !nota2 || !nota3){ //Validacion que sea un numero reales
+        alert("ADVERTENCIA: *SOLO ADMITE NUMEROS REALES*") 
+    }else{
+        if (nota1<0 || nota2<0 || nota3<0) { //Valida si es negativo y advierte
+            alert(" *NOTAS INVALIDAS,FUERA DE RANGO*")
+        }else{
+            if(nota1>20 || nota2>20 || nota3>20) {//Valida el rango maximo
+                alert(" *NOTAS INVALIDAS,FUERA DE RANGO*");
+            }else{
+                let promedio=(nota1+nota2+nota3)/3; //Calcula el promedio
+                if (promedio>=12){ //Determina si aprobo o desaprobo
+                    alert( `El Alumno APROBO con: ${promedio}`);
+                }else{
+                    alert(`El Alumno DESAPROBO con: ${promedio}`)
+                }
+            }
+        }
+    }
 }
