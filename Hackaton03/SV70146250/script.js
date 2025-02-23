@@ -753,11 +753,115 @@ alert("Suma_Cien_Numeros_con_Repetir");
     contador = 1;
     mensaje += "Numeros a sumar:\n"; //Primera linea almacenar
     do {
-    suma = suma + contador;
-    mensaje +=` ${contador} -`; //Alamacena 1 iteracion
-    contador = contador + 1;
+        suma = suma + contador;
+        mensaje +=` ${contador} -`; //Alamacena 1 iteracion
+        contador = contador + 1;
     } while (contador <= 100);
 
     mensaje +=`\n Suma 100 primeros numeros es: ${suma}`;
     alert(mensaje);
+}
+
+function ejercicio29(){
+alert("Suma_Cien_Numeros_con_Mientras");
+    let contador, suma;
+    let mensaje=""; //Para alacenar en las iteraciones del While en una cadena
+    // Evita que acumule datos de otras iteraciones
+    suma = 0;
+    contador = 1;
+    mensaje += "Numeros a sumar:\n"; //Primera linea almacenar
+    while (contador <= 100) {
+        mensaje +=`- ${contador} `; //Alamacena 1 iteracion
+        suma = suma + contador;
+        contador = contador + 1;
+    } 
+
+    mensaje +=`\n Suma 100 primeros numeros es: ${suma}`;
+    alert(mensaje);
+}
+
+function ejercicio30(){
+alert("Suma_Cien_Numeros_con_Para");
+    let contador, suma;
+    let mensaje=""; //Para alacenar en las iteraciones del For en una cadena
+    // Evita que acumule datos de otras iteraciones
+    suma = 0;
+    mensaje += "Numeros a sumar:\n"; //Primera linea almacenar
+    for (contador=1;contador <= 100;contador=contador+1) {
+        mensaje +=`| ${contador} `; //Alamacena 1 iteracion
+        suma = suma + contador;
+    } 
+    mensaje +=`\n Suma 100 primeros numeros es: ${suma}`;
+    alert(mensaje);
+}
+
+function ejercicio31(){
+alert("Media_Pares_Impares_de_10_Numeros");
+    let num;
+    let contador, contaPar, contaImpar, sumaPar, sumaImpar;
+
+    // Evita que acumule datos de otras iteraciones
+    sumaPar = 0;
+    sumaImpar = 0;
+    contaPar = 0;
+    contaImpar = 0;
+
+    alert("***Ingresar 10 numeros ENTEROS***");
+
+    for (contador = 1; contador <= 10; contador = contador + 1) {
+         num = parseFloat(prompt(`Ingrese numero ${contador}:`));
+
+        if (Math.trunc(num) !== num) {
+            alert("ERROR: *DEBE SER ENTERO*");
+            sumaPar = 0;
+            sumaImpar = 0;
+            contaPar = 0;
+            contaImpar = 0;
+            break; // Sale del bucle borrando lo acumulado
+        } else {
+            if (num % 2 === 0) {
+                sumaPar = sumaPar + num;
+                contaPar = contaPar + 1;
+            } else {
+                sumaImpar = sumaImpar + num;
+                contaImpar = contaImpar + 1;
+            }
+        }
+    }
+
+    if (contaImpar !== 0) {     // .toFixed(0) Redondea a 0 decimales
+    alert(`Media de Impares es: ${(sumaImpar / contaImpar).toFixed(0)}`);
+    }
+
+    if (contaPar !== 0) {        // .toFixed(0) Redondea a 0 decimales
+    alert(`Media de Pares es: ${(sumaPar / contaPar).toFixed(0)}`);
+    }
+
+}
+
+function ejercicio32(){
+alert("Poblacion_3_Provincias_11_Ciudades");
+    let nombreProvincia, nombreCiudad, ciudadMayorPoblacion;
+    let poblacion, mayorPoblacion;
+    let i, j;
+
+    // Evita que acumule info de otras repeticiones
+    mayorPoblacion = 0;
+
+    for (i = 1; i <= 3; i = i + 1) {
+        nombreProvincia = prompt(`Ingrese el nombre de la provincia ${i}:`);
+      
+        for (j = 1; j <= 2; j = j + 1) {
+          nombreCiudad = prompt(`Ingrese el nombre de la ciudad ${j} de la provincia ${nombreProvincia}:`);
+          poblacion = parseInt(prompt(`Ingrese la poblacion de la ciudad ${nombreCiudad}:`));
+      
+          if (poblacion > mayorPoblacion) {
+            mayorPoblacion = poblacion;
+            ciudadMayorPoblacion = nombreCiudad;
+          }
+        }
+      }
+      
+      alert(`Ciudad de mayor poblacion es ${ciudadMayorPoblacion} con una cantidad de: ${mayorPoblacion}`);
+
 }
