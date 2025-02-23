@@ -599,8 +599,165 @@ alert("Factorial_Tradicional");
          alert("ERROR: *DEBE SER ENTERO NO NEGATIVO*");
     } else {
         for (let contador = 1; contador <= num; contador++) {
-            factorial *= contador; // Calculo del factorial
+            factorial = factorial*contador; // Calculo del factorial
         }
         alert(`El factorial es: ${factorial}`);
     }
+}
+
+function ejercicio22(){
+alert("Suma_n_primeros_numeros");
+    let num = Number(prompt("Ingrese un numero:"));
+    let suma = 0;
+    // Validacion: debe ser entero y no negativo
+    if (num < 0 || !Number.isInteger(num)) {
+        alert("ERROR: *DEBE SER ENTERO NO NEGATIVO*");
+    } else {
+        alert("Lista de numeros (+):");
+        for (let contador = 1; contador <= num; contador++) {
+            suma = suma+contador;
+            alert(`         ${contador}`);
+        }
+    alert(`Suma de ${num} primeros numeros es:
+                  ${suma}`);
+    }        
+}
+
+function ejercicio23(){
+alert("Suma_Impares_Menor_Igual_n");
+    let num = Number(prompt("Ingrese un numero:"));
+    let suma = 0;
+    let impares=[]; //Array para almacenar impares
+    // Validacion: debe ser entero y no negativo
+    if (num < 0 || !Number.isInteger(num)) {
+     alert("ERROR: *DEBE SER ENTERO NO NEGATIVO*");
+    } else {
+     
+    for (let contador = 1; contador <= num; contador++) {
+        if (contador % 2 !== 0) {
+        suma = suma + contador;
+        impares.push(contador); //Agrega el impar al array impares[]
+        }
+    }
+    if(num>500){ //Si num es mayor a 500, falta espacio
+        alert(`Lista de Impares (+):
+        ${impares.join(" - ").slice(0,1400)} ...
+        Suma de menores iguales a ${num} es:
+                      ${suma}`); //Esta parte se podria perder si es mayor a 500
+    }else{
+        alert(`Lista de Impares (+):
+        ${impares.join(" - ")}
+        Suma de menores iguales a ${num} es:
+                      ${suma}`); //Muestra array impares y suma
+    }
+}
+}
+
+function ejercicio24(){
+alert("Suma_Pares_Hasta_1000");
+    let num = 1000; // El maximo rango de los pares a tomar
+    let suma = 0;
+    // Validacion NO negativo
+    if (num < 0 || !Number.isInteger(num)) {
+         alert("ERROR: *DEBE SER ENTERO NO NEGATIVO*");
+    } else {
+        // Sumar solo los pares
+        for (let contador = 2; contador <= num; contador += 2) {
+            suma += contador;
+        }
+       // Mostrar la suma total
+        alert(`Suma de pares hasta ${num} es: ${suma}`);
+    }
+}
+
+function ejercicio25(){
+alert("Factorial_Distinto");
+    let num = parseInt(prompt("Ingrese un numero: ")); 
+    let contador , factorial; 
+    // Para que al repetir el bucle no siga acumulando
+    factorial = 0; 
+    contador = 0; 
+    // Validacion NO negativo
+    if (num < 0 || Math.trunc(num) !== num) {
+        alert("ERROR: *DEBE SER ENTERO NO NEGATIVO*");
+    } else {
+    // Para que comiencen en 1
+        contador = 1;
+        factorial = 1; 
+
+        while (contador <= num) {
+            factorial = factorial * contador; // Calculo
+            contador = contador + 1; // Para que pase al siguiente valor sumando 1
+        }
+    alert(`El factorial es: ${factorial}`);
+    }
+}
+
+function ejercicio26(){
+alert("Resto_Cociente_Por_Restas_Sucesivas");
+    let dividendo = parseInt(prompt("Ingrese numero a dividir: "));
+    let divisor = parseInt(prompt("Ingrese numero que divide: "));
+    let cociente, resto;
+
+    // Validacion NO negativo
+    if (dividendo < 0 || Math.trunc(dividendo) !== dividendo || divisor <= 0 || Math.trunc(divisor) !== divisor) {
+         alert("ERROR: *DEBE SER ENTERO NO NEGATIVO*");
+    } else {
+        cociente = 0;
+        resto = dividendo; //Comienza resto como dividendo
+        //Se crea una cadena para almacenar el contenido del bucle
+        let mensaje = "   Restas Sucesivas:\n";
+
+        while (resto >= divisor) {
+            cociente = cociente + 1;
+            //Se almacena en cada iteracion una linea de resta a la cadena mensaje
+            mensaje += `    ${cociente}) ${resto} - ${divisor} = ${resto - divisor}\n`; // Calculo temporal
+            resto = resto - divisor; // Calculo almacenando en resto
+        }
+    //Se almacena en la cadena mensaje el resto final y el cociente
+    mensaje += `El resto es: ${resto}\n`; //Ultimo resto
+    mensaje += `El cociente es: ${cociente}`; //Numero de iteraciones hasta llegar
+    alert(mensaje);
+    }
+
+}
+
+function ejercicio27(){
+alert("Media_Numeros_Positivos_Hasta_Agregar_Negativo");
+    let num, suma, contador;
+    contador = 0;
+    suma = 0;
+
+    do {
+         num = parseFloat(prompt("Ingrese NUMERO NO negativo o finalizara: "));
+        if (num >= 0) {
+            suma = suma + num;
+            contador = contador + 1;
+        }
+    } while (num >= 0);
+
+    if (contador > 0) {
+        alert(`Se ingresaron ${contador} numeros positivos`); //Limita en 2 decimal
+        alert(`Media de numeros ingresados es: ${(suma / contador).toFixed(2)}`);
+    } else {
+        alert("No se ingresaron NUMEROS positivos");
+    }
+}
+
+function ejercicio28(){
+alert("Suma_Cien_Numeros_con_Repetir");
+    let contador, suma;
+    let mensaje=""; //Para alacenar en las iteraciones del DoWhile en una cadena
+    // Evita que acumule datos de otras iteraciones
+    suma = 0;
+    contador = 1;
+    mensaje += "Numeros a sumar:\n"; //Primera linea almacenar
+    do {
+    suma = suma + contador;
+    mensaje +=` ${contador} -`; //Alamacena 1 iteracion
+    contador = contador + 1;
+    } while (contador <= 100);
+
+    mensaje +=`\n Suma 100 primeros numeros es: ${suma}`;
+    alert(mensaje);
 }
