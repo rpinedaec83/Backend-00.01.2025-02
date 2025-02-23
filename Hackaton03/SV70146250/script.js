@@ -108,10 +108,10 @@ function ejercicio05(){
     } else if (Math.trunc(cantidadZapatos) !== cantidadZapatos) { // Valida si es decimal
         alert(" *SOLO ADMITEN ENTEROS POSITIVOS*");
     } else {
-        let totalOriginal = cantidadZapatos * precio // Cálculo total sin descuentos
+        let totalOriginal = cantidadZapatos * precio // Calculo total sin descuentos
         let descuento = 0 // Inicializa el descuento
         let totalPagar = totalOriginal // Inicializa el total a pagar
-        // Aplica descuentos según la cantidad comprada
+        // Aplica descuentos segun la cantidad comprada
         if (cantidadZapatos >= 10 && cantidadZapatos < 20) {
             descuento = totalOriginal * 0.1 // 10%
             totalPagar = totalOriginal * (1 - 0.1)
@@ -129,4 +129,25 @@ function ejercicio05(){
             Descuento:         $${descuento}
             Total a pagar:     $${totalPagar}`);
     }
+}
+
+function ejercicio06(){
+    let cantidadHoras = Number(prompt("Ingrese horas trabajadas en la semana:"));
+
+    // Valida si es negativo
+    if (cantidadHoras < 0) {
+        alert(" *NO ADMITE NEGATIVO*");
+    } else {
+        let SueldoSemana = cantidadHoras * 20; // Pago normal por hora
+    
+        // Si trabaja mas de 40 horas, se calculan horas extra
+        if (cantidadHoras > 40) {
+            let PagoHorasExtra = (cantidadHoras - 40) * 25;
+            SueldoSemana = 800 + PagoHorasExtra; // 800 es el pago base de 40 horas
+        }
+    
+        // Muestra el sueldo semanal
+        alert(`Sueldo semanal: $${SueldoSemana}`);
+    }
+
 }
