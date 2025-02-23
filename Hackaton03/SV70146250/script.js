@@ -851,7 +851,7 @@ alert("Poblacion_3_Provincias_11_Ciudades");
     for (i = 1; i <= 3; i = i + 1) {
         nombreProvincia = prompt(`Ingrese el nombre de la provincia ${i}:`);
       
-        for (j = 1; j <= 2; j = j + 1) {
+        for (j = 1; j <= 11; j = j + 1) {
           nombreCiudad = prompt(`Ingrese el nombre de la ciudad ${j} de la provincia ${nombreProvincia}:`);
           poblacion = parseInt(prompt(`Ingrese la poblacion de la ciudad ${nombreCiudad}:`));
       
@@ -865,3 +865,181 @@ alert("Poblacion_3_Provincias_11_Ciudades");
       alert(`Ciudad de mayor poblacion es ${ciudadMayorPoblacion} con una cantidad de: ${mayorPoblacion}`);
 
 }
+
+function ejercicio33(){
+alert("Continuar_O_Terminar");
+    let contar = 0;
+    let Llave = ""; // Permite cerrar el bucle
+    alert("[+++++++++++[INICIO]+++++++++++]");
+    do {
+        contar = contar + 1;
+        Llave = prompt(`[==========${contar}=============]
+        ("PRESIONE [ENTER] PARA CONTINUAR
+        PARA TERMINAR ESCRIBA: SALIR`);
+        alert(`[==========${contar}=============]`);
+    } while (Llave.toUpperCase() !== "SALIR"); // La condicion para cerrar el bucle
+
+    alert("[++++++++++++[FIN]+++++++++++++]");
+
+}
+
+function ejercicio34(){
+alert("Tablas_Multiplica_1_9");
+    let i, j;
+    let mensaje="";
+    for (i = 1; i <= 9; i = i + 1) {
+        mensaje +=`Tabla del ${i})\n`;
+        for (j = 1; j <= 10; j = j + 1) {
+            mensaje+=`${i} x ${j} = ${i * j}\n`;
+        }
+        alert(`${mensaje}------------`);
+        mensaje="";
+    }
+}
+
+function ejercicio35(){
+alert("Mayor_Y_Menor_de_20");
+    let num, mayr, menr;
+    let repetidor;
+
+    for (repetidor = 1; repetidor <= 20; repetidor = repetidor + 1) {
+        num = parseFloat(prompt(`Ingrese numero ${repetidor}:`));
+        if(!num){ //Validacion de datos
+            alert("DATO INVALIDO");
+            repetidor=20;
+            mayr=num;
+            menr=num;
+        }else{
+            if (repetidor == 1) {
+                mayr = num;
+                menr = num;
+            } else {
+                if (num > mayr) {
+                    mayr = num;
+                }
+                if (num < menr) {
+                    menr = num;
+                }
+            }
+        }
+    }
+    if(!isNaN(mayr)||!isNaN(menr)){
+        alert(`El mayor es: ${mayr}`);
+        alert(`El menor es: ${menr}`);
+     }
+}
+
+function ejercicio36(){
+alert("Serie_Fibonacci");
+    let num;
+    let a, b, temporal, i;
+    let mensaje=""; //Cadena para almacenar la serie
+    
+    num = parseInt(prompt("Ingrese numero de terminos de serie:"));
+    
+    // Valida que sea positivo y no 0
+    if (num <= 0 || Math.trunc(num) !== num) {
+        alert("ERROR: *DEBE SER ENTERO POSITIVO*");
+    } else {
+        a = 0; // Fibonacci comienza con 0
+        b = 1; // Segundo termino
+        mensaje+=`Serie Fibonacci:\n`;
+    
+        for (i = 1; i <= num; i = i + 1) {
+            mensaje+=`- ${a} `; //Agregar a la cadena uno numero de la serie
+            temporal = a + b; // Almacena la suma del anterior con el numero actual
+            a = b; // Actualiza a para mostrarlo el siguiente ciclo
+            b = temporal; // Almacena la suma hasta el momento en b
+        }
+        alert(`${mensaje}`);
+    }
+}
+
+function ejercicio37(){
+alert("MCD_con_Euclides");
+    let num1, num2;
+    let temporal;
+    num1 = parseFloat(prompt("Ingrese primer numero:"));
+    num2 = parseFloat(prompt("Ingrese segundo numero:"));
+
+    // Valida que sea positivo y no 0
+    if (num1 <= 0 || Math.trunc(num1) !== num1 || num2 <= 0 || Math.trunc(num2) !== num2) {
+        alert("ERROR: *DEBE SER ENTERO POSITIVO*");
+    } else {
+        while (num2 !== 0) {
+            temporal = num2;
+            num2 = num1 % num2; // Calcula el resto de dividir
+            num1 = temporal; // Almacena el maximo comun divisor, hasta la ultima repeticion
+        }
+        alert(`El MCD es: ${num1}`);
+    }
+}
+
+function ejercicio38(){
+alert("Numero_Perfecto");
+    let num, sumaDivisores, i;
+    num = parseInt(prompt("Ingrese numero y verificar perfecto"));
+    sumaDivisores = 0;
+    for (i = 1; i <= num - 1; i = i + 1) {
+        if (num % i === 0) { // Evalua si tiene divisores
+            sumaDivisores = sumaDivisores + i; // Si cumple los acumula
+        }
+    }
+    if (sumaDivisores === num) {
+        alert(`> ${num} es PRRRfecto`);
+    } else {
+        alert(`> ${num} NO es PRRRfecto`);
+    }
+}
+
+function ejercicio39(){
+alert("Aproxima_GregoryLeibniz_para_Pi");
+    let pi2, termino;
+    let n, signo, iteraciones;
+
+    pi2 = 0;
+    n = 1;
+    signo = 1;
+
+    iteraciones = parseInt(prompt("Ingrese el numero de iteraciones:"));
+    if(!iteraciones){ //Validacion
+        alert("DATO INVALIDO");
+    }else{
+        for (let i = 1; i <= iteraciones; i++) {
+            termino = 4 / n;
+            pi2 = pi2 + (signo * termino); // Metodo Gregory-Leibniz, en un ciclo
+            signo = signo * (-1);
+            n = n + 2;
+        }
+
+        alert(`Aproximacion PI en ${iteraciones} ciclos: 
+                                  ${pi2}
+            Referencia:     3.1415926535897932`);
+    }
+}
+
+function ejercicio40(){
+    alert("Aproxima_Nilakantha_para_Pi");
+        let pi2, termino;
+        let n, signo, iteraciones;
+    
+        pi2 = 3;
+        n = 2;
+        signo = 1;
+    
+        iteraciones = parseInt(prompt("Ingrese el numero de iteraciones:"));
+        if(!iteraciones){ //Validacion
+            alert("DATO INVALIDO");
+        }else{
+            for (let i = 1; i <= iteraciones; i++) {
+                termino = 4/(n*(n+1)*(n+2));
+                pi2 = pi2+(signo*termino); // Metodo Nilakantha, en un ciclo
+                signo = signo * (-1);
+                n = n + 2;
+            }
+    
+            alert(`Aproximacion PI en ${iteraciones} ciclos: 
+                                      ${pi2}
+                Referencia:     3.1415926535897932`);
+        }
+    }
