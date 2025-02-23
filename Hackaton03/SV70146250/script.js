@@ -69,3 +69,31 @@ function ejercicio03(){
         }
 }
 }
+
+function ejercicio04(){
+    let num1 = parseInt(prompt("Ingrese 1er numero:"));
+    let num2 = parseInt(prompt("Ingrese 2do numero:"));
+    let num3 = parseInt(prompt("Ingrese 3er numero:"));
+
+
+    if (!num1 || !num2 || !num3){ //Validacion que sea un numero
+            alert("ADVERTENCIA: *SOLO ENTEROS*") 
+        }else{
+        if(num1>num2){
+            let temporal=num2
+            num2=num1
+            num1=temporal
+        }
+        if(num1>num3){
+            let temporal=num3
+            num3=num1
+            num1=temporal
+        }
+        if(num2>num3){
+            let temporal=num3
+            num3=num2
+            num2=temporal
+        }
+        alert(`Orden ascendente: ${num1} - ${num2} - ${num3}`)
+    }
+}
