@@ -270,3 +270,118 @@ function ejercicio28() {
 
   console.log("La suma de los 100 primeros numeros es ", suma);
 }
+
+function ejercicio32() {
+  /**
+   * 32. Se quiere saber cuál es la ciudad
+   * con la población de más personas, son tres provincias y
+   * once ciudades, hacer un algoritmo en JavaScript que nos permita saber eso.
+   */
+  console.log("==========ejercicio 32=================");
+
+  let nombreProvincia, nombreCiudad, ciudadMayorPoblacion;
+  let poblacion, mayorPoblacion;
+
+  mayorPoblacion = 0;
+
+  for (let i = 0; i < 3; i++) {
+    nombreProvincia = prompt(`ingrese la provincia numero: ${i + 1}`);
+    for (let j = 0; j < 2; j++) {
+      nombreCiudad = prompt("Ingrese el nombre de la ciudad ");
+      poblacion = parseInt(prompt("Ingrese la cantidad de problacion"));
+      if (poblacion > mayorPoblacion) {
+        mayorPoblacion = poblacion;
+        ciudadMayorPoblacion = nombreCiudad;
+      }
+    }
+  }
+
+  alert(`
+    La ciudad con  mayor poblacion es:
+    ${ciudadMayorPoblacion}
+     con una poblacion de 
+    ${mayorPoblacion}
+    `);
+}
+
+function ejercicio38() {
+  /**38. Hacer un algoritmo en JavaScript que
+   *  nos permita saber si un número es un número perfecto. */
+  console.log("==========ejercicio 38=================");
+
+  let numero, sumaDivisores;
+
+  numero = 28;
+
+  sumaDivisores = 0;
+
+  for (let i = 1; i < numero; i++) {
+    if (numero % i == 0) {
+      sumaDivisores = sumaDivisores + i;
+    }
+  }
+
+  if (sumaDivisores == numero) {
+    console.log(`El numero ${numero} es perfecto`);
+  } else {
+    console.log(`El numero ${numero} NO es perfecto`);
+  }
+}
+
+function ejercicio39() {
+  /**39. Hacer un algoritmo en JavaScript que cumpla con 
+   * la aproximación del número pi con la serie de Gregory-Leibniz. 
+   * La formula que se debe aplicar es:
+    Pi = (4/1) - (4/3) + (4/5) - (4/7) + (4/9) - (4/11) + (4/13) - (4/15) ... */
+  console.log("========== ejercicio39=================");
+
+  let pi, termino, n, signo;
+  pi = 0;
+  n = 1;
+  signo = 1;
+
+  const iteraciones = 50;
+
+  for (let i = 1; i <= iteraciones; i++) {
+    termino = 4 / n;
+    pi = pi + signo * termino;
+    signo = signo * -1;
+    n = n + 2;
+  }
+
+  console.log(
+    "La aproximacion de pi despues de ",
+    iteraciones,
+    " iteraciones es de: ",
+    pi
+  );
+}
+
+function ejercicio40() {
+  /**40. Hacer un algoritmo en JavaScript que cumpla 
+   * con la aproximación del número pi con la serie de Nilakantha.
+   *  La formula que se debe aplicar es:
+    Pi = = 3 + 4/(2*3*4) - 4/(4*5*6) + 4/(6*7*8) - 4/(8*9*10) + 4/(10*11*12) - 4/(12*13*14) ...
+*/
+  console.log("========== ejercicio40=================");
+
+  let pi, termino, n, signo;
+  pi = 3;
+  n = 2;
+  signo = 1;
+
+  const iteraciones = 100;
+
+  for (let i = 1; i <= iteraciones; i++) {
+    termino = 4 / (n * (n + 1) * (n + 2));
+    pi = pi + signo * termino;
+    n = n + 2;
+  }
+
+  console.log(
+    "La aproximacion de pi despues de ",
+    iteraciones,
+    " iteraciones es de: ",
+    pi
+  );
+}

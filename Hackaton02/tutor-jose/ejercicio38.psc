@@ -10,7 +10,7 @@ Algoritmo continuarPrograma
 	
 	para i<-1 hasta numero con paso 1 hacer
 		si numero%i =0 Entonces
-			sumaDivisores= sumaDivisores+1
+			sumaDivisores= sumaDivisores+i
 		FinSi
 	FinPara
 	
