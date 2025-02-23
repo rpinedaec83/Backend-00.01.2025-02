@@ -51,6 +51,21 @@ if (!num) { //Evalua que el dato ingresado sea Float, igual que el num.
 }
 
 function ejercicio03(){
+    let num = prompt("Ingrese un numero:"); // Pedir numero al usuario
+    if (!isNaN(num)===false){ //Validacion que sea un numero
+        alert("Error: Debe ser un numero ") 
+        }else{
+        // Subcadena extrae de la cadena num, la ultima cifra.
+        // Longitud determina el tamaño de la cadena, por tanto la ultima cifra.
+        // digito almacena el numero resultado de convertir con Number
+     
+        let digito = Number(num.substring(num.length - 1));
 
-    
+        // Evalua el ultimo digito
+        if (digito == 4) {
+            alert("Termina en 4");
+        } else {
+            alert("No termina en 4");
+        }
+}
 }
