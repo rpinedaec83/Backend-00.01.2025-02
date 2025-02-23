@@ -916,145 +916,164 @@ function ejercicio34() {
 }
 
 function ejercicio35() {
-    let n = parseInt(prompt("Ingrese un número entero positivo para calcular su factorial:"));
+    let n = parseInt(prompt("Ingrese el numero 1:"));
 
-    console.log("Número ingresado:", n);
-
-    // Validar que el número sea positivo
-    if (isNaN(n) || n < 0) {
-        alert("Error: Debe ingresar un número entero positivo.");
-        console.log("Error: Debe ingresar un número entero positivo.");
+    if (isNaN(n)) {
+        alert("Error: Debe ingresar un numero válido.");
+        console.log("Error: Debe ingresar un numero válido.");
         return;
     }
 
-    let factorial = 1;
-    let contador = 1;
+    let mayor = n;
+    let menor = n;
 
-    while (contador <= n) {
-        factorial *= contador;
-        contador++;
+    for (let i = 2; i <= 20; i++) {
+        n = parseInt(prompt(`Ingrese el numero ${i}:`));
+
+        if (isNaN(n)) {
+            alert("Error: Debe ingresar un numero válido.");
+            console.log("Error: Debe ingresar un numero válido.");
+            return;
+        }
+
+        if (n > mayor) {
+            mayor = n;
+        }
+
+        if (n < menor) {
+            menor = n;
+        }
     }
 
-    alert(`El factorial del número ${n} es: ${factorial}`);
-    console.log(`El factorial del número ${n} es: ${factorial}`);
+    alert(`El numero mayor es: ${mayor}`);
+    alert(`El numero menor es: ${menor}`);
+
+    console.log(`El numero mayor es: ${mayor}`);
+    console.log(`El numero menor es: ${menor}`);
 }
 
 function ejercicio36() {
-    let n = parseInt(prompt("Ingrese un número entero positivo para calcular su factorial:"));
+    let n = parseInt(prompt("Ingrese la cantidad de terminos de la serie Fibonacci:"));
 
-    console.log("Número ingresado:", n);
-
-    // Validar que el número sea positivo
-    if (isNaN(n) || n < 0) {
-        alert("Error: Debe ingresar un número entero positivo.");
-        console.log("Error: Debe ingresar un número entero positivo.");
+    if (isNaN(n) || n <= 0) {
+        alert("Ingrese un numero mayor a 0.");
+        console.log("Ingrese un numero mayor a 0.");
         return;
     }
 
-    let factorial = 1;
-    let contador = 1;
+    let a = 0, b = 1, c;
 
-    while (contador <= n) {
-        factorial *= contador;
-        contador++;
+    alert("Serie de Fibonacci:");
+    console.log("Serie de Fibonacci:");
+
+    alert(a);
+    console.log(a);
+
+    if (n > 1) {
+        alert(b);
+        console.log(b);
     }
 
-    alert(`El factorial del número ${n} es: ${factorial}`);
-    console.log(`El factorial del número ${n} es: ${factorial}`);
+    for (let i = 3; i <= n; i++) {
+        c = a + b;
+        alert(c);
+        console.log(c);
+        a = b;
+        b = c;
+    }
 }
 
 function ejercicio37() {
-    let n = parseInt(prompt("Ingrese un número entero positivo para calcular su factorial:"));
+    let a = parseInt(prompt("Ingrese el primer numero:"));
+    let b = parseInt(prompt("Ingrese el segundo numero:"));
 
-    console.log("Número ingresado:", n);
-
-    // Validar que el número sea positivo
-    if (isNaN(n) || n < 0) {
-        alert("Error: Debe ingresar un número entero positivo.");
-        console.log("Error: Debe ingresar un número entero positivo.");
+    if (isNaN(a) || isNaN(b)) {
+        alert("Error: Debe ingresar valores numericos.");
+        console.log("Error: Debe ingresar valores numericos.");
         return;
     }
 
-    let factorial = 1;
-    let contador = 1;
-
-    while (contador <= n) {
-        factorial *= contador;
-        contador++;
+    let resto;
+    while (b !== 0) {
+        resto = a % b;
+        a = b;
+        b = resto;
     }
 
-    alert(`El factorial del número ${n} es: ${factorial}`);
-    console.log(`El factorial del número ${n} es: ${factorial}`);
+    alert("El Maximo Comun Divisor (MCD) es: " + a);
+    console.log("El Maximo Comun Divisor (MCD) es: " + a);
 }
 
 function ejercicio38() {
-    let n = parseInt(prompt("Ingrese un número entero positivo para calcular su factorial:"));
+    let numero = parseInt(prompt("Ingrese un numero para verificar si es perfecto:"));
 
-    console.log("Número ingresado:", n);
-
-    // Validar que el número sea positivo
-    if (isNaN(n) || n < 0) {
-        alert("Error: Debe ingresar un número entero positivo.");
-        console.log("Error: Debe ingresar un número entero positivo.");
+    if (isNaN(numero) || numero <= 0) {
+        alert("Error: Debe ingresar un numero entero positivo.");
+        console.log("Error: Debe ingresar un numero entero positivo.");
         return;
     }
 
-    let factorial = 1;
-    let contador = 1;
+    let sumaDivisores = 0;
 
-    while (contador <= n) {
-        factorial *= contador;
-        contador++;
+    for (let i = 1; i < numero; i++) { // Se corrige la condición para no incluir el número mismo
+        if (numero % i === 0) {
+            sumaDivisores += i;
+        }
     }
 
-    alert(`El factorial del número ${n} es: ${factorial}`);
-    console.log(`El factorial del número ${n} es: ${factorial}`);
+    if (sumaDivisores === numero) {
+        alert("El numero " + numero + " es perfecto.");
+        console.log("El numero " + numero + " es perfecto.");
+    } else {
+        alert("El numero " + numero + " no es perfecto.");
+        console.log("El numero " + numero + " no es perfecto.");
+    }
 }
 
 function ejercicio39() {
-    let n = parseInt(prompt("Ingrese un número entero positivo para calcular su factorial:"));
+    let pi2 = 0;
+    let n = 1;
+    let signo = 1;
+    
+    let iteraciones = parseInt(prompt("Ingrese el numero de iteraciones:"));
 
-    console.log("Número ingresado:", n);
-
-    // Validar que el número sea positivo
-    if (isNaN(n) || n < 0) {
-        alert("Error: Debe ingresar un número entero positivo.");
-        console.log("Error: Debe ingresar un número entero positivo.");
+    if (isNaN(iteraciones) || iteraciones <= 0) {
+        alert("Error: Debe ingresar un numero entero positivo.");
+        console.log("Error: Debe ingresar un numero entero positivo.");
         return;
     }
 
-    let factorial = 1;
-    let contador = 1;
-
-    while (contador <= n) {
-        factorial *= contador;
-        contador++;
+    for (let i = 1; i <= iteraciones; i++) {
+        let termino = 4 / n;
+        pi2 += signo * termino;
+        signo *= -1;
+        n += 2;
     }
 
-    alert(`El factorial del número ${n} es: ${factorial}`);
-    console.log(`El factorial del número ${n} es: ${factorial}`);
+    alert("La aproximacion de pi despues de " + iteraciones + " iteraciones es: " + pi2);
+    console.log("La aproximacion de pi despues de " + iteraciones + " iteraciones es: " + pi2);
 }
 
 function ejercicio40() {
-    let n = parseInt(prompt("Ingrese un número entero positivo para calcular su factorial:"));
+    let pi2 = 3;
+    let n = 2;
+    let signo = 1;
 
-    console.log("Número ingresado:", n);
+    let iteraciones = parseInt(prompt("Ingrese el numero de iteraciones:"));
 
-    // Validar que el número sea positivo
-    if (isNaN(n) || n < 0) {
-        alert("Error: Debe ingresar un número entero positivo.");
-        console.log("Error: Debe ingresar un número entero positivo.");
+    if (isNaN(iteraciones) || iteraciones <= 0) {
+        alert("Error: Debe ingresar un numero entero positivo.");
+        console.log("Error: Debe ingresar un numero entero positivo.");
         return;
     }
 
-    let factorial = 1;
-    let contador = 1;
-
-    while (contador <= n) {
-        factorial *= contador;
-        contador++;
+    for (let i = 1; i <= iteraciones; i++) {
+        let termino = 4 / (n * (n + 1) * (n + 2));
+        pi2 += signo * termino;
+        signo *= -1;
+        n += 2;
     }
 
-    alert(`El factorial del número ${n} es: ${factorial}`);
-    console.log(`El factorial del número ${n} es: ${factorial}`);
+    alert("La aproximacion de pi despues de " + iteraciones + " iteraciones es: " + pi2);
+    console.log("La aproximacion de pi despues de " + iteraciones + " iteraciones es: " + pi2);
 }
