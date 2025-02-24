@@ -18,6 +18,38 @@ function ejercicio1() {
   }
 }
 
+function ejercicio2() {
+  let numero = prompt("Introduce un número entero:");  // Prompt para obtener la entrada del usuario
+  numero = parseInt(numero);  // Convertir la entrada a un número entero
+
+  // Número_negativo
+  if (numero < 0) {
+    console.log("El número es negativo.");
+  } else if (numero > 0) {
+    console.log("El número es positivo.");
+  } else {
+    console.log("El número es cero.");
+  }
+}
+
+// Llamar a la función
+leerNumero();
+
+function ejercicio3() {
+  // Leer el número ingresado por el usuario
+  let numero = prompt("Introduce un número:");
+
+  // Asegurarnos de que sea un número
+  numero = parseInt(numero);
+
+  // Verificar si el número termina en 4
+  if (numero % 10 === 4) {
+    alert("El número termina en 4.");
+  } else {
+    alert("El número no termina en 4.");
+  }
+}
+
 function ejercicio4() {
   /*4. Hacer un algoritmo en JavaScript que lea tres 
 números enteros y los muestre de menor a mayor.
@@ -109,6 +141,126 @@ function ejercicio5() {
   console.log(`Descuento: ${descuento} Total a pagar:  ${totalPagar}`);
 }
 
+function ejercicio7() {
+  // Total_compra
+  let montoCompra = prompt("Introduce el monto total de la compra (en soles):");
+  montoCompra = parseFloat(montoCompra); // Convertir_decimal
+
+  // Tipo_membresía
+  let tipoMembresia = prompt("Introduce tu tipo de membresía (A, B, C):").toUpperCase(); // Convertir a mayúsculas para asegurar consistencia
+
+  // Variable para el descuento
+  let descuento = 0;
+
+  // Aplicar descuento según el tipo de membresía
+  if (tipoMembresia === 'A') {
+    descuento = 0.10; // 10% 
+  } else if (tipoMembresia === 'B') {
+    descuento = 0.15; // 15% 
+  } else if (tipoMembresia === 'C') {
+    descuento = 0.20; // 20% 
+  } else {
+    alert("Tipo de membresía inválido. Por favor, ingresa A, B o C.");
+    return; // Salir si el tipo de membresía no es válido
+  }
+
+  // Calcular el monto del descuento
+  let montoDescuento = montoCompra * descuento;
+
+  // Calcular el monto final después de aplicar el descuento
+  let montoFinal = montoCompra - montoDescuento;
+
+  // Mostrar el resultado
+  alert("Tu descuento es de " + montoDescuento + " soles. El monto final a pagar es " + montoFinal + " soles.");
+}
+
+function ejercicio8() {
+  // Pedir al usuario que ingrese las tres notas
+  let nota1 = parseFloat(prompt("Introduce la primera nota:"));
+  let nota2 = parseFloat(prompt("Introduce la segunda nota:"));
+  let nota3 = parseFloat(prompt("Introduce la tercera nota:"));
+
+  // Calcular el promedio de las tres notas
+  let promedio = (nota1 + nota2 + nota3) / 3;
+
+  // Determinar si el estudiante aprobó o no
+  if (promedio > 11 && promedio <= 20) {
+    alert("¡Aprobaste! Tu promedio es: " + promedio);
+  } else if (promedio < 11) {
+    alert("¡Desaprobaste! Tu promedio es: " + promedio);
+  } else {
+    alert("El promedio está fuera del rango válido.");
+  }
+}
+
+function ejercicio9() {
+  // Pedir al usuario su sueldo actual
+  let sueldoActual = parseFloat(prompt("Introduce tu sueldo actual en soles:"));
+
+  // Verificar si el sueldo es mayor a 2000 o no, y calcular el aumento
+  let aumento = 0;
+  let nuevoSueldo = 0;
+
+  if (sueldoActual > 2000) {
+    aumento = sueldoActual * 0.05; // Aumento del 5%
+  } else {
+    aumento = sueldoActual * 0.10; // Aumento del 10%
+  }
+
+  // Calcular el nuevo sueldo
+  nuevoSueldo = sueldoActual + aumento;
+
+  // Mostrar el resultado
+  alert("Tu aumento es de " + aumento + " soles. Tu nuevo sueldo será de " + nuevoSueldo + " soles.");
+}
+
+function ejercicio10() {
+  // Pedir al usuario que ingrese un número
+  let numero = parseInt(prompt("Introduce un número entero:"));
+
+  // Verificar si el número es par o impar
+  if (numero % 2 === 0) {
+    alert("El número " + numero + " es par.");
+  } else {
+    alert("El número " + numero + " es impar.");
+  }
+}
+
+function ejercicio11() {
+  // Pedir al usuario que ingrese tres números
+  let num1 = parseFloat(prompt("Introduce el primer número:"));
+  let num2 = parseFloat(prompt("Introduce el segundo número:"));
+  let num3 = parseFloat(prompt("Introduce el tercer número:"));
+
+  // Verificar cuál de los tres números es el mayor
+  let mayor = num1;
+
+  if (num2 > mayor) {
+    mayor = num2;
+  }
+  if (num3 > mayor) {
+    mayor = num3;
+  }
+
+  // Mostrar el número mayor
+  alert("El número mayor es: " + mayor);
+}
+
+function ejercicio12() {
+  // Pedir al usuario que ingrese dos números
+  let num1 = parseFloat(prompt("Introduce el primer número:"));
+  let num2 = parseFloat(prompt("Introduce el segundo número:"));
+
+  // Verificar cuál de los dos números es el mayor
+  if (num1 > num2) {
+    alert("El número mayor es: " + num1);
+  } else if (num2 > num1) {
+    alert("El número mayor es: " + num2);
+  } else {
+    alert("Ambos números son iguales.");
+  }
+}
+
 function ejercicio13() {
   console.log("==========ejercicio 13=================");
   //Hacer un algoritmo en JavaScript que lea una letra y diga si es una vocal.
@@ -132,6 +284,28 @@ function ejercicio13() {
       break;
     default:
       console.log("No es una vocal");
+  }
+}
+function ejercicio6() {
+  // Horas_trabajador
+  let horasTrabajadas = prompt("Introduce las horas trabajadas en la semana:");
+
+  // Horas_trabajadas
+  horasTrabajadas = parseInt(horasTrabajadas);
+
+  // Horas_trabajadas_40
+  if (horasTrabajadas <= 40) {
+    // Pago normal de 20_hora
+    let sueldo = horasTrabajadas * 20;
+    alert("Tu sueldo semanal es de " + sueldo + " soles.");
+  } else {
+    // Horas_extras_25
+    let horasExtra = horasTrabajadas - 40;
+    let sueldoBase = 40 * 20; // Sueldo por las primeras 40 horas
+    let sueldoExtra = horasExtra * 25; // Sueldo por las horas extras
+    let sueldoTotal = sueldoBase + sueldoExtra;
+
+    alert("Tu sueldo semanal es de " + sueldoTotal + " soles.");
   }
 }
 
@@ -201,6 +375,129 @@ function ejercicio17() {
     segundos
   );
 }
+
+function ejercicio15() {
+  // Convertir centímetros a pulgadas
+  let centimetros = parseFloat(prompt("Introduce la cantidad en centímetros:"));
+  let pulgadas = centimetros / 2.54; // 1 pulgada = 2.54 centímetros
+
+  // Convertir libras a kilogramos
+  let libras = parseFloat(prompt("Introduce la cantidad en libras:"));
+  let kilogramos = libras * 0.453592; // 1 libra = 0.453592 kilogramos
+
+  // Mostrar los resultados
+  alert(centimetros + " centímetros son " + pulgadas.toFixed(2) + " pulgadas.");
+  alert(libras + " libras son " + kilogramos.toFixed(2) + " kilogramos.");
+}
+
+function ejercicio16() {
+  // Pedir al usuario que ingrese un número del 1 al 7
+  let numero = parseInt(prompt("Introduce un número del 1 al 7 para conocer el día de la semana:"));
+
+  // Verificar el número y mostrar el día correspondiente
+  switch (numero) {
+    case 1:
+      alert("El día correspondiente es: Lunes");
+      break;
+    case 2:
+      alert("El día correspondiente es: Martes");
+      break;
+    case 3:
+      alert("El día correspondiente es: Miércoles");
+      break;
+    case 4:
+      alert("El día correspondiente es: Jueves");
+      break;
+    case 5:
+      alert("El día correspondiente es: Viernes");
+      break;
+    case 6:
+      alert("El día correspondiente es: Sábado");
+      break;
+    case 7:
+      alert("El día correspondiente es: Domingo");
+      break;
+    default:
+      alert("Número inválido. Por favor, ingresa un número del 1 al 7.");
+      break;
+  }
+}
+
+function ejercicio18() {
+  // Pedir al usuario la cantidad de CDs
+  let cantidad = parseInt(prompt("Introduce la cantidad de CDs a comprar:"));
+
+  // Variables para el precio y la ganancia
+  let precioUnitario = 0;
+  let precioTotal = 0;
+  let gananciaVendedor = 0;
+
+  // Determinar el precio unitario según la cantidad de CDs
+  if (cantidad >= 1 && cantidad <= 9) {
+    precioUnitario = 10;  // Precio por unidad si se compran hasta 9
+  } else if (cantidad >= 10 && cantidad <= 99) {
+    precioUnitario = 8;   // Precio por unidad si se compran entre 10 y 99
+  } else if (cantidad >= 100 && cantidad <= 499) {
+    precioUnitario = 7;   // Precio por unidad si se compran entre 100 y 499
+  } else if (cantidad >= 500) {
+    precioUnitario = 6;   // Precio por unidad si se compran más de 500
+  } else {
+    alert("Cantidad no válida.");
+    return;
+  }
+
+  // Calcular el precio total
+  precioTotal = cantidad * precioUnitario;
+
+  // Calcular la ganancia del vendedor (8,25%)
+  gananciaVendedor = precioTotal * 0.0825;
+
+  // Mostrar los resultados
+  alert("Cantidad de CDs: " + cantidad + "\nPrecio total: S/ " + precioTotal + "\nGanancia para el vendedor: S/ " + gananciaVendedor.toFixed(2));
+}
+
+function ejercicio19() {
+  // Pedir al usuario el número identificador del empleado y los días trabajados
+  let idEmpleado = parseInt(prompt("Introduce el número identificador del empleado (1 a 4):"));
+  let diasTrabajados = parseInt(prompt("Introduce la cantidad de días trabajados (máximo 6 días):"));
+
+  // Verificar si el número de días es válido
+  if (diasTrabajados < 1 || diasTrabajados > 6) {
+    alert("Número de días no válido. Debe ser entre 1 y 6.");
+    return;
+  }
+
+  // Inicializar variables para salario y pago
+  let salarioDiario = 0;
+  let pagoTotal = 0;
+
+  // Asignar el salario diario según el identificador del empleado
+  switch (idEmpleado) {
+    case 1:
+      salarioDiario = 56; // Cajero
+      break;
+    case 2:
+      salarioDiario = 64; // Servidor
+      break;
+    case 3:
+      salarioDiario = 80; // Preparador de mezclas
+      break;
+    case 4:
+      salarioDiario = 48; // Mantenimiento
+      break;
+    default:
+      alert("Número de identificador no válido. Debe ser entre 1 y 4.");
+      return;
+  }
+
+  // Calcular el pago total
+  pagoTotal = salarioDiario * diasTrabajados;
+
+  // Mostrar el resultado
+  alert("El empleado con identificador " + idEmpleado + " trabajó " + diasTrabajados + " días y se le debe pagar S/ " + pagoTotal);
+}
+
+
 function ejercicio22() {
   //Hacer un algoritmo en JavaScript para calcular
   // la suma de los n primeros números.
