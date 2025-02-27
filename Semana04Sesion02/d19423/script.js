@@ -1,64 +1,30 @@
-console.log("Inicio de la aplicacion");
+//quienes intervienen
+//Cajero
+//Heladero
+//Cliente
+//cual es el flujo
+//1 el cliente se acerca a la caja y hace el pedido
+//2 el cajero toma el pedido y los datos del clientes y envia el pedido a preparacion
+//3 preparacion toma el pedido y prepara el helado con los requerimientos del cliente
+//4 cuando termina el pedido lo manda al area de despacho para entregar el pedido
+//5 el despachador cobra el helado y entrega el pedido
+//como mostrar los resultados
 
-let objPersona = {
-    nombre: "Roberto",
-    apellido: "Pineda",
-    edad:41,
-    esCasado: false,
-    hobbies:[
-        "Gunpla", "AeroModelismo", "Musica"
-    ],
-    comer(plato){
-        console.log("Estoy empezando a comer un "+ plato);
+const Heladeria = function(){
 
-        console.log("Ya termine de comer el "+ plato);
-    },
-    trabajar(horario){
-        console.log(`${this.nombre} empezo a trabajar a las ${horario.entrada}`)
-
-        console.log(`${this.nombre} termino de trabajar a las ${horario.salida}`)
+    let Nombre;
+    let Direccion;
+    function configurar(){
+        document.getElementById('nombre').innerText = Nombre;
+        document.getElementById('direccion').innerText = Direccion;
     }
-}
 
-let objPersona2 = {
-    nombre: "Juan",
-    apellido: "Perez",
-    edad:41,
-    esCasado: false,
-    hobbies:[
-        "Gunpla", "AeroModelismo", "Musica"
-    ],
-    comer(plato){
-        console.log("Estoy empezando a comer un "+ plato);
-
-        console.log("Ya termine de comer el "+ plato);
-    },
-    trabajar(horario){
-        console.log(`${this.nombre} empezo a trabajar a las ${horario.entrada}`)
-
-        console.log(`${this.nombre} termino de trabajar a las ${horario.salida}`)
+    return {
+        init: function(parametros){
+            console.log(parametros)
+            Nombre = parametros.nombre;
+            Direccion = parametros.direccion;
+            configurar()
+        }
     }
-}
-
-console.log(objPersona.nombre)
-
-objPersona.hobbies.forEach(element=>{console.log(element)})
-
-
-objPersona.nombre = "David";
-objPersona.apellido = "Lopez";
-
-console.log(objPersona)
-
-objPersona.comer("Chaufa de Carne");
-
-let objHorario ={
-    entrada: "09:00",
-    salida: "18:00"
-}
-
-objPersona.trabajar(objHorario);
-
-for (let index = 0; index < 80; index++) {
-    objPersona.comer("Chaufa de Carne");
-}
+}();
