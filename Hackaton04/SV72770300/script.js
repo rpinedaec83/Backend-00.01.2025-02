@@ -133,7 +133,7 @@ document.getElementById('ejercicio-04-reto-01').addEventListener('click', (e) =>
     } else {
 
         const AreaTriangulo = () => { return (base * altura) / 2; }
-        alert(`${ejercicio}\nÁrea del triángulo: ${AreaTriangulo()}${medida}`);
+        alert(`${ejercicio}\nÁrea del triángulo: ${AreaTriangulo()}${medida}2`);
     }
 
 });
