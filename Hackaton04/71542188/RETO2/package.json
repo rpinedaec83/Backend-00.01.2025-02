@@ -1,0 +1,20 @@
+{
+    "name": "backend-00.01.2025-02",
+    "version": "1.0.0",
+    "description": "Repo Backend 00.01.2025-02",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/Saialf19/Backend-00.01.2025-02.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/Saialf19/Backend-00.01.2025-02/issues"
+    },
+    "homepage": "https://github.com/Saialf19/Backend-00.01.2025-02#readme"
+  }
