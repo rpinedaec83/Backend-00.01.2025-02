@@ -400,11 +400,21 @@ document.getElementById('ejercicio-07-reto-02').addEventListener('click', (e) =>
 
     const FormatPhoneNumber = (...numeros) => {
 
-        return (`"(${numeros[0]}${numeros[1]}${numeros[2]}) ${numeros[3]}${numeros[4]}${numeros[5]}-${numeros[6]}${numeros[7]}${numeros[8]}${numeros[9]}"`)
+        if (numeros.length != 10) {
+            return `Formato de número inválido`;
+        } else {
+            let segmento1 = numeros.slice(0, 3);
+            segmento1 = segmento1.join("");
+            let segmento2 = numeros.slice(3, 6);
+            segmento2 = segmento2.join("");
+            let segmento3 = numeros.slice(6, 9);
+            segmento3 = segmento3.join("");
 
+            return `(${segmento1}) ${segmento2}-${segmento3}`;
+        }
     }
 
-    alert(`${ejercicio}\nNúmero telefònico ${FormatPhoneNumber(...arrayNumeros)}`);
+    alert(`${ejercicio}\nNúmero telefónico ${FormatPhoneNumber(...arrayNumeros)}`);
 
     /*
 
