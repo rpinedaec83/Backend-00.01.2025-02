@@ -12,7 +12,7 @@ Proceso Ejercicio_27
 			cont = cont + 1
 		Fin Si
 		
-	Hasta Que n < 0
+	Hasta Que n <= 0
 	
 	Escribir "Media: ", suma / cont
 	

@@ -9,7 +9,7 @@ Proceso Ejercicio_32
 	Para i <- 1  Hasta 3 Con Paso 1 Hacer
 		Escribir "Digite nombre de la ",i,"º provincia"
 		Leer provincia
-		Para j <- 1 Hasta 1 Con Paso 1 Hacer
+		Para j <- 1 Hasta 11 Con Paso 1 Hacer
 			Escribir "Digite el nombre de la ",j,"º ciudad de la provincia ",provincia
 			Leer ciudad
 			
