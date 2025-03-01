@@ -12,8 +12,6 @@ document.getElementById('ejercicio-01-reto-01').addEventListener('click', (e) =>
 
     ejercicio = document.getElementById('ejercicio-01-reto-01').textContent;
 
-    let SumaNumeros;
-
     let n1 = parseInt(prompt(`${ejercicio}\nDigite 1° número`));
 
     let n2 = parseInt(prompt(`${ejercicio}\nDigite 2° número`));
@@ -24,7 +22,7 @@ document.getElementById('ejercicio-01-reto-01').addEventListener('click', (e) =>
         alert(`${ejercicio}\nEl dato o datos ingresados no son un número`);
     } else {
 
-        SumaNumeros = () => { return n1 + n2 }
+        const SumaNumeros = () => n1 + n2
 
         alert(`${ejercicio}\nSuma: ${SumaNumeros()}`);
     }
@@ -40,8 +38,6 @@ document.getElementById('ejercicio-02-reto-01').addEventListener('click', (e) =>
 
     ejercicio = document.getElementById('ejercicio-02-reto-01').textContent;
 
-    let PotenciaNumeros;
-
     let numero = parseInt(prompt(`${ejercicio}\nDigite el número a elevar`));
 
     let potencia = parseInt(prompt(`${ejercicio}\nDigite el exponente`));
@@ -50,7 +46,7 @@ document.getElementById('ejercicio-02-reto-01').addEventListener('click', (e) =>
         alert(`${ejercicio}\nEl dato o los datos ingresados no son un número`);
     } else {
 
-        PotenciaNumeros = () => {
+       const PotenciaNumeros = () => {
 
             let resul = numero;
 
@@ -86,7 +82,7 @@ document.getElementById('ejercicio-03-reto-01').addEventListener('click', (e) =>
 
         let arrayNumeros = [];
         let sumaCubos = 0;
-        const SumaNumerosCubos = (numero) => { return numero ** 3; }
+        const SumaNumerosCubos = (numero) => numero ** 3; 
 
         for (let i = 0; i < cantidad; i++) {
 
@@ -132,7 +128,7 @@ document.getElementById('ejercicio-04-reto-01').addEventListener('click', (e) =>
         alert(`${ejercicio}\nEl dato o los datos ingresados no son un número`);
     } else {
 
-        const AreaTriangulo = () => { return (base * altura) / 2; }
+        const AreaTriangulo = () =>  (base * altura) / 2;
         alert(`${ejercicio}\nÁrea del triángulo: ${AreaTriangulo()}${medida}2`);
     }
 
@@ -205,8 +201,6 @@ document.getElementById('ejercicio-01-reto-02').addEventListener('click', (e) =>
 
     ejercicio = document.getElementById('ejercicio-01-reto-02').textContent;
 
-    let DatosPersona;
-
     let nombre = prompt(`${ejercicio}\nDigite su nombre`);
     let apellido = prompt(`${ejercicio}\nDigite su apellido`);
     let edad = parseInt(prompt(`${ejercicio}\nDigite su edad`));
@@ -215,7 +209,7 @@ document.getElementById('ejercicio-01-reto-02').addEventListener('click', (e) =>
         alert(`${ejercicio}\nLa edad ingresada no es un dato válido`);
     } else {
 
-        DatosPersona = () => { return `¡Hola!, mi nombre es: ${nombre} ${apellido} y mi edad ${edad}` }
+       const DatosPersona = () => `¡Hola!, mi nombre es: ${nombre} ${apellido} y mi edad ${edad}`;
 
         alert(`${ejercicio}\n${DatosPersona()}`);
     }
@@ -242,7 +236,7 @@ document.getElementById('ejercicio-02-reto-02').addEventListener('click', (e) =>
 
         let arrayNumeros = [];
         let sumaCubos = 0;
-        const SumOfCubes = (numero) => { return numero ** 3; }
+        const SumOfCubes = (numero) => numero ** 3;
 
         for (let i = 0; i < cantidad; i++) {
 
@@ -274,7 +268,7 @@ document.getElementById('ejercicio-03-reto-02').addEventListener('click', (e) =>
 
     ejercicio = document.getElementById('ejercicio-03-reto-02').textContent;
 
-    const TipoDato = (dato) => { return typeof dato; }
+    const TipoDato = (dato) => typeof dato;
 
     alert(`${ejercicio}\n${TipoDato({ nombre: "Emerson", edad: 20 })}`);
 
@@ -344,7 +338,7 @@ document.getElementById('ejercicio-05-reto-02').addEventListener('click', (e) =>
         false
     ];
 
-    const EncontrarValores = (valores) => { return typeof valores !== 'string'; }
+    const EncontrarValores = (valores) => typeof valores !== 'string';
 
     alert(`${ejercicio}\nValores que no son un string\n${arrayValores.filter(EncontrarValores).join(', ')}`);
 });
