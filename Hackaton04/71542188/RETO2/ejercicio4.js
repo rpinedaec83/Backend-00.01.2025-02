@@ -1,3 +1,4 @@
+//Crear una función que reciba n cantidad de argumentos y los sume ( utilizar parametros rest)
 function sumarArgumentos(...args) {
     return args.reduce((suma, num) => suma + num, 0);
 }
