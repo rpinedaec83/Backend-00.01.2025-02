@@ -25,9 +25,8 @@ document.getElementById('ejercicio-01-reto-01').addEventListener('click', (e) =>
     } else {
 
         SumaNumeros = () => { return n1 + n2 }
-        resultado = SumaNumeros();
 
-        alert(`${ejercicio}\nSuma: ${resultado}`);
+        alert(`${ejercicio}\nSuma: ${SumaNumeros()}`);
     }
 
 });
@@ -64,9 +63,7 @@ document.getElementById('ejercicio-02-reto-01').addEventListener('click', (e) =>
 
         }
 
-        let resultadoPotencia = PotenciaNumeros();
-
-        alert(`${ejercicio}\nPotencia: ${resultadoPotencia}`);
+        alert(`${ejercicio}\nPotencia: ${PotenciaNumeros()}`);
     }
 
 });
