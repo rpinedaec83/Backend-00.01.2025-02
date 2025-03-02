@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/e59191e4cc.js" crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
+        id="bootstrap-css">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.22.4/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1 id="nombre"></h1>
+    <h2 id="direccion"></h2>
+    <button id="pedido">Nuevo Pedido</button>
+    <br>
+    <button id="verPedidos">Ver Pedidos</button>
+<h2>Area de preparacion</h2>
+    <div id="divPedidos" >
+        <table id="table" class="table table-striped">
+            <thead>
+              <tr>
+                <th data-field="nombre">Nombre</th>
+                <th data-field="telefono">Telefono</th>
+                <th data-field="pedido.sabor">Sabor</th>
+                <th data-field="pedido.tamaño">Tamaño</th>
+                <th data-field="pedido.toppins">Toppins</th>
+                <th data-field="operate" data-formatter="ordenesFormatter" data-events="ordenesEvents">Acciones</th> 
+              </tr>
+            </thead>
+        </table>
+    </div>
+<h2>Despachos</h2>
+    <div id="divDespachos">
+        <table id="tableDespachos" class="table table-striped">
+            <thead>
+              <tr>
+                <th data-field="nombre">Nombre</th>
+                <th data-field="telefono">Telefono</th>
+                <th data-field="pedido.sabor">Sabor</th>
+                <th data-field="pedido.tamaño">Tamaño</th>
+                <th data-field="pedido.toppins">Toppins</th>
+                <th data-field="operate" data-formatter="despachoFormatter" data-events="despachoEvents">Acciones</th>
+             </tr>
+            </thead>
+        </table>
+    </div>
+    
+
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.22.4/dist/bootstrap-table.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="script.js"></script>
+    <script>
+        objLocal={
+            nombre: "Helados bien Frios",
+            direccion: "Lince"
+        }
+        Heladeria.init(objLocal);
+    </script>
+</body>
+</html>
