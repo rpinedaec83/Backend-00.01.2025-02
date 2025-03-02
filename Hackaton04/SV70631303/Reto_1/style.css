@@ -1,0 +1,26 @@
+.groups>button{
+    font-size: 25px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-left: 15px;
+    margin-right: 15px;
+    border: 0;
+    height: 40px;
+    width: 150px;
+    background-color: dodgerblue;
+    box-shadow: 5px 5px 5px 1px #000;
+}
+
+.block{
+    width: 100%;
+    height: 50px;
+    background-color: cadetblue;
+}
+body{
+    background-color: mintcream;
+    margin: 0;
+}
+.groups{
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+}
