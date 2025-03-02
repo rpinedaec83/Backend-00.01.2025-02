@@ -1,0 +1,1 @@
+// Archivo Pregunta21.js creado
