@@ -76,6 +76,9 @@ const Heladeria = function(){
     }
 }();
 
+<<<<<<< HEAD
+//luis Guerrero
+=======
 function ordenesFormatter(value, row, index) {
     
         return [
@@ -156,3 +159,4 @@ function entregarHelado(obj) {
     $tableDespachos.bootstrapTable('load', arrDespachos);
     console.log(obj);
 }
+>>>>>>> fuentes/main
