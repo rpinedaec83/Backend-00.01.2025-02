@@ -1,0 +1,1 @@
+// Archivo Pregunta7.js creado
