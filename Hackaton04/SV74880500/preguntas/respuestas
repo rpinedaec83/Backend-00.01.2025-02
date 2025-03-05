@@ -1,0 +1,12 @@
+1-se puede definir de varias maneras como:
+- Función Declarada (Function Declaration)
+Se define usando la palabra clave function seguida del nombre de la función, los parámetros entre paréntesis y el cuerpo entre llaves. Este tipo de función es levantada (hoisted), lo que significa que puede ser llamada antes de su declaración en el código.
+
+- Expresión de Función (Function Expression)
+Es una función asignada a una variable. No tiene un nombre propio, aunque puede tenerlo si lo deseas. A diferencia de las funciones declaradas, no se levantan (hoisted), por lo que solo pueden ser invocadas después de su definición.
+
+- Función de Flecha (Arrow Function)
+Es una forma más breve y moderna de escribir funciones introducida en ES6. Se usa la sintaxis () => {} y es especialmente útil para funciones cortas o anónimas. No tiene su propio this, lo que la hace diferente en cuanto a cómo maneja el contexto.
+
+2-
+Puedes declarar hasta 255 parámetros en una función en JavaScript, pero es más práctico y eficiente optar por alternativas como objetos, arrays o el operador ...rest cuando necesitas manejar una cantidad variable de datos.
