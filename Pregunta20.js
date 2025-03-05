@@ -1,1 +1,0 @@
-// Archivo Pregunta20.js creado

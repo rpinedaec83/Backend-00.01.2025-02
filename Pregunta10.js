@@ -1,1 +1,0 @@
-// Archivo Pregunta10.js creado

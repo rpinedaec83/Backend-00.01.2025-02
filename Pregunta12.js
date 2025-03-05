@@ -1,1 +1,0 @@
-// Archivo Pregunta12.js creado

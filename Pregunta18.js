@@ -1,1 +1,0 @@
-// Archivo Pregunta18.js creado

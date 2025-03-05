@@ -1,1 +1,0 @@
-// Archivo Pregunta14.js creado

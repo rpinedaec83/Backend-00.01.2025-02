@@ -1,1 +1,0 @@
-// Archivo Pregunta19.js creado

@@ -1,1 +1,0 @@
-// Archivo Pregunta13.js creado
