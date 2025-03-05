@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 console.log("Hola desde script.js");
 document.getElementById("Titulo").innerHTML = "Hola desde el titulo"
 
@@ -10,7 +10,7 @@ document.getElementById("btnOtro").addEventListener("click", function()){
     document
 
 }
-=======
+
 /*alert("Hola")
 console.log("Hola desde el script.js")
 document.getElementById("titulo").innerHTML = "Hola desde el titulo"
@@ -49,9 +49,7 @@ document.getElementById("btnSumar").addEventListener("click", function(){
     document.getElementById("resultado").innerHTML = "La suma es: " + suma;
 
 });
-<<<<<<< HEAD
->>>>>>> fuentes/main
-=======
+
 
 let primerNumero = 10;
 let segundoNumero = 20;
@@ -299,4 +297,4 @@ console.log(objPersona.nombre)
 console.log(objPersona.padre.nombre)
 
 console.log(arrPersonas)
->>>>>>> fuentes/main
+
