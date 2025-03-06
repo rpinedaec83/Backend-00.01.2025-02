@@ -1,3 +1,16 @@
+
+console.log("Hola desde script.js");
+document.getElementById("Titulo").innerHTML = "Hola desde el titulo"
+
+let nombre= prompt("Ingerese su nombre");
+
+document.getElementById("titulo").innerHTML = "Hola" + nombre
+document.getElementById("btnOtro").addEventListener("click", function()){
+    let apellido = document.getElementById("apellido").value;
+    document
+
+}
+
 /*alert("Hola")
 console.log("Hola desde el script.js")
 document.getElementById("titulo").innerHTML = "Hola desde el titulo"
@@ -36,6 +49,7 @@ document.getElementById("btnSumar").addEventListener("click", function(){
     document.getElementById("resultado").innerHTML = "La suma es: " + suma;
 
 });
+
 
 let primerNumero = 10;
 let segundoNumero = 20;
@@ -283,3 +297,4 @@ console.log(objPersona.nombre)
 console.log(objPersona.padre.nombre)
 
 console.log(arrPersonas)
+
