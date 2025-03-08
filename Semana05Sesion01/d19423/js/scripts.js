@@ -38,20 +38,27 @@ const Reserva = (function () {
 //cancelarReservacion()
 
 class Persona{
+    #logged = false;
     constructor(dni, nombres, apellidos, direccion, telefono){
         this.dni = dni;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.direccion = direccion;
         this.telefono = telefono;
-        this.logged = false;
+       
     }
-
+    getLogged(){
+        return this.#logged;
+    }
+    setLogged(log){
+        this.#logged = log
+    }
+    
     login(){
-        if(this.logged){
+        if(this.#logged){
             console.log(`El usuario ${this.nombres} ${this.apellidos} ya inicio sesion en el sistema`)
         }else{
-            this.logged = true;
+            this.#logged = true;
             console.log(`El usuario ${this.nombres} ${this.apellidos} a ingresado al sistema`)
         }
         
@@ -59,16 +66,64 @@ class Persona{
 
     logout(){
         console.log(`El usuario ${this.nombres} ${this.apellidos} a salido del sistema`)
-        this.logged =false;
+        this.#logged =false;
     }
     
 }
 
-let persona1 = new Persona('09876543', "Roberto", "Pineda", "Lince","916730940");//instancia de la clase
-let persona2 = new Persona("67676768", "David", "Lopez", "San Isidro", "9223332233");
+class Empleado extends Persona{
+    #isModerator = true;
+    constructor(dni, nombres, apellidos, direccion, telefono, codigoEmpleado){
+        super(dni, nombres, apellidos, direccion, telefono);
+        this.codigoEmpleado = codigoEmpleado;
+    }
+    login(){
+        if(this.getLogged()){
+            this.#isModerator = true;
+            console.log(`El empleado ${this.nombres} ${this.apellidos} ya inicio sesion en el sistema`)
+        }else{
+            this.setLogger(true);
+            console.log(`El empleado ${this.nombres} ${this.apellidos} a ingresado al sistema`)
+        }
+    }
+}
+
+class Cliente extends Persona{
+    constructor(dni, nombres, apellidos, direccion, telefono, codigoCliente){
+        super(dni, nombres, apellidos, direccion, telefono);
+        this.codigoCliente = codigoCliente
+    }
+    pagar(medioPago){
+        console.log(`El cliente ${this.nombres} ${this.apellidos} esta pagando con ${medioPago}`);
+    }
+    registrarEquipaje(){
+
+    }
+    elegirAsiento(){
+
+    }
+    cancelarReservacion(){
+
+    }
+}
 
 
-persona1.login();
-persona2.login();
 
-persona1.login();
+// let persona1 = new Persona('09876543', "Roberto", "Pineda", "Lince","916730940");//instancia de la clase
+// let persona2 = new Persona("67676768", "David", "Lopez", "San Isidro", "9223332233");
+
+let empleado1 = new Empleado('09876543', "Roberto", "Pineda", "Lince","916730940",'00002369')
+let cliente1 = new Cliente("67676768", "David", "Lopez", "San Isidro", "9223332233",'CL89898989')
+// persona1.login();
+// persona2.login();
+
+// persona1.login();
+// persona1.logout();
+
+// console.log(persona1.direccion)
+// persona1.setLogger(true)
+// console.log(persona1.getLogged());
+
+empleado1.login()
+cliente1.login()
+cliente1.pagar("Visa")
