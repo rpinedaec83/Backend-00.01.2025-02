@@ -1,0 +1,36 @@
+h1 {
+    color: rgb(238, 238, 238);
+}
+
+body {
+    background-color: rgb(3, 54, 181);
+    font-family: Arial, sans-serif;
+    text-align: center; /* Centrar título */
+}
+
+/* Contenedor de los botones */
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columnas */
+    grid-template-rows: repeat(10, auto); /* 10 filas */
+    gap: 10px; /* Espacio entre botones */
+    justify-content: center; /* Centrar en pantalla */
+    align-items: center; /* Alinear verticalmente */
+}
+
+/* Estilo de los botones */
+button {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 120px; /* Ajusta el ancho */
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

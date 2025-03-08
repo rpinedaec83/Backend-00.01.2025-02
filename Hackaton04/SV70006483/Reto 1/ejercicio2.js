@@ -1,8 +1,19 @@
-function potencia(numero, exponente) {
-    return Math.pow(numero, exponente);
-    // También puedes usar el operador de exponenciación **:
-    // return numero ** exponente;
+
+
+function potenciaNumber(base, exponente) {
+
+    const result = Math.pow(base, exponente)
+
+
+    return result;
 }
 
-let resultado = potencia(2, 3); // 2 elevado a la 3
-console.log(resultado); // Salida: 8
+const potenciaNumberfuncionFlecha = (base, exponente) => Math.pow(base, exponente)
+
+let data = potenciaNumber(4, 2);
+
+console.log(data)
+
+data = potenciaNumberfuncionFlecha(4, 2)
+
+console.log(data)

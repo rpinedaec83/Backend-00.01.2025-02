@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Sistema de Reserva de Vuelos</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="jumbotron">
+                    <h2 id="txt_nombre">
+
+                    </h2>
+                    <p id="txt_pais">
+                    </p>
+                    <p>
+                        <a class="btn btn-primary btn-large" href="#" id="btnReservar">Reservar</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="divReserva" style="display: none;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>Vuelo de Ida</h2>
+                    </div>
+                    <div class="col-md-6">
+                        <h2>Vuelo de Regreso</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table">
+
+                            <tr>
+                                <td> <label for="">Nombre</label></td>
+                                <td><input type="text" name="" id="idaNombre" value="Nombre" disabled></td>
+                            </tr>
+                            <tr>
+                                <td> <label for="">Apellido</label></td>
+                                <td><input type="text" name="" id="idaApellido" value="Nombre" disabled></td>
+                            </tr>
+                            <tr>
+                                <td> <label for="">Fecha de Ida</label></td>
+                                <td><input type="text" name="" id="idaFecha" value="Nombre" disabled></td>
+                            </tr>
+                            <tr>
+                                <td> <label for="">Vuelo</label></td>
+                                <td><input type="text" name="" id="idaVuelo" value="Nombre" disabled></td>
+                            </tr>
+                            <tr>
+                                <td> <label for="">Origen</label></td>
+                                <td><input type="text" name="" id="idaOrigen" value="Nombre" disabled></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table">
+
+                            <tr>
+                                <td> <label for="">Nombre</label></td>
+                                <td><input type="text" name="" id="retNombre" value="Nombre" disabled></td>
+                            </tr>
+                            <tr>
+                                <td> <label for="">Apellido</label></td>
+                                <td><input type="text" name="" id="retApellido" value="Nombre" disabled></td>
+                            </tr>
+                            <tr>
+                                <td> <label for="">Fecha de Regreso</label></td>
+                                <td><input type="text" name="" id="retFecha" value="Nombre" disabled></td>
+                            </tr>
+                            <tr>
+                                <td> <label for="">Vuelo</label></td>
+                                <td><input type="text" name="" id="retVuelo" value="Nombre" disabled></td>
+                            </tr>
+                            <tr>
+                                <td> <label for="">Destino</label></td>
+                                <td><input type="text" name="" id="retDestino" value="Nombre" disabled></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/scripts.js"></script>
+
+    <script>
+        let objConfig = {
+            nombre: "JetSmart",
+            pais: "Peru"
+        }
+        Reserva.init(objConfig);
+    </script>
+</body>
+
+</html>
