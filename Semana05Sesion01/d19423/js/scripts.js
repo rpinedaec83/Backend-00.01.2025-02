@@ -107,7 +107,47 @@ class Cliente extends Persona{
     }
 }
 
+class Aviones{
+    constructor(matricula, modelo, nroAsientos, capacidadMinima, costoVuelo){
+        this.matricula = matricula;
+        this.modelo = modelo;
+        this.nroAsientos = nroAsientos;
+        this.capacidadMinima = capacidadMinima;
+        this.costoVuelo = costoVuelo;
 
+        this.arrPasajeros = [];
+        this.habilitado = false;
+        this.resevados = 0;
+    }
+
+    agregarPasajeros(pasajero){
+        if(this.resevados >= this.capacidadMinima){
+            this.habilitado =true;
+        }else{
+            this.habilitado = false;
+        }
+        this.arrPasajeros.push(pasajero);
+        this.resevados++;
+    }
+}
+
+class Reservas{
+    constructor(origen, destino, fechaIda, fechaVuelta){
+        this.origen = origen;
+        this.destino = destino;
+        this.fechaIda=fechaIda;
+        this.fechaVuelta = fechaVuelta;
+
+        this.avionIda = null;
+        this.avionVuelta = null;
+    }
+    asignarAvionIda(avionIda){
+        this.avionIda = avionIda; 
+    }
+    asignarAvionVuelta(avionVuelta){
+        this.avionVuelta = avionVuelta;
+    }
+}
 
 // let persona1 = new Persona('09876543', "Roberto", "Pineda", "Lince","916730940");//instancia de la clase
 // let persona2 = new Persona("67676768", "David", "Lopez", "San Isidro", "9223332233");
