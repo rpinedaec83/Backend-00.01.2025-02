@@ -70,11 +70,33 @@ const Reserva = (function () {
         incluirPasajeros().then(data=>{
             console.log("Llego la data");
             console.log(data);
+            objReserva.asignarAvionIda(new Aviones("JA 7742", "AirBuss 320 Neo", 196,98,10000));
+            objReserva.asignarAvionVuelta(new Aviones("JA 7743", "AirBuss 320 Neo", 196,98,10000))
+            objReserva.avionIda.agregarPasajeros(data);
+            objReserva.avionVuelta.agregarPasajeros(data);
+            dibujarReserva(objReserva);
         }).catch(err=>{
             console.log(err)
         })
     }
 }
+
+    function dibujarReserva(objReserva){
+        console.log(objReserva);
+        $("#idaNombre").val(objReserva.avionIda.arrPasajeros[0].nombres);
+        $("#idaApellido").val(objReserva.avionIda.arrPasajeros[0].apellidos);
+        $("#idaFecha").val(objReserva.fechaIda);
+        $("#idaVuelo").val(objReserva.avionIda.matricula);
+        $("#idaOrigen").val(objReserva.origen);
+    
+        $("#retNombre").val(objReserva.avionVuelta.arrPasajeros[0].nombres);
+        $("#retApellido").val(objReserva.avionVuelta.arrPasajeros[0].apellidos);
+        $("#retFecha").val(objReserva.fechaVuelta);
+        $("#retVuelo").val(objReserva.avionVuelta.matricula);
+        $("#retDestino").val(objReserva.destino);
+    
+        $("#divReserva").show();
+    }
 
 
 async function incluirPasajeros() {
