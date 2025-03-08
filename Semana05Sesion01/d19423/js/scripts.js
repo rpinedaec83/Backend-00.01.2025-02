@@ -11,9 +11,122 @@ const Reserva = (function () {
   function eventos(){
     $("#btnReservar").on("click", reservar)
   }
-  function reservar(){
+  async function reservar(e){
+    e.preventDefault();
+    $("#divReserva").hide();
     console.log("Hizo Clic en Reservar")
+
+    const {value: formValues}= await Swal.fire({
+        title: "Ingresa tus datos",
+        icon: "info",
+        showCloseButton:true,
+        showCancelButton:true,
+        confirmButtonText: "Guardar",
+        cancelButtonText: "Cancelar",
+        html: `<!-- Text input-->
+<div class="form-group">
+<div >
+<input id="origen" name="origen" type="text" placeholder="Escribe el origen del vuelo" class="form-control input-md">
+<span class="help-block">Escribe el origen del vuelo</span>  
+</div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+<div >
+<input id="destino" name="destino" type="text" placeholder="Escribe el destino de tu vuelo " class="form-control input-md">
+<span class="help-block">Escribe el destino de tu vuelo </span>  
+</div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+<div >
+<input id="fechaIda" name="fechaIda" type="text" placeholder="Escribe la Fecha de Ida" class="form-control input-md">
+<span class="help-block">Escribe la Fecha de Ida</span>  
+</div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+<div >
+<input id="fechaVuelta" name="fechaVuelta" type="text" placeholder="Escribe la fecha de retorno" class="form-control input-md">
+<span class="help-block">Escribe la fecha de retorno</span>  
+</div>
+</div>`,
+        preConfirm:()=>{
+            return {
+                origen: $("#origen").val(),
+                destino: $("#destino").val(),
+                fechaIda: $("#fechaIda").val(),
+                fechaVuelta: $("#fechaVuelta").val()
+            }
+        }
+    });
+
+    if(formValues){
+        let objReserva = new Reservas(formValues.origen, formValues.destino, formValues.fechaIda, formValues.fechaVuelta);
+        //incluir los pasajeros
+        incluirPasajeros().then(data=>{
+            console.log("Llego la data");
+            console.log(data);
+        }).catch(err=>{
+            console.log(err)
+        })
+    }
 }
+
+
+async function incluirPasajeros() {
+    console.log("Cargar el formulario de pasajeros");
+    const {value: formValues}= await Swal.fire({
+        title: "Ingresa tus datos personales",
+        icon: "info",
+        showCloseButton:true,
+        showCancelButton:true,
+        confirmButtonText: "Guardar",
+        denyButtonText: "Cancelar",
+        html: `<!-- Text input-->
+<div class="form-group">
+<div >
+<input id="nombres" name="nombres" type="text" placeholder="Escribe los nombres del pasajero" class="form-control input-md">
+<span class="help-block">Escribe los nombres del pasajero</span>  
+</div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+<div >
+<input id="apellidos" name="apellidos" type="text" placeholder="Escribe los apellidos del pasajero " class="form-control input-md">
+<span class="help-block">Escribe los apellidos del pasajero </span>  
+</div>
+</div>
+
+<!-- Text input-->
+<div class="form-group">
+<div >
+<input id="documento" name="documento" type="text" placeholder="Escribe tu documento" class="form-control input-md">
+<span class="help-block">Escribe tu documento</span>  
+</div>
+</div>
+
+
+</div>`,
+        preConfirm:()=>{
+            return {
+                nombres: $("#nombres").val(),
+                apellidos: $("#apellidos").val(),
+                documento: $("#documento").val()
+            }
+        }
+    });
+    if(formValues){
+        let pasajero = new Cliente(formValues.documento, formValues.nombres, formValues.apellidos,"","","");
+        return pasajero;
+    }
+
+}
+
 
   return {
     init: function (parametros) {
