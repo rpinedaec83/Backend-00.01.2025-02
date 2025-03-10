@@ -173,11 +173,15 @@ class Telefono {
   
   }
   
-    finalizarServicio() {
-      this.telefono.actualizarEstado("reparado");
-      this.estado = estadosTicket.finalizado;
-      return "Servicio finalizado";
-    }
+  finalizarServicio() {
+    this.telefono.actualizarEstado("reparado");
+    this.estado = estadosTicket.finalizado;
+    return "Servicio finalizado";
+  }
+
+  calcularPagoTotal() {
+    return this.montoFinal;
+  }
   }
   
   class Sucursal {
@@ -398,3 +402,10 @@ console.log(ticket2.repuestos);
 
 console.log(`Estado del equipo ${celular2.imei} en la sucursal ${sucursal2.nombre}: ${sucursal2.mostrarEstadoEquipo(celular2.imei)}`);
 
+// Finalizar el servicio del ticket 2
+const finalizarServicio2 = ticket2.finalizarServicio();
+console.log(finalizarServicio2);
+
+// Calcular el pago total del ticket 2
+const pagoTotalTicket2 = ticket2.calcularPagoTotal();
+console.log(`El pago total al cliente ${cliente2.nombre} es de ${pagoTotalTicket2}.`);
