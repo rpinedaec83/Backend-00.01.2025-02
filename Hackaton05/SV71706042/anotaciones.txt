@@ -1,0 +1,64 @@
+
+
+										*Estoy creando un sistema para los tecnicos de celulares*
+Clases: 
+
+Sucursal:
+	IdSucursal
+	Distrito
+	Encargado
+	Telefono
+	Numero de trabajadores
+	Telefonos en reparacion (En proceso)
+	Telefonos reparados (Culminados)
+	Ingresos totales
+Cliente:
+	Dni (IdCliente)
+	Nombre
+	Apellido
+	Fecha de registro
+	Numero de celular
+	Telefono (Lista de telefonos que ha dejado)
+	
+	
+Reparador:
+	Dni (IdTrabajador)
+	Nombre
+	Apellido
+	Numero de celular
+	Fecha de contratacion
+	Skills (se refiere a que tipo de marca de celular puede reparar)
+	Celulares reparados (lista de celulares que ha reparado desde que inicio)
+	
+Telefono:
+	IMEI (IdTelefono)
+	Marca
+	Modelo
+	Descripcion del problema
+Servicio:
+	IdTrabajador
+	IdCliente
+	Fecha
+	Estado
+	Costo (este es el costo del servicio, sin incluir precio de los repuestos) ("Mano de obra")
+	Repuestos (es una lista de repuestos o reparaciones que se hizo al celular)
+	Monto final (es la suma del costo de mano de obra y de los respuestos)
+Repuestos:
+	IdRepuesto 
+	Nombre
+	Precio
+	Cantidad (Para tener un control del stock)
+
+
+
+Tomar en cuenta los siguientes casos de uso:
+- El telefono ingresado debe tener numero de serie e IMEI que no esten reportados para acceder al servicio*
+	Se debe verificar que este IMEI no haya sido ingresado antes.
+	Cuando acceda al servicio tiene que empezar a mostrar el estado de "Aceptado"
+
+- Un telefono primero debe pasar por una primera revision y se debe guardar el primer diagnostico*
+	
+- Se debe tener la autorizacion escrita del usuario y el abono del 50% de la reparacion para que acceda al servicio
+- Los tecnicos pueden tener uno o varios skills que se adecuen a la marca de telefono que se necesita acceder al servicio
+- Los repuestos se agregaran a la reparacion de telefono
+- Se debe mostrar el estado del equipo en sus diferentes estaciones de trabajo 
