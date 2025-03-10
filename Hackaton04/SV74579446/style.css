@@ -1,0 +1,97 @@
+/* Estilos generales */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #000;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Contenedor principal: Secciones centradas */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+    padding: 40px 20px;
+}
+
+/* Secciones */
+.section {
+    flex: 1;
+    padding: 20px;
+    margin: 10px;
+    background: linear-gradient(135deg, #ff66b2, #ff99cc);
+    border-radius: 10px;
+    text-align: center;
+    min-height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Encabezado */
+header {
+    background: #111;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+header h1 {
+    color: #ff66b2;
+    font-size: 36px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Botones */
+button {
+    background: #ff66b2;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #ff99cc;
+}
+
+/* Preguntas con efecto hover */
+.content-preguntas dt {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+
+.content-preguntas dd {
+    display: none;
+    font-size: 16px;
+    color: #ddd;
+    transition: all 0.3s;
+}
+
+.content-preguntas dt:hover + dd {
+    display: block;
+}
+
+/* Footer */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #111;
+    text-align: center;
+    padding: 10px;
+    color: white;
+}
