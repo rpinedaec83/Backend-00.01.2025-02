@@ -4,7 +4,6 @@ const Reparar = (function () {
         init: function (parametros) {
             console.log(parametros);
             nombreTienda = parametros.nombre;
-            nombreSede = parametros.sede;
         },
     };
 })();
