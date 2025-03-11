@@ -227,3 +227,4 @@ class Telefono {
   console.log("repuestos", newticket3.repuestos);
   console.log(newticket3);
   
+// prueba
