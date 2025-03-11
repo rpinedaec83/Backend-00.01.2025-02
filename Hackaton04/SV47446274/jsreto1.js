@@ -14,7 +14,7 @@ function Ejercicio2(){
 }
 
 function Ejercicio3(){
-    alert("----LA SUMA DE LOS CUBOS DE 3 NÚMEROS----");
+    alert("la suma de los cubos de los 3 numeros");
     let firstNumber = parseFloat(prompt("Introduce el primer número"));
     let secondNumber = parseFloat(prompt("Introduce el segundo número"));
     let thirdNumber = parseFloat(prompt("Introduce el tercer número"));
