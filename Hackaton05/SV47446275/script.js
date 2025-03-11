@@ -227,4 +227,3 @@ class Telefono {
   console.log("repuestos", newticket3.repuestos);
   console.log(newticket3);
   
-  //TODO: crear clase tecnico y agregar (sucursal, ticket)
