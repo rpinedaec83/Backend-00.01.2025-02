@@ -34,7 +34,7 @@ triArea(3, 2) ➞ 3
 (+,-,/,x,%), y si la operación no es correcta que envié un mensaje “El parámetro no es reconocido” calculator(2,"+", 2) ➞ 4
 
 
-PREGUNTAS:
+PREGUNTAS:  
 
 -  ¿Cómo defines una función?
 -  ¿Hasta cuantos argumentos puedes declarar en una función?
