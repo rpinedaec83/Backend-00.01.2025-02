@@ -41,7 +41,7 @@ arrPersonas.push(objPersona3);
 
 console.log(arrPersonas)
 
-//localStorage.setItem("propietarios", JSON.stringify(arrPersonas))
+localStorage.setItem("propietarios", JSON.stringify(arrPersonas))
 
 
 console.log(JSON.stringify(objPersona1));
@@ -64,4 +64,4 @@ let objClima2 = {ubicacion: "Lima", temp: {celcius: 25, farengieftrter: 50}};
 
 console.log(objClima2.temp.celcius)
 
-//sessionStorage.setItem("clima", JSON.stringify(objClima2))
+sessionStorage.setItem("clima", JSON.stringify(objClima2))
