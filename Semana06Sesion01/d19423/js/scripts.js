@@ -62,7 +62,7 @@
 // //sessionStorage.setItem("clima", JSON.stringify(objClima2))
 
 class Gundam {
-    #isCompleted = false;
+    isCompleted = false;
   constructor(nombre, descripcion, escala, imagen, isCustom, custom) {
     this.nombre = nombre;
     this.descripcion = descripcion;
@@ -71,29 +71,30 @@ class Gundam {
     this.isCustom = isCustom;
     this.custom = custom;
   }
-  getIsCompleted(){
-    return this.#isCompleted;
-  }
-
-  setIsCompleted(value){
-    this.#isCompleted = value;
-  }
+  
 }
-
+const $table = $('#table')
 function IsCustomCheck(event){
 
     if(event.checked){
-        $("#custom").toggle(1000);
+        $("#divCustom").toggle(1000);
        // document.getElementById("custom").style.display = "block"
     }
     else{
-        $("#custom").toggle(1000);
+        $("#divCustom").toggle(1000);
        // document.getElementById("custom").style.display = "none"
     }
    
 }
 
 let arrGundams = [];
+$("#btnBorrar").on("click",(e)=>{
+    e.preventDefault();
+    arrGundams = [];
+    localStorage.setItem("invertarioGundams", JSON.stringify(arrGundams))
+    $table.bootstrapTable('load',arrGundams );
+})
+
 document.getElementById("btnIniciar").addEventListener("click",async (e)=>{
     console.log("Hizo Click")
     const {value: formValues}= await Swal.fire({
@@ -146,9 +147,9 @@ document.getElementById("btnIniciar").addEventListener("click",async (e)=>{
 </div>
 
 <!-- Text input-->
-<div class="form-group" id="custom" style="display: none;">
+<div class="form-group" id="divCustom" style="display: none;">
 <div >
-<input id="escala" name="escala" type="text" placeholder="Escribe el custom que le hiciste a tu kit" class="form-control input-md">
+<input id="custom" name="escala" type="text" placeholder="Escribe el custom que le hiciste a tu kit" class="form-control input-md">
 
 </div>
 </div>
@@ -161,8 +162,8 @@ document.getElementById("btnIniciar").addEventListener("click",async (e)=>{
                 descripcion: $("#descripcion").val(),
                 escala: $("#escala").val(),
                 imagen: $("#imagen").val(),
-                isCustom: $("#isCustom").val(),
-                custom: $("#custom").val()
+                isCustom: $("#chkIsCustom:checked").val() == "SI"?true:false,
+                custom: $("#custom").val().split(';')
             }
         }
     });
@@ -176,8 +177,49 @@ document.getElementById("btnIniciar").addEventListener("click",async (e)=>{
             formValues.isCustom,
             formValues.custom
         );
-       arrGundams.push(objGundam);
-        
+       arrGundams.push(JSON.parse(JSON.stringify(objGundam)));
+        localStorage.setItem("invertarioGundams", JSON.stringify(arrGundams))
     }
     console.log(arrGundams)
+    $table.bootstrapTable('load',arrGundams );
 })
+
+$( document ).ready(function() {
+   arrGundams = JSON.parse(localStorage.getItem("invertarioGundams"))
+  
+   
+   $table.bootstrapTable({ data:arrGundams })
+});
+function detailFormatter(index,row){
+    console.log(row)
+    var html = []
+    $.each(row, function (key, value) {
+        switch (key) {
+            case "imagen":
+                html.push('<img src="img/' + value + '.webp" alt="" srcset="" width="300px">')
+
+                break;
+            case "isCustom":
+                if (value) {
+                    
+                    let htmlstr = "<b>MODIFICACIONES:</b><ul>";
+                    row.custom.forEach(element => {
+                        htmlstr += "<li>" + element + "</li>"
+                    });
+                    htmlstr += "</ul>";
+                    html.push('<p>' + htmlstr + '</p>')
+                }
+
+                break;
+            case "custom":
+                break;
+            default:
+                html.push('<p><b>' + key.toUpperCase() + ':</b> ' + value + '</p>')
+                break;
+        }
+
+
+
+    })
+    return html.join('')
+}
