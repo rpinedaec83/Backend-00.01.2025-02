@@ -1,15 +1,15 @@
-console.log("Inicio de la Aplicacion");
-if (typeof Storage !== "undefined") {
-  console.log("Si se puede usar el storage");
-} else {
-  console.log("No se peude usar el storage");
-}
+// console.log("Inicio de la Aplicacion");
+// if (typeof Storage !== "undefined") {
+//   console.log("Si se puede usar el storage");
+// } else {
+//   console.log("No se peude usar el storage");
+// }
 
-let arrPersonasEnMemoria = JSON.parse(localStorage.getItem("propietarios"))
+// let arrPersonasEnMemoria = JSON.parse(localStorage.getItem("propietarios"))
 
-arrPersonasEnMemoria.forEach(element => {
-    console.log(element.nombres)
-});
+// arrPersonasEnMemoria.forEach(element => {
+//     console.log(element.nombres)
+// });
 
 
 localStorage.setItem("nombre","Roberto")
@@ -41,7 +41,7 @@ arrPersonas.push(objPersona3);
 
 console.log(arrPersonas)
 
-localStorage.setItem("propietarios", JSON.stringify(arrPersonas))
+//localStorage.setItem("propietarios", JSON.stringify(arrPersonas))
 
 
 console.log(JSON.stringify(objPersona1));
@@ -64,4 +64,4 @@ let objClima2 = {ubicacion: "Lima", temp: {celcius: 25, farengieftrter: 50}};
 
 console.log(objClima2.temp.celcius)
 
-sessionStorage.setItem("clima", JSON.stringify(objClima2))
+//sessionStorage.setItem("clima", JSON.stringify(objClima2))
