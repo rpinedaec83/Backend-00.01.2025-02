@@ -37,11 +37,12 @@ stwitch(getso){
 Diagrama de flujo 
         ]====== Inicio =====[
 
-   1 Recepcionar del Teléfono
+   1 Registrar ingreso del Teléfono
 
         Se verifica IMEI y número de serie. 
             Si no se verifica. Asgina el estado como "Observado"
         Se registra en la Orden: el telefono, el cliente y la sucursal.
+            Asigna estado como "Ingresado".
         
    2 Asignar al Técnico
 
@@ -49,7 +50,7 @@ Diagrama de flujo
             Si no hay técnico disponible, se informa. Cambia estado a "Observado"
         Asigna estado como "Recibido".
         
-   3 Revisar Preliminarmente (Primera revision)
+   3 Realizar evaluacion Preliminarmente (Primera revision)
 
         Diagnóstica preliminarmente y se guarda.
         Problema tentativo y precio de repacion.
@@ -97,7 +98,7 @@ class Central{
 class Sucursal extends Central{
     id;
     tecnicos=[];
-    constructor(id,nombre,direccion,encargado,tecnicos){
+    constructor(id,nombre,direccion,encargado,tecnicos=[]){
         super(nombre, direccion, encargado);
         this.id=id;
         this.tecnicos=tecnicos;
@@ -162,7 +163,7 @@ class Tecnico{
         // Crear la orden, sin estado o tecnico
         this.ordenActual = new Orden(telefono, cliente, null, null, sucursalEncontrada, "", 0, []);
     
-        console.log("Nueva Orden Registrada:");
+        console.log("Nueva Orden Ingresada:");
         console.log(this.ordenActual);
     
         // Validar IMEI y Numero de Serie
@@ -178,39 +179,134 @@ class Tecnico{
         // Si alguno no es valido, cambiar estado a Observado
         if (!imeiValido || !numSerieValido) {
             this.ordenActual.estado = "Observado";
+        }else{
+            console.log("IMEI y Numero de Serie VALIDOS");
+            this.ordenActual.estado = "Ingresado";     
+            await this.asignarTecnico();
         }
-    
+           
         console.log("Estado actualizado de la orden:");
         console.log(this.ordenActual);
+        return this.ordenActual;
     }
 
-    //#region InstalacionTemporal Falta prueba
+    
     async asignarTecnico() {
-        if (!this.nuevaOrden || !this.nuevaOrden.sucursal) {
-            console.log("No hay una orden valida para asignar un tecnico.");
+        if (!this.ordenActual || this.ordenActual.estado !== "Ingresado") {
             return;
         }
     
-        let sucursal = this.nuevaOrden.sucursal;
+        let sucursal = this.ordenActual.sucursal;
+        let sistemaOperativoOrden = this.ordenActual.telefono.sistemaOperativo;
     
-        // Mostrar lista de tecnicos disponibles
-        console.log("Tecnicos disponibles en", sucursal.nombre, ":");
-        sucursal.tecnicos.forEach((tecnico, index) => {
-            console.log(`${index + 1}. ${tecnico.nombre}`);
-        });
+        // Buscar tecnico con skill que coincida con el sistema operativo del telefono
+        let tecnicoAsignado = sucursal.tecnicos.find(tecnico => tecnico.skills.includes(sistemaOperativoOrden));
     
-        // Preguntar que tecnico asignar
-        let opcion = await this.preguntarConsola("Seleccione el numero del tecnico: ");
-        let indice = parseInt(opcion) - 1;
-    
-        if (indice >= 0 && indice < sucursal.tecnicos.length) {
-            this.nuevaOrden.tecnico = sucursal.tecnicos[indice];
-            console.log(`Tecnico ${this.nuevaOrden.tecnico.nombre} asignado a la orden.`);
+        if (tecnicoAsignado) {
+            this.ordenActual.tecnico = tecnicoAsignado;
+            console.log(`Tecnico ${tecnicoAsignado.nombre} asignado a la orden. Skill usada: ${sistemaOperativoOrden}`);
+            this.ordenActual.estado = "Recibido";
         } else {
-            console.log("Opcion invalida. No se asigno ningun tecnico.");
+            console.log("No hay tecnicos habilitados en esta Sucursal");
+            this.ordenActual.estado = "Observado";
         }
     }
-    //#endregion
+   
+    async realizarEvaluacion() {
+        if (!this.ordenActual || this.ordenActual.estado !== "Recibido") {
+            return;
+        }
+    
+        console.log("Realizando evaluación preliminar");
+        let diagnostico = await this.preguntarConsola("Diagnostico preliminar: ");
+        let coste = await this.preguntarConsola("Coste estimado: ");
+    
+        this.ordenActual.diagnostico = diagnostico;
+        this.ordenActual.coste = parseFloat(coste);
+        this.ordenActual.estado = "Evaluado";
+    
+        console.log("Evaluación preliminar completada.");
+        console.log(this.ordenActual);
+
+        const respuestaCliente = (await this.preguntarConsola("Cliente conforme? (si/no): ")).toLowerCase() === "si";
+        if(!respuestaCliente){
+            console.log("Cliente Inconforme");
+            console.log(this.ordenActual);
+            return this.ordenActual;
+        }else{
+            console.log("Cliente Conforme");
+            await this.confirmarServicio();
+        }
+
+    }
+
+    async confirmarServicio(){
+        if (!this.ordenActual || this.ordenActual.estado !== "Evaluado") {
+            return;
+        }
+        console.log("Realizando confirmacion al cliente");
+
+        let autorizacionFirmada = (await this.preguntarConsola("Firmo autorizacion: (si/no): ")).toLowerCase() === "si";
+        if(!autorizacionFirmada){
+            console.log("Requiere autorizacion del cliente");
+            this.ordenActual.estado = "Observado";
+            console.log(this.ordenActual);
+            return this.ordenActual;
+        }else{
+            let abono = await this.preguntarConsola("Abono ingresado: ");
+            if(abono<(this.ordenActual.coste)/2){
+                this.ordenActual.estado = "Observado";
+                console.log("Abono insuficiente");
+                console.log(this.ordenActual);
+                return this.ordenActual;
+            }else{
+                this.ordenActual.coste=this.ordenActual.coste-abono;
+                this.ordenActual.estado = "Reparacion";
+                console.log("En Reparacion");
+                console.log(this.ordenActual);
+                return this.ordenActual;
+            }
+        }
+    }
+
+    async reparar() {
+        if (!this.ordenActual || this.ordenActual.estado !== "Reparacion") {
+            return;
+        }
+        
+        console.log("Inicia reparacion");
+                
+        let diagnosticoCorrecto = (await this.preguntarConsola(`${this.ordenActual.diagnostico} correcto? (si/no): `)).toLowerCase() === "si";
+        if (!diagnosticoCorrecto) {
+            this.ordenActual.diagnostico = await this.preguntarConsola("Nuevo diagnostico: ");
+            }
+        
+        let requiereRepuestos = (await this.preguntarConsola("Requiere repuestos? (si/no): ")).toLowerCase() === "si";
+        if (requiereRepuestos) { //Convierte la cadena de repuestos ingresada en un array elimina espacios extra
+            let repuestosIngresados = await this.preguntarConsola("Ingrese los repuestos utilizados (,): ");
+            this.ordenActual.repuestos = repuestosIngresados.split(",").map(rep => rep.trim());
+        }
+        
+        console.log("Reparacion en proceso");
+        console.log(this.ordenActual);
+    }
+
+    async evaluacionFinal() {
+        if (!this.ordenActual || this.ordenActual.estado !== "Reparacion") {
+            return;
+        }
+        
+        let reparacionCompleta = (await this.preguntarConsola("Reparacion completa? (si/no): ")).toLowerCase() === "si";
+        if (reparacionCompleta) {
+            this.ordenActual.estado = "Reparado";
+              console.log("Orden Evaluada Finalmente");
+              console.log(this.ordenActual);
+              return this.ordenActual;
+        } else {
+            await this.reparar();
+        }
+    }
+    
 
 }
 
@@ -252,19 +348,33 @@ class Orden{
     }
 }
 
-//Estado = Recibido, Observado, Evaluado, Reparacion, Reparado
+//Estado = Ingresado, Recibido, Observado, Evaluado, Reparacion, Reparado
+
+class Repositorio{
+    observado=[];
+    ingresado=[];
+    recibido=[];
+    evaluado=[]; 
+    reparacion=[]; 
+    reparado=[];
+    constructor(observado=[], ingresado=[],recibido=[],evaluado=[],reparacion=[],reparado=[]){
+        this.observado=observado;
+        this.ingresado=ingresado;
+        this.recibido=recibido;
+        this.evaluado=evaluado;
+        this.reparacion=reparacion;
+        this.reparado=reparado;
+    }
+}
 
 //#endregion
 
 //#region Objetos internos
 
-// Tecnicos 3
-let tecnico1 = new Tecnico(1, "Carlos", ["Android", "HarmonyOS"], Sucursal1);
-let tecnico2 = new Tecnico(2, "Maria", ["iOS", "Ubuntu Touch"], Sucursal1);
-let tecnico3 = new Tecnico(3, "Luis", ["KaiOS", "Tizen"], Sucursal1);
+
 
 //Sucursales
-const Sucursal1 = new Sucursal(1,"Sucursal Norte", "Av. Panamericana Norte 421, Distrito Norte, Ciudad Capital", "Elque Esta Almando",[tecnico1,tecnico2,tecnico3]);
+const Sucursal1 = new Sucursal(1,"Sucursal Norte", "Av. Panamericana Norte 421, Distrito Norte, Ciudad Capital", "Elque Esta Almando");
 
 //Central Unica
 const SedeCentral = new Central("Sede Central", "Av. Imaginaria 345, Distrito Centro, Ciudad Capital", "Jose Ordoñes Mart",[Sucursal1]);
@@ -274,7 +384,11 @@ const SedeCentral = new Central("Sede Central", "Av. Imaginaria 345, Distrito Ce
 
 //#region Carga de datos
 
-
+// Tecnicos 3
+let tecnico1 = new Tecnico(1, "Carlos", ["Android", "HarmonyOS"], Sucursal1);
+let tecnico2 = new Tecnico(2, "Maria", ["iOS", "Ubuntu Touch"], Sucursal1);
+let tecnico3 = new Tecnico(3, "Luis", ["KaiOS", "Tizen"], Sucursal1);
+Sucursal1.tecnicos.push(tecnico1,tecnico2,tecnico3);
 
 // Telefonos 3
 let telefono1 = new Telefono(123456789012345, "SN12345", "Samsung", "Android");
@@ -297,7 +411,7 @@ let orden3 = new Orden(telefono3, "Pedro Ramirez", "Reparacion", tecnico3, Sucur
 
 
 //#region Pruebas de salida
-tecnico1.registrarIngreso();
+//tecnico1.registrarIngreso();
 
 //Falta agregar las otras pruebas
 
