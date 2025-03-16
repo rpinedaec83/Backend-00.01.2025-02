@@ -1,0 +1,218 @@
+/* Fondo con degradado */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+/* ============================= */
+/*        ESTILOS DEL LOGIN      */
+/* ============================= */
+
+/* Contenedor del Login */
+.login-container {
+    width: 300px; /* Hace el login cuadrado */
+    height: 300px; /* Misma altura que ancho */
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra los elementos */
+}
+
+/* Inputs y Select del Login */
+.login-container input, .login-container select {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Botón de Ingreso */
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.login-container button:hover {
+    background: #0056b3;
+}
+
+/* ============================= */
+/*     PANEL TRABAJADOR/ENCARGADO */
+/* ============================= */
+
+/* Contenedor general del panel */
+.panel-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Panel del trabajador */
+.panel-trabajador {
+    width: 90%; /* Aumentamos el ancho */
+    max-width: 1200px; /* Máximo tamaño permitido */
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 40px; /* Espaciado interno */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra los elementos */
+}
+
+/* Títulos del panel */
+.panel-trabajador h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Contenedor de los botones */
+.botones-container {
+    display: flex;
+    gap: 15px; /* Espacio entre los botones */
+    justify-content: center;
+    margin-bottom: 20px;
+}
+/* Estilo general para los botones */
+.boton-accion {
+    background: #007BFF !important; /* Azul */
+    color: white !important;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: inline-block;
+    margin: 5px; /* Espacio entre botones */
+}
+
+.boton-accion:hover {
+    background: #0056b3 !important;
+}
+
+/* Estilo específico para el botón de Cerrar Sesión */
+.cerrar-sesion {
+    background: #dc3545 !important; /* Rojo */
+    color: white !important;
+}
+
+.cerrar-sesion:hover {
+    background: #b52b3a !important;
+}
+
+
+/* ============================= */
+/*           TABLA CLIENTES       */
+/* ============================= */
+
+/* Contenedor de la tabla */
+.table-container {
+    width: 100%;
+    max-width: 1000px; /* Máximo ancho de la tabla */
+    overflow-x: auto; /* Permite scroll si es necesario */
+}
+
+/* Estilos de la tabla */
+table {
+    width: 100%; /* Ocupa todo el espacio disponible */
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background: #007BFF;
+    color: white;
+    font-weight: bold;
+}
+
+/* Botón dentro de la tabla */
+td button {
+    padding: 8px 12px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+td button:hover {
+    background: #218838;
+}
+.content-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%; /* Ajusta el ancho del recuadro */
+    max-width: 800px; /* Máximo ancho */
+    margin: auto; /* Centrar horizontalmente */
+    margin-top: 20px; /* Espacio arriba */
+}
+/* Estilos del modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    border-radius: 10px;
+}
+.close {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+/* Diseño de la grilla */
+.grilla {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.repuesto {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f9f9f9;
+}
+.repuesto:hover {
+    background-color: #e0e0e0;
+}

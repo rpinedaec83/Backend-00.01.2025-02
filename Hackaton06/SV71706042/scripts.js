@@ -401,6 +401,43 @@ const imeis = ["12345", "67890", "54321", "98765", "13579"];
 imeis.forEach(imei => centralPeru.agregarCelularRobado(imei));
 
 ////////////////////////////////////////////////////      FUNCIONES    //////////////////////////////////////////////////////////////////////////////////////
+//Verificacion de incio de sesion guardado
+
+if(sessionStorage.getItem("usuario") && sessionStorage.getItem("contrasena") && sessionStorage.getItem("rol") && 
+    sessionStorage.getItem("sucursal")){
+
+    
+    let usuario = sessionStorage.getItem("usuario");
+    let contrasena = sessionStorage.getItem("contrasena");
+    let rol = sessionStorage.getItem("rol");
+    let sucursalNombre = sessionStorage.getItem("sucursal");
+    const sucursalSeleccionada = centralPeru.obtenerSucursalPorNombre(sucursalNombre);
+    sucursalGlobal = sucursalSeleccionada;
+    console.log(sucursalNombre);
+    if(rol === "administrador"){
+        let tecnico = sucursalSeleccionada.encargado;
+        if(tecnico.usuario === usuario && tecnico.contrasena === contrasena){
+            usserGlobal = tecnico;
+            mostrarPanelEncargado();
+            actualizarListaClientes(sucursalSeleccionada);
+        }
+    }else{
+        let tecnico = sucursalSeleccionada.trabajadores.find(t => t.usuario === usuario && t.contrasena === contrasena);
+        if(tecnico){
+            usserGlobal = tecnico;
+            mostrarPanelTrabajador();
+            actualizarListaClientes(sucursalSeleccionada);
+        }
+    }
+}
+//Cargar datos en caso haya algo almacenado
+let sucursal = JSON.parse(localStorage.getItem("sucursal"));
+console.log(sucursal);
+if(sucursal){
+    console.log("Si esta guardado la sucursal");
+    //hay elementos guardados
+    actualizarListaClientes(sucursal);
+}
 function iniciarSesion() {
     const usuario = document.getElementById("usuario").value; //captura los valores de usuario, contraseña y sucursal del html
     const contrasena = document.getElementById("contrasena").value;
@@ -411,13 +448,22 @@ function iniciarSesion() {
     console.log("Sucursal: ", sucursalNombre);
     //Verificar si el usuario es un administrador
     const sucursalSeleccionada = centralPeru.obtenerSucursalPorNombre(sucursalNombre);
+
+
+
     sucursalGlobal = sucursalSeleccionada;
+
+    
     if (!sucursalSeleccionada) {
         alert("Seleccione una sucursal");
         return;
     }
 
     if(sucursalSeleccionada.encargado.usuario == usuario && sucursalSeleccionada.encargado.contrasena == contrasena){
+        sessionStorage.setItem("usuario",usuario);
+        sessionStorage.setItem("contrasena",contrasena);
+        sessionStorage.setItem("rol","administrador");
+        sessionStorage.setItem("sucursal",sucursalNombre);
         alert(`Inicio de sesión exitoso como Administrador de ${sucursalNombre}`);
         usserGlobal = sucursalSeleccionada.encargado;
         mostrarPanelEncargado();
@@ -428,6 +474,11 @@ function iniciarSesion() {
     // Verificar si el usuario es un trabajador registrado en la sucursal
     const trabajador = sucursalSeleccionada.trabajadores.find(t => t.usuario === usuario && t.contrasena === contrasena);
     if (trabajador) {
+
+        sessionStorage.setItem("usuario",usuario);  //guarda el usuario en el navegador
+        sessionStorage.setItem("contrasena",contrasena); //guarda la contraseña en el navegador
+        sessionStorage.setItem("rol","trabajador"); //guarda el rol en el navegador
+        sessionStorage.setItem("sucursal",sucursalNombre);
         alert(`Inicio de sesión exitoso como Trabajador de ${sucursalNombre}`);
         usserGlobal = trabajador;
         mostrarPanelTrabajador();
@@ -561,10 +612,18 @@ function registrarCliente() {
     let cliente = new Cliente(dni,nombre,apellido,numeroCelular,direccion,new Date().toLocaleDateString(),celular);
     let servicio = new Servicio(usserGlobal.dni,cliente.dni,celular,cliente,new Date().toLocaleDateString(),montoTotalRepuestos,parseInt(montoCancelado));
 
+
+
     cliente.celular=celular;
     celular.actualizaEstado("Aceptado");
     sucursalGlobal.agregarServicios(servicio);
     sucursalGlobal.agregarClientes(dni, nombre, apellido, numeroCelular, direccion);
+
+    localStorage.setItem("sucursal",JSON.stringify(sucursalGlobal));
+    localStorage.setItem("cliente",JSON.stringify(cliente));
+    localStorage.setItem("servicio",JSON.stringify(servicio));
+    localStorage.setItem("celular",JSON.stringify(celular));
+
     actualizarListaClientes(sucursalGlobal);
 
     console.log("Sucursal global: ",sucursalGlobal);
@@ -604,6 +663,9 @@ function seleccionarRepuesto(nombre) {
     let filas = tabla.getElementsByTagName("tr");
     let precioUnitario = 0;
     let subTotal = 0;
+    sucursalGlobal.repuestos.forEach(element => {
+        console.log( element.nombre);
+    });
     precioUnitario = sucursalGlobal.calculaPrecioUnitario(nombre);
     console.log(precioUnitario);
     subTotal = precioUnitario;
