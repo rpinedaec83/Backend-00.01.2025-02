@@ -91,7 +91,35 @@ class Central{
         this.direccion=direccion;
         this.encargado=encargado;
         this.sucursales=sucursales;
+
+        let sucursalesGuardadas = JSON.parse(localStorage.getItem("sucursales")) || [];
+        if (sucursalesGuardadas.length > 0) {
+            this.sucursales = sucursalesGuardadas;
+        }
     }
+
+    async agregarSede() {
+        let id = Number(window.prompt("ID (#): "));
+        let nombre = window.prompt("Nombre: ");
+        let direccion = window.prompt("Direccion: ");
+        let encargado = window.prompt("Encargado: ");
+        
+        let nuevaSede = new Sucursal(id, nombre, direccion, encargado,[]);
+        
+        //  Agregar la nueva sucursal a la lista de sucursales en SedeCentral y actualizar localStorage
+        this.sucursales.push(nuevaSede);
+        localStorage.setItem("SedeCentral", JSON.stringify(this));
+        
+
+        // Guardar la nueva sucursal en localStorage con su propio identificador
+        localStorage.setItem(`Sucursal${nuevaSede.id}`, JSON.stringify(nuevaSede));
+        console.log("Sucursal agregada", nuevaSede);
+         
+
+    }
+
+
+    
 }
 
 //Heredando propieaddes de Central 
@@ -102,7 +130,142 @@ class Sucursal extends Central{
         super(nombre, direccion, encargado);
         this.id=id;
         this.tecnicos=tecnicos;
+        this.sucursales = undefined;
     }
+/*
+    //V1
+    async agregarTecnico() {
+        let nombreSucursal = window.prompt("Nombre de Sucursal: ");
+        let sucursalEncontrada = SedeCentral.sucursales.find(sucursal => sucursal.nombre === nombreSucursal);
+    
+        if (!sucursalEncontrada) {
+            console.log("Sucursal no encontrada.");
+            return;
+        }
+    
+        let id = window.prompt("ID : ");
+        let nombre = window.prompt("Nombre: ");
+        let skills = window.prompt("Skills (,): ").split(",").map(skill => skill.trim());
+    
+        let nuevoTecnico = new Tecnico(id, nombre, skills, sucursalEncontrada);
+        sucursalEncontrada.tecnicos.push(nuevoTecnico);
+    
+        // Guardar en localStorage sin referencias circulares
+        let sedeSinCiclo = {
+            nombre: SedeCentral.nombre,
+            direccion: SedeCentral.direccion,
+            encargado: SedeCentral.encargado,
+            sucursales: SedeCentral.sucursales.map(sucursal => ({
+                id: sucursal.id,
+                nombre: sucursal.nombre,
+                direccion: sucursal.direccion,
+                encargado: sucursal.encargado,
+                tecnicos: sucursal.tecnicos.map(tecnico => ({
+                    id: tecnico.id,
+                    nombre: tecnico.nombre,
+                    skills: tecnico.skills
+                }))
+            }))
+        };
+    
+        localStorage.setItem("SedeCentral", JSON.stringify(sedeSinCiclo));
+        console.log("Técnico agregado a la sucursal", nuevoTecnico);
+    }
+    */
+   /*
+    //V2
+    async agregarTecnico() {
+        let nombreSucursal = window.prompt("Nombre Sucursal: ");
+
+        let sucursalEncontrada = null;
+
+        // Buscar en localStorage todas las sucursales almacenadas
+        for (let i = 0; i < localStorage.length; i++) {
+            let key = localStorage.key(i);
+            if (key.startsWith("Sucursal")) {  // Filtrar solo sucursales
+                let sucursal = JSON.parse(localStorage.getItem(key));
+                if (sucursal.nombre === nombreSucursal) {
+                    sucursalEncontrada = sucursal;
+                    break;
+                }
+            }
+        }
+
+        if (!sucursalEncontrada) {
+            console.log("Sucursal no encontrada.");
+            return;
+        }
+
+        let id = window.prompt("ID: ");
+        let nombre = window.prompt("Nombre: ");
+        let skills = window.prompt("Skills (,): ").split(",").map(skill => skill.trim());
+
+        let nuevoTecnico = new Tecnico(id, nombre, skills, sucursalEncontrada);
+        sucursalEncontrada.tecnicos.push(nuevoTecnico);
+
+        // Guardar la sucursal actualizada en localStorage
+        localStorage.setItem(`Sucursal${sucursalEncontrada.id}`, JSON.stringify(sucursalEncontrada));
+
+        console.log("Tecnico agregado sucursal", nuevoTecnico);
+    }
+
+    */
+
+    //V3
+    async agregarTecnico() {
+        let nombreSucursal = window.prompt("Nombre Sucursal: ");
+    
+        let sucursalEncontrada = null;
+        let sucursalKey = null;
+    
+        // Buscar en localStorage todas las sucursales almacenadas
+        for (let i = 0; i < localStorage.length; i++) {
+            let key = localStorage.key(i);
+            if (key.startsWith("Sucursal")) {  // Ahora coincide con el formato correcto
+                let sucursal = JSON.parse(localStorage.getItem(key));
+                if (sucursal.nombre === nombreSucursal) {
+                    sucursalEncontrada = Object.assign(new Sucursal(), sucursal);
+                    sucursalKey = key;
+                    break;
+                }
+            }
+        }
+    
+        if (!sucursalEncontrada) {
+            console.log("Sucursal no encontrada.");
+            return;
+        }
+    
+        let id = Number(window.prompt("ID (#): "));
+        let nombre = window.prompt("Nombre: ");
+        let skills = window.prompt("Skills (,): ").split(",").map(skill => skill.trim());
+    
+        let nuevoTecnico = new Tecnico(id, nombre, skills, sucursalEncontrada);
+    
+        if (!Array.isArray(sucursalEncontrada.tecnicos)) {
+            sucursalEncontrada.tecnicos = [];
+        }
+    
+        sucursalEncontrada.tecnicos.push(nuevoTecnico);
+        //Old version
+        // Guardar la sucursal actualizada en localStorage
+        //localStorage.setItem(sucursalKey, JSON.stringify(sucursalEncontrada));
+        //Corregido: Evitar referencia circular antes de guardar en localStorage
+        let sucursalSinCiclo = { ...sucursalEncontrada };
+        sucursalSinCiclo.tecnicos = sucursalSinCiclo.tecnicos.map(tecnico => {
+            let copiaTecnico = { ...tecnico };
+            delete copiaTecnico.sucursal; // Elimina referencia circular
+            return copiaTecnico;
+        });
+
+        // Guardar la sucursal actualizada en localStorage sin ciclos
+        localStorage.setItem(sucursalKey, JSON.stringify(sucursalSinCiclo));
+    
+        console.log(`Técnico ${nombre} agregado a la sucursal ${sucursalEncontrada.nombre}`);
+    }
+
+
+
 }
 
 //Actor del sistema
@@ -371,17 +534,66 @@ class Repositorio{
 
 //#region Objetos internos
 
+/*
+// Version simple
 //Sucursales
 const Sucursal1 = new Sucursal(1,"Sucursal Norte", "Av. Panamericana Norte 421, Distrito Norte, Ciudad Capital", "Elque Esta Almando");
 
 //Central Unica
 const SedeCentral = new Central("Sede Central", "Av. Imaginaria 345, Distrito Centro, Ciudad Capital", "Jose Ordoñes Mart",[Sucursal1]);
 
+//Carga en LocalStorage
+localStorage.setItem("Sucursal1", JSON.stringify(Sucursal1));
+localStorage.setItem("SedeCentral", JSON.stringify(SedeCentral));
+*/
+//Version Completa con validacion
+
+// Recuperar sucursales y sede central desde localStorage
+const sucursalGuardada = JSON.parse(localStorage.getItem("Sucursal1"));
+const sedeGuardada = JSON.parse(localStorage.getItem("SedeCentral"));
+
+if (sucursalGuardada) {
+    // Cargar sucursal desde localStorage
+    Sucursal1 = Object.assign(new Sucursal(), sucursalGuardada);
+} else {
+    // Crear sucursal si no existe en localStorage
+    Sucursal1 = new Sucursal(1, "Sucursal Norte", "Av. Panamericana Norte 421, Distrito Norte, Ciudad Capital", "Elque Esta Almando");
+    localStorage.setItem("Sucursal1", JSON.stringify(Sucursal1));
+}
+
+if (sedeGuardada) {
+    // Cargar sede central desde localStorage
+    SedeCentral = Object.assign(new Central(), sedeGuardada);
+} else {
+    // Crear sede central si no existe en localStorage
+    SedeCentral = new Central("Sede Central", "Av. Imaginaria 345, Distrito Centro, Ciudad Capital", "Jose Ordoñes Mart",[Sucursal1]);
+    localStorage.setItem("SedeCentral", JSON.stringify(SedeCentral));
+}
+
+//Validacion para evitar repteciones
+if (!Sucursal1.tecnicos || Sucursal1.tecnicos.length === 0) {
 // Tecnicos 3
 let tecnico1 = new Tecnico(1, "Carlos", ["Android", "HarmonyOS"], Sucursal1);
 let tecnico2 = new Tecnico(2, "Maria", ["iOS", "Ubuntu Touch"], Sucursal1);
 let tecnico3 = new Tecnico(3, "Luis", ["KaiOS", "Tizen"], Sucursal1);
+/*    if (!Sucursal1.tecnicos) {
+        Sucursal1.tecnicos = [];
+    }
+*/
 Sucursal1.tecnicos.push(tecnico1,tecnico2,tecnico3);
+
+// Guardar Sucursal1 actualizado en localStorage sin referencias circulares
+let sucursalSinCiclo = { ...Sucursal1 };
+sucursalSinCiclo.tecnicos = sucursalSinCiclo.tecnicos.map(tecnico => {
+    let copiaTecnico = { ...tecnico };
+    delete copiaTecnico.sucursal; // Evita la referencia circular
+    return copiaTecnico;
+});
+
+// Guardar en localStorage
+localStorage.setItem("Sucursal1", JSON.stringify(sucursalSinCiclo));
+}
+
 
 //#endregion
 
