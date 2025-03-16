@@ -246,15 +246,15 @@ class Sucursal {
   tecnicos = [];
   clientes = [];
   tickets = [];
-  dni = "";
+  contacto = "";
   nombre = "";
   direccion = "";
   central;
 
-  constructor(nombre, direccion, dni, central) {
+  constructor(nombre, direccion, contacto, central) {
     this.nombre = nombre;
     this.direccion = direccion;
-    this.dni = dni;
+    this.contacto = contacto;
     this.central = central;
     this.estadoEquipos = {};
 

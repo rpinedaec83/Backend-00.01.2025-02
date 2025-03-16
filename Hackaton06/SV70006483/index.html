@@ -4,10 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"  crossorigin="anonymous">
 </head>
 <body>
-    <h1>Revisar mi console, ahi se refleja todo el flujo</h1>
-    <h2 >By Kong</h2>
+    <div class="container">
+        <h2>Sucursales</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dynamically populate table rows using JavaScript -->
+                
+            </tbody>
+        </table>
+    </div>
     <script src="script2.js"></script>
+    <!-- Bootstrap JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script>
+        central.sucursales.forEach((sucursal, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${sucursal.nombre}</td>
+                <td>${sucursal.direccion}</td>
+                <td>${sucursal.contacto}</td>
+                <td>
+                    <button class="btn btn-primary" onclick="editSucursal(${index})">Modificar</button>
+                    <button class="btn btn-danger" onclick="deleteSucursal(${index})">Eliminar</button>
+                </td>
+            `;
+            document.querySelector('tbody').appendChild(row);
+        });
+
+        function editSucursal(index) {
+            // Implement modify functionality here
+            console.log(`Modificar sucursal con índice ${index}`);
+        }
+
+        function deleteSucursal(index) {
+            // Implement delete functionality here
+            console.log(`Eliminar sucursal con índice ${index}`);
+        }
+    </script>
+    
 </body>
 </html>
