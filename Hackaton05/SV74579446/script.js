@@ -54,13 +54,13 @@ class Central {
         const listaCelulares = document.getElementById("listaCelulares");
         listaCelulares.innerHTML = "";
         this.celulares.forEach(celular => {
-            const row = `<tr>
+            const row = <tr>
                 <td>${celular.imei}</td>
                 <td>${celular.numeroSerie}</td>
                 <td>${celular.marca}</td>
                 <td>${celular.diagnostico || "Sin Diagnóstico"}</td>
                 <td>${celular.estado}</td>
-            </tr>`;
+            </tr>;
             listaCelulares.innerHTML += row;
         });
     }
