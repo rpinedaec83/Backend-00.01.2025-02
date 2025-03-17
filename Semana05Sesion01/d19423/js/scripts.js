@@ -155,8 +155,7 @@ async function incluirPasajeros() {
       console.log(parametros);
       Nombre = parametros.nombre;
       Pais = parametros.pais;
-      configurar();
-      eventos();
+       
     },
   };
 })();
