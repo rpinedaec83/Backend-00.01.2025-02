@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicio Tecnico - Guru Tech</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="repairing-logo.png">
+</head>
+<body>
+    <div id="headerJustForDesign">
+        <h1>Estado del equipo: </h1> <h1 id="stateLabel"></h1>
+    </div>
+
+    <div id="SomeSpace"></div>
+
+    <div id="cancelDiv" style="display: none;">
+        <h2 id="cancelH2"></h2>
+        <p id="cancelPhraseOfFix"></p>
+        <button onclick="restart()" id="restartButton">Reiniciar</button>
+    </div>
+
+    <div id="workshopDiv" style="display: none;">
+        <h2>El equipo se encunetra en reparación en el taller</h2>
+        <p id="workshopPhraseCustomerData"></p>
+        <p id="workshopPhraseDescription"></p>
+    </div>
+
+    <div id="fixDetails" style="display: none;">
+        <h2>Detalles de reparación</h2>
+
+        <label id="diagnosticDesc">Diagnostico de - </label>
+        <br>
+        <br>
+        <input type="text" id="diagnosticInput">
+
+        <br>
+        <br>
+
+        <label>Sigue el siguiente formato para agregar las cosas a reparar:</label>
+        <label>"detalla - precio, detalle - precio, detalle - precio..."</label>
+        <br>
+        <br>
+        <input type="text" id="detailsInput">
+        <br>
+        <br>
+        <label for="">Repuestos que se van a necesitar para reparar el equipo</label>
+        <br>
+        <label for="">Sigue el siguiente formato para agregar los repuestos: repuesto, repuesto, repuesto...</label>
+        <br>
+        <br>
+        <input type="text" id="sparePartsInput">
+    </div>
+
+    <div id="phoneData">
+        <h2>Datos del equipo</h2>
+        <label for="">IMEI</label> <label id="important">*</label>
+        <input type="text" id="imei">
+
+        <label for="">Marca</label> <label id="important">*</label>
+        <input type="text" id="brand">
+        
+        <label for="">Serie</label> <label id="important">*</label>
+        <input type="text" id="serie">
+
+        <br>
+        <br>
+        <br>
+
+        <label for="">Número de serie</label> <label id="important">*</label>
+        <input type="text" id="serieNumber">
+
+        <label for="">Sufijo</label>
+        <input type="text" id="sufix">
+
+        <label for="">Reportado</label>
+        <input type="checkbox" name="" id="reportedCheckbox"> si
+    </div>
+
+    <div id="SomeSpace"></div>
+
+    <div id="customerData">
+        <h2>Datos del cliente</h2>
+        <label for="">DNI</label> <label id="important">*</label>
+        <input type="text" id="customerDNI">
+
+        <label for="">Nombres</label> <label id="important">*</label>
+        <input type="text" id="customerName">
+
+        <br>
+        <br>
+        <br>
+
+        <label for="">Apellidos</label> <label id="important">*</label>
+        <input type="text" id="customerLastname">
+
+        <label for="">Número de contacto</label> <label id="important">*</label>
+        <input type="text" id="customerPhoneNumber">
+    </div>
+
+    <div id="SomeSpace"></div>
+    <div id="buttonsDiv">
+        <button onclick="saveButton()" id="saveButton">Guardar</button>
+        <button onclick="diagnosticButton()" id="diagnosticButton" disabled="true">Confirmar diagnostico</button>
+        <button onclick="readyToDeliver()" id="readyToDeliver" disabled="true">Listo para entregar</button>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="script.js"></script>
+</html>
