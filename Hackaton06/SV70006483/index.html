@@ -30,6 +30,7 @@
         <button class="btn btn-warning mb-3" onclick="mostrarModalCelularRobado()">Registrar Celular Robado</button>
         <button class="btn btn-info mb-3" onclick="mostrarModalBuscarSucursal()">Buscar Sucursal por Marca</button>
     </div>
+    <div id="ticketsContainer"></div>
      <!-- Modal para nueva/editar sucursal -->
 <div class="modal fade" id="sucursalModal" tabindex="-1" aria-labelledby="sucursalModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -279,6 +280,20 @@
         </div>
     </div>
 </div>
+<!-- Modal para detalles del ticket -->
+<div class="modal fade" id="detalleTicketModal" tabindex="-1" aria-labelledby="detalleTicketModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="detalleTicketModalLabel">Detalles del Ticket</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="detalleTicketBody">
+          <!-- Los detalles del ticket se insertarán aquí -->
+        </div>
+      </div>
+    </div>
+  </div>
     <script src="script2.js"></script>
     <!-- Bootstrap JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -333,7 +348,10 @@ function mostrarModalSucursal(index = null) {
         }
     
         // Cargar sucursales al iniciar la página
-        window.onload = cargarSucursales;
+        window.onload = function() {
+  central.cargarSucursales();
+  cargarSucursales(); // Esta función actualiza la vista
+};
 
         function guardarSucursal() {
         const nombre = document.getElementById('nombre').value;
@@ -558,8 +576,20 @@ function buscarSucursalPorMarca() {
 }
 
 function mostrarModalGenerarTicket(index) {
-    const modal = new bootstrap.Modal(document.getElementById('generarTicketModal'));
-    document.getElementById('ticketSucursalIndex').value = index;
+    const modal = document.getElementById('generarTicketModal');
+    if (!modal) {
+        console.error('El modal no se encontró en el DOM');
+        return;
+    }
+
+    const bootstrapModal = new bootstrap.Modal(modal);
+    
+    const ticketSucursalIndex = document.getElementById('ticketSucursalIndex');
+    if (ticketSucursalIndex) {
+        ticketSucursalIndex.value = index;
+    } else {
+        console.error('El elemento ticketSucursalIndex no se encontró en el DOM');
+    }
     
     // Cargar marcas disponibles
     const sucursal = central.sucursales[index];
@@ -569,58 +599,67 @@ function mostrarModalGenerarTicket(index) {
     });
     
     const selectMarca = document.getElementById('celularMarca');
-    selectMarca.innerHTML = '<option value="" disabled selected>Seleccione una marca</option>';
-    marcasDisponibles.forEach(marca => {
-        const option = document.createElement('option');
-        option.value = marca;
-        option.textContent = marca;
-        selectMarca.appendChild(option);
+    if (selectMarca) {
+        selectMarca.innerHTML = '<option value="" disabled selected>Seleccione una marca</option>';
+        marcasDisponibles.forEach(marca => {
+            const option = document.createElement('option');
+            option.value = marca;
+            option.textContent = marca;
+            selectMarca.appendChild(option);
+        });
+    } else {
+        console.error('El elemento celularMarca no se encontró en el DOM');
+    }
+    
+    // Limpiar otros campos del formulario
+    const camposALimpiar = ['clienteNombre', 'clienteApellido', 'clienteDNI', 'celularIMEI', 'celularModelo', 'descripcionProblema'];
+    camposALimpiar.forEach(campo => {
+        const elemento = document.getElementById(campo);
+        if (elemento) {
+            elemento.value = '';
+        } else {
+            console.error(`El elemento ${campo} no se encontró en el DOM`);
+        }
     });
     
-    modal.show();
+    // Limpiar y deshabilitar el select de técnicos
+    const selectTecnico = document.getElementById('tecnicoAsignado');
+    if (selectTecnico) {
+        selectTecnico.innerHTML = '<option value="" disabled selected>Seleccione un técnico</option>';
+        selectTecnico.disabled = true;
+    } else {
+        console.error('El elemento tecnicoAsignado no se encontró en el DOM');
+    }
+    
+    bootstrapModal.show();
 }
 
 function cargarTecnicos() {
     const sucursalIndex = document.getElementById('ticketSucursalIndex').value;
     const marcaSeleccionada = document.getElementById('celularMarca').value;
-    console.log('Sucursal Index:', sucursalIndex);
-    console.log('Marca Seleccionada:', marcaSeleccionada);
-
-    if (!sucursalIndex || !marcaSeleccionada) {
-        console.log('Sucursal index o marca no seleccionados');
+    const selectTecnico = document.getElementById('tecnicoAsignado');
+    
+    if (!sucursalIndex || !central.sucursales[sucursalIndex]) {
+        console.error('Índice de sucursal no válido');
         return;
     }
 
     const sucursal = central.sucursales[sucursalIndex];
-    console.log('Sucursal:', sucursal);
-
-    if (!sucursal) {
-        console.log('Sucursal no encontrada');
-        return;
-    }
-
-    const selectTecnico = document.getElementById('tecnicoAsignado');
-    selectTecnico.innerHTML = '<option value="" disabled selected>Seleccione un técnico</option>';
     
-    console.log('Técnicos en la sucursal:', sucursal.tecnicos);
-
-    let tecnicosAgregados = 0;
-
-    sucursal.tecnicos.forEach((tecnico, index) => {
-        console.log(`Revisando técnico: ${tecnico.nombre}, Especialidades: ${tecnico.especialidad}`);
+    selectTecnico.innerHTML = '<option value="" disabled selected>Seleccione un técnico</option>';
+    selectTecnico.disabled = false;
+    
+    sucursal.tecnicos.forEach((tecnico) => {
         if (tecnico.especialidad.includes(marcaSeleccionada)) {
             const option = document.createElement('option');
-            option.value = index;
+            option.value = tecnico.id; // Usar el ID del técnico como valor
             option.textContent = `${tecnico.nombre} ${tecnico.apellido} (Exp: ${tecnico.experiencia} años)`;
             selectTecnico.appendChild(option);
-            tecnicosAgregados++;
         }
     });
-
-    console.log(`Técnicos agregados: ${tecnicosAgregados}`);
 }
 
-// Asegúrese de que esta línea esté presente para vincular la función al cambio de marca
+// Asegúrate de que esta línea esté presente para vincular la función al cambio de marca
 document.getElementById('celularMarca').addEventListener('change', cargarTecnicos);
 
 
@@ -646,25 +685,28 @@ function generarTicket() {
         let cliente = central.clientes.find(c => c.dni === clienteDNI);
         if (!cliente) {
             cliente = new Cliente(clienteNombre, clienteApellido, clienteDNI);
-            central.agregarCliente(cliente);
+            central.sucursales[sucursalIndex].agregarCliente(cliente);
         }
 
         // Crear el celular
         const celular = new Telefono(celularIMEI, celularMarca, celularModelo);
-        cliente.telefono = celular;
 
         // Obtener el técnico asignado
-        const tecnicoAsignado = central.sucursales[sucursalIndex].tecnicos[tecnicoIndex];
+        const tecnicoId = document.getElementById('tecnicoAsignado').value;
 
-        // Crear el ticket
-        const ticket = new Ticket(celular, descripcionProblema, 0, 0, cliente, tecnicoAsignado);
+        if (!tecnicoId) {
+            alert('Error: No se pudo asignar un técnico. Por favor, seleccione un técnico válido.');
+            return;
+        }
+
+        // Crear el ticket (pasando el ID del técnico en lugar del objeto completo)
+        const ticket = new Ticket(celular, descripcionProblema, 0, 0, cliente, tecnicoId);
 
         // Agregar el ticket a la sucursal
         central.sucursales[sucursalIndex].agregarTicket(ticket);
 
         // Guardar los cambios
         central.guardarSucursales();
-        central.guardarClientes();
 
         alert('Ticket generado con éxito.');
 
@@ -675,8 +717,8 @@ function generarTicket() {
         // Limpiar el formulario
         document.getElementById('generarTicketForm').reset();
 
-        // Actualizar la vista de tickets (si tienes una función para esto)
-        actualizarVistaTickets();
+        // Actualizar la vista de tickets
+        actualizarVistaTickets(sucursalIndex);
     } else {
         alert('Por favor, complete todos los campos.');
     }
@@ -687,15 +729,13 @@ function actualizarVistaTickets(sucursalIndex) {
   const ticketsContainer = document.getElementById('ticketsContainer');
   ticketsContainer.innerHTML = '';
 
-  const tickets = sucursal.obtenerTickets();
-  
-  if (tickets.length === 0) {
+  if (!sucursal || !sucursal.tickets || sucursal.tickets.length === 0) {
     ticketsContainer.innerHTML = '<p>No hay tickets para esta sucursal.</p>';
     return;
   }
 
   const table = document.createElement('table');
-  table.className = 'table table-striped';
+  table.className = 'table table-striped table-hover';
   table.innerHTML = `
     <thead>
       <tr>
@@ -713,7 +753,7 @@ function actualizarVistaTickets(sucursalIndex) {
 
   const tbody = table.querySelector('tbody');
 
-  tickets.forEach(ticket => {
+  sucursal.tickets.forEach(ticket => {
     const row = document.createElement('tr');
     row.innerHTML = `
       <td>${ticket.id}</td>
@@ -723,14 +763,56 @@ function actualizarVistaTickets(sucursalIndex) {
       <td>$${ticket.montoFinal}</td>
       <td>
         <button class="btn btn-sm btn-primary" onclick="cambiarEstadoTicket(${sucursalIndex}, ${ticket.id})">Cambiar Estado</button>
+        ${ticket.diagnosticoInicial ? '' : `<button class="btn btn-sm btn-info" onclick="realizarPrimeraRevision(${sucursalIndex}, ${ticket.id})">Primera Revisión</button>`}
       </td>
     `;
+    row.style.cursor = 'pointer';
+    row.addEventListener('click', () => mostrarDetalleTicket(sucursalIndex, ticket.id));
     tbody.appendChild(row);
   });
 
   ticketsContainer.appendChild(table);
 }
+function mostrarDetalleTicket(sucursalIndex, ticketId) {
+  const sucursal = central.sucursales[sucursalIndex];
+  const ticket = sucursal.tickets.find(t => t.id === ticketId);
+  
+  if (ticket) {
+    const detalleBody = document.getElementById('detalleTicketBody');
+    detalleBody.innerHTML = `
+    <p><strong>ID:</strong> ${ticket.id}</p>
+      <p><strong>Cliente:</strong> ${ticket.cliente.nombre} ${ticket.cliente.apellido}</p>
+      <p><strong>Teléfono:</strong> ${ticket.telefono.marca} ${ticket.telefono.modelo}</p>
+      <p><strong>IMEI:</strong> ${ticket.telefono.imei}</p>
+      <p><strong>Diagnóstico:</strong> ${ticket.diagnostico}</p>
+      <p><strong>Diagnóstico Inicial:</strong> ${ticket.diagnosticoInicial || 'Pendiente'}</p>
+      <p><strong>Estado:</strong> ${ticket.estado}</p>
+      <p><strong>Porcentaje:</strong> ${ticket.porcentaje}%</p>
+      <p><strong>Monto Final:</strong> $${ticket.montoFinal}</p>
+    `;
+    // <p><strong>Técnico Asignado:</strong> ${ticket.tecnicoAsignado.nombre} ${ticket.tecnicoAsignado.apellido}</p>
+    
+    const modal = new bootstrap.Modal(document.getElementById('detalleTicketModal'));
+    modal.show();
+  }
+}
 
+function realizarPrimeraRevision(sucursalIndex, ticketId) {
+  const sucursal = central.sucursales[sucursalIndex];
+  const ticket = sucursal.tickets.find(t => t.id === ticketId);
+  
+  if (ticket) {
+    const diagnosticoInicial = prompt("Ingrese el diagnóstico inicial:");
+    if (diagnosticoInicial) {
+      ticket.diagnosticoInicial = diagnosticoInicial;
+      ticket.estado = estadosTicket.proceso;
+      central.guardarSucursales();
+      alert("Primera revisión realizada con éxito.");
+      mostrarDetalleTicket(sucursalIndex, ticketId);
+      actualizarVistaTickets(sucursalIndex);
+    }
+  }
+}
 function cambiarEstadoTicket(sucursalIndex, ticketId) {
   const sucursal = central.sucursales[sucursalIndex];
   const ticket = sucursal.tickets.find(t => t.id === ticketId);
