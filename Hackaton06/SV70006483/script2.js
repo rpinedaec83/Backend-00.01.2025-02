@@ -20,21 +20,18 @@ class Telefono {
     if (typeof esRobado !== "boolean") {
       throw new Error("El estado de robo debe ser un booleano");
     }
-
-    const celularRobado = central.celularesRobados.find(celular => celular.imei === this.imei);
-
-    if (celularRobado) {
-      celularRobado.esRobado = esRobado;
-
-      if (esRobado) {
-        celularRobado.actualizarEstado("robado");
-      } else {
-        celularRobado.actualizarEstado("disponible");
-      }
+  
+    const index = central.celularesRobados.findIndex(celular => celular.imei === this.imei);
+  
+    if (index !== -1) {
+      central.celularesRobados[index].esRobado = esRobado;
+      central.celularesRobados[index].estado = esRobado ? "robado" : "disponible";
+      central.guardarCelularesRobados();
     } else {
       throw new Error("El celular no existe en la lista de celulares robados");
     }
   }
+  
 }
 
 class Tecnico {
@@ -82,7 +79,44 @@ class Central {
 
 
   agregarSucursal(sucursal) {
-    this.sucursales.push(sucursal);
+    // Verificar si ya existe una sucursal con el mismo nombre
+    const sucursalExistente = this.sucursales.find(s => s.nombre === sucursal.nombre);
+    
+    if (!sucursalExistente) {
+      this.sucursales.push(sucursal);
+      this.guardarSucursales();
+      console.log(`Sucursal "${sucursal.nombre}" agregada correctamente.`);
+    } else {
+      console.log(`Ya existe una sucursal con el nombre "${sucursal.nombre}". No se ha agregado.`);
+    }
+  }
+  guardarSucursales() {
+    localStorage.setItem("sucursales", JSON.stringify(this.sucursales.map(sucursal => ({
+      nombre: sucursal.nombre,
+      direccion: sucursal.direccion,
+      contacto: sucursal.contacto,
+      tecnicos: sucursal.tecnicos.map(tecnico => ({
+        nombre: tecnico.nombre,
+        apellido: tecnico.apellido,
+        telefono: tecnico.telefono,
+        especialidad: tecnico.especialidad,
+        experiencia: tecnico.experiencia
+      }))
+    }))));
+  }
+
+  cargarSucursales() {
+    const sucursalesGuardadas = localStorage.getItem("sucursales");
+    if (sucursalesGuardadas) {
+      const sucursalesData = JSON.parse(sucursalesGuardadas);
+      this.sucursales = sucursalesData.map(sucursalData => {
+        const sucursal = new Sucursal(sucursalData.nombre, sucursalData.direccion, sucursalData.contacto, this);
+        sucursal.tecnicos = sucursalData.tecnicos.map(tecnicoData => 
+          new Tecnico(tecnicoData.nombre, tecnicoData.apellido, tecnicoData.telefono, tecnicoData.especialidad, tecnicoData.experiencia)
+        );
+        return sucursal;
+      });
+    }
   }
 
   agregarCliente(cliente) {
@@ -124,21 +158,19 @@ class Central {
   cargarClientes() {
     const datos = localStorage.getItem("clientes");
     if (datos) {
-      this.clientes = JSON.parse(datos);
+      this.clientes = JSON.parse(datos).map(c => new Cliente(c.dni, c.nombre, c.telefono, c.direccion, c.correo, c.tickets));
     }
   }
+  
 
   buscarTecnicoPorSucursal(sucursal, tecnico) {
     const tecnicosEnSucursal = sucursal.tecnicos.filter(
       (t) => t.especialidad === tecnico.especialidad
     );
-
-    if (tecnicosEnSucursal.length > 0) {
-      return tecnicosEnSucursal[0];
-    } else {
-      return null;
-    }
+  
+    return tecnicosEnSucursal.length > 0 ? tecnicosEnSucursal[0] : "No hay técnicos disponibles";
   }
+  
 
   guardarCelularesRobados() {
     localStorage.setItem("celularesRobados", JSON.stringify(this.celularesRobados));
@@ -148,9 +180,10 @@ class Central {
   cargarCelularesRobados() {
     const datos = localStorage.getItem("celularesRobados");
     if (datos) {
-      this.celularesRobados = JSON.parse(datos);
+      this.celularesRobados = JSON.parse(datos).map(c => new Telefono(c.imei, c.marca, c.modelo, c.estado));
     }
   }
+  
 }
 
 
@@ -162,21 +195,19 @@ const estadosTicket = {
 };
 
 class Ticket {
-  telefono;
-  diagnostico;
-  porcentaje;
-  montoFinal;
-  estado;
-  cliente;
-  autorizado = false;
-  repuestos = [];
+  static nextId = 1;
 
-  constructor(telefono, diagnostico, porcentaje, montoFinal, cliente) {
+  constructor(telefono, diagnostico, porcentaje, montoFinal, cliente, tecnico) {
+    this.id = Ticket.nextId++;
     this.telefono = telefono;
     this.diagnostico = diagnostico;
     this.porcentaje = porcentaje;
     this.montoFinal = montoFinal;
     this.cliente = cliente;
+    this.tecnico = tecnico;
+    this.estado = estadosTicket.inicializado;
+    this.fechaIngreso = new Date();
+    this.fechaEntrega = null;
   }
 
   autorizar(estado) {
@@ -234,6 +265,7 @@ class Ticket {
   finalizarServicio() {
     this.telefono.actualizarEstado("reparado");
     this.estado = estadosTicket.finalizado;
+    this.fechaEntrega = new Date();
     return "Servicio finalizado";
   }
 
@@ -257,10 +289,8 @@ class Sucursal {
     this.contacto = contacto;
     this.central = central;
     this.estadoEquipos = {};
-
-    // this.cargarTecnicos(); // Cargar los datos previos al instanciar
-
   }
+
 
   cargarDatos() {
     const datosGuardados = JSON.parse(localStorage.getItem(`sucursal_${this.nombre}`));
@@ -330,23 +360,34 @@ class Sucursal {
 
   agregarTicket(ticket) {
     if (!(ticket instanceof Ticket)) {
-        console.error("El objeto no es una instancia válida de Ticket.");
-        return;
+      console.error("El objeto no es una instancia válida de Ticket.");
+      return;
     }
 
     const existeCelularRobado = this.central.celularesRobados.some(
-        (celular) => celular.imei === ticket.telefono.imei
+      (celular) => celular.imei === ticket.telefono.imei
     );
 
     if (!existeCelularRobado) {
-        this.tickets.push(ticket);
-        this.estadoEquipos[ticket.telefono.imei] = "pendiente"; // Agregar estado inicial
-        this.guardarDatos();
-        console.log("Ticket agregado correctamente:", ticket);
+      this.tickets.push(ticket);
+      this.guardarDatos();
+      console.log("Ticket agregado correctamente:", ticket);
     } else {
-        console.error("No se puede agregar un ticket para un celular robado.");
+      console.error("No se puede agregar un ticket para un celular robado.");
     }
-}
+  }
+
+  obtenerTickets() {
+    return this.tickets;
+  }
+
+  actualizarEstadoTicket(ticketId, nuevoEstado) {
+    const ticket = this.tickets.find(t => t.id === ticketId);
+    if (ticket) {
+      ticket.estado = nuevoEstado;
+      this.guardarDatos();
+    }
+  }
 
 
   buscarTecnicoPorMarca(marca) {
@@ -436,9 +477,12 @@ cargarTickets() {
   }
 }
 
+let central;
 
-
-const central = new Central();
+if (!central) {
+  central = new Central();
+  central.cargarSucursales(); // Asumiendo que este método existe en tu clase Central
+}
 
 // crear Sucursales
 const sucursal1 = new Sucursal("Sucursal Central de Ucayali", "Av. Juan Pablo II, Cayalti", "061-222-111", central);
@@ -453,6 +497,8 @@ central.agregarSucursal(sucursal2);
 central.agregarSucursal(sucursal3);
 central.agregarSucursal(sucursal4);
 central.agregarSucursal(sucursal5);
+
+
 
 // crear Tecnicos
 const tecnico1 = new Tecnico("José Luis Velásquez", "Velásquez", "061-111-111", ["Samsung", "Huawei"], 2);
@@ -502,7 +548,6 @@ console.log(`El celular de ${cliente2.nombre} es un ${cliente2.telefono.marca} $
 
 console.log(`Bienvenido ${cliente1.nombre} ${cliente1.apellido}. Tu dirección es ${cliente1.direccion} y tu teléfono es ${cliente1.telefono}.`);
 const marca = "Samsung";
-const marca2 = "Xiaomi";
 const resultado = cliente1.buscarSucursalYMarca(central, marca);
 
 if (resultado) {
@@ -527,6 +572,8 @@ if (resultado) {
 } else {
   console.log(`No hay sucursales disponibles que puedan reparar un celular ${marca}.`);
 }
+
+const marca2 = "Xiaomi";
 
 const resultado2 = cliente2.buscarSucursalYMarca(central, marca2);
 
