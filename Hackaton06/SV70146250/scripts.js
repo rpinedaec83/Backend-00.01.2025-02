@@ -79,6 +79,28 @@ Diagrama de flujo
 
 
 //  [==== Desarrollo del codigo ====]
+
+//Funcion para preguntar con bootstrap, antes pertenecia a Tecnico
+
+async function preguntarConsola(mensajePregunta) {
+    return new Promise((resolve) => {
+        let modal = new bootstrap.Modal(document.getElementById("modalPregunta"))
+        document.getElementById("modalTexto").textContent = mensajePregunta
+        document.getElementById("modalInput").value = ""
+
+        document.getElementById("modalAceptar").onclick = function () {
+            let respuesta = document.getElementById("modalInput").value.trim()
+            modal.hide()
+            resolve(respuesta)
+        }
+
+        modal.show()
+    })
+}
+
+
+
+
 //#region Clases
 
 class Central{
@@ -99,10 +121,10 @@ class Central{
     }
 
     async agregarSede() {
-        let id = Number(window.prompt("ID (#): "));
-        let nombre = window.prompt("Nombre: ");
-        let direccion = window.prompt("Direccion: ");
-        let encargado = window.prompt("Encargado: ");
+        let id = Number(await preguntarConsola("ID (#): "));
+        let nombre = await preguntarConsola("Nombre: ");
+        let direccion = await preguntarConsola("Direccion: ");
+        let encargado = await preguntarConsola("Encargado: ");
         
         let nuevaSede = new Sucursal(id, nombre, direccion, encargado,[]);
         
@@ -172,8 +194,9 @@ class Sucursal extends Central{
         console.log("Técnico agregado a la sucursal", nuevoTecnico);
     }
     */
+   //V2
    /*
-    //V2
+    
     async agregarTecnico() {
         let nombreSucursal = window.prompt("Nombre Sucursal: ");
 
@@ -213,7 +236,7 @@ class Sucursal extends Central{
 
     //V3
     async agregarTecnico() {
-        let nombreSucursal = window.prompt("Nombre Sucursal: ");
+        let nombreSucursal = await preguntarConsola("Nombre Sucursal: ");
     
         let sucursalEncontrada = null;
         let sucursalKey = null;
@@ -236,9 +259,9 @@ class Sucursal extends Central{
             return;
         }
     
-        let id = Number(window.prompt("ID (#): "));
-        let nombre = window.prompt("Nombre: ");
-        let skills = window.prompt("Skills (,): ").split(",").map(skill => skill.trim());
+        let id = Number(await preguntarConsola("ID (#): "));
+        let nombre = await preguntarConsola("Nombre: ");
+        let skills = await preguntarConsola("Skills (,): ").split(",").map(skill => skill.trim());
     
         let nuevoTecnico = new Tecnico(id, nombre, skills, sucursalEncontrada);
     
@@ -285,36 +308,49 @@ class Tecnico{
             throw new Error("Sucursal NO Valida");
         }
     }
-
+    /*Old: Sin bootstrap
     async preguntarConsola(mensajePregunta) {
         return Promise.resolve(window.prompt(mensajePregunta));
-    }
-
+    }*/
+  
     //Primer ingreso de datos a la Orden
     async registrarIngreso() {
         console.log("Registro de Ingreso");
     
         // Pregunta objeto telefono
-        const imei = await this.preguntarConsola("IMEI: ");
-        const numeroSerie = await this.preguntarConsola("Numero de Serie: ");
-        const marca = await this.preguntarConsola("Marca: ");
-        const sistemaOperativo = await this.preguntarConsola("Sistema Operativo: ");
+        const imei = await preguntarConsola("IMEI: ");
+        const numeroSerie = await preguntarConsola("Numero de Serie: ");
+        const marca = await preguntarConsola("Marca: ");
+        const sistemaOperativo = await preguntarConsola("Sistema Operativo: ");
 
         // Crea objeto Telefono
         const telefono = new Telefono(imei, numeroSerie, marca, sistemaOperativo);
 
         // Preguntar nombre del cliente
-        const cliente = await this.preguntarConsola("Cliente: ");
+        const cliente = await preguntarConsola("Cliente: ");
 
           // Preguntar nombre de la sucursal
-        const nombreSucursal = await this.preguntarConsola("Sucursal: ");
+        const nombreSucursal = await preguntarConsola("Sucursal: ");
     
-        // Buscar la sucursal en la lista de la sede central
+        /* Buscar la sucursal en la lista de la sede central OLD
         let sucursalEncontrada = null;
         for (const sucursal of SedeCentral.sucursales) {
             if (sucursal.nombre === nombreSucursal) {
                 sucursalEncontrada = sucursal;
                 break;
+            }
+        }
+        */
+           // Buscar la sucursal en localStorage
+        let sucursalEncontrada = null;
+        for (let i = 0; i < localStorage.length; i++) {
+            let key = localStorage.key(i);
+            if (key.startsWith("Sucursal")) {
+                let sucursal = JSON.parse(localStorage.getItem(key));
+                if (sucursal.nombre === nombreSucursal) {
+                    sucursalEncontrada = sucursal;
+                    break;
+                }
             }
         }
     
@@ -336,15 +372,17 @@ class Tecnico{
     }
     
     async validarIMEIoNumSerie() { //Con funciones flecha
-        const imeiValido = (await this.preguntarConsola("IMEI valido? (si/no): ")).toLowerCase() === "si";
-        const numSerieValido = (await this.preguntarConsola("Numero Serie valido? (si/no): ")).toLowerCase() === "si";
+        const imeiValido = (await preguntarConsola("IMEI valido? (si/no): ")).toLowerCase() === "si";
+        const numSerieValido = (await preguntarConsola("Numero Serie valido? (si/no): ")).toLowerCase() === "si";
     
         // Si alguno no es valido, cambiar estado a Observado
         if (!imeiValido || !numSerieValido) {
             this.ordenActual.estado = "Observado";
+            this.ordenActual.almacenaMemoria();
         }else{
             console.log("IMEI y Numero de Serie VALIDOS");
-            this.ordenActual.estado = "Ingresado";     
+            this.ordenActual.estado = "Ingresado";
+            this.ordenActual.almacenaMemoria();     
             await this.asignarTecnico();
         }
            
@@ -358,20 +396,48 @@ class Tecnico{
         if (!this.ordenActual || this.ordenActual.estado !== "Ingresado") {
             return;
         }
-    
+        /* OLD: Cuando no estaban almacenados en localStorage
         let sucursal = this.ordenActual.sucursal;
         let sistemaOperativoOrden = this.ordenActual.telefono.sistemaOperativo;
+        */
+        let sucursalKey = `Sucursal${this.ordenActual.sucursal.id}`;
+        let sucursalGuardada = JSON.parse(localStorage.getItem(sucursalKey));
+
+        if (!sucursalGuardada) {
+            console.log("Sucursal NO Valida");
+            return;
+        }
+        // Convertir sucursalGuardada en un objeto de clase Sucursal
+        let sucursalRecuperada = new Sucursal(
+        sucursalGuardada.id, 
+        sucursalGuardada.nombre, 
+        sucursalGuardada.direccion, 
+        sucursalGuardada.encargado, 
+        sucursalGuardada.tecnicos
+        );
+
+        // Restaurar tecnicos desde localStorage
+        let tecnicosRecuperados = sucursalRecuperada.tecnicos.map(tecnico => 
+            new Tecnico(tecnico.id, tecnico.nombre, tecnico.skills, sucursalRecuperada)
+        );
+
+        // Buscar tecnico con skill que coincida con el sistema operativo del telefono OLD
+        //let tecnicoAsignado = sucursal.tecnicos.find(tecnico => tecnico.skills.includes(sistemaOperativoOrden));
     
-        // Buscar tecnico con skill que coincida con el sistema operativo del telefono
-        let tecnicoAsignado = sucursal.tecnicos.find(tecnico => tecnico.skills.includes(sistemaOperativoOrden));
-    
+        let sistemaOperativoOrden = this.ordenActual.telefono.sistemaOperativo;
+
+        // Buscar técnico con skill que coincida con el sistema operativo del telefono
+        let tecnicoAsignado = tecnicosRecuperados.find(tecnico => tecnico.skills.includes(sistemaOperativoOrden));
+
         if (tecnicoAsignado) {
             this.ordenActual.tecnico = tecnicoAsignado;
             console.log(`Tecnico ${tecnicoAsignado.nombre} asignado a la orden. Skill usada: ${sistemaOperativoOrden}`);
             this.ordenActual.estado = "Recibido";
+            this.ordenActual.almacenaMemoria();
         } else {
             console.log("No hay tecnicos habilitados en esta Sucursal");
             this.ordenActual.estado = "Observado";
+            this.ordenActual.almacenaMemoria();
         }
     }
    
@@ -381,17 +447,18 @@ class Tecnico{
         }
     
         console.log("Realizando evaluación preliminar");
-        let diagnostico = await this.preguntarConsola("Diagnostico preliminar: ");
-        let coste = await this.preguntarConsola("Coste estimado: ");
+        let diagnostico = await preguntarConsola("Diagnostico preliminar: ");
+        let coste = await preguntarConsola("Coste estimado: ");
     
         this.ordenActual.diagnostico = diagnostico;
         this.ordenActual.coste = parseFloat(coste);
         this.ordenActual.estado = "Evaluado";
+        this.ordenActual.almacenaMemoria();
     
         console.log("Evaluación preliminar completada.");
         console.log(this.ordenActual);
 
-        const respuestaCliente = (await this.preguntarConsola("Cliente conforme? (si/no): ")).toLowerCase() === "si";
+        const respuestaCliente = (await preguntarConsola("Cliente conforme? (si/no): ")).toLowerCase() === "si";
         if(!respuestaCliente){
             console.log("Cliente Inconforme");
             console.log(this.ordenActual);
@@ -409,22 +476,25 @@ class Tecnico{
         }
         console.log("Realizando confirmacion al cliente");
 
-        let autorizacionFirmada = (await this.preguntarConsola("Firmo autorizacion: (si/no): ")).toLowerCase() === "si";
+        let autorizacionFirmada = (await preguntarConsola("Firmo autorizacion: (si/no): ")).toLowerCase() === "si";
         if(!autorizacionFirmada){
             console.log("Requiere autorizacion del cliente");
             this.ordenActual.estado = "Observado";
+            this.ordenActual.almacenaMemoria();
             console.log(this.ordenActual);
             return this.ordenActual;
         }else{
-            let abono = await this.preguntarConsola("Abono ingresado: ");
+            let abono = await preguntarConsola("Abono ingresado: ");
             if(abono<(this.ordenActual.coste)/2){
                 this.ordenActual.estado = "Observado";
+                this.ordenActual.almacenaMemoria();
                 console.log("Abono insuficiente");
                 console.log(this.ordenActual);
                 return this.ordenActual;
             }else{
                 this.ordenActual.coste=this.ordenActual.coste-abono;
                 this.ordenActual.estado = "Reparacion";
+                this.ordenActual.almacenaMemoria();
                 console.log("En Reparacion");
                 console.log(this.ordenActual);
                 return this.ordenActual;
@@ -439,14 +509,14 @@ class Tecnico{
         
         console.log("Inicia reparacion");
                 
-        let diagnosticoCorrecto = (await this.preguntarConsola(`${this.ordenActual.diagnostico} correcto? (si/no): `)).toLowerCase() === "si";
+        let diagnosticoCorrecto = (await preguntarConsola(`${this.ordenActual.diagnostico} correcto? (si/no): `)).toLowerCase() === "si";
         if (!diagnosticoCorrecto) {
-            this.ordenActual.diagnostico = await this.preguntarConsola("Nuevo diagnostico: ");
+            this.ordenActual.diagnostico = await preguntarConsola("Nuevo diagnostico: ");
             }
         
-        let requiereRepuestos = (await this.preguntarConsola("Requiere repuestos? (si/no): ")).toLowerCase() === "si";
+        let requiereRepuestos = (await preguntarConsola("Requiere repuestos? (si/no): ")).toLowerCase() === "si";
         if (requiereRepuestos) { //Convierte la cadena de repuestos ingresada en un array elimina espacios extra
-            let repuestosIngresados = await this.preguntarConsola("Ingrese los repuestos utilizados (,): ");
+            let repuestosIngresados = await preguntarConsola("Ingrese los repuestos utilizados (,): ");
             this.ordenActual.repuestos = repuestosIngresados.split(",").map(rep => rep.trim());
         }
         
@@ -459,9 +529,10 @@ class Tecnico{
             return;
         }
         
-        let reparacionCompleta = (await this.preguntarConsola("Reparacion completa? (si/no): ")).toLowerCase() === "si";
+        let reparacionCompleta = (await preguntarConsola("Reparacion completa? (si/no): ")).toLowerCase() === "si";
         if (reparacionCompleta) {
             this.ordenActual.estado = "Reparado";
+            this.ordenActual.almacenaMemoria();
               console.log("Orden Evaluada Finalmente");
               console.log(this.ordenActual);
               return this.ordenActual;
@@ -499,7 +570,8 @@ class Orden{
     diagnostico="";
     coste=0;    
     repuestos=[];
-    constructor(telefono,cliente,estado,tecnico,sucursal,diagnostico,coste,repuestos){
+    id=null;
+    constructor(telefono,cliente,estado,tecnico,sucursal,diagnostico,coste,repuestos,id=null){
         this.telefono=telefono;
         this.cliente=cliente;
         this.estado=estado;
@@ -508,7 +580,25 @@ class Orden{
         this.diagnostico=diagnostico;
         this.coste=coste;    
         this.repuestos=repuestos;
+        this.id=id;
     }
+
+    almacenaMemoria() {
+        // Recuperar el último ID desde localStorage
+        let ultimoId = localStorage.getItem("ultimoIdOrden");
+    
+        // Si la orden no tiene un id, asignarle el siguiente en secuencia
+        if (this.id === null) {
+            this.id = ultimoId ? parseInt(ultimoId) + 1 : 1;
+            localStorage.setItem("ultimoIdOrden", this.id); // Guardar el nuevo último ID
+        }
+    
+        // Guardar la orden en localStorage con el formato "Orden{id}"
+        localStorage.setItem(`Orden${this.id}`, JSON.stringify(this));
+    
+        console.log(`Orden${this.id} almacenada/actualizada en localStorage.`);
+    }
+
 }
 
 //Estado = Ingresado, Recibido, Observado, Evaluado, Reparacion, Reparado
@@ -594,6 +684,8 @@ sucursalSinCiclo.tecnicos = sucursalSinCiclo.tecnicos.map(tecnico => {
 localStorage.setItem("Sucursal1", JSON.stringify(sucursalSinCiclo));
 }
 
+
+let tecnicomostrador = new Tecnico(0, "Mostrador", ["Variado"], Sucursal1);
 
 //#endregion
 
