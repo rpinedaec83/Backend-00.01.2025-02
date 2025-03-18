@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Reparaciones de Celulares</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Gestión de Reparaciones de Celulares</h1>
+
+    <!-- Formulario para ingresar un celular -->
+    <section id="ingresar-celular">
+      <h2>Ingresar Celular</h2>
+      <form id="formulario-ingreso">
+        <label for="imei">IMEI:</label>
+        <input type="text" id="imei" required>
+
+        <label for="numeroDeSerie">Número de Serie:</label>
+        <input type="text" id="numeroDeSerie" required>
+
+        <button type="submit">Ingresar Celular</button>
+      </form>
+    </section>
+
+    <!-- Formulario para realizar revisión -->
+    <section id="realizar-revision">
+      <h2>Realizar Revisión</h2>
+      <form id="formulario-revision">
+        <label for="imei-revision">IMEI:</label>
+        <input type="text" id="imei-revision" required>
+
+        <label for="diagnostico">Diagnóstico:</label>
+        <textarea id="diagnostico" required></textarea>
+
+        <button type="submit">Realizar Revisión</button>
+      </form>
+    </section>
+
+    <!-- Formulario para autorización -->
+    <section id="autorizacion">
+      <h2>Autorización</h2>
+      <form id="formulario-autorizacion">
+        <label for="imei-autorizacion">IMEI:</label>
+        <input type="text" id="imei-autorizacion" required>
+
+        <button type="submit">Autorizar</button>
+      </form>
+    </section>
+
+    <!-- Mostrar celulares -->
+    <section id="celulares-lista">
+      <h2>Lista de Celulares</h2>
+      <ul id="celulares-lista-ul"></ul>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

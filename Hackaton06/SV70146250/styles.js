@@ -1,5 +1,6 @@
 //Mejora de salida de datos
-/*function salidaIndex(id, datos) {
+/*
+function salidaIndex(id, datos) {
     const contenedor = document.getElementById(id);
     contenedor.innerHTML = ""; // Limpia contenido previo
 
