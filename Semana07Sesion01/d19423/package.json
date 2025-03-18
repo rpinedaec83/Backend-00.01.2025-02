@@ -1,0 +1,25 @@
+{
+  "name": "mi_primera_app",
+  "version": "1.0.0",
+  "description": "Mi primera aplicacion de nodejs",
+  "keywords": [
+    "primera",
+    "app",
+    "nodejs"
+  ],
+  "homepage": "https://github.com/rpinedaec83/Backend-00.01.2025-02#readme",
+  "bugs": {
+    "url": "https://github.com/rpinedaec83/Backend-00.01.2025-02/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rpinedaec83/Backend-00.01.2025-02.git"
+  },
+  "license": "ISC",
+  "author": "Roberto Pineda",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
