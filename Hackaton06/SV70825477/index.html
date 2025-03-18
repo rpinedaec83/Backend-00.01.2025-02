@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Reparación de Teléfonos</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+      }
+      .button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      .button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Gestión de Reparación de Teléfonos</h1>
+
+      <h2>Ingreso de Teléfono</h2>
+      <form id="phoneForm">
+        <label for="branch">Sucursal:</label>
+        <select id="branch" required></select
+        ><br /><br />
+        <label for="ciente">Nombre de cliente:</label>
+        <input type="text" id="cliente" required /><br /><br />
+        <label for="serialNumber">Número de Serie:</label>
+        <input type="text" id="serialNumber" required /><br /><br />
+        <label for="imei">IMEI:</label>
+        <input type="text" id="imei" required /><br /><br />
+        <label for="marca">Marca:</label>
+        <input type="text" id="marca" required /><br /><br />
+        <label for="modelo">Modelo:</label>
+        <input type="text" id="modelo" required /><br /><br />
+        <label for="diagnostico">Diagnóstico:</label>
+        <input type="text" id="diagnostico" required /><br /><br />
+        <label for="autorizacion">Autorización (sí/no):</label>
+        <input type="text" id="autorizacion" required /><br /><br />
+        <label for="abono">Abono (%):</label>
+        <input type="text" id="abono" required /><br /><br />
+        <label for="montoFinal">montoFinal:</label>
+        <input type="text" id="montoFinal" required /><br /><br />
+        <button type="submit" class="ingresa-celular">Ingresar Teléfono</button>
+      </form>
+
+      <h2>Estado de los Equipos</h2>
+      <table id="phoneTable">
+        <thead>
+          <tr>
+            <th>Sucursal</th>
+            <th>Número de Serie</th>
+            <th>IMEI</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Diagnóstico</th>
+            <th>Autorización</th>
+            <th>Abono</th>
+            <th>Estado</th>
+            <th>Tecnico</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <script src="./script.js"></script>
+    <script src="./logicaFront.js"></script>
+  </body>
+</html>

@@ -1,0 +1,84 @@
+
+
+										*Estoy creando un sistema para los tecnicos de celulares*
+Clases: 
+
+Sucursal:
+	IdSucursal
+	Distrito
+	Encargado
+	Telefono
+	Numero de trabajadores
+	Telefonos en reparacion (En proceso)
+	Telefonos reparados (Culminados)
+	Ingresos totales
+Cliente:
+	Dni (IdCliente)
+	Nombre
+	Apellido
+	Fecha de registro
+	Numero de celular
+	Telefono (Lista de telefonos que ha dejado)
+	
+	
+Reparador:
+	Dni (IdTrabajador)
+	Nombre
+	Apellido
+	Numero de celular
+	Fecha de contratacion
+	Skills (se refiere a que tipo de marca de celular puede reparar)
+	Celulares reparados (lista de celulares que ha reparado desde que inicio)
+	
+Telefono:
+	IMEI (IdTelefono)
+	Marca
+	Modelo
+	Descripcion del problema
+Servicio:
+	IdTrabajador
+	IdCliente
+	Fecha
+	Estado
+	Costo (este es el costo del servicio, sin incluir precio de los repuestos) ("Mano de obra")
+	Repuestos (es una lista de repuestos o reparaciones que se hizo al celular)
+	Monto final (es la suma del costo de mano de obra y de los respuestos)
+Repuestos:
+	IdRepuesto 
+	Nombre
+	Precio
+	Cantidad (Para tener un control del stock)
+/					//PROPUESTA DE SOLIUCION:
+class Telefono {
+  estado = null;
+  imei = "";
+  modelo = "";
+  marca = "";
+  esRobado = false;
+}
+
+class Central {
+  celularesRobados = [];
+  sucursales = [];
+}
+
+class Ticket {
+  telefono;
+  diagnostico;
+  porcentaje;
+  montoFinal;
+  estado;
+  cliente;
+  autorizado = 0;
+  repuestos = [];
+}
+
+class Sucursal {
+  tecnicos = [];
+  clientes = [];
+  tickets = [];
+  contacto = "";
+  nombre = "";
+  direccion = "";
+  central;
+}

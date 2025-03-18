@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesión</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Pantalla de Inicio de Sesión -->
+    <div class="login-container" id="login-container">
+        <h2>Inicio de Sesión</h2>
+        <select id="sucursal">
+            <option value="">Seleccione una sucursal</option>
+            <option value="San Miguel">San Miguel</option>
+            <option value="Miraflores">Miraflores</option>
+            <option value="Barranco">Barranco</option>
+        </select>
+        
+        <input type="text" id="usuario" placeholder="Usuario">
+        <input type="password" id="contrasena" placeholder="Contraseña">
+        <button onclick="iniciarSesion()">Ingresar</button>
+    </div>
+    <!-- Panel del Encargado -->
+    <div class="container" id="panel-encargado" style="display: none;">
+        <div class="content-box">
+            <h2>Panel del Encargado</h2>
+            <button class="boton-accion" onclick="mostrarRegistroTrabajador()">Agregar Trabajador</button>
+            <button class="boton-accion" onclick="mostrarRegistroCliente()">Agregar Cliente</button>
+            <button class="boton-accion" onclick="mostrarModalEliminarCliente()">Eliminar Cliente</button>
+            <button class="boton-accion" onclick="mostrarServiciosDetallado()">Mas detalles</button>
+            <button class="boton-accion cerrar-sesion" onclick="cerrarSesion()">Cerrar Sesión</button>
+
+            <h2>Clientes Asignados</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>DNI</th>
+                        <th>Nombre</th>
+                        <th>Celular</th>
+                        <th>Fecha</th>
+                        <th>Tecnico</th>
+                        <th>Estado</th>
+                        <th>                       </th>
+                        <th>Accion</th>
+                        
+                    </tr>
+                </thead>
+                <tbody id="lista-clientes-encargado"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Panel del Trabajador -->
+    <div class="container" id="panel-trabajador" style="display: none;">
+        <div class="content-box">
+            <h2>Gestión de Clientes</h2>
+            <button class="boton-accion" onclick="mostrarRegistroCliente()">Agregar Cliente</button>
+            <button class="boton-accion" onclick="mostrarModalEliminarCliente()">Eliminar Cliente</button>
+            <button class="boton-accion" onclick="mostrarServiciosDetallado()">Mas detalles</button>
+            <button class="boton-accion cerrar-sesion" onclick="cerrarSesion()">Cerrar Sesión</button>
+
+            <h2>Clientes Asignados</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>DNI</th>
+                        <th>Nombre</th>
+                        <th>Celular</th>
+                        <th>Fecha</th>
+                        <th>Tecnico</th>
+                        <th>Estado</th>
+                        <th>                           </th>
+                        <th>Accion</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody id="lista-clientes-trabajador"></tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Pantalla de Registro de Cliente -->
+    <div class="container" id="panel-registro-cliente" style="display: none;">
+        <div class="content-box">
+            <h2>Registrar Cliente</h2>
+            
+            <label for="dni">DNI:</label>
+            <input type="text" id="dni" placeholder="Ingrese el DNI">
+
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" placeholder="Ingrese el nombre">
+
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" placeholder="Ingrese el apellido">
+
+            <label for="numeroCelular">Celular:</label>
+            <input type="text" id="numeroCelular" placeholder="Ingrese el número de celular">
+
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" placeholder="Ingrese la dirección">
+
+            <!-- Primer Diagnóstico -->
+            <label for="diagnostico">Primer Diagnóstico:</label>
+            <input type="text" id="diagnostico" placeholder="Ingrese el diagnóstico inicial">
+
+            <!-- Botón para agregar datos del celular -->
+            <button class="boton-accion" onclick="agregarDatosCelular()">Agregar datos del celular</button>
+
+            <!-- Checkbox de Autorizado -->
+            <label for="autorizado">
+                <input type="checkbox" id="autorizado"> Autorizado
+            </label>
+
+            <!-- Input para monto cancelado -->
+            <label for="montoCancelado">Monto cancelado:</label>
+            <input type="text" id="montoCancelado" placeholder="Ingrese el monto">
+            <!-- Monto Total calculado -->
+            <label>Monto Total:</label>
+            <span id="montoTotal">S/ 0.00</span>
+
+            <button class="boton-accion" onclick="registrarCliente()">Registrar Cliente</button>
+            <button class="boton-accion cerrar-sesion" onclick="cerrarRegistroCliente()">Cancelar</button>
+        </div>
+    </div>
+
+    
+    <!-- Modal para eliminar cliente -->
+    <div id="modalEliminarCliente" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModalEliminarCliente()">&times;</span>
+            <h2>Eliminar Cliente</h2>
+            <label for="dniEliminar">Ingrese el DNI del cliente:</label>
+            <input type="text" id="dniEliminar" placeholder="DNI del cliente">
+            <button onclick="confirmarEliminarCliente()">Eliminar</button>
+        </div>
+    </div>
+
+    <!-- Pantalla de Registro de Celular -->
+    <div class="container" id="panel-registro-celular" style="display: none;">
+        <div class="content-box">
+            <h2>Registrar Celular</h2>
+
+            <label for="imei">IMEI:</label>
+            <input type="text" id="imei" placeholder="Ingrese el IMEI">
+
+            <label for="marca">Marca:</label>
+            <input type="text" id="marca" placeholder="Ingrese la marca">
+
+            <label for="modelo">Modelo:</label>
+            <input type="text" id="modelo" placeholder="Ingrese el modelo">
+
+            <label for="descripcion">Descripción:</label>
+            <input type="text" id="descripcion" placeholder="Ingrese una breve descripción">
+
+                <!-- Grilla de repuestos disponibles -->
+            <h3>Repuestos Disponibles:</h3>
+            <div id="grilla-repuestos" class="grilla">
+                <div class="repuesto" onclick="seleccionarRepuesto('Batería')">Batería</div>
+                <div class="repuesto" onclick="seleccionarRepuesto('Cámara Frontal')">Cámara Frontal</div>
+                <div class="repuesto" onclick="seleccionarRepuesto('Cámara Trasera')">Cámara Trasera</div>
+                <div class="repuesto" onclick="seleccionarRepuesto('Altavoz')">Altavoz</div>
+                <div class="repuesto" onclick="seleccionarRepuesto('Pantalla LCD')">Pantalla LCD</div>
+                <div class="repuesto" onclick="seleccionarRepuesto('Placa Base')">Placa Base</div>
+            </div>
+
+            <!-- Lista de repuestos seleccionados -->
+            <h3>Repuestos seleccionados:</h3>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Cantidad</th>
+                        <th>Precio unitario</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-repuestos-seleccionados">
+                    <!-- Aquí se mostrarán los repuestos seleccionados -->
+                </tbody>
+            </table>
+
+            <button class="boton-accion" onclick="registrarCelular()">Registrar Celular</button>
+            <button class="boton-accion cerrar-sesion" onclick="cerrarRegistroCelular()">Cancelar</button>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

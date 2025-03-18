@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Ordenes Reparacion Telefono</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+                    /* Edita como sale en el idex  */
+        .card {
+            border: 4px solid rgb(0, 0, 0) !important; 
+            line-height: 1; /* Reduce aún más el espacio entre líneas */
+            letter-spacing: -0.5px; /* Junta más las letras */
+            padding: 5px; /* Reduce el espacio interno */
+        }
+        .card h4 {
+            display: inline; /* Mantiene el título en línea con el ID */
+            margin-right: 10px; /* Agrega un pequeño espacio entre el título y el ID */
+        }
+        p {
+        margin: 1px 0; /* Reduce espacio entre párrafos */
+        }
+    </style>
+</head>
+<body>
+    <button onclick="tecnico1.registrarIngreso();">Registrar Ingreso</button>
+
+    <button onclick="tecnico1.realizarEvaluacion();">Realizar Evaluacion</button>
+
+    <button onclick="tecnico1.reparar();">Reparar</button>
+
+    <button onclick="tecnico1.evaluacionFinal();">Evaluar Reparacion</button>
+   <!-- 
+    <h1>Salidas de Consola</h1>
+    <h2>Tecnicos</h2>
+    <pre id="tecnicos"></pre>
+    <h2>Telefonos</h2>
+    <pre id="telefonos"></pre>
+    <h2>Ordenes de Reparacion</h2>
+    <pre id="ordenes"></pre>
+    -->
+
+    <script src="scripts.js" defer></script>
+    <script src="styles.js"></script>
+</body>
+</html>
