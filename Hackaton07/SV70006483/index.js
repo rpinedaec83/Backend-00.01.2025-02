@@ -16,7 +16,7 @@ class GitHubService {
       if (!response.ok) throw new Error(`Error al obtener datos de GitHub`);
 
       const data = await response.json();
-      return JSON.parse(JSON.stringify(data)); // Asegura que los datos estén en UTF-8
+      return JSON.parse(JSON.stringify(data)); 
     } catch (error) {
       return { error: error.message };
     }
@@ -70,7 +70,7 @@ class WeatherService {
       if (!response.ok) throw new Error(`Error al obtener datos del clima`);
 
       const data = await response.json();
-      return JSON.parse(JSON.stringify(data)); // Asegura que los datos estén en UTF-8
+      return JSON.parse(JSON.stringify(data)); 
     } catch (error) {
       return { error: error.message };
     }
@@ -229,7 +229,7 @@ class PokemonService {
   class UnsplashService {
     constructor() {
       this.baseUrl = "https://api.unsplash.com";
-      this.accessKey = "tVDqm3EvoK1hRVD3V26Ng6fJfuizrjzQ_U12lLjKVEk"; // Reemplaza esto con tu clave de API real
+      this.accessKey = "tVDqm3EvoK1hRVD3V26Ng6fJfuizrjzQ_U12lLjKVEk"; 
     }
   
     async getPhotos(query, count = 10, width = 400, height = 300) {
@@ -324,7 +324,7 @@ class PokemonService {
   class MovieService {
     constructor() {
       this.baseUrl = "https://api.themoviedb.org/3";
-      this.apiKey = "06e2e54e1d6079c52a3ad7bca8654914"; // Replace with your actual TMDb API key
+      this.apiKey = "06e2e54e1d6079c52a3ad7bca8654914"; 
     }
   
     async getTopMovies(limit = 10) {
@@ -373,7 +373,7 @@ class PokemonService {
   class MarsService {
     constructor() {
       this.baseUrl = "https://api.nasa.gov/mars-photos/api/v1";
-      this.apiKey = "nzTlDtAJFASBeIAdE8iX8PJyapZaOvfOUIcfgvYJ"; // Replace with your actual NASA API key
+      this.apiKey = "nzTlDtAJFASBeIAdE8iX8PJyapZaOvfOUIcfgvYJ"; 
     }
   
     async getMarsData(sol = 1000) {
