@@ -1,0 +1,28 @@
+{
+  "name": "hackaton07bykong",
+  "version": "1.0.0",
+  "description": "Hackaton 07 By Kong",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dhayro27/Backend-00.01.2025-02.git"
+  },
+  "author": "Dhayro Kong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dhayro27/Backend-00.01.2025-02/issues"
+  },
+  "homepage": "https://github.com/Dhayro27/Backend-00.01.2025-02#readme",
+  "devDependencies": {
+    "nodemon": "^x.x.x"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "node-fetch": "^3.3.2"
+  }
+}
