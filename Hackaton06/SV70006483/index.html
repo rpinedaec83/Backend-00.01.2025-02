@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"  crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h2>Sucursales</h2>
+        <button class="btn btn-success mb-3" onclick="mostrarModalSucursal()">Agregar Sucursal</button>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dynamically populate table rows using JavaScript -->
+                
+            </tbody>
+        </table>
+    </div>
+    <div class="container">
+        <button class="btn btn-warning mb-3" onclick="mostrarModalCelularRobado()">Registrar Celular Robado</button>
+        <button class="btn btn-info mb-3" onclick="mostrarModalBuscarSucursal()">Buscar Sucursal por Marca</button>
+    </div>
+    <div id="ticketsContainer"></div>
+     <!-- Modal para nueva/editar sucursal -->
+<div class="modal fade" id="sucursalModal" tabindex="-1" aria-labelledby="sucursalModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sucursalModalLabel">Agregar/Editar Sucursal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="sucursalForm">
+                    <input type="hidden" id="sucursalIndex">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" id="direccion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="contacto" class="form-label">Teléfono</label>
+                        <input type="tel" class="form-control" id="contacto" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="guardarSucursalBtn">Guardar Sucursal</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para agregar técnicos -->
+<div class="modal fade" id="tecnicosModal" tabindex="-1" aria-labelledby="tecnicosModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tecnicosModalLabel">Agregar Técnicos a <span id="sucursalNombre"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="sucursalIndex">
+                <h6>Técnicos actuales:</h6>
+                <ul id="listaTecnicos"></ul>
+                <form id="tecnicoForm">
+                    <div class="mb-3">
+                        <label for="nombreTecnico" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="nombreTecnico" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="apellidoTecnico" class="form-label">Apellido</label>
+                        <input type="text" class="form-control" id="apellidoTecnico" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefonoTecnico" class="form-label">Teléfono</label>
+                        <input type="tel" class="form-control" id="telefonoTecnico" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="especialidadTecnico" class="form-label">Especialidad (Marcas)</label>
+                        <select multiple class="form-select" id="especialidadTecnico" required>
+                            <option value="Samsung">Samsung</option>
+                            <option value="Huawei">Huawei</option>
+                            <option value="Xiaomi">Xiaomi</option>
+                            <option value="OnePlus">OnePlus</option>
+                            <option value="Google">Google</option>
+                            <option value="LG">LG</option>
+                            <option value="Nokia">Nokia</option>
+                            <option value="BlackBerry">BlackBerry</option>
+                            <option value="HTC">HTC</option>
+                            <option value="Apple">Apple</option>
+                            <option value="Sony">Sony</option>
+                            <option value="Motorola">Motorola</option>
+                            <option value="Oppo">Oppo</option>
+                            <option value="Vivo">Vivo</option>
+                            <option value="Realme">Realme</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="experienciaTecnico" class="form-label">Experiencia (años)</label>
+                        <input type="number" class="form-control" id="experienciaTecnico" required min="0">
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="agregarTecnico()">Agregar Técnico</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para registrar celular robado -->
+<div class="modal fade" id="celularRobadoModal" tabindex="-1" aria-labelledby="celularRobadoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="celularRobadoModalLabel">Registrar Celular Robado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="celularRobadoForm">
+                    <div class="mb-3">
+                        <label for="imeiRobado" class="form-label">IMEI</label>
+                        <input type="text" class="form-control" id="imeiRobado" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="marcaRobado" class="form-label">Marca</label>
+                        <select class="form-select" id="marcaRobado" required>
+                            <option value="" disabled selected>Seleccione una marca</option>
+                            <option value="Samsung">Samsung</option>
+                            <option value="Huawei">Huawei</option>
+                            <option value="Xiaomi">Xiaomi</option>
+                            <option value="OnePlus">OnePlus</option>
+                            <option value="Google">Google</option>
+                            <option value="LG">LG</option>
+                            <option value="Nokia">Nokia</option>
+                            <option value="BlackBerry">BlackBerry</option>
+                            <option value="HTC">HTC</option>
+                            <option value="Apple">Apple</option>
+                            <option value="Sony">Sony</option>
+                            <option value="Motorola">Motorola</option>
+                            <option value="Oppo">Oppo</option>
+                            <option value="Vivo">Vivo</option>
+                            <option value="Realme">Realme</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="modeloRobado" class="form-label">Modelo</label>
+                        <input type="text" class="form-control" id="modeloRobado" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="registrarCelularRobado()">Registrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para buscar sucursal por marca -->
+<div class="modal fade" id="buscarSucursalModal" tabindex="-1" aria-labelledby="buscarSucursalModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="buscarSucursalModalLabel">Buscar Sucursal por Marca</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="buscarSucursalForm">
+                    <div class="mb-3">
+                        <label for="marcaBusqueda" class="form-label">Seleccione la marca del celular</label>
+                        <select class="form-select" id="marcaBusqueda" required>
+                            <option value="" disabled selected>Seleccione una marca</option>
+                            <option value="Samsung">Samsung</option>
+                            <option value="Huawei">Huawei</option>
+                            <option value="Xiaomi">Xiaomi</option>
+                            <option value="OnePlus">OnePlus</option>
+                            <option value="Google">Google</option>
+                            <option value="LG">LG</option>
+                            <option value="Nokia">Nokia</option>
+                            <option value="BlackBerry">BlackBerry</option>
+                            <option value="HTC">HTC</option>
+                            <option value="Apple">Apple</option>
+                            <option value="Sony">Sony</option>
+                            <option value="Motorola">Motorola</option>
+                            <option value="Oppo">Oppo</option>
+                            <option value="Vivo">Vivo</option>
+                            <option value="Realme">Realme</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="buscarSucursalPorMarca()">Buscar</button>
+                </form>
+                <div id="resultadoBusqueda" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para generar ticket -->
+<div class="modal fade" id="generarTicketModal" tabindex="-1" aria-labelledby="generarTicketModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="generarTicketModalLabel">Generar Ticket</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="generarTicketForm">
+                    <input type="hidden" id="ticketSucursalIndex">
+                    <div class="mb-3">
+                        <label for="clienteNombre" class="form-label">Nombre del Cliente</label>
+                        <input type="text" class="form-control" id="clienteNombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="clienteApellido" class="form-label">Apellido del Cliente</label>
+                        <input type="text" class="form-control" id="clienteApellido" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="clienteDNI" class="form-label">DNI del Cliente</label>
+                        <input type="text" class="form-control" id="clienteDNI" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="celularIMEI" class="form-label">IMEI del Celular</label>
+                        <input type="text" class="form-control" id="celularIMEI" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="celularMarca" class="form-label">Marca del Celular</label>
+                        <select class="form-select" id="celularMarca" required onchange="cargarTecnicos()">
+                            <option value="" disabled selected>Seleccione una marca</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tecnicoAsignado" class="form-label">Técnico Asignado</label>
+                        <select class="form-select" id="tecnicoAsignado" required>
+                            <option value="" disabled selected>Seleccione un técnico</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="celularModelo" class="form-label">Modelo del Celular</label>
+                        <input type="text" class="form-control" id="celularModelo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="descripcionProblema" class="form-label">Descripción del Problema</label>
+                        <textarea class="form-control" id="descripcionProblema" rows="3" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="generarTicket()">Generar Ticket</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para mostrar tickets -->
+<div class="modal fade" id="ticketsModal" tabindex="-1" aria-labelledby="ticketsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ticketsModalLabel">Tickets de la Sucursal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- La tabla de tickets se insertará aquí -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para detalles del ticket -->
+<div class="modal fade" id="detalleTicketModal" tabindex="-1" aria-labelledby="detalleTicketModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="detalleTicketModalLabel">Detalles del Ticket</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="detalleTicketBody">
+          <!-- Los detalles del ticket se insertarán aquí -->
+        </div>
+      </div>
+    </div>
+  </div>
+    <script src="script2.js"></script>
+    <!-- Bootstrap JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script>
+
+let editando = false;
+
+function mostrarModalSucursal(index = null) {
+        editando = index !== null;
+        const modal = new bootstrap.Modal(document.getElementById('sucursalModal'));
+        const titulo = document.getElementById('sucursalModalLabel');
+        const botonGuardar = document.getElementById('guardarSucursalBtn');
+
+        if (editando) {
+            titulo.textContent = 'Editar Sucursal';
+            botonGuardar.textContent = 'Guardar Cambios';
+            const sucursal = central.sucursales[index];
+            document.getElementById('sucursalIndex').value = index;
+            document.getElementById('nombre').value = sucursal.nombre;
+            document.getElementById('direccion').value = sucursal.direccion;
+            document.getElementById('contacto').value = sucursal.contacto;
+        } else {
+            titulo.textContent = 'Agregar Nueva Sucursal';
+            botonGuardar.textContent = 'Guardar Sucursal';
+            document.getElementById('sucursalForm').reset();
+            document.getElementById('sucursalIndex').value = '';
+        }
+
+        modal.show();
+    }
+
+        function cargarSucursales() {
+            const tbody = document.querySelector('tbody');
+            tbody.innerHTML = ''; // Limpiar la tabla antes de cargar
+    
+            central.sucursales.forEach((sucursal, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${sucursal.nombre}</td>
+                    <td>${sucursal.direccion}</td>
+                    <td>${sucursal.contacto}</td>
+                    <td>
+                        <button class="btn btn-primary" onclick="editSucursal(${index})">Modificar</button>
+                        <button class="btn btn-danger" onclick="deleteSucursal(${index})">Eliminar</button>
+                        <button class="btn btn-success btn-sm" onclick="mostrarModalTecnicos(${index})">Agregar Técnicos</button>
+                        <button class="btn btn-info btn-sm" onclick="mostrarModalGenerarTicket(${index})">Generar Ticket</button>
+                        <button class="btn btn-warning btn-sm" onclick="actualizarVistaTickets(${index})">Ver Tickets</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+    
+        // Cargar sucursales al iniciar la página
+        window.onload = function() {
+  central.cargarSucursales();
+  cargarSucursales(); // Esta función actualiza la vista
+};
+
+        function guardarSucursal() {
+        const nombre = document.getElementById('nombre').value;
+        const direccion = document.getElementById('direccion').value;
+        const contacto = document.getElementById('contacto').value;
+
+        if (nombre && direccion && contacto) {
+            if (editando) {
+                const index = parseInt(document.getElementById('sucursalIndex').value);
+                const sucursalExistente = central.sucursales.find((s, i) => s.nombre === nombre && i !== index);
+                
+                if (sucursalExistente) {
+                    alert('Ya existe una sucursal con este nombre. Por favor, elija otro nombre.');
+                    return;
+                }
+
+                central.sucursales[index].nombre = nombre;
+                central.sucursales[index].direccion = direccion;
+                central.sucursales[index].contacto = contacto;
+            } else {
+                const sucursalExistente = central.sucursales.find(s => s.nombre === nombre);
+                
+                if (sucursalExistente) {
+                    alert('Ya existe una sucursal con este nombre. Por favor, elija otro nombre.');
+                    return;
+                }
+
+                const nuevaSucursal = new Sucursal(nombre, direccion, contacto, central);
+                central.agregarSucursal(nuevaSucursal);
+            }
+
+            central.guardarSucursales();
+            cargarSucursales();
+
+            // Cerrar el modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('sucursalModal'));
+            modal.hide();
+        } else {
+            alert('Por favor, complete todos los campos.');
+        }
+    }
+
+        function agregarSucursal() {
+            const nombre = document.getElementById('nombre').value;
+            const direccion = document.getElementById('direccion').value;
+            const contacto = document.getElementById('contacto').value;
+
+            if (nombre && direccion && contacto) {
+                const nuevaSucursal = new Sucursal(nombre, direccion, contacto, central);
+                central.agregarSucursal(nuevaSucursal);
+                central.guardarSucursales();
+                cargarSucursales();
+
+                // Cerrar el modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('nuevaSucursalModal'));
+                modal.hide();
+
+                // Limpiar el formulario
+                document.getElementById('nuevaSucursalForm').reset();
+            } else {
+                alert('Por favor, complete todos los campos.');
+            }
+        }
+
+        function editSucursal(index) {
+        mostrarModalSucursal(index);
+    }
+    document.getElementById('guardarSucursalBtn').addEventListener('click', guardarSucursal);
+
+
+    function deleteSucursal(index) {
+        // Pedir confirmación antes de eliminar
+        if (confirm('¿Está seguro de que desea eliminar esta sucursal?')) {
+            // Verificar que el índice es válido
+            if (index >= 0 && index < central.sucursales.length) {
+                // Eliminar la sucursal del array
+                central.sucursales.splice(index, 1);
+                
+                // Guardar los cambios
+                central.guardarSucursales();
+                
+                // Actualizar la vista
+                cargarSucursales();
+                
+                alert('Sucursal eliminada con éxito.');
+            } else {
+                alert('Error: Índice de sucursal no válido.');
+            }
+        }
+    }
+
+    function agregarTecnico() {
+        const sucursalIndex = document.getElementById('sucursalIndex').value;
+        const nombreTecnico = document.getElementById('nombreTecnico').value;
+        const apellidoTecnico = document.getElementById('apellidoTecnico').value;
+        const telefonoTecnico = document.getElementById('telefonoTecnico').value;
+        const especialidadTecnico = Array.from(document.getElementById('especialidadTecnico').selectedOptions).map(option => option.value);
+        const experienciaTecnico = document.getElementById('experienciaTecnico').value;
+
+        if (nombreTecnico && apellidoTecnico && telefonoTecnico && especialidadTecnico.length > 0 && experienciaTecnico) {
+            const nuevoTecnico = new Tecnico(nombreTecnico, apellidoTecnico, telefonoTecnico, especialidadTecnico, parseInt(experienciaTecnico));
+            central.sucursales[sucursalIndex].tecnicos.push(nuevoTecnico);
+            central.guardarSucursales();
+            mostrarModalTecnicos(sucursalIndex); // Actualizar la lista de técnicos
+            document.getElementById('tecnicoForm').reset();
+        } else {
+            alert('Por favor, complete todos los campos del técnico.');
+        }
+    }
+
+    function mostrarModalTecnicos(index) {
+        const sucursal = central.sucursales[index];
+        const modal = new bootstrap.Modal(document.getElementById('tecnicosModal'));
+        document.getElementById('sucursalNombre').textContent = sucursal.nombre;
+        document.getElementById('sucursalIndex').value = index;
+        
+        // Limpiar la lista de técnicos existente
+        const listaTecnicos = document.getElementById('listaTecnicos');
+        listaTecnicos.innerHTML = '';
+        
+        // Mostrar los técnicos actuales de la sucursal
+        sucursal.tecnicos.forEach((tecnico, tecIndex) => {
+            const li = document.createElement('li');
+            li.textContent = `${tecnico.nombre} ${tecnico.apellido} - Tel: ${tecnico.telefono} - Esp: ${tecnico.especialidad.join(', ')} - Exp: ${tecnico.experiencia} años`;
+            const btnEliminar = document.createElement('button');
+            btnEliminar.textContent = 'Eliminar';
+            btnEliminar.className = 'btn btn-danger btn-sm ml-2';
+            btnEliminar.onclick = () => eliminarTecnico(index, tecIndex);
+            li.appendChild(btnEliminar);
+            listaTecnicos.appendChild(li);
+        });
+
+        modal.show();
+    }
+
+    function eliminarTecnico(sucursalIndex, tecnicoIndex) {
+        central.sucursales[sucursalIndex].tecnicos.splice(tecnicoIndex, 1);
+        central.guardarSucursales();
+        mostrarModalTecnicos(sucursalIndex); // Actualizar la lista de técnicos
+    }
+
+    function mostrarModalCelularRobado() {
+    const modal = new bootstrap.Modal(document.getElementById('celularRobadoModal'));
+    modal.show();
+}
+
+function registrarCelularRobado() {
+    const imei = document.getElementById('imeiRobado').value;
+    const marca = document.getElementById('marcaRobado').value;
+    const modelo = document.getElementById('modeloRobado').value;
+
+    if (imei && marca && modelo) {
+        const celularRobado = new Telefono(imei, marca, modelo, "robado");
+        central.agregarCelularRobado(celularRobado);
+        
+        // Cerrar el modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('celularRobadoModal'));
+        modal.hide();
+
+        // Limpiar el formulario
+        document.getElementById('celularRobadoForm').reset();
+
+        alert('Celular robado registrado con éxito.');
+    } else {
+        alert('Por favor, complete todos los campos.');
+    }
+}
+
+function mostrarModalBuscarSucursal() {
+    const modal = new bootstrap.Modal(document.getElementById('buscarSucursalModal'));
+    modal.show();
+}
+
+function buscarSucursalPorMarca() {
+    const marca = document.getElementById('marcaBusqueda').value;
+    const resultadoDiv = document.getElementById('resultadoBusqueda');
+
+    if (!marca) {
+        resultadoDiv.innerHTML = '<p class="text-danger">Por favor, seleccione una marca.</p>';
+        return;
+    }
+
+    let sucursalesEncontradas = [];
+
+    for (let sucursal of central.sucursales) {
+        let tecnicosEspecializados = sucursal.tecnicos.filter(tecnico => tecnico.especialidad.includes(marca));
+        if (tecnicosEspecializados.length > 0) {
+            sucursalesEncontradas.push({sucursal, tecnicos: tecnicosEspecializados});
+        }
+    }
+
+    if (sucursalesEncontradas.length > 0) {
+        let resultadoHTML = `<h4 class="text-success">Sucursales que pueden reparar celulares ${marca}:</h4>`;
+        
+        sucursalesEncontradas.forEach(({sucursal, tecnicos}) => {
+            resultadoHTML += `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">${sucursal.nombre}</h5>
+                        <p class="card-text">Dirección: ${sucursal.direccion}</p>
+                        <p class="card-text">Teléfono: ${sucursal.contacto}</p>
+                        <h6>Técnicos disponibles:</h6>
+                        <ul>
+                            ${tecnicos.map(tecnico => `
+                                <li>
+                                    ${tecnico.nombre} ${tecnico.apellido} 
+                                    (Experiencia: ${tecnico.experiencia} años)
+                                    <br>
+                                    Marcas: ${tecnico.especialidad.join(', ')}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        });
+
+        resultadoDiv.innerHTML = resultadoHTML;
+    } else {
+        resultadoDiv.innerHTML = `<p class="text-danger">Lo sentimos, no se encontró ninguna sucursal que pueda reparar la marca ${marca}.</p>`;
+    }
+}
+
+function mostrarModalGenerarTicket(index) {
+    const modal = document.getElementById('generarTicketModal');
+    if (!modal) {
+        console.error('El modal no se encontró en el DOM');
+        return;
+    }
+
+    const bootstrapModal = new bootstrap.Modal(modal);
+    
+    const ticketSucursalIndex = document.getElementById('ticketSucursalIndex');
+    if (ticketSucursalIndex) {
+        ticketSucursalIndex.value = index;
+    } else {
+        console.error('El elemento ticketSucursalIndex no se encontró en el DOM');
+    }
+    
+    // Cargar marcas disponibles
+    const sucursal = central.sucursales[index];
+    const marcasDisponibles = new Set();
+    sucursal.tecnicos.forEach(tecnico => {
+        tecnico.especialidad.forEach(marca => marcasDisponibles.add(marca));
+    });
+    
+    const selectMarca = document.getElementById('celularMarca');
+    if (selectMarca) {
+        selectMarca.innerHTML = '<option value="" disabled selected>Seleccione una marca</option>';
+        marcasDisponibles.forEach(marca => {
+            const option = document.createElement('option');
+            option.value = marca;
+            option.textContent = marca;
+            selectMarca.appendChild(option);
+        });
+    } else {
+        console.error('El elemento celularMarca no se encontró en el DOM');
+    }
+    
+    // Limpiar otros campos del formulario
+    const camposALimpiar = ['clienteNombre', 'clienteApellido', 'clienteDNI', 'celularIMEI', 'celularModelo', 'descripcionProblema'];
+    camposALimpiar.forEach(campo => {
+        const elemento = document.getElementById(campo);
+        if (elemento) {
+            elemento.value = '';
+        } else {
+            console.error(`El elemento ${campo} no se encontró en el DOM`);
+        }
+    });
+    
+    // Limpiar y deshabilitar el select de técnicos
+    const selectTecnico = document.getElementById('tecnicoAsignado');
+    if (selectTecnico) {
+        selectTecnico.innerHTML = '<option value="" disabled selected>Seleccione un técnico</option>';
+        selectTecnico.disabled = true;
+    } else {
+        console.error('El elemento tecnicoAsignado no se encontró en el DOM');
+    }
+    
+    bootstrapModal.show();
+}
+
+function cargarTecnicos() {
+    const sucursalIndex = document.getElementById('ticketSucursalIndex').value;
+    const marcaSeleccionada = document.getElementById('celularMarca').value;
+    const selectTecnico = document.getElementById('tecnicoAsignado');
+    
+    if (!sucursalIndex || !central.sucursales[sucursalIndex]) {
+        console.error('Índice de sucursal no válido');
+        return;
+    }
+
+    const sucursal = central.sucursales[sucursalIndex];
+    
+    selectTecnico.innerHTML = '<option value="" disabled selected>Seleccione un técnico</option>';
+    selectTecnico.disabled = false;
+    
+    sucursal.tecnicos.forEach((tecnico) => {
+        if (tecnico.especialidad.includes(marcaSeleccionada)) {
+            const option = document.createElement('option');
+            option.value = tecnico.id; // Usar el ID del técnico como valor
+            option.textContent = `${tecnico.nombre} ${tecnico.apellido} (Exp: ${tecnico.experiencia} años)`;
+            selectTecnico.appendChild(option);
+        }
+    });
+}
+
+// Asegúrate de que esta línea esté presente para vincular la función al cambio de marca
+document.getElementById('celularMarca').addEventListener('change', cargarTecnicos);
+
+
+function generarTicket() {
+    const sucursalIndex = document.getElementById('ticketSucursalIndex').value;
+    const clienteNombre = document.getElementById('clienteNombre').value;
+    const clienteApellido = document.getElementById('clienteApellido').value;
+    const clienteDNI = document.getElementById('clienteDNI').value;
+    const celularIMEI = document.getElementById('celularIMEI').value;
+    const celularMarca = document.getElementById('celularMarca').value;
+    const celularModelo = document.getElementById('celularModelo').value;
+    const descripcionProblema = document.getElementById('descripcionProblema').value;
+    const tecnicoIndex = document.getElementById('tecnicoAsignado').value;
+
+    if (clienteNombre && clienteApellido && clienteDNI && celularIMEI && celularMarca && celularModelo && descripcionProblema && tecnicoIndex) {
+        // Verificar si el celular está robado
+        if (central.buscarCelularRobadoPorImei(celularIMEI)) {
+            alert('El celular con este IMEI está reportado como robado. No se puede generar el ticket.');
+            return;
+        }
+
+        // Crear o buscar el cliente
+        let cliente = central.clientes.find(c => c.dni === clienteDNI);
+        if (!cliente) {
+            cliente = new Cliente(clienteNombre, clienteApellido, clienteDNI);
+            central.sucursales[sucursalIndex].agregarCliente(cliente);
+        }
+
+        // Crear el celular
+        const celular = new Telefono(celularIMEI, celularMarca, celularModelo);
+
+        // Obtener el técnico asignado
+        const tecnicoId = document.getElementById('tecnicoAsignado').value;
+
+        if (!tecnicoId) {
+            alert('Error: No se pudo asignar un técnico. Por favor, seleccione un técnico válido.');
+            return;
+        }
+
+        // Crear el ticket (pasando el ID del técnico en lugar del objeto completo)
+        const ticket = new Ticket(celular, descripcionProblema, 0, 0, cliente, tecnicoId);
+
+        // Agregar el ticket a la sucursal
+        central.sucursales[sucursalIndex].agregarTicket(ticket);
+
+        // Guardar los cambios
+        central.guardarSucursales();
+
+        alert('Ticket generado con éxito.');
+
+        // Cerrar el modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('generarTicketModal'));
+        modal.hide();
+
+        // Limpiar el formulario
+        document.getElementById('generarTicketForm').reset();
+
+        // Actualizar la vista de tickets
+        actualizarVistaTickets(sucursalIndex);
+    } else {
+        alert('Por favor, complete todos los campos.');
+    }
+}
+
+function actualizarVistaTickets(sucursalIndex) {
+  const sucursal = central.sucursales[sucursalIndex];
+  const ticketsContainer = document.getElementById('ticketsContainer');
+  ticketsContainer.innerHTML = '';
+
+  if (!sucursal || !sucursal.tickets || sucursal.tickets.length === 0) {
+    ticketsContainer.innerHTML = '<p>No hay tickets para esta sucursal.</p>';
+    return;
+  }
+
+  const table = document.createElement('table');
+  table.className = 'table table-striped table-hover';
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Teléfono</th>
+        <th>Estado</th>
+        <th>Monto</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  `;
+
+  const tbody = table.querySelector('tbody');
+
+  sucursal.tickets.forEach(ticket => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${ticket.id}</td>
+      <td>${ticket.cliente.nombre} ${ticket.cliente.apellido}</td>
+      <td>${ticket.telefono.marca} ${ticket.telefono.modelo}</td>
+      <td>${ticket.estado}</td>
+      <td>$${ticket.montoFinal}</td>
+      <td>
+        <button class="btn btn-sm btn-primary" onclick="cambiarEstadoTicket(${sucursalIndex}, ${ticket.id})">Cambiar Estado</button>
+        ${ticket.diagnosticoInicial ? '' : `<button class="btn btn-sm btn-info" onclick="realizarPrimeraRevision(${sucursalIndex}, ${ticket.id})">Primera Revisión</button>`}
+      </td>
+    `;
+    row.style.cursor = 'pointer';
+    row.addEventListener('click', () => mostrarDetalleTicket(sucursalIndex, ticket.id));
+    tbody.appendChild(row);
+  });
+
+  ticketsContainer.appendChild(table);
+}
+function mostrarDetalleTicket(sucursalIndex, ticketId) {
+  const sucursal = central.sucursales[sucursalIndex];
+  const ticket = sucursal.tickets.find(t => t.id === ticketId);
+  
+  if (ticket) {
+    const detalleBody = document.getElementById('detalleTicketBody');
+    detalleBody.innerHTML = `
+    <p><strong>ID:</strong> ${ticket.id}</p>
+      <p><strong>Cliente:</strong> ${ticket.cliente.nombre} ${ticket.cliente.apellido}</p>
+      <p><strong>Teléfono:</strong> ${ticket.telefono.marca} ${ticket.telefono.modelo}</p>
+      <p><strong>IMEI:</strong> ${ticket.telefono.imei}</p>
+      <p><strong>Diagnóstico:</strong> ${ticket.diagnostico}</p>
+      <p><strong>Diagnóstico Inicial:</strong> ${ticket.diagnosticoInicial || 'Pendiente'}</p>
+      <p><strong>Estado:</strong> ${ticket.estado}</p>
+      <p><strong>Porcentaje:</strong> ${ticket.porcentaje}%</p>
+      <p><strong>Monto Final:</strong> $${ticket.montoFinal}</p>
+    `;
+    // <p><strong>Técnico Asignado:</strong> ${ticket.tecnicoAsignado.nombre} ${ticket.tecnicoAsignado.apellido}</p>
+    
+    const modal = new bootstrap.Modal(document.getElementById('detalleTicketModal'));
+    modal.show();
+  }
+}
+
+function realizarPrimeraRevision(sucursalIndex, ticketId) {
+  const sucursal = central.sucursales[sucursalIndex];
+  const ticket = sucursal.tickets.find(t => t.id === ticketId);
+  
+  if (ticket) {
+    const diagnosticoInicial = prompt("Ingrese el diagnóstico inicial:");
+    if (diagnosticoInicial) {
+      ticket.diagnosticoInicial = diagnosticoInicial;
+      ticket.estado = estadosTicket.proceso;
+      central.guardarSucursales();
+      alert("Primera revisión realizada con éxito.");
+      mostrarDetalleTicket(sucursalIndex, ticketId);
+      actualizarVistaTickets(sucursalIndex);
+    }
+  }
+}
+function cambiarEstadoTicket(sucursalIndex, ticketId) {
+  const sucursal = central.sucursales[sucursalIndex];
+  const ticket = sucursal.tickets.find(t => t.id === ticketId);
+  
+  if (ticket) {
+    let nuevoEstado;
+    switch (ticket.estado) {
+      case estadosTicket.inicializado:
+        nuevoEstado = estadosTicket.proceso;
+        break;
+      case estadosTicket.proceso:
+        nuevoEstado = estadosTicket.finalizado;
+        break;
+      case estadosTicket.finalizado:
+        nuevoEstado = estadosTicket.inicializado;
+        break;
+    }
+    
+    sucursal.actualizarEstadoTicket(ticketId, nuevoEstado);
+    actualizarVistaTickets(sucursalIndex);
+  }
+}
+    </script>
+    
+</body>
+</html>
