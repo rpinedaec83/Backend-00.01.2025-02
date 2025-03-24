@@ -1,0 +1,20 @@
+{
+  "name": "sv74880500",
+  "version": "1.0.0",
+  "description": "api gateway",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --watch index.js"
+  },
+  "author": "angel crisostomo",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.8.4",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "i": "^0.3.7",
+    "npm": "^11.2.0"
+  }
+}
