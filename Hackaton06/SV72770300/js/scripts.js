@@ -193,9 +193,6 @@ class Repuestos {
 }
 
 
-
-
-
 let tecnoIdat = new Central();
 
 $(document).ready(function () {
