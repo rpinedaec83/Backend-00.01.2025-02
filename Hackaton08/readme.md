@@ -24,7 +24,7 @@ Realizar un informe en el cual se detallen los siguientes temas:
 
 - 12 Reglas de Codd
 - Normalización de Base de Datos
-- El modelo relacional para el modelado y la gestión de bases de datos
+- El modelo relacional para el modelado y la gestión de bases de dato
 
 El informe debe incluir una linea del tiempo con los detalles, ejemplo:
 
