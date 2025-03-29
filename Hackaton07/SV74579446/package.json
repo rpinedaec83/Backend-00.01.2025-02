@@ -1,0 +1,32 @@
+{
+  "dependencies": {
+    "axios": "^1.8.4",
+    "dotenv": "^16.4.7",
+    "node-localstorage": "^3.0.5"
+  },
+  "name": "hackaton_7",
+  "version": "1.0.0",
+  "description": "Resolucion de la hackaton 7",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --watch index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AngelaM22/Backend-00.01.2025-02.git"
+  },
+  "keywords": [
+    "hackaton",
+    "7",
+    "-",
+    "nodejs"
+  ],
+  "author": "Juana Marcelo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AngelaM22/Backend-00.01.2025-02/issues"
+  },
+  "homepage": "https://github.com/AngelaM22/Backend-00.01.2025-02#readme"
+}
