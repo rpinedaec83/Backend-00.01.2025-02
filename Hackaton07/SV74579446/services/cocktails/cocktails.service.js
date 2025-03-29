@@ -9,4 +9,4 @@ const getTopCocktails = async () => {
     }
 };
 
-module.exports = { getTopCocktails };
+module.exports = { getTopCocktails};
