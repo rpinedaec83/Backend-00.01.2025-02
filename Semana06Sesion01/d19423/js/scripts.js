@@ -11,30 +11,50 @@
 //     console.log(element.nombres)
 // });
 
-// localStorage.setItem("nombre","Roberto")
-// swal.fire({
-//     title: "Ingresa tus datos",
-//     icon: "info",
-//     text: localStorage.getItem("nombre")
-// })
-// localStorage.removeItem("nombre")
 
-// class Persona{
-//     constructor(nombres, apellidos){
-//         this.nombres = nombres;
-//         this.apellidos = apellidos
-//     }
-// }
+localStorage.setItem("nombre","Roberto")
+swal.fire({
+    title: "Ingresa tus datos",
+    icon: "info",
+    text: localStorage.getItem("nombre")
+})
+localStorage.removeItem("nombre")
 
-// let arrPersonas = [];
-// let objPersona1 =new Persona("Roberto", "Pineda");
-// let objPersona2 =new Persona("David", "Lopez");
-// let objPersona3 =new Persona("Juan", "Perez");
 
-// arrPersonas.push(objPersona1);
-// arrPersonas.push(objPersona2);
-// arrPersonas.push(objPersona3);
 
+<<<<<<< HEAD
+class Persona{
+    constructor(nombres, apellidos){
+        this.nombres = nombres;
+        this.apellidos = apellidos
+    }
+}
+
+
+let arrPersonas = [];
+let objPersona1 =new Persona("Roberto", "Pineda");
+let objPersona2 =new Persona("David", "Lopez");
+let objPersona3 =new Persona("Juan", "Perez");
+
+arrPersonas.push(objPersona1);
+arrPersonas.push(objPersona2);
+arrPersonas.push(objPersona3);
+
+console.log(arrPersonas)
+
+//localStorage.setItem("propietarios", JSON.stringify(arrPersonas))
+
+
+console.log(JSON.stringify(objPersona1));
+
+let strClima = `
+{
+    "ubicacion": "Lima",
+    "temp":{
+        "celcius": 25,
+        "farengieftrter": 50
+    }
+=======
 // console.log(arrPersonas)
 
 // //localStorage.setItem("propietarios", JSON.stringify(arrPersonas))
@@ -85,8 +105,13 @@ function IsCustomCheck(event){
        // document.getElementById("custom").style.display = "none"
     }
    
+>>>>>>> fuentes/main
 }
+`;
 
+<<<<<<< HEAD
+let objClima = JSON.parse(strClima);
+=======
 let arrGundams = [];
 $("#btnBorrar").on("click",(e)=>{
     e.preventDefault();
@@ -108,18 +133,17 @@ document.getElementById("btnIniciar").addEventListener("click",async (e)=>{
 <div class="form-group">
 <div >
 <input id="nombre" name="nombre" type="text" placeholder="Escribe el nombre del Kit" class="form-control input-md">
+>>>>>>> fuentes/main
 
-</div>
-</div>
+console.log(objClima)
 
-<!-- Text input-->
-<div class="form-group">
-<div >
-<input id="descripcion" name="descripcion" type="text" placeholder="Escribe la descripcion de tu kit " class="form-control input-md">
+let objClima2 = {ubicacion: "Lima", temp: {celcius: 25, farengieftrter: 50}};
 
-</div>
-</div>
+console.log(objClima2.temp.celcius)
 
+<<<<<<< HEAD
+//sessionStorage.setItem("clima", JSON.stringify(objClima2))
+=======
 <!-- Text input-->
 <div class="form-group">
 <div >
@@ -223,3 +247,4 @@ function detailFormatter(index,row){
     })
     return html.join('')
 }
+>>>>>>> fuentes/main
