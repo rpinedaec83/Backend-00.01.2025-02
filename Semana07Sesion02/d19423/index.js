@@ -52,7 +52,6 @@ http
     let query = q.query;
     console.log(query);
     console.log(tipo);
-
     let htmlResponse = "";
     switch (tipo) {
       case "/clima":

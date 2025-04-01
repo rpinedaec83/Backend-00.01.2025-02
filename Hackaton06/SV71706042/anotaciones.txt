@@ -49,36 +49,4 @@ Repuestos:
 	Precio
 	Cantidad (Para tener un control del stock)
 /					//PROPUESTA DE SOLIUCION:
-class Telefono {
-  estado = null;
-  imei = "";
-  modelo = "";
-  marca = "";
-  esRobado = false;
-}
 
-class Central {
-  celularesRobados = [];
-  sucursales = [];
-}
-
-class Ticket {
-  telefono;
-  diagnostico;
-  porcentaje;
-  montoFinal;
-  estado;
-  cliente;
-  autorizado = 0;
-  repuestos = [];
-}
-
-class Sucursal {
-  tecnicos = [];
-  clientes = [];
-  tickets = [];
-  contacto = "";
-  nombre = "";
-  direccion = "";
-  central;
-}
