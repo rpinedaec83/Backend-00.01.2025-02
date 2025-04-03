@@ -128,17 +128,20 @@ values('Blanco',1),
 
 select * from tbl_color;
 
-create table tbl_vacuna(
-	id int auto_increment primary key,
-    descripcion varchar(50) not null,
-    is_activo bit not null default 1,
-    usuario_creacion int not null,
-    fecha_creacion datetime not null default current_timestamp,
-    usuario_modificacion int ,
-    fecha_modificacion datetime,
-    FOREIGN KEY(usuario_creacion) references tbl_usuario(id),
-    foreign key(usuario_modificacion) references tbl_usuario(id)
-);
+CREATE TABLE `tbl_vacuna` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(50) NOT NULL,
+  `lote` varchar(45),
+  `is_activo` bit(1) NOT NULL DEFAULT b'1',
+  `usuario_creacion` int NOT NULL,
+  `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `usuario_modificacion` int DEFAULT NULL,
+  `fecha_modificacion` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+   FOREIGN KEY (`usuario_creacion`) REFERENCES `tbl_usuario` (`id`),
+  FOREIGN KEY (`usuario_modificacion`) REFERENCES `tbl_usuario` (`id`)
+) ;
+
 
 insert into tbl_vacuna(descripcion, usuario_creacion)
 values('Anti Rabia',1),
@@ -213,7 +216,9 @@ create table tbl_mascota_vacuna(
     usuario_modificacion int ,
     fecha_modificacion datetime,
     FOREIGN KEY(usuario_creacion) references tbl_usuario(id),
-    foreign key(usuario_modificacion) references tbl_usuario(id)
+    foreign key(usuario_modificacion) references tbl_usuario(id),
+    foreign key(id_mascota) references tbl_mascota(id),
+    foreign key(id_vacuna) references tbl_vacuna(id)
 );
 
 insert into tbl_mascota_vacuna(id_mascota, id_vacuna, fecha_aplicacion, usuario_creacion )
