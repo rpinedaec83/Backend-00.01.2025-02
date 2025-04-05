@@ -252,13 +252,12 @@
 	INNER JOIN Suppliers s ON p.SupplierID = s.SupplierID;
     
 -- E48. Seleccionar el nombre de la compañía del cliente, nombre del contacto, el código de la orden de compra, la fecha de la orden de compra, el código del producto,cantidad pedida del producto, nombre del producto y el nombre de la compañía proveedora, usas JOIN.Solamente las compañías proveedoras que comienzan con la letra de la A hasta la letra G,además la cantidad pedida del producto debe estar entre 23 y 187.
-/*
-	-- Revisar
+
+	-- Revisado
 	SELECT c.CustomerName, c.ContactName, o.OrderID, o.OrderDate, p.ProductID, od.Quantity, p.ProductName, s.SupplierName
 	FROM Orders o
 	INNER JOIN Customers c ON o.CustomerID = c.CustomerID
 	INNER JOIN OrderDetails od ON o.OrderID = od.OrderID
-	INNER JOIN Product p ON od.ProductID = p.ProductID
+	INNER JOIN Products p ON od.ProductID = p.ProductID
 	INNER JOIN Suppliers s ON p.SupplierID = s.SupplierID
 	WHERE s.SupplierName >= 'A' AND s.SupplierName < 'H' AND od.Quantity BETWEEN 23 AND 187;
-*/
