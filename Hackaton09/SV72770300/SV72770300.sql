@@ -279,9 +279,13 @@ Use northwind;
         
 -- Ejercicio 30
 -- Seleccionar los jefes de los empleados.
--- La tabla "jefes" no existe. Asimismo, no existe una relación con la tabla "empleados".
 
-	select * from employee;
+	select e.employeeId, concat(e.firstname,' ',e.lastname) as employeeName, 
+    e.mgrId,
+    concat(m.firstName, ' ',m.lastname) as managmentName
+    from employee as e
+    left join employee as m
+    on e.mgrId = e.employeeId;
 
 -- Ejercicio 31
 -- Obtener todos los productos cuyo nombre comienzan con C y tienen un precio comprendido entre 28 y 81.
@@ -383,3 +387,142 @@ Use northwind;
 	select * from product;
     select * from product order by unitPrice asc
     limit 5;
+    
+-- Ejercicio 41
+-- Obtener el nombre de todas las categorias y los nombres de sus productos, precio y stock.
+
+	select * from product, category;
+    
+    select 
+		c.CategoryName,
+        p.ProductName,
+        p.unitPrice,
+        p.unitsInStock
+	from product as p
+    inner join category as c on c.CategoryId = p.CategoryId;
+    
+-- Ejercicio 42
+-- Obtener el nombre de todas las categorias y los nombres de sus productos, solo los productos que su nombre no comience con la letra Q.
+
+	select * from product, category;
+    
+    select 
+		c.CategoryName,
+        p.ProductName
+	from product as p
+    inner join category as c on c.CategoryId = p.CategoryId
+    where p.ProductName not like 'Product_Q%';
+    
+-- Ejercicio 43
+-- Calcular el stock de productos por cada categoria. Mostrar el nombre de la categoria y el stock por categoria.
+	
+    select * from product, categoryy;
+    
+    select 
+		c.CategoryName,
+        sum(p.unitsInStock) as 'Stock Productos'
+	from product as p
+    inner join category as c on c.CategoryId = p.CategoryId
+    group by p.CategoryId;
+    
+-- Ejercicio 44
+-- Obtener el Nombre del cliente, Nombre del Proveedor, Nombre del empleado y el nombre de los productos que estan en la orden 10248.
+
+	select * from salesorder;
+    select * from orderdetail;
+    select * from product;
+    select * from customer;
+    select * from employee;
+    
+    select 
+		c.contactName as 'Nombre del Cliente',
+        r.contactName as 'Nombre del Proveedor',
+        concat(e.LastName, ', ',e.FirstName) as 'Nombre del Empleado',
+        p.ProductName as 'Nombre del Producto'
+	from orderdetail as od
+    inner join salesorder as o on o.OrderId = od.OrderId
+    inner join product as p on p.ProductId = od.ProductId
+    inner join customer as c on c.custId = o.custId
+    inner join supplier as r on r.SupplierId = p.SupplierId
+    inner join employee as e on e.EmployeeId = o.EmployeeId
+    where od.OrderId = 10248;
+    
+-- Ejercicio 45
+-- Mostrar el numero de ordenes de cada uno de los clientes por año, luego ordenar codigo del cliente y el año.
+	
+    select * from salesorder;
+    select * from customer;
+    
+    select 
+		count(o.custId) as 'Total Ordenes',
+        o.custId,
+        c.contactName,
+        Year(o.OrderDate) as 'Año'
+	from salesorder as o
+    inner join customer as c on c.custId = o.custId
+    group by o.custId, Year(o.OrderDate)
+    order by Year(o.OrderDate), o.custId;
+    
+-- Ejercicio 46
+-- Contar el numero de ordenes que se han realizado por años y meses, luego debe ser ordenado por año y por mes.
+	
+    select * from salesorder;
+    select 
+		count(OrderId) as 'Ordenes',
+		Year(OrderDate) as 'Año',
+        Month(OrderDate) as 'Mes'
+	from salesorder
+    group by Month(OrderDate), Year(OrderDate)
+    order by Year(OrderDate), Month(OrderDate);
+    
+-- Ejercicio 47
+-- Seleccionar el nombre de la compañía del cliente, él código de la orden de compra, la fecha de la orden de compra, 
+-- código del producto, cantidad pedida del producto, nombre del producto, el nombre de la compañía proveedora y la ciudad del proveedor, usar Join.
+
+	select * from customer;
+    select * from salesorder; 
+    select * from product;
+    select * from orderdetail;
+    select * from supplier;
+    
+	select 
+		c.CompanyName as 'Compañía del Cliente',
+        od.OrderId as 'Código Orden Compra',
+        o.OrderDate as 'Fecha Orden Compra',
+        od.ProductId as 'Código Producto',
+        od.Quantity as 'Cantidad Pedida Producto',
+        p.ProductName as 'Nombre Producto',
+        s.CompanyName as 'Nombre Compañía Proveedora',
+        s.City as 'Ciudad Proveedora'
+	from orderdetail as od
+    inner join salesorder as o on o.OrderId = od.OrderId
+    inner join customer as c on c.custId = o.custId
+    inner join product as p on p.ProductId = od.ProductId
+    inner join supplier as s on s.SupplierId = p.SupplierId;
+
+-- Ejercicio 48
+-- Seleccionar el nombre de la compañía del cliente, nombre del contacto, el código de la orden de compra, la fecha de la orden de compra, el código del producto,
+-- cantidad pedida del producto, nombre del producto y el nombre de la compañía proveedora, usas JOIN. Solamente las compañías proveedoras que comienzan con la letra de la A hasta la letra G,
+-- además la cantidad pedida del producto debe estar entre 23 y 187. 
+
+	select * from customer;
+    select * from salesorder; 
+    select * from product;
+    select * from orderdetail;
+    select * from supplier;
+
+	select 
+		c.CompanyName as 'Compañía del Cliente',
+        c.ContactName as 'Nombre Contacto Cliente',
+        od.OrderId as 'Código Orden Compra',
+        o.OrderDate as 'Fecha Orden Compra',
+        od.ProductId as 'Código Producto',
+        od.Quantity as 'Cantidad Pedida Producto',
+        p.ProductName as 'Nombre Producto',
+        s.CompanyName as 'Nombre Compañía Proveedora'
+	from orderdetail as od
+    inner join salesorder as o on o.OrderId = od.OrderId
+    inner join customer as c on c.custId = o.custId
+    inner join product as p on p.ProductId = od.ProductId
+    inner join supplier as s on s.SupplierId = p.SupplierId
+    where s.CompanyName regexp '^Supplier [A-Ga-g]' and (od.Quantity between 23 and 187);
