@@ -184,3 +184,102 @@ Use northwind;
     select * from product;
     select * from product order by unitPrice desc
     limit 10;
+
+-- Ejercicio 21
+-- Mostrar los 10 productos más baratos
+
+	select * from product;
+    select * from product order by unitPrice asc
+    limit 10;
+    
+-- Ejercicio 22
+-- Mostrar los 10 productos más caros
+
+	select * from product;
+    select * from product order by unitPrice desc
+    limit 10;
+    
+-- Ejercicio 23
+-- Seleccionar todos los campos de la tabla clientes, ordenar por compania.
+
+	select * from customer;
+    select * from customer 
+    order by companyName;
+    
+-- Ejercicio 24
+-- Seleccionar todos los campos de clientes, cuya compania empiece con la letra C y pertenezcan a UK, ordenar por nombre de la compania. 
+    
+	select * from customer;
+    select * from customer 
+    where companyName like 'C%' and Country = 'UK'
+    order by companyName;
+    
+-- Ejercicio 25
+-- Seleccionar todos los campos de productos de las categorias 1,3 y 5, ordenar por categoria. 
+    
+    select * from product, category;
+    select
+		p.ProductId,
+        p.ProductName,
+        p.CategoryId,
+        c.CategoryName
+	from product as p 
+    inner join category as c on c.CategoryId = p.CategoryId
+    where p.CategoryId in(1,3,5) order by p.CategoryId;
+    
+-- Ejercicio 26
+-- Seleccionar los productos cuyos precios unitarios estén entre 50 y 200.
+
+	select * from product;
+    select * from product
+    where unitPrice between 50 and 200;
+    
+-- Ejercicio 27
+-- Visualizar el nombre y el id de la compania del cliente, fecha, precio unitario y producto de la orden.
+    
+    select * from orderdetail, salesorder, product, customer;
+    select * from customer;
+    select 
+		o.custId,
+        c.CompanyName,
+        o.OrderDate,
+        p.unitPrice,
+        p.ProductName
+	from orderdetail as od
+    inner join salesorder as o on o.OrderId = od.OrderId
+    inner join product as p on p.ProductId = od.ProductId
+    inner join customer as c on c.custId = o.custId;
+    
+-- Ejercicio 28
+-- Visualizar el nombre de la categoria y el numero de productos que hay por cada categoria.
+
+	select * from product, category;
+    select 
+		c.CategoryName,
+        count(p.CategoryId) as 'Cantidad de Productos'
+	from category as c
+    inner join product as p on p.CategoryId = c.CategoryId 
+    group by c.CategoryName;
+    
+-- Ejercicio 29
+-- Seleccionar los 5 productos mas vendidos.
+
+	select * from product;
+    select * from orderdetail;
+    
+    select 
+		od.ProductId,
+		p.ProductName,
+        sum(od.Quantity) as Total
+	from orderdetail as od
+    inner join product as p on p.ProductId = od.ProductId
+    group by od.ProductId
+    order by Total desc
+    limit 5;
+        
+-- Ejercicio 30
+-- Seleccionar los jefes de los empleados.
+-- La tabla "jefes" no existe. Asimismo, no existe una relación con la tabla "empleados".
+
+	select * from employee;
+
