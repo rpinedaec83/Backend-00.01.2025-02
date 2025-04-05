@@ -1,28 +1,34 @@
 -- 1. Seleccionar los clientes que viven en el país de "usa"
 SELECT * 
-FROM customers 
-WHERE Country = 'USA';
+FROM customer 
+WHERE country = 'USA';
+
 -- 2. Seleccionar los proveedores que viven en la ciudad de "BERLIN"
 SELECT * 
-FROM suppliers 
-WHERE City = 'BERLIN';
+FROM supplier 
+WHERE city = 'BERLIN';
+
 -- 3. Seleccionar los empleados con código 3,5 y 8
 SELECT * 
-FROM employees 
-WHERE EmployeeID IN (3, 5, 8);
+FROM employee 
+WHERE employeeID IN (3, 5, 8);
+
 -- 4. Seleccionar los productos que tienen stock mayor que cero y son del proveedor 1,3 y 5
 SELECT * 
-FROM `products`
-WHERE `SupplierID` IN (1, 3, 5) 
-AND `Unit` > 0;
+FROM product 
+WHERE unitsInStock > 0 
+  AND supplierID IN (1, 3, 5);
+
 -- 5. Seleccionar los productos con precio mayor o igual a 20 y menor o igual a 90
 SELECT * 
-FROM `products`
-WHERE `Price` >= 20 AND `Price` <= 90;
--- 6. Mostrar las órdenes de compra entre las fechas 01/01/1997 al 15/07/1997
+FROM product 
+WHERE unitPrice BETWEEN 20 AND 90;
+
+-- 6. Mostrar las órdenes de compra entre las fechas 01/01/1997 al 15/07/1997 --
 SELECT * 
-FROM `orders`
-WHERE `OrderDate` BETWEEN '1997-01-01' AND '1997-07-15';
+FROM orders 
+WHERE orderDate BETWEEN '1997-01-01' AND '1997-07-15';
+
 -- 7. Mostrar las órdenes de compra hechas en el año 1997, que pertenecen a los empleados con códigos 1, 3, 4, 8
 SELECT * 
 FROM `orders`

@@ -1,1042 +1,6736 @@
--- Either:
---     Open MySQL Workbench.
---     Connect to your MySQL server.
---     Create a new database named Northwind.db.
---     Copy and paste the SQL below into the query window.
---     Execute the script to create the Northwind database.
--- Or:
---     Run the following command in a terminal window.
---     mysql
---     Copy and paste the SQL below into the terminal window to create the Northwind database.
+DROP DATABASE   /*!32312 IF EXISTS*/ Northwind;
 
-CREATE DATABASE IF NOT EXISTS Northwind;
+CREATE DATABASE Northwind  CHAR SET utf8 COLLATE utf8_bin ; 
+
+
 USE Northwind;
 
-DROP TABLE IF EXISTS OrderDetails;
-DROP TABLE IF EXISTS Orders;
-DROP TABLE IF EXISTS Products;
-DROP TABLE IF EXISTS Categories;
-DROP TABLE IF EXISTS Customers;
-DROP TABLE IF EXISTS Employees;
-DROP TABLE IF EXISTS Shippers;
-DROP TABLE IF EXISTS Suppliers;
+CREATE TABLE Category (
+  categoryId INT AUTO_INCREMENT NOT NULL
+  ,categoryName VARCHAR(15) NOT NULL
+  ,description TEXT NULL
+  ,picture BLOB NULL
+  ,PRIMARY KEY (categoryId)
+  ) ENGINE=INNODB;
 
-START TRANSACTION;
+CREATE TABLE Region (
+  regionId INT NOT NULL
+  ,regiondescription VARCHAR(50) NOT NULL
+  ,PRIMARY KEY (regionId)
+  ) ENGINE=INNODB;
 
-CREATE TABLE Categories
-(      
-    CategoryID INTEGER PRIMARY KEY AUTO_INCREMENT,
-    CategoryName VARCHAR(25),
-    Description VARCHAR(255)
-);
 
-CREATE TABLE Customers
-(      
-    CustomerID INTEGER PRIMARY KEY AUTO_INCREMENT,
-    CustomerName VARCHAR(50),
-    ContactName VARCHAR(50),
-    Address VARCHAR(50),
-    City VARCHAR(20),
-    PostalCode VARCHAR(10),
-    Country VARCHAR(15)
-);
+CREATE TABLE Territory (
+  territoryId VARCHAR(20) NOT NULL
+  ,territorydescription VARCHAR(50) NOT NULL
+  ,regionId INT NOT NULL
+  ,PRIMARY KEY (TerritoryId)
+  ,FOREIGN KEY (regionId)
+      REFERENCES Region(regionId)
+  ) ENGINE=INNODB;
 
-CREATE TABLE Employees
-(
-    EmployeeID INTEGER PRIMARY KEY AUTO_INCREMENT,
-    LastName VARCHAR(15),
-    FirstName VARCHAR(15),
-    BirthDate DATETIME,
-    Photo VARCHAR(25),
-    Notes VARCHAR(1024)
-);
+CREATE TABLE CustomerDemographics (
+  customerTypeId INT AUTO_INCREMENT NOT NULL
+  ,customerDesc TEXT NULL
+  ,PRIMARY KEY (customerTypeId)
+  ) ENGINE=INNODB;
 
-CREATE TABLE Shippers(
-    ShipperID INTEGER PRIMARY KEY AUTO_INCREMENT,
-    ShipperName VARCHAR(25),
-    Phone VARCHAR(15)
-);
+CREATE TABLE Customer (
+  custId INT AUTO_INCREMENT NOT NULL
+  ,companyName VARCHAR(40) NOT NULL
+  ,contactName VARCHAR(30) NULL
+  ,contactTitle VARCHAR(30) NULL
+  ,address VARCHAR(60) NULL
+  ,city VARCHAR(15) NULL
+  ,region VARCHAR(15) NULL
+  ,postalCode VARCHAR(10) NULL
+  ,country VARCHAR(15) NULL
+  ,phone VARCHAR(24) NULL
+  ,mobile VARCHAR(24) NULL
+  ,email VARCHAR(225) NULL
+  ,fax VARCHAR(24) NULL
+  ,PRIMARY KEY (CustId)
+  ) ENGINE=INNODB;
 
-CREATE TABLE Suppliers(
-    SupplierID INTEGER PRIMARY KEY AUTO_INCREMENT,
-    SupplierName VARCHAR(50),
-    ContactName VARCHAR(50),
-    Address VARCHAR(50),
-    City VARCHAR(20),
-    PostalCode VARCHAR(10),
-    Country VARCHAR(15),
-    Phone VARCHAR(15)
-);
 
-CREATE TABLE Products(
-    ProductID INTEGER PRIMARY KEY AUTO_INCREMENT,
-    ProductName VARCHAR(50),
-    SupplierID INTEGER,
-    CategoryID INTEGER,
-    Unit VARCHAR(25),
-    Price NUMERIC,
-	FOREIGN KEY (CategoryID) REFERENCES Categories (CategoryID),
-	FOREIGN KEY (SupplierID) REFERENCES Suppliers (SupplierID)
-);
+CREATE TABLE CustCustDemographics (
+  custId INT NOT NULL
+  ,customerTypeId INT NOT NULL
+  ,PRIMARY KEY (custId, customerTypeId)
+    ,FOREIGN KEY (custId)
+      REFERENCES Customer(custId)
+    ,FOREIGN KEY (customerTypeId)
+      REFERENCES CustomerDemographics(customerTypeId)
+  ) ENGINE=INNODB;
 
-CREATE TABLE Orders(
-    OrderID INTEGER PRIMARY KEY AUTO_INCREMENT,
-    CustomerID INTEGER,
-    EmployeeID INTEGER,
-    OrderDate DATETIME,
-    ShipperID INTEGER,
-    FOREIGN KEY (EmployeeID) REFERENCES Employees (EmployeeID),
-    FOREIGN KEY (CustomerID) REFERENCES Customers (CustomerID),
-    FOREIGN KEY (ShipperID) REFERENCES Shippers (ShipperID)
-);
 
-CREATE TABLE OrderDetails(
-    OrderDetailID INTEGER PRIMARY KEY AUTO_INCREMENT,
-    OrderID INTEGER,
-    ProductID INTEGER,
-    Quantity INTEGER,
-	FOREIGN KEY (OrderID) REFERENCES Orders (OrderID),
-	FOREIGN KEY (ProductID) REFERENCES Products (ProductID)
-);
 
-INSERT INTO Categories VALUES(1,'Beverages','Soft drinks, coffees, teas, beers, and ales');
-INSERT INTO Categories VALUES(2,'Condiments','Sweet and savory sauces, relishes, spreads, and seasonings');
-INSERT INTO Categories VALUES(3,'Confections','Desserts, candies, and sweet breads');
-INSERT INTO Categories VALUES(4,'Dairy Products','Cheeses');
-INSERT INTO Categories VALUES(5,'Grains/Cereals','Breads, crackers, pasta, and cereal');
-INSERT INTO Categories VALUES(6,'Meat/Poultry','Prepared meats');
-INSERT INTO Categories VALUES(7,'Produce','Dried fruit and bean curd');
-INSERT INTO Categories VALUES(8,'Seafood','Seaweed and fish');
 
-INSERT INTO Customers VALUES(1,'Alfreds Futterkiste','Maria Anders','Obere Str. 57','Berlin','12209','Germany');
-INSERT INTO Customers VALUES(2,'Ana Trujillo Emparedados y helados','Ana Trujillo','Avda. de la Constitución 2222','México D.F.','5021','Mexico');
-INSERT INTO Customers VALUES(3,'Antonio Moreno Taquería','Antonio Moreno','Mataderos 2312','México D.F.','5023','Mexico');
-INSERT INTO Customers VALUES(4,'Around the Horn','Thomas Hardy','120 Hanover Sq.','London','WA1 1DP','UK');
-INSERT INTO Customers VALUES(5,'Berglunds snabbköp','Christina Berglund','Berguvsvägen 8','Luleå','S-958 22','Sweden');
-INSERT INTO Customers VALUES(6,'Blauer See Delikatessen','Hanna Moos','Forsterstr. 57','Mannheim','68306','Germany');
-INSERT INTO Customers VALUES(7,'Blondel père et fils','Frédérique Citeaux','24, place Kléber','Strasbourg','67000','France');
-INSERT INTO Customers VALUES(8,'Bólido Comidas preparadas','Martín Sommer','C/ Araquil, 67','Madrid','28023','Spain');
-INSERT INTO Customers VALUES(9,'Bon app''''','Laurence Lebihans','12, rue des Bouchers','Marseille','13008','France');
-INSERT INTO Customers VALUES(10,'Bottom-Dollar Marketse','Elizabeth Lincoln','23 Tsawassen Blvd.','Tsawassen','T2F 8M4','Canada');
-INSERT INTO Customers VALUES(11,'B''''s Beverages','Victoria Ashworth','Fauntleroy Circus','London','EC2 5NT','UK');
-INSERT INTO Customers VALUES(12,'Cactus Comidas para llevar','Patricio Simpson','Cerrito 333','Buenos Aires','1010','Argentina');
-INSERT INTO Customers VALUES(13,'Centro comercial Moctezuma','Francisco Chang','Sierras de Granada 9993','México D.F.','5022','Mexico');
-INSERT INTO Customers VALUES(14,'Chop-suey Chinese','Yang Wang','Hauptstr. 29','Bern','3012','Switzerland');
-INSERT INTO Customers VALUES(15,'Comércio Mineiro','Pedro Afonso','Av. dos Lusíadas, 23','São Paulo','05432-043','Brazil');
-INSERT INTO Customers VALUES(16,'Consolidated Holdings','Elizabeth Brown','Berkeley Gardens 12 Brewery','London','WX1 6LT','UK');
-INSERT INTO Customers VALUES(17,'Drachenblut Delikatessend','Sven Ottlieb','Walserweg 21','Aachen','52066','Germany');
-INSERT INTO Customers VALUES(18,'Du monde entier','Janine Labrune','67, rue des Cinquante Otages','Nantes','44000','France');
-INSERT INTO Customers VALUES(19,'Eastern Connection','Ann Devon','35 King George','London','WX3 6FW','UK');
-INSERT INTO Customers VALUES(20,'Ernst Handel','Roland Mendel','Kirchgasse 6','Graz','8010','Austria');
-INSERT INTO Customers VALUES(21,'Familia Arquibaldo','Aria Cruz','Rua Orós, 92','São Paulo','05442-030','Brazil');
-INSERT INTO Customers VALUES(22,'FISSA Fabrica Inter. Salchichas S.A.','Diego Roel','C/ Moralzarzal, 86','Madrid','28034','Spain');
-INSERT INTO Customers VALUES(23,'Folies gourmandes','Martine Rancé','184, chaussée de Tournai','Lille','59000','France');
-INSERT INTO Customers VALUES(24,'Folk och fä HB','Maria Larsson','Åkergatan 24','Bräcke','S-844 67','Sweden');
-INSERT INTO Customers VALUES(25,'Frankenversand','Peter Franken','Berliner Platz 43','München','80805','Germany');
-INSERT INTO Customers VALUES(26,'France restauration','Carine Schmitt','54, rue Royale','Nantes','44000','France');
-INSERT INTO Customers VALUES(27,'Franchi S.p.A.','Paolo Accorti','Via Monte Bianco 34','Torino','10100','Italy');
-INSERT INTO Customers VALUES(28,'Furia Bacalhau e Frutos do Mar','Lino Rodriguez','Jardim das rosas n. 32','Lisboa','1675','Portugal');
-INSERT INTO Customers VALUES(29,'Galería del gastrónomo','Eduardo Saavedra','Rambla de Cataluña, 23','Barcelona','8022','Spain');
-INSERT INTO Customers VALUES(30,'Godos Cocina Típica','José Pedro Freyre','C/ Romero, 33','Sevilla','41101','Spain');
-INSERT INTO Customers VALUES(31,'Gourmet Lanchonetes','André Fonseca','Av. Brasil, 442','Campinas','04876-786','Brazil');
-INSERT INTO Customers VALUES(32,'Great Lakes Food Market','Howard Snyder','2732 Baker Blvd.','Eugene','97403','USA');
-INSERT INTO Customers VALUES(33,'GROSELLA-Restaurante','Manuel Pereira','5ª Ave. Los Palos Grandes','Caracas','1081','Venezuela');
-INSERT INTO Customers VALUES(34,'Hanari Carnes','Mario Pontes','Rua do Paço, 67','Rio de Janeiro','05454-876','Brazil');
-INSERT INTO Customers VALUES(35,'HILARIÓN-Abastos','Carlos Hernández','Carrera 22 con Ave. Carlos Soublette #8-35','San Cristóbal','5022','Venezuela');
-INSERT INTO Customers VALUES(36,'Hungry Coyote Import Store','Yoshi Latimer','City Center Plaza 516 Main St.','Elgin','97827','USA');
-INSERT INTO Customers VALUES(37,'Hungry Owl All-Night Grocers','Patricia McKenna','8 Johnstown Road','Cork','','Ireland');
-INSERT INTO Customers VALUES(38,'Island Trading','Helen Bennett','Garden House Crowther Way','Cowes','PO31 7PJ','UK');
-INSERT INTO Customers VALUES(39,'Königlich Essen','Philip Cramer','Maubelstr. 90','Brandenburg','14776','Germany');
-INSERT INTO Customers VALUES(40,'La corne d''''abondance','Daniel Tonini','67, avenue de l''''Europe','Versailles','78000','France');
-INSERT INTO Customers VALUES(41,'La maison d''''Asie','Annette Roulet','1 rue Alsace-Lorraine','Toulouse','31000','France');
-INSERT INTO Customers VALUES(42,'Laughing Bacchus Wine Cellars','Yoshi Tannamuri','1900 Oak St.','Vancouver','V3F 2K1','Canada');
-INSERT INTO Customers VALUES(43,'Lazy K Kountry Store','John Steel','12 Orchestra Terrace','Walla Walla','99362','USA');
-INSERT INTO Customers VALUES(44,'Lehmanns Marktstand','Renate Messner','Magazinweg 7','Frankfurt a.M.','60528','Germany');
-INSERT INTO Customers VALUES(45,'Let''''s Stop N Shop','Jaime Yorres','87 Polk St. Suite 5','San Francisco','94117','USA');
-INSERT INTO Customers VALUES(46,'LILA-Supermercado','Carlos González','Carrera 52 con Ave. Bolívar #65-98 Llano Largo','Barquisimeto','3508','Venezuela');
-INSERT INTO Customers VALUES(47,'LINO-Delicateses','Felipe Izquierdo','Ave. 5 de Mayo Porlamar','I. de Margarita','4980','Venezuela');
-INSERT INTO Customers VALUES(48,'Lonesome Pine Restaurant','Fran Wilson','89 Chiaroscuro Rd.','Portland','97219','USA');
-INSERT INTO Customers VALUES(49,'Magazzini Alimentari Riuniti','Giovanni Rovelli','Via Ludovico il Moro 22','Bergamo','24100','Italy');
-INSERT INTO Customers VALUES(50,'Maison Dewey','Catherine Dewey','Rue Joseph-Bens 532','Bruxelles','B-1180','Belgium');
-INSERT INTO Customers VALUES(51,'Mère Paillarde','Jean Fresnière','43 rue St. Laurent','Montréal','H1J 1C3','Canada');
-INSERT INTO Customers VALUES(52,'Morgenstern Gesundkost','Alexander Feuer','Heerstr. 22','Leipzig','4179','Germany');
-INSERT INTO Customers VALUES(53,'North/South','Simon Crowther','South House 300 Queensbridge','London','SW7 1RZ','UK');
-INSERT INTO Customers VALUES(54,'Océano Atlántico Ltda.','Yvonne Moncada','Ing. Gustavo Moncada 8585 Piso 20-A','Buenos Aires','1010','Argentina');
-INSERT INTO Customers VALUES(55,'Old World Delicatessen','Rene Phillips','2743 Bering St.','Anchorage','99508','USA');
-INSERT INTO Customers VALUES(56,'Ottilies Käseladen','Henriette Pfalzheim','Mehrheimerstr. 369','Köln','50739','Germany');
-INSERT INTO Customers VALUES(57,'Paris spécialités','Marie Bertrand','265, boulevard Charonne','Paris','75012','France');
-INSERT INTO Customers VALUES(58,'Pericles Comidas clásicas','Guillermo Fernández','Calle Dr. Jorge Cash 321','México D.F.','5033','Mexico');
-INSERT INTO Customers VALUES(59,'Piccolo und mehr','Georg Pipps','Geislweg 14','Salzburg','5020','Austria');
-INSERT INTO Customers VALUES(60,'Princesa Isabel Vinhoss','Isabel de Castro','Estrada da saúde n. 58','Lisboa','1756','Portugal');
-INSERT INTO Customers VALUES(61,'Que Delícia','Bernardo Batista','Rua da Panificadora, 12','Rio de Janeiro','02389-673','Brazil');
-INSERT INTO Customers VALUES(62,'Queen Cozinha','Lúcia Carvalho','Alameda dos Canàrios, 891','São Paulo','05487-020','Brazil');
-INSERT INTO Customers VALUES(63,'QUICK-Stop','Horst Kloss','Taucherstraße 10','Cunewalde','1307','Germany');
-INSERT INTO Customers VALUES(64,'Rancho grande','Sergio Gutiérrez','Av. del Libertador 900','Buenos Aires','1010','Argentina');
-INSERT INTO Customers VALUES(65,'Rattlesnake Canyon Grocery','Paula Wilson','2817 Milton Dr.','Albuquerque','87110','USA');
-INSERT INTO Customers VALUES(66,'Reggiani Caseifici','Maurizio Moroni','Strada Provinciale 124','Reggio Emilia','42100','Italy');
-INSERT INTO Customers VALUES(67,'Ricardo Adocicados','Janete Limeira','Av. Copacabana, 267','Rio de Janeiro','02389-890','Brazil');
-INSERT INTO Customers VALUES(68,'Richter Supermarkt','Michael Holz','Grenzacherweg 237','Genève','1203','Switzerland');
-INSERT INTO Customers VALUES(69,'Romero y tomillo','Alejandra Camino','Gran Vía, 1','Madrid','28001','Spain');
-INSERT INTO Customers VALUES(70,'Santé Gourmet','Jonas Bergulfsen','Erling Skakkes gate 78','Stavern','4110','Norway');
-INSERT INTO Customers VALUES(71,'Save-a-lot Markets','Jose Pavarotti','187 Suffolk Ln.','Boise','83720','USA');
-INSERT INTO Customers VALUES(72,'Seven Seas Imports','Hari Kumar','90 Wadhurst Rd.','London','OX15 4NB','UK');
-INSERT INTO Customers VALUES(73,'Simons bistro','Jytte Petersen','Vinbæltet 34','København','1734','Denmark');
-INSERT INTO Customers VALUES(74,'Spécialités du monde','Dominique Perrier','25, rue Lauriston','Paris','75016','France');
-INSERT INTO Customers VALUES(75,'Split Rail Beer & Ale','Art Braunschweiger','P.O. Box 555','Lander','82520','USA');
-INSERT INTO Customers VALUES(76,'Suprêmes délices','Pascale Cartrain','Boulevard Tirou, 255','Charleroi','B-6000','Belgium');
-INSERT INTO Customers VALUES(77,'The Big Cheese','Liz Nixon','89 Jefferson Way Suite 2','Portland','97201','USA');
-INSERT INTO Customers VALUES(78,'The Cracker Box','Liu Wong','55 Grizzly Peak Rd.','Butte','59801','USA');
-INSERT INTO Customers VALUES(79,'Toms Spezialitäten','Karin Josephs','Luisenstr. 48','Münster','44087','Germany');
-INSERT INTO Customers VALUES(80,'Tortuga Restaurante','Miguel Angel Paolino','Avda. Azteca 123','México D.F.','5033','Mexico');
-INSERT INTO Customers VALUES(81,'Tradição Hipermercados','Anabela Domingues','Av. Inês de Castro, 414','São Paulo','05634-030','Brazil');
-INSERT INTO Customers VALUES(82,'Trail''''s Head Gourmet Provisioners','Helvetius Nagy','722 DaVinci Blvd.','Kirkland','98034','USA');
-INSERT INTO Customers VALUES(83,'Vaffeljernet','Palle Ibsen','Smagsløget 45','Århus','8200','Denmark');
-INSERT INTO Customers VALUES(84,'Victuailles en stock','Mary Saveley','2, rue du Commerce','Lyon','69004','France');
-INSERT INTO Customers VALUES(85,'Vins et alcools Chevalier','Paul Henriot','59 rue de l''''Abbaye','Reims','51100','France');
-INSERT INTO Customers VALUES(86,'Die Wandernde Kuh','Rita Müller','Adenauerallee 900','Stuttgart','70563','Germany');
-INSERT INTO Customers VALUES(87,'Wartian Herkku','Pirkko Koskitalo','Torikatu 38','Oulu','90110','Finland');
-INSERT INTO Customers VALUES(88,'Wellington Importadora','Paula Parente','Rua do Mercado, 12','Resende','08737-363','Brazil');
-INSERT INTO Customers VALUES(89,'White Clover Markets','Karl Jablonski','305 - 14th Ave. S. Suite 3B','Seattle','98128','USA');
-INSERT INTO Customers VALUES(90,'Wilman Kala','Matti Karttunen','Keskuskatu 45','Helsinki','21240','Finland');
-INSERT INTO Customers VALUES(91,'Wolski','Zbyszek','ul. Filtrowa 68','Walla','01-012','Poland');
+CREATE TABLE Employee (
+  employeeId INT AUTO_INCREMENT NOT NULL
+  ,lastname VARCHAR(20) NOT NULL
+  ,firstname VARCHAR(10) NOT NULL
+  ,title VARCHAR(30) NULL
+  ,titleOfCourtesy VARCHAR(25) NULL
+  ,birthDate DATETIME NULL
+  ,hireDate DATETIME NULL
+  ,address VARCHAR(60) NULL
+  ,city VARCHAR(15) NULL
+  ,region VARCHAR(15) NULL
+  ,postalCode VARCHAR(10) NULL
+  ,country VARCHAR(15) NULL
+  ,phone VARCHAR(24) NULL
+  ,extension VARCHAR(4) NULL
+  ,mobile VARCHAR(24) NULL
+  ,email VARCHAR(225) NULL
+  ,photo BLOB NULL
+  ,notes BLOB NULL
+  ,mgrId INT NULL
+  ,photoPath VARCHAR(255) NULL
+  ,PRIMARY KEY (employeeId)
+  ) ENGINE=INNODB;
 
-INSERT INTO Employees VALUES(1,'Davolio','Nancy','1968-12-08','EmpID1.pic','Education includes a BA in psychology from Colorado State University. She also completed (The Art of the Cold Call). Nancy is a member of ''Toastmasters International''.');
-INSERT INTO Employees VALUES(2,'Fuller','Andrew','1952-02-19','EmpID2.pic','Andrew received his BTS commercial and a Ph.D. in international marketing from the University of Dallas. He is fluent in French and Italian and reads German. He joined the company as a sales representative, was promoted to sales manager and was then named vice president of sales. Andrew is a member of the Sales Management Roundtable, the Seattle Chamber of Commerce, and the Pacific Rim Importers Association.');
-INSERT INTO Employees VALUES(3,'Leverling','Janet','1963-08-30','EmpID3.pic','Janet has a BS degree in chemistry from Boston College). She has also completed a certificate program in food retailing management. Janet was hired as a sales associate and was promoted to sales representative.');
-INSERT INTO Employees VALUES(4,'Peacock','Margaret','1958-09-19','EmpID4.pic','Margaret holds a BA in English literature from Concordia College and an MA from the American Institute of Culinary Arts. She was temporarily assigned to the London office before returning to her permanent post in Seattle.');
-INSERT INTO Employees VALUES(5,'Buchanan','Steven','1955-03-04','EmpID5.pic','Steven Buchanan graduated from St. Andrews University, Scotland, with a BSC degree. Upon joining the company as a sales representative, he spent 6 months in an orientation program at the Seattle office and then returned to his permanent post in London, where he was promoted to sales manager. Mr. Buchanan has completed the courses ''Successful Telemarketing'' and ''International Sales Management''. He is fluent in French.');
-INSERT INTO Employees VALUES(6,'Suyama','Michael','1963-07-02','EmpID6.pic','Michael is a graduate of Sussex University (MA, economics) and the University of California at Los Angeles (MBA, marketing). He has also taken the courses ''Multi-Cultural Selling'' and ''Time Management for the Sales Professional''. He is fluent in Japanese and can read and write French, Portuguese, and Spanish.');
-INSERT INTO Employees VALUES(7,'King','Robert','1960-05-29','EmpID7.pic','Robert King served in the Peace Corps and traveled extensively before completing his degree in English at the University of Michigan and then joining the company. After completing a course entitled ''Selling in Europe'', he was transferred to the London office.');
-INSERT INTO Employees VALUES(8,'Callahan','Laura','1958-01-09','EmpID8.pic','Laura received a BA in psychology from the University of Washington. She has also completed a course in business French. She reads and writes French.');
-INSERT INTO Employees VALUES(9,'Dodsworth','Anne','1969-07-02','EmpID9.pic','Anne has a BA degree in English from St. Lawrence College. She is fluent in French and German.');
-INSERT INTO Employees VALUES(10,'West','Adam','1928-09-19','EmpID10.pic','An old chum.');
+CREATE TABLE EmployeeTerritory (
+  employeeId  INT AUTO_INCREMENT NOT NULL
+  ,territoryId VARCHAR(20) NOT NULL
+  ,PRIMARY KEY (employeeId, territoryId)
+  ,FOREIGN KEY (employeeId)
+      REFERENCES Employee(employeeId)
+  ,FOREIGN KEY (territoryId)
+      REFERENCES Territory(territoryId)    
+  ) ENGINE=INNODB;
 
-INSERT INTO Shippers VALUES(1, 'Speedy Express', '(503) 555-9831');
-INSERT INTO Shippers VALUES(2, 'United Package', '(503) 555-3199');
-INSERT INTO Shippers VALUES(3, 'Federal Shipping', '(503) 555-9931');
+CREATE TABLE Supplier (
+  supplierId INT AUTO_INCREMENT NOT NULL
+  ,companyName VARCHAR(40) NOT NULL
+  ,contactName VARCHAR(30) NULL
+  ,contactTitle VARCHAR(30) NULL
+  ,address VARCHAR(60) NULL
+  ,city VARCHAR(15) NULL
+  ,region VARCHAR(15) NULL
+  ,postalCode VARCHAR(10) NULL
+  ,country VARCHAR(15) NULL
+  ,phone VARCHAR(24) NULL
+  ,email VARCHAR(225) NULL
+  ,fax VARCHAR(24) NULL
+  ,HomePage TEXT NULL
+  ,PRIMARY KEY (supplierId)
+  ) ENGINE=INNODB;
 
-INSERT INTO Suppliers VALUES(1,'Exotic Liquid','Charlotte Cooper','49 Gilbert St.','Londona','EC1 4SD','UK','(171) 555-2222');
-INSERT INTO Suppliers VALUES(2,'New Orleans Cajun Delights','Shelley Burke','P.O. Box 78934','New Orleans','70117','USA','(100) 555-4822');
-INSERT INTO Suppliers VALUES(3,'Grandma Kelly''s Homestead','Regina Murphy','707 Oxford Rd.','Ann Arbor','48104','USA','(313) 555-5735');
-INSERT INTO Suppliers VALUES(4,'Tokyo Traders','Yoshi Nagase','9-8 Sekimai Musashino-shi','Tokyo','100','Japan','(03) 3555-5011');
-INSERT INTO Suppliers VALUES(5,'Cooperativa de Quesos ''Las Cabras''','Antonio del Valle Saavedra','Calle del Rosal 4','Oviedo','33007','Spain','(98) 598 76 54');
-INSERT INTO Suppliers VALUES(6,'Mayumi''s','Mayumi Ohno','92 Setsuko Chuo-ku','Osaka','545','Japan','(06) 431-7877');
-INSERT INTO Suppliers VALUES(7,'Pavlova, Ltd.','Ian Devling','74 Rose St. Moonie Ponds','Melbourne','3058','Australia','(03) 444-2343');
-INSERT INTO Suppliers VALUES(8,'Specialty Biscuits, Ltd.','Peter Wilson','29 King''s Way','Manchester','M14 GSD','UK','(161) 555-4448');
-INSERT INTO Suppliers VALUES(9,'PB Knäckebröd AB','Lars Peterson','Kaloadagatan 13','Göteborg','S-345 67','Sweden','031-987 65 43');
-INSERT INTO Suppliers VALUES(10,'Refrescos Americanas LTDA','Carlos Diaz','Av. das Americanas 12.890','São Paulo','5442','Brazil','(11) 555 4640');
-INSERT INTO Suppliers VALUES(11,'Heli Süßwaren GmbH & Co. KG','Petra Winkler','Tiergartenstraße 5','Berlin','10785','Germany','(010) 9984510');
-INSERT INTO Suppliers VALUES(12,'Plutzer Lebensmittelgroßmärkte AG','Martin Bein','Bogenallee 51','Frankfurt','60439','Germany','(069) 992755');
-INSERT INTO Suppliers VALUES(13,'Nord-Ost-Fisch Handelsgesellschaft mbH','Sven Petersen','Frahmredder 112a','Cuxhaven','27478','Germany','(04721) 8713');
-INSERT INTO Suppliers VALUES(14,'Formaggi Fortini s.r.l.','Elio Rossi','Viale Dante, 75','Ravenna','48100','Italy','(0544) 60323');
-INSERT INTO Suppliers VALUES(15,'Norske Meierier','Beate Vileid','Hatlevegen 5','Sandvika','1320','Norway','(0)2-953010');
-INSERT INTO Suppliers VALUES(16,'Bigfoot Breweries','Cheryl Saylor','3400 - 8th Avenue Suite 210','Bend','97101','USA','(503) 555-9931');
-INSERT INTO Suppliers VALUES(17,'Svensk Sjöföda AB','Michael Björn','Brovallavägen 231','Stockholm','S-123 45','Sweden','08-123 45 67');
-INSERT INTO Suppliers VALUES(18,'Aux joyeux ecclésiastiques','Guylène Nodier','203, Rue des Francs-Bourgeois','Paris','75004','France','(1) 03.83.00.68');
-INSERT INTO Suppliers VALUES(19,'New England Seafood Cannery','Robb Merchant','Order Processing Dept. 2100 Paul Revere Blvd.','Boston','2134','USA','(617) 555-3267');
-INSERT INTO Suppliers VALUES(20,'Leka Trading','Chandra Leka','471 Serangoon Loop, Suite #402','Singapore','512','Singapore','555-8787');
-INSERT INTO Suppliers VALUES(21,'Lyngbysild','Niels Petersen','Lyngbysild Fiskebakken 10','Lyngby','2800','Denmark','43844108');
-INSERT INTO Suppliers VALUES(22,'Zaanse Snoepfabriek','Dirk Luchte','Verkoop Rijnweg 22','Zaandam','9999 ZZ','Netherlands','(12345) 1212');
-INSERT INTO Suppliers VALUES(23,'Karkki Oy','Anne Heikkonen','Valtakatu 12','Lappeenranta','53120','Finland','(953) 10956');
-INSERT INTO Suppliers VALUES(24,'G''day, Mate','Wendy Mackenzie','170 Prince Edward Parade Hunter''s Hill','Sydney','2042','Australia','(02) 555-5914');
-INSERT INTO Suppliers VALUES(25,'Ma Maison','Jean-Guy Lauzon','2960 Rue St. Laurent','Montréal','H1J 1C3','Canada','(514) 555-9022');
-INSERT INTO Suppliers VALUES(26,'Pasta Buttini s.r.l.','Giovanni Giudici','Via dei Gelsomini, 153','Salerno','84100','Italy','(089) 6547665');
-INSERT INTO Suppliers VALUES(27,'Escargots Nouveaux','Marie Delamare','22, rue H. Voiron','Montceau','71300','France','85.57.00.07');
-INSERT INTO Suppliers VALUES(28,'Gai pâturage','Eliane Noz','Bat. B 3, rue des Alpes','Annecy','74000','France','38.76.98.06');
-INSERT INTO Suppliers VALUES(29,'Forêts d''érables','Chantal Goulet','148 rue Chasseur','Ste-Hyacinthe','J2S 7S8','Canada','(514) 555-2955');
 
-INSERT INTO Products VALUES(1,'Chais',1,1,'10 boxes x 20 bags',18);
-INSERT INTO Products VALUES(2,'Chang',1,1,'24 - 12 oz bottles',19);
-INSERT INTO Products VALUES(3,'Aniseed Syrup',1,2,'12 - 550 ml bottles',10);
-INSERT INTO Products VALUES(4,'Chef Anton''s Cajun Seasoning',2,2,'48 - 6 oz jars',22);
-INSERT INTO Products VALUES(5,'Chef Anton''s Gumbo Mix',2,2,'36 boxes',21.35);
-INSERT INTO Products VALUES(6,'Grandma''s Boysenberry Spread',3,2,'12 - 8 oz jars',25);
-INSERT INTO Products VALUES(7,'Uncle Bob''s Organic Dried Pears',3,7,'12 - 1 lb pkgs.',30);
-INSERT INTO Products VALUES(8,'Northwoods Cranberry Sauce',3,2,'12 - 12 oz jars',40);
-INSERT INTO Products VALUES(9,'Mishi Kobe Niku',4,6,'18 - 500 g pkgs.',97);
-INSERT INTO Products VALUES(10,'Ikura',4,8,'12 - 200 ml jars',31);
-INSERT INTO Products VALUES(11,'Queso Cabrales',5,4,'1 kg pkg.',21);
-INSERT INTO Products VALUES(12,'Queso Manchego La Pastora',5,4,'10 - 500 g pkgs.',38);
-INSERT INTO Products VALUES(13,'Konbu',6,8,'2 kg box',6);
-INSERT INTO Products VALUES(14,'Tofu',6,7,'40 - 100 g pkgs.',23.25);
-INSERT INTO Products VALUES(15,'Genen Shouyu',6,2,'24 - 250 ml bottles',15.5);
-INSERT INTO Products VALUES(16,'Pavlova',7,3,'32 - 500 g boxes',17.45);
-INSERT INTO Products VALUES(17,'Alice Mutton',7,6,'20 - 1 kg tins',39);
-INSERT INTO Products VALUES(18,'Carnarvon Tigers',7,8,'16 kg pkg.',62.5);
-INSERT INTO Products VALUES(19,'Teatime Chocolate Biscuits',8,3,'10 boxes x 12 pieces',9.2);
-INSERT INTO Products VALUES(20,'Sir Rodney''s Marmalade',8,3,'30 gift boxes',81);
-INSERT INTO Products VALUES(21,'Sir Rodney''s Scones',8,3,'24 pkgs. x 4 pieces',10);
-INSERT INTO Products VALUES(22,'Gustaf''s Knäckebröd',9,5,'24 - 500 g pkgs.',21);
-INSERT INTO Products VALUES(23,'Tunnbröd',9,5,'12 - 250 g pkgs.',9);
-INSERT INTO Products VALUES(24,'Guaraná Fantástica',10,1,'12 - 355 ml cans',4.5);
-INSERT INTO Products VALUES(25,'NuNuCa Nuß-Nougat-Creme',11,3,'20 - 450 g glasses',14);
-INSERT INTO Products VALUES(26,'Gumbär Gummibärchen',11,3,'100 - 250 g bags',31.23);
-INSERT INTO Products VALUES(27,'Schoggi Schokolade',11,3,'100 - 100 g pieces',43.9);
-INSERT INTO Products VALUES(28,'Rössle Sauerkraut',12,7,'25 - 825 g cans',45.6);
-INSERT INTO Products VALUES(29,'Thüringer Rostbratwurst',12,6,'50 bags x 30 sausgs.',123.79);
-INSERT INTO Products VALUES(30,'Nord-Ost Matjeshering',13,8,'10 - 200 g glasses',25.89);
-INSERT INTO Products VALUES(31,'Gorgonzola Telino',14,4,'12 - 100 g pkgs',12.5);
-INSERT INTO Products VALUES(32,'Mascarpone Fabioli',14,4,'24 - 200 g pkgs.',32);
-INSERT INTO Products VALUES(33,'Geitost',15,4,'500 g',2.5);
-INSERT INTO Products VALUES(34,'Sasquatch Ale',16,1,'24 - 12 oz bottles',14);
-INSERT INTO Products VALUES(35,'Steeleye Stout',16,1,'24 - 12 oz bottles',18);
-INSERT INTO Products VALUES(36,'Inlagd Sill',17,8,'24 - 250 g jars',19);
-INSERT INTO Products VALUES(37,'Gravad lax',17,8,'12 - 500 g pkgs.',26);
-INSERT INTO Products VALUES(38,'Côte de Blaye',18,1,'12 - 75 cl bottles',263.5);
-INSERT INTO Products VALUES(39,'Chartreuse verte',18,1,'750 cc per bottle',18);
-INSERT INTO Products VALUES(40,'Boston Crab Meat',19,8,'24 - 4 oz tins',18.4);
-INSERT INTO Products VALUES(41,'Jack''s New England Clam Chowder',19,8,'12 - 12 oz cans',9.65);
-INSERT INTO Products VALUES(42,'Singaporean Hokkien Fried Mee',20,5,'32 - 1 kg pkgs.',14);
-INSERT INTO Products VALUES(43,'Ipoh Coffee',20,1,'16 - 500 g tins',46);
-INSERT INTO Products VALUES(44,'Gula Malacca',20,2,'20 - 2 kg bags',19.45);
-INSERT INTO Products VALUES(45,'Røgede sild',21,8,'1k pkg.',9.5);
-INSERT INTO Products VALUES(46,'Spegesild',21,8,'4 - 450 g glasses',12);
-INSERT INTO Products VALUES(47,'Zaanse koeken',22,3,'10 - 4 oz boxes',9.5);
-INSERT INTO Products VALUES(48,'Chocolade',22,3,'10 pkgs.',12.75);
-INSERT INTO Products VALUES(49,'Maxilaku',23,3,'24 - 50 g pkgs.',20);
-INSERT INTO Products VALUES(50,'Valkoinen suklaa',23,3,'12 - 100 g bars',16.25);
-INSERT INTO Products VALUES(51,'Manjimup Dried Apples',24,7,'50 - 300 g pkgs.',53);
-INSERT INTO Products VALUES(52,'Filo Mix',24,5,'16 - 2 kg boxes',7);
-INSERT INTO Products VALUES(53,'Perth Pasties',24,6,'48 pieces',32.8);
-INSERT INTO Products VALUES(54,'Tourtière',25,6,'16 pies',7.45);
-INSERT INTO Products VALUES(55,'Pâté chinois',25,6,'24 boxes x 2 pies',24);
-INSERT INTO Products VALUES(56,'Gnocchi di nonna Alice',26,5,'24 - 250 g pkgs.',38);
-INSERT INTO Products VALUES(57,'Ravioli Angelo',26,5,'24 - 250 g pkgs.',19.5);
-INSERT INTO Products VALUES(58,'Escargots de Bourgogne',27,8,'24 pieces',13.25);
-INSERT INTO Products VALUES(59,'Raclette Courdavault',28,4,'5 kg pkg.',55);
-INSERT INTO Products VALUES(60,'Camembert Pierrot',28,4,'15 - 300 g rounds',34);
-INSERT INTO Products VALUES(61,'Sirop d''érable',29,2,'24 - 500 ml bottles',28.5);
-INSERT INTO Products VALUES(62,'Tarte au sucre',29,3,'48 pies',49.3);
-INSERT INTO Products VALUES(63,'Vegie-spread',7,2,'15 - 625 g jars',43.9);
-INSERT INTO Products VALUES(64,'Wimmers gute Semmelknödel',12,5,'20 bags x 4 pieces',33.25);
-INSERT INTO Products VALUES(65,'Louisiana Fiery Hot Pepper Sauce',2,2,'32 - 8 oz bottles',21.05);
-INSERT INTO Products VALUES(66,'Louisiana Hot Spiced Okra',2,2,'24 - 8 oz jars',17);
-INSERT INTO Products VALUES(67,'Laughing Lumberjack Lager',16,1,'24 - 12 oz bottles',14);
-INSERT INTO Products VALUES(68,'Scottish Longbreads',8,3,'10 boxes x 8 pieces',12.5);
-INSERT INTO Products VALUES(69,'Gudbrandsdalsost',15,4,'10 kg pkg.',36);
-INSERT INTO Products VALUES(70,'Outback Lager',7,1,'24 - 355 ml bottles',15);
-INSERT INTO Products VALUES(71,'Fløtemysost',15,4,'10 - 500 g pkgs.',21.5);
-INSERT INTO Products VALUES(72,'Mozzarella di Giovanni',14,4,'24 - 200 g pkgs.',34.8);
-INSERT INTO Products VALUES(73,'Röd Kaviar',17,8,'24 - 150 g jars',15);
-INSERT INTO Products VALUES(74,'Longlife Tofu',4,7,'5 kg pkg.',10);
-INSERT INTO Products VALUES(75,'Rhönbräu Klosterbier',12,1,'24 - 0.5 l bottles',7.75);
-INSERT INTO Products VALUES(76,'Lakkalikööri',23,1,'500 ml',18);
-INSERT INTO Products VALUES(77,'Original Frankfurter grüne Soße',12,2,'12 boxes',13);
 
-INSERT INTO Orders VALUES(10248,90,5,'1996-07-04',3);
-INSERT INTO Orders VALUES(10249,81,6,'1996-07-05',1);
-INSERT INTO Orders VALUES(10250,34,4,'1996-07-08',2);
-INSERT INTO Orders VALUES(10251,84,3,'1996-07-08',1);
-INSERT INTO Orders VALUES(10252,76,4,'1996-07-09',2);
-INSERT INTO Orders VALUES(10253,34,3,'1996-07-10',2);
-INSERT INTO Orders VALUES(10254,14,5,'1996-07-11',2);
-INSERT INTO Orders VALUES(10255,68,9,'1996-07-12',3);
-INSERT INTO Orders VALUES(10256,88,3,'1996-07-15',2);
-INSERT INTO Orders VALUES(10257,35,4,'1996-07-16',3);
-INSERT INTO Orders VALUES(10258,20,1,'1996-07-17',1);
-INSERT INTO Orders VALUES(10259,13,4,'1996-07-18',3);
-INSERT INTO Orders VALUES(10260,55,4,'1996-07-19',1);
-INSERT INTO Orders VALUES(10261,61,4,'1996-07-19',2);
-INSERT INTO Orders VALUES(10262,65,8,'1996-07-22',3);
-INSERT INTO Orders VALUES(10263,20,9,'1996-07-23',3);
-INSERT INTO Orders VALUES(10264,24,6,'1996-07-24',3);
-INSERT INTO Orders VALUES(10265,7,2,'1996-07-25',1);
-INSERT INTO Orders VALUES(10266,87,3,'1996-07-26',3);
-INSERT INTO Orders VALUES(10267,25,4,'1996-07-29',1);
-INSERT INTO Orders VALUES(10268,33,8,'1996-07-30',3);
-INSERT INTO Orders VALUES(10269,89,5,'1996-07-31',1);
-INSERT INTO Orders VALUES(10270,87,1,'1996-08-01',1);
-INSERT INTO Orders VALUES(10271,75,6,'1996-08-01',2);
-INSERT INTO Orders VALUES(10272,65,6,'1996-08-02',2);
-INSERT INTO Orders VALUES(10273,63,3,'1996-08-05',3);
-INSERT INTO Orders VALUES(10274,85,6,'1996-08-06',1);
-INSERT INTO Orders VALUES(10275,49,1,'1996-08-07',1);
-INSERT INTO Orders VALUES(10276,80,8,'1996-08-08',3);
-INSERT INTO Orders VALUES(10277,52,2,'1996-08-09',3);
-INSERT INTO Orders VALUES(10278,5,8,'1996-08-12',2);
-INSERT INTO Orders VALUES(10279,44,8,'1996-08-13',2);
-INSERT INTO Orders VALUES(10280,5,2,'1996-08-14',1);
-INSERT INTO Orders VALUES(10281,69,4,'1996-08-14',1);
-INSERT INTO Orders VALUES(10282,69,4,'1996-08-15',1);
-INSERT INTO Orders VALUES(10283,46,3,'1996-08-16',3);
-INSERT INTO Orders VALUES(10284,44,4,'1996-08-19',1);
-INSERT INTO Orders VALUES(10285,63,1,'1996-08-20',2);
-INSERT INTO Orders VALUES(10286,63,8,'1996-08-21',3);
-INSERT INTO Orders VALUES(10287,67,8,'1996-08-22',3);
-INSERT INTO Orders VALUES(10288,66,4,'1996-08-23',1);
-INSERT INTO Orders VALUES(10289,11,7,'1996-08-26',3);
-INSERT INTO Orders VALUES(10290,15,8,'1996-08-27',1);
-INSERT INTO Orders VALUES(10291,61,6,'1996-08-27',2);
-INSERT INTO Orders VALUES(10292,81,1,'1996-08-28',2);
-INSERT INTO Orders VALUES(10293,80,1,'1996-08-29',3);
-INSERT INTO Orders VALUES(10294,65,4,'1996-08-30',2);
-INSERT INTO Orders VALUES(10295,85,2,'1996-09-02',2);
-INSERT INTO Orders VALUES(10296,46,6,'1996-09-03',1);
-INSERT INTO Orders VALUES(10297,7,5,'1996-09-04',2);
-INSERT INTO Orders VALUES(10298,37,6,'1996-09-05',2);
-INSERT INTO Orders VALUES(10299,67,4,'1996-09-06',2);
-INSERT INTO Orders VALUES(10300,49,2,'1996-09-09',2);
-INSERT INTO Orders VALUES(10301,86,8,'1996-09-09',2);
-INSERT INTO Orders VALUES(10302,76,4,'1996-09-10',2);
-INSERT INTO Orders VALUES(10303,30,7,'1996-09-11',2);
-INSERT INTO Orders VALUES(10304,80,1,'1996-09-12',2);
-INSERT INTO Orders VALUES(10305,55,8,'1996-09-13',3);
-INSERT INTO Orders VALUES(10306,69,1,'1996-09-16',3);
-INSERT INTO Orders VALUES(10307,48,2,'1996-09-17',2);
-INSERT INTO Orders VALUES(10308,2,7,'1996-09-18',3);
-INSERT INTO Orders VALUES(10309,37,3,'1996-09-19',1);
-INSERT INTO Orders VALUES(10310,77,8,'1996-09-20',2);
-INSERT INTO Orders VALUES(10311,18,1,'1996-09-20',3);
-INSERT INTO Orders VALUES(10312,86,2,'1996-09-23',2);
-INSERT INTO Orders VALUES(10313,63,2,'1996-09-24',2);
-INSERT INTO Orders VALUES(10314,65,1,'1996-09-25',2);
-INSERT INTO Orders VALUES(10315,38,4,'1996-09-26',2);
-INSERT INTO Orders VALUES(10316,65,1,'1996-09-27',3);
-INSERT INTO Orders VALUES(10317,48,6,'1996-09-30',1);
-INSERT INTO Orders VALUES(10318,38,8,'1996-10-01',2);
-INSERT INTO Orders VALUES(10319,80,7,'1996-10-02',3);
-INSERT INTO Orders VALUES(10320,87,5,'1996-10-03',3);
-INSERT INTO Orders VALUES(10321,38,3,'1996-10-03',2);
-INSERT INTO Orders VALUES(10322,58,7,'1996-10-04',3);
-INSERT INTO Orders VALUES(10323,39,4,'1996-10-07',1);
-INSERT INTO Orders VALUES(10324,71,9,'1996-10-08',1);
-INSERT INTO Orders VALUES(10325,39,1,'1996-10-09',3);
-INSERT INTO Orders VALUES(10326,8,4,'1996-10-10',2);
-INSERT INTO Orders VALUES(10327,24,2,'1996-10-11',1);
-INSERT INTO Orders VALUES(10328,28,4,'1996-10-14',3);
-INSERT INTO Orders VALUES(10329,75,4,'1996-10-15',2);
-INSERT INTO Orders VALUES(10330,46,3,'1996-10-16',1);
-INSERT INTO Orders VALUES(10331,9,9,'1996-10-16',1);
-INSERT INTO Orders VALUES(10332,51,3,'1996-10-17',2);
-INSERT INTO Orders VALUES(10333,87,5,'1996-10-18',3);
-INSERT INTO Orders VALUES(10334,84,8,'1996-10-21',2);
-INSERT INTO Orders VALUES(10335,37,7,'1996-10-22',2);
-INSERT INTO Orders VALUES(10336,60,7,'1996-10-23',2);
-INSERT INTO Orders VALUES(10337,25,4,'1996-10-24',3);
-INSERT INTO Orders VALUES(10338,55,4,'1996-10-25',3);
-INSERT INTO Orders VALUES(10339,51,2,'1996-10-28',2);
-INSERT INTO Orders VALUES(10340,9,1,'1996-10-29',3);
-INSERT INTO Orders VALUES(10341,73,7,'1996-10-29',3);
-INSERT INTO Orders VALUES(10342,25,4,'1996-10-30',2);
-INSERT INTO Orders VALUES(10343,44,4,'1996-10-31',1);
-INSERT INTO Orders VALUES(10344,89,4,'1996-11-01',2);
-INSERT INTO Orders VALUES(10345,63,2,'1996-11-04',2);
-INSERT INTO Orders VALUES(10346,65,3,'1996-11-05',3);
-INSERT INTO Orders VALUES(10347,21,4,'1996-11-06',3);
-INSERT INTO Orders VALUES(10348,86,4,'1996-11-07',2);
-INSERT INTO Orders VALUES(10349,75,7,'1996-11-08',1);
-INSERT INTO Orders VALUES(10350,41,6,'1996-11-11',2);
-INSERT INTO Orders VALUES(10351,20,1,'1996-11-11',1);
-INSERT INTO Orders VALUES(10352,28,3,'1996-11-12',3);
-INSERT INTO Orders VALUES(10353,59,7,'1996-11-13',3);
-INSERT INTO Orders VALUES(10354,58,8,'1996-11-14',3);
-INSERT INTO Orders VALUES(10355,4,6,'1996-11-15',1);
-INSERT INTO Orders VALUES(10356,86,6,'1996-11-18',2);
-INSERT INTO Orders VALUES(10357,46,1,'1996-11-19',3);
-INSERT INTO Orders VALUES(10358,41,5,'1996-11-20',1);
-INSERT INTO Orders VALUES(10359,72,5,'1996-11-21',3);
-INSERT INTO Orders VALUES(10360,7,4,'1996-11-22',3);
-INSERT INTO Orders VALUES(10361,63,1,'1996-11-22',2);
-INSERT INTO Orders VALUES(10362,9,3,'1996-11-25',1);
-INSERT INTO Orders VALUES(10363,17,4,'1996-11-26',3);
-INSERT INTO Orders VALUES(10364,19,1,'1996-11-26',1);
-INSERT INTO Orders VALUES(10365,3,3,'1996-11-27',2);
-INSERT INTO Orders VALUES(10366,29,8,'1996-11-28',2);
-INSERT INTO Orders VALUES(10367,83,7,'1996-11-28',3);
-INSERT INTO Orders VALUES(10368,20,2,'1996-11-29',2);
-INSERT INTO Orders VALUES(10369,75,8,'1996-12-02',2);
-INSERT INTO Orders VALUES(10370,14,6,'1996-12-03',2);
-INSERT INTO Orders VALUES(10371,41,1,'1996-12-03',1);
-INSERT INTO Orders VALUES(10372,62,5,'1996-12-04',2);
-INSERT INTO Orders VALUES(10373,37,4,'1996-12-05',3);
-INSERT INTO Orders VALUES(10374,91,1,'1996-12-05',3);
-INSERT INTO Orders VALUES(10375,36,3,'1996-12-06',2);
-INSERT INTO Orders VALUES(10376,51,1,'1996-12-09',2);
-INSERT INTO Orders VALUES(10377,72,1,'1996-12-09',3);
-INSERT INTO Orders VALUES(10378,24,5,'1996-12-10',3);
-INSERT INTO Orders VALUES(10379,61,2,'1996-12-11',1);
-INSERT INTO Orders VALUES(10380,37,8,'1996-12-12',3);
-INSERT INTO Orders VALUES(10381,46,3,'1996-12-12',3);
-INSERT INTO Orders VALUES(10382,20,4,'1996-12-13',1);
-INSERT INTO Orders VALUES(10383,4,8,'1996-12-16',3);
-INSERT INTO Orders VALUES(10384,5,3,'1996-12-16',3);
-INSERT INTO Orders VALUES(10385,75,1,'1996-12-17',2);
-INSERT INTO Orders VALUES(10386,21,9,'1996-12-18',3);
-INSERT INTO Orders VALUES(10387,70,1,'1996-12-18',2);
-INSERT INTO Orders VALUES(10388,72,2,'1996-12-19',1);
-INSERT INTO Orders VALUES(10389,10,4,'1996-12-20',2);
-INSERT INTO Orders VALUES(10390,20,6,'1996-12-23',1);
-INSERT INTO Orders VALUES(10391,17,3,'1996-12-23',3);
-INSERT INTO Orders VALUES(10392,59,2,'1996-12-24',3);
-INSERT INTO Orders VALUES(10393,71,1,'1996-12-25',3);
-INSERT INTO Orders VALUES(10394,36,1,'1996-12-25',3);
-INSERT INTO Orders VALUES(10395,35,6,'1996-12-26',1);
-INSERT INTO Orders VALUES(10396,25,1,'1996-12-27',3);
-INSERT INTO Orders VALUES(10397,60,5,'1996-12-27',1);
-INSERT INTO Orders VALUES(10398,71,2,'1996-12-30',3);
-INSERT INTO Orders VALUES(10399,83,8,'1996-12-31',3);
-INSERT INTO Orders VALUES(10400,19,1,'1997-01-01',3);
-INSERT INTO Orders VALUES(10401,65,1,'1997-01-01',1);
-INSERT INTO Orders VALUES(10402,20,8,'1997-01-02',2);
-INSERT INTO Orders VALUES(10403,20,4,'1997-01-03',3);
-INSERT INTO Orders VALUES(10404,49,2,'1997-01-03',1);
-INSERT INTO Orders VALUES(10405,47,1,'1997-01-06',1);
-INSERT INTO Orders VALUES(10406,62,7,'1997-01-07',1);
-INSERT INTO Orders VALUES(10407,56,2,'1997-01-07',2);
-INSERT INTO Orders VALUES(10408,23,8,'1997-01-08',1);
-INSERT INTO Orders VALUES(10409,54,3,'1997-01-09',1);
-INSERT INTO Orders VALUES(10410,10,3,'1997-01-10',3);
-INSERT INTO Orders VALUES(10411,10,9,'1997-01-10',3);
-INSERT INTO Orders VALUES(10412,87,8,'1997-01-13',2);
-INSERT INTO Orders VALUES(10413,41,3,'1997-01-14',2);
-INSERT INTO Orders VALUES(10414,21,2,'1997-01-14',3);
-INSERT INTO Orders VALUES(10415,36,3,'1997-01-15',1);
-INSERT INTO Orders VALUES(10416,87,8,'1997-01-16',3);
-INSERT INTO Orders VALUES(10417,73,4,'1997-01-16',3);
-INSERT INTO Orders VALUES(10418,63,4,'1997-01-17',1);
-INSERT INTO Orders VALUES(10419,68,4,'1997-01-20',2);
-INSERT INTO Orders VALUES(10420,88,3,'1997-01-21',1);
-INSERT INTO Orders VALUES(10421,61,8,'1997-01-21',1);
-INSERT INTO Orders VALUES(10422,27,2,'1997-01-22',1);
-INSERT INTO Orders VALUES(10423,31,6,'1997-01-23',3);
-INSERT INTO Orders VALUES(10424,51,7,'1997-01-23',2);
-INSERT INTO Orders VALUES(10425,41,6,'1997-01-24',2);
-INSERT INTO Orders VALUES(10426,29,4,'1997-01-27',1);
-INSERT INTO Orders VALUES(10427,59,4,'1997-01-27',2);
-INSERT INTO Orders VALUES(10428,66,7,'1997-01-28',1);
-INSERT INTO Orders VALUES(10429,37,3,'1997-01-29',2);
-INSERT INTO Orders VALUES(10430,20,4,'1997-01-30',1);
-INSERT INTO Orders VALUES(10431,10,4,'1997-01-30',2);
-INSERT INTO Orders VALUES(10432,75,3,'1997-01-31',2);
-INSERT INTO Orders VALUES(10433,60,3,'1997-02-03',3);
-INSERT INTO Orders VALUES(10434,24,3,'1997-02-03',2);
-INSERT INTO Orders VALUES(10435,16,8,'1997-02-04',2);
-INSERT INTO Orders VALUES(10436,7,3,'1997-02-05',2);
-INSERT INTO Orders VALUES(10437,87,8,'1997-02-05',1);
-INSERT INTO Orders VALUES(10438,79,3,'1997-02-06',2);
-INSERT INTO Orders VALUES(10439,51,6,'1997-02-07',3);
-INSERT INTO Orders VALUES(10440,71,4,'1997-02-10',2);
-INSERT INTO Orders VALUES(10441,55,3,'1997-02-10',2);
-INSERT INTO Orders VALUES(10442,20,3,'1997-02-11',2);
-INSERT INTO Orders VALUES(10443,66,8,'1997-02-12',1);
+CREATE TABLE Product (
+  productId INT AUTO_INCREMENT NOT NULL
+  ,productName VARCHAR(40) NOT NULL
+  ,supplierId INT NULL
+  ,categoryId INT NULL
+  ,quantityPerUnit VARCHAR(20) NULL
+  ,unitPrice DECIMAL(10, 2) NULL
+  ,unitsInStock SMALLINT NULL
+  ,unitsOnOrder SMALLINT NULL
+  ,reorderLevel SMALLINT NULL
+  ,discontinued CHAR(1) NOT NULL
+  ,PRIMARY KEY (ProductId)
+  ,FOREIGN KEY (supplierId)
+      REFERENCES Supplier(supplierId)
+  ,FOREIGN KEY (categoryId)
+      REFERENCES Category(categoryId)
+  ) ENGINE=INNODB;
 
-INSERT INTO OrderDetails VALUES(1,10248,11,12);
-INSERT INTO OrderDetails VALUES(2,10248,42,10);
-INSERT INTO OrderDetails VALUES(3,10248,72,5);
-INSERT INTO OrderDetails VALUES(4,10249,14,9);
-INSERT INTO OrderDetails VALUES(5,10249,51,40);
-INSERT INTO OrderDetails VALUES(6,10250,41,10);
-INSERT INTO OrderDetails VALUES(7,10250,51,35);
-INSERT INTO OrderDetails VALUES(8,10250,65,15);
-INSERT INTO OrderDetails VALUES(9,10251,22,6);
-INSERT INTO OrderDetails VALUES(10,10251,57,15);
-INSERT INTO OrderDetails VALUES(11,10251,65,20);
-INSERT INTO OrderDetails VALUES(12,10252,20,40);
-INSERT INTO OrderDetails VALUES(13,10252,33,25);
-INSERT INTO OrderDetails VALUES(14,10252,60,40);
-INSERT INTO OrderDetails VALUES(15,10253,31,20);
-INSERT INTO OrderDetails VALUES(16,10253,39,42);
-INSERT INTO OrderDetails VALUES(17,10253,49,40);
-INSERT INTO OrderDetails VALUES(18,10254,24,15);
-INSERT INTO OrderDetails VALUES(19,10254,55,21);
-INSERT INTO OrderDetails VALUES(20,10254,74,21);
-INSERT INTO OrderDetails VALUES(21,10255,2,20);
-INSERT INTO OrderDetails VALUES(22,10255,16,35);
-INSERT INTO OrderDetails VALUES(23,10255,36,25);
-INSERT INTO OrderDetails VALUES(24,10255,59,30);
-INSERT INTO OrderDetails VALUES(25,10256,53,15);
-INSERT INTO OrderDetails VALUES(26,10256,77,12);
-INSERT INTO OrderDetails VALUES(27,10257,27,25);
-INSERT INTO OrderDetails VALUES(28,10257,39,6);
-INSERT INTO OrderDetails VALUES(29,10257,77,15);
-INSERT INTO OrderDetails VALUES(30,10258,2,50);
-INSERT INTO OrderDetails VALUES(31,10258,5,65);
-INSERT INTO OrderDetails VALUES(32,10258,32,6);
-INSERT INTO OrderDetails VALUES(33,10259,21,10);
-INSERT INTO OrderDetails VALUES(34,10259,37,1);
-INSERT INTO OrderDetails VALUES(35,10260,41,16);
-INSERT INTO OrderDetails VALUES(36,10260,57,50);
-INSERT INTO OrderDetails VALUES(37,10260,62,15);
-INSERT INTO OrderDetails VALUES(38,10260,70,21);
-INSERT INTO OrderDetails VALUES(39,10261,21,20);
-INSERT INTO OrderDetails VALUES(40,10261,35,20);
-INSERT INTO OrderDetails VALUES(41,10262,5,12);
-INSERT INTO OrderDetails VALUES(42,10262,7,15);
-INSERT INTO OrderDetails VALUES(43,10262,56,2);
-INSERT INTO OrderDetails VALUES(44,10263,16,60);
-INSERT INTO OrderDetails VALUES(45,10263,24,28);
-INSERT INTO OrderDetails VALUES(46,10263,30,60);
-INSERT INTO OrderDetails VALUES(47,10263,74,36);
-INSERT INTO OrderDetails VALUES(48,10264,2,35);
-INSERT INTO OrderDetails VALUES(49,10264,41,25);
-INSERT INTO OrderDetails VALUES(50,10265,17,30);
-INSERT INTO OrderDetails VALUES(51,10265,70,20);
-INSERT INTO OrderDetails VALUES(52,10266,12,12);
-INSERT INTO OrderDetails VALUES(53,10267,40,50);
-INSERT INTO OrderDetails VALUES(54,10267,59,70);
-INSERT INTO OrderDetails VALUES(55,10267,76,15);
-INSERT INTO OrderDetails VALUES(56,10268,29,10);
-INSERT INTO OrderDetails VALUES(57,10268,72,4);
-INSERT INTO OrderDetails VALUES(58,10269,33,60);
-INSERT INTO OrderDetails VALUES(59,10269,72,20);
-INSERT INTO OrderDetails VALUES(60,10270,36,30);
-INSERT INTO OrderDetails VALUES(61,10270,43,25);
-INSERT INTO OrderDetails VALUES(62,10271,33,24);
-INSERT INTO OrderDetails VALUES(63,10272,20,6);
-INSERT INTO OrderDetails VALUES(64,10272,31,40);
-INSERT INTO OrderDetails VALUES(65,10272,72,24);
-INSERT INTO OrderDetails VALUES(66,10273,10,24);
-INSERT INTO OrderDetails VALUES(67,10273,31,15);
-INSERT INTO OrderDetails VALUES(68,10273,33,20);
-INSERT INTO OrderDetails VALUES(69,10273,40,60);
-INSERT INTO OrderDetails VALUES(70,10273,76,33);
-INSERT INTO OrderDetails VALUES(71,10274,71,20);
-INSERT INTO OrderDetails VALUES(72,10274,72,7);
-INSERT INTO OrderDetails VALUES(73,10275,24,12);
-INSERT INTO OrderDetails VALUES(74,10275,59,6);
-INSERT INTO OrderDetails VALUES(75,10276,10,15);
-INSERT INTO OrderDetails VALUES(76,10276,13,10);
-INSERT INTO OrderDetails VALUES(77,10277,28,20);
-INSERT INTO OrderDetails VALUES(78,10277,62,12);
-INSERT INTO OrderDetails VALUES(79,10278,44,16);
-INSERT INTO OrderDetails VALUES(80,10278,59,15);
-INSERT INTO OrderDetails VALUES(81,10278,63,8);
-INSERT INTO OrderDetails VALUES(82,10278,73,25);
-INSERT INTO OrderDetails VALUES(83,10279,17,15);
-INSERT INTO OrderDetails VALUES(84,10280,24,12);
-INSERT INTO OrderDetails VALUES(85,10280,55,20);
-INSERT INTO OrderDetails VALUES(86,10280,75,30);
-INSERT INTO OrderDetails VALUES(87,10281,19,1);
-INSERT INTO OrderDetails VALUES(88,10281,24,6);
-INSERT INTO OrderDetails VALUES(89,10281,35,4);
-INSERT INTO OrderDetails VALUES(90,10282,30,6);
-INSERT INTO OrderDetails VALUES(91,10282,57,2);
-INSERT INTO OrderDetails VALUES(92,10283,15,20);
-INSERT INTO OrderDetails VALUES(93,10283,19,18);
-INSERT INTO OrderDetails VALUES(94,10283,60,35);
-INSERT INTO OrderDetails VALUES(95,10283,72,3);
-INSERT INTO OrderDetails VALUES(96,10284,27,15);
-INSERT INTO OrderDetails VALUES(97,10284,44,21);
-INSERT INTO OrderDetails VALUES(98,10284,60,20);
-INSERT INTO OrderDetails VALUES(99,10284,67,5);
-INSERT INTO OrderDetails VALUES(100,10285,1,45);
-INSERT INTO OrderDetails VALUES(101,10285,40,40);
-INSERT INTO OrderDetails VALUES(102,10285,53,36);
-INSERT INTO OrderDetails VALUES(103,10286,35,100);
-INSERT INTO OrderDetails VALUES(104,10286,62,40);
-INSERT INTO OrderDetails VALUES(105,10287,16,40);
-INSERT INTO OrderDetails VALUES(106,10287,34,20);
-INSERT INTO OrderDetails VALUES(107,10287,46,15);
-INSERT INTO OrderDetails VALUES(108,10288,54,10);
-INSERT INTO OrderDetails VALUES(109,10288,68,3);
-INSERT INTO OrderDetails VALUES(110,10289,3,30);
-INSERT INTO OrderDetails VALUES(111,10289,64,9);
-INSERT INTO OrderDetails VALUES(112,10290,5,20);
-INSERT INTO OrderDetails VALUES(113,10290,29,15);
-INSERT INTO OrderDetails VALUES(114,10290,49,15);
-INSERT INTO OrderDetails VALUES(115,10290,77,10);
-INSERT INTO OrderDetails VALUES(116,10291,13,20);
-INSERT INTO OrderDetails VALUES(117,10291,44,24);
-INSERT INTO OrderDetails VALUES(118,10291,51,2);
-INSERT INTO OrderDetails VALUES(119,10292,20,20);
-INSERT INTO OrderDetails VALUES(120,10293,18,12);
-INSERT INTO OrderDetails VALUES(121,10293,24,10);
-INSERT INTO OrderDetails VALUES(122,10293,63,5);
-INSERT INTO OrderDetails VALUES(123,10293,75,6);
-INSERT INTO OrderDetails VALUES(124,10294,1,18);
-INSERT INTO OrderDetails VALUES(125,10294,17,15);
-INSERT INTO OrderDetails VALUES(126,10294,43,15);
-INSERT INTO OrderDetails VALUES(127,10294,60,21);
-INSERT INTO OrderDetails VALUES(128,10294,75,6);
-INSERT INTO OrderDetails VALUES(129,10295,56,4);
-INSERT INTO OrderDetails VALUES(130,10296,11,12);
-INSERT INTO OrderDetails VALUES(131,10296,16,30);
-INSERT INTO OrderDetails VALUES(132,10296,69,15);
-INSERT INTO OrderDetails VALUES(133,10297,39,60);
-INSERT INTO OrderDetails VALUES(134,10297,72,20);
-INSERT INTO OrderDetails VALUES(135,10298,2,40);
-INSERT INTO OrderDetails VALUES(136,10298,36,40);
-INSERT INTO OrderDetails VALUES(137,10298,59,30);
-INSERT INTO OrderDetails VALUES(138,10298,62,15);
-INSERT INTO OrderDetails VALUES(139,10299,19,15);
-INSERT INTO OrderDetails VALUES(140,10299,70,20);
-INSERT INTO OrderDetails VALUES(141,10300,66,30);
-INSERT INTO OrderDetails VALUES(142,10300,68,20);
-INSERT INTO OrderDetails VALUES(143,10301,40,10);
-INSERT INTO OrderDetails VALUES(144,10301,56,20);
-INSERT INTO OrderDetails VALUES(145,10302,17,40);
-INSERT INTO OrderDetails VALUES(146,10302,28,28);
-INSERT INTO OrderDetails VALUES(147,10302,43,12);
-INSERT INTO OrderDetails VALUES(148,10303,40,40);
-INSERT INTO OrderDetails VALUES(149,10303,65,30);
-INSERT INTO OrderDetails VALUES(150,10303,68,15);
-INSERT INTO OrderDetails VALUES(151,10304,49,30);
-INSERT INTO OrderDetails VALUES(152,10304,59,10);
-INSERT INTO OrderDetails VALUES(153,10304,71,2);
-INSERT INTO OrderDetails VALUES(154,10305,18,25);
-INSERT INTO OrderDetails VALUES(155,10305,29,25);
-INSERT INTO OrderDetails VALUES(156,10305,39,30);
-INSERT INTO OrderDetails VALUES(157,10306,30,10);
-INSERT INTO OrderDetails VALUES(158,10306,53,10);
-INSERT INTO OrderDetails VALUES(159,10306,54,5);
-INSERT INTO OrderDetails VALUES(160,10307,62,10);
-INSERT INTO OrderDetails VALUES(161,10307,68,3);
-INSERT INTO OrderDetails VALUES(162,10308,69,1);
-INSERT INTO OrderDetails VALUES(163,10308,70,5);
-INSERT INTO OrderDetails VALUES(164,10309,4,20);
-INSERT INTO OrderDetails VALUES(165,10309,6,30);
-INSERT INTO OrderDetails VALUES(166,10309,42,2);
-INSERT INTO OrderDetails VALUES(167,10309,43,20);
-INSERT INTO OrderDetails VALUES(168,10309,71,3);
-INSERT INTO OrderDetails VALUES(169,10310,16,10);
-INSERT INTO OrderDetails VALUES(170,10310,62,5);
-INSERT INTO OrderDetails VALUES(171,10311,42,6);
-INSERT INTO OrderDetails VALUES(172,10311,69,7);
-INSERT INTO OrderDetails VALUES(173,10312,28,4);
-INSERT INTO OrderDetails VALUES(174,10312,43,24);
-INSERT INTO OrderDetails VALUES(175,10312,53,20);
-INSERT INTO OrderDetails VALUES(176,10312,75,10);
-INSERT INTO OrderDetails VALUES(177,10313,36,12);
-INSERT INTO OrderDetails VALUES(178,10314,32,40);
-INSERT INTO OrderDetails VALUES(179,10314,58,30);
-INSERT INTO OrderDetails VALUES(180,10314,62,25);
-INSERT INTO OrderDetails VALUES(181,10315,34,14);
-INSERT INTO OrderDetails VALUES(182,10315,70,30);
-INSERT INTO OrderDetails VALUES(183,10316,41,10);
-INSERT INTO OrderDetails VALUES(184,10316,62,70);
-INSERT INTO OrderDetails VALUES(185,10317,1,20);
-INSERT INTO OrderDetails VALUES(186,10318,41,20);
-INSERT INTO OrderDetails VALUES(187,10318,76,6);
-INSERT INTO OrderDetails VALUES(188,10319,17,8);
-INSERT INTO OrderDetails VALUES(189,10319,28,14);
-INSERT INTO OrderDetails VALUES(190,10319,76,30);
-INSERT INTO OrderDetails VALUES(191,10320,71,30);
-INSERT INTO OrderDetails VALUES(192,10321,35,10);
-INSERT INTO OrderDetails VALUES(193,10322,52,20);
-INSERT INTO OrderDetails VALUES(194,10323,15,5);
-INSERT INTO OrderDetails VALUES(195,10323,25,4);
-INSERT INTO OrderDetails VALUES(196,10323,39,4);
-INSERT INTO OrderDetails VALUES(197,10324,16,21);
-INSERT INTO OrderDetails VALUES(198,10324,35,70);
-INSERT INTO OrderDetails VALUES(199,10324,46,30);
-INSERT INTO OrderDetails VALUES(200,10324,59,40);
-INSERT INTO OrderDetails VALUES(201,10324,63,80);
-INSERT INTO OrderDetails VALUES(202,10325,6,6);
-INSERT INTO OrderDetails VALUES(203,10325,13,12);
-INSERT INTO OrderDetails VALUES(204,10325,14,9);
-INSERT INTO OrderDetails VALUES(205,10325,31,4);
-INSERT INTO OrderDetails VALUES(206,10325,72,40);
-INSERT INTO OrderDetails VALUES(207,10326,4,24);
-INSERT INTO OrderDetails VALUES(208,10326,57,16);
-INSERT INTO OrderDetails VALUES(209,10326,75,50);
-INSERT INTO OrderDetails VALUES(210,10327,2,25);
-INSERT INTO OrderDetails VALUES(211,10327,11,50);
-INSERT INTO OrderDetails VALUES(212,10327,30,35);
-INSERT INTO OrderDetails VALUES(213,10327,58,30);
-INSERT INTO OrderDetails VALUES(214,10328,59,9);
-INSERT INTO OrderDetails VALUES(215,10328,65,40);
-INSERT INTO OrderDetails VALUES(216,10328,68,10);
-INSERT INTO OrderDetails VALUES(217,10329,19,10);
-INSERT INTO OrderDetails VALUES(218,10329,30,8);
-INSERT INTO OrderDetails VALUES(219,10329,38,20);
-INSERT INTO OrderDetails VALUES(220,10329,56,12);
-INSERT INTO OrderDetails VALUES(221,10330,26,50);
-INSERT INTO OrderDetails VALUES(222,10330,72,25);
-INSERT INTO OrderDetails VALUES(223,10331,54,15);
-INSERT INTO OrderDetails VALUES(224,10332,18,40);
-INSERT INTO OrderDetails VALUES(225,10332,42,10);
-INSERT INTO OrderDetails VALUES(226,10332,47,16);
-INSERT INTO OrderDetails VALUES(227,10333,14,10);
-INSERT INTO OrderDetails VALUES(228,10333,21,10);
-INSERT INTO OrderDetails VALUES(229,10333,71,40);
-INSERT INTO OrderDetails VALUES(230,10334,52,8);
-INSERT INTO OrderDetails VALUES(231,10334,68,10);
-INSERT INTO OrderDetails VALUES(232,10335,2,7);
-INSERT INTO OrderDetails VALUES(233,10335,31,25);
-INSERT INTO OrderDetails VALUES(234,10335,32,6);
-INSERT INTO OrderDetails VALUES(235,10335,51,48);
-INSERT INTO OrderDetails VALUES(236,10336,4,18);
-INSERT INTO OrderDetails VALUES(237,10337,23,40);
-INSERT INTO OrderDetails VALUES(238,10337,26,24);
-INSERT INTO OrderDetails VALUES(239,10337,36,20);
-INSERT INTO OrderDetails VALUES(240,10337,37,28);
-INSERT INTO OrderDetails VALUES(241,10337,72,25);
-INSERT INTO OrderDetails VALUES(242,10338,17,20);
-INSERT INTO OrderDetails VALUES(243,10338,30,15);
-INSERT INTO OrderDetails VALUES(244,10339,4,10);
-INSERT INTO OrderDetails VALUES(245,10339,17,70);
-INSERT INTO OrderDetails VALUES(246,10339,62,28);
-INSERT INTO OrderDetails VALUES(247,10340,18,20);
-INSERT INTO OrderDetails VALUES(248,10340,41,12);
-INSERT INTO OrderDetails VALUES(249,10340,43,40);
-INSERT INTO OrderDetails VALUES(250,10341,33,8);
-INSERT INTO OrderDetails VALUES(251,10341,59,9);
-INSERT INTO OrderDetails VALUES(252,10342,2,24);
-INSERT INTO OrderDetails VALUES(253,10342,31,56);
-INSERT INTO OrderDetails VALUES(254,10342,36,40);
-INSERT INTO OrderDetails VALUES(255,10342,55,40);
-INSERT INTO OrderDetails VALUES(256,10343,64,50);
-INSERT INTO OrderDetails VALUES(257,10343,68,4);
-INSERT INTO OrderDetails VALUES(258,10343,76,15);
-INSERT INTO OrderDetails VALUES(259,10344,4,35);
-INSERT INTO OrderDetails VALUES(260,10344,8,70);
-INSERT INTO OrderDetails VALUES(261,10345,8,70);
-INSERT INTO OrderDetails VALUES(262,10345,19,80);
-INSERT INTO OrderDetails VALUES(263,10345,42,9);
-INSERT INTO OrderDetails VALUES(264,10346,17,36);
-INSERT INTO OrderDetails VALUES(265,10346,56,20);
-INSERT INTO OrderDetails VALUES(266,10347,25,10);
-INSERT INTO OrderDetails VALUES(267,10347,39,50);
-INSERT INTO OrderDetails VALUES(268,10347,40,4);
-INSERT INTO OrderDetails VALUES(269,10347,75,6);
-INSERT INTO OrderDetails VALUES(270,10348,1,15);
-INSERT INTO OrderDetails VALUES(271,10348,23,25);
-INSERT INTO OrderDetails VALUES(272,10349,54,24);
-INSERT INTO OrderDetails VALUES(273,10350,50,15);
-INSERT INTO OrderDetails VALUES(274,10350,69,18);
-INSERT INTO OrderDetails VALUES(275,10351,38,20);
-INSERT INTO OrderDetails VALUES(276,10351,41,13);
-INSERT INTO OrderDetails VALUES(277,10351,44,77);
-INSERT INTO OrderDetails VALUES(278,10351,65,10);
-INSERT INTO OrderDetails VALUES(279,10352,24,10);
-INSERT INTO OrderDetails VALUES(280,10352,54,20);
-INSERT INTO OrderDetails VALUES(281,10353,11,12);
-INSERT INTO OrderDetails VALUES(282,10353,38,50);
-INSERT INTO OrderDetails VALUES(283,10354,1,12);
-INSERT INTO OrderDetails VALUES(284,10354,29,4);
-INSERT INTO OrderDetails VALUES(285,10355,24,25);
-INSERT INTO OrderDetails VALUES(286,10355,57,25);
-INSERT INTO OrderDetails VALUES(287,10356,31,30);
-INSERT INTO OrderDetails VALUES(288,10356,55,12);
-INSERT INTO OrderDetails VALUES(289,10356,69,20);
-INSERT INTO OrderDetails VALUES(290,10357,10,30);
-INSERT INTO OrderDetails VALUES(291,10357,26,16);
-INSERT INTO OrderDetails VALUES(292,10357,60,8);
-INSERT INTO OrderDetails VALUES(293,10358,24,10);
-INSERT INTO OrderDetails VALUES(294,10358,34,10);
-INSERT INTO OrderDetails VALUES(295,10358,36,20);
-INSERT INTO OrderDetails VALUES(296,10359,16,56);
-INSERT INTO OrderDetails VALUES(297,10359,31,70);
-INSERT INTO OrderDetails VALUES(298,10359,60,80);
-INSERT INTO OrderDetails VALUES(299,10360,28,30);
-INSERT INTO OrderDetails VALUES(300,10360,29,35);
-INSERT INTO OrderDetails VALUES(301,10360,38,10);
-INSERT INTO OrderDetails VALUES(302,10360,49,35);
-INSERT INTO OrderDetails VALUES(303,10360,54,28);
-INSERT INTO OrderDetails VALUES(304,10361,39,54);
-INSERT INTO OrderDetails VALUES(305,10361,60,55);
-INSERT INTO OrderDetails VALUES(306,10362,25,50);
-INSERT INTO OrderDetails VALUES(307,10362,51,20);
-INSERT INTO OrderDetails VALUES(308,10362,54,24);
-INSERT INTO OrderDetails VALUES(309,10363,31,20);
-INSERT INTO OrderDetails VALUES(310,10363,75,12);
-INSERT INTO OrderDetails VALUES(311,10363,76,12);
-INSERT INTO OrderDetails VALUES(312,10364,69,30);
-INSERT INTO OrderDetails VALUES(313,10364,71,5);
-INSERT INTO OrderDetails VALUES(314,10365,11,24);
-INSERT INTO OrderDetails VALUES(315,10366,65,5);
-INSERT INTO OrderDetails VALUES(316,10366,77,5);
-INSERT INTO OrderDetails VALUES(317,10367,34,36);
-INSERT INTO OrderDetails VALUES(318,10367,54,18);
-INSERT INTO OrderDetails VALUES(319,10367,65,15);
-INSERT INTO OrderDetails VALUES(320,10367,77,7);
-INSERT INTO OrderDetails VALUES(321,10368,21,5);
-INSERT INTO OrderDetails VALUES(322,10368,28,13);
-INSERT INTO OrderDetails VALUES(323,10368,57,25);
-INSERT INTO OrderDetails VALUES(324,10368,64,35);
-INSERT INTO OrderDetails VALUES(325,10369,29,20);
-INSERT INTO OrderDetails VALUES(326,10369,56,18);
-INSERT INTO OrderDetails VALUES(327,10370,1,15);
-INSERT INTO OrderDetails VALUES(328,10370,64,30);
-INSERT INTO OrderDetails VALUES(329,10370,74,20);
-INSERT INTO OrderDetails VALUES(330,10371,36,6);
-INSERT INTO OrderDetails VALUES(331,10372,20,12);
-INSERT INTO OrderDetails VALUES(332,10372,38,40);
-INSERT INTO OrderDetails VALUES(333,10372,60,70);
-INSERT INTO OrderDetails VALUES(334,10372,72,42);
-INSERT INTO OrderDetails VALUES(335,10373,58,80);
-INSERT INTO OrderDetails VALUES(336,10373,71,50);
-INSERT INTO OrderDetails VALUES(337,10374,31,30);
-INSERT INTO OrderDetails VALUES(338,10374,58,15);
-INSERT INTO OrderDetails VALUES(339,10375,14,15);
-INSERT INTO OrderDetails VALUES(340,10375,54,10);
-INSERT INTO OrderDetails VALUES(341,10376,31,42);
-INSERT INTO OrderDetails VALUES(342,10377,28,20);
-INSERT INTO OrderDetails VALUES(343,10377,39,20);
-INSERT INTO OrderDetails VALUES(344,10378,71,6);
-INSERT INTO OrderDetails VALUES(345,10379,41,8);
-INSERT INTO OrderDetails VALUES(346,10379,63,16);
-INSERT INTO OrderDetails VALUES(347,10379,65,20);
-INSERT INTO OrderDetails VALUES(348,10380,30,18);
-INSERT INTO OrderDetails VALUES(349,10380,53,20);
-INSERT INTO OrderDetails VALUES(350,10380,60,6);
-INSERT INTO OrderDetails VALUES(351,10380,70,30);
-INSERT INTO OrderDetails VALUES(352,10381,74,14);
-INSERT INTO OrderDetails VALUES(353,10382,5,32);
-INSERT INTO OrderDetails VALUES(354,10382,18,9);
-INSERT INTO OrderDetails VALUES(355,10382,29,14);
-INSERT INTO OrderDetails VALUES(356,10382,33,60);
-INSERT INTO OrderDetails VALUES(357,10382,74,50);
-INSERT INTO OrderDetails VALUES(358,10383,13,20);
-INSERT INTO OrderDetails VALUES(359,10383,50,15);
-INSERT INTO OrderDetails VALUES(360,10383,56,20);
-INSERT INTO OrderDetails VALUES(361,10384,20,28);
-INSERT INTO OrderDetails VALUES(362,10384,60,15);
-INSERT INTO OrderDetails VALUES(363,10385,7,10);
-INSERT INTO OrderDetails VALUES(364,10385,60,20);
-INSERT INTO OrderDetails VALUES(365,10385,68,8);
-INSERT INTO OrderDetails VALUES(366,10386,24,15);
-INSERT INTO OrderDetails VALUES(367,10386,34,10);
-INSERT INTO OrderDetails VALUES(368,10387,24,15);
-INSERT INTO OrderDetails VALUES(369,10387,28,6);
-INSERT INTO OrderDetails VALUES(370,10387,59,12);
-INSERT INTO OrderDetails VALUES(371,10387,71,15);
-INSERT INTO OrderDetails VALUES(372,10388,45,15);
-INSERT INTO OrderDetails VALUES(373,10388,52,20);
-INSERT INTO OrderDetails VALUES(374,10388,53,40);
-INSERT INTO OrderDetails VALUES(375,10389,10,16);
-INSERT INTO OrderDetails VALUES(376,10389,55,15);
-INSERT INTO OrderDetails VALUES(377,10389,62,20);
-INSERT INTO OrderDetails VALUES(378,10389,70,30);
-INSERT INTO OrderDetails VALUES(379,10390,31,60);
-INSERT INTO OrderDetails VALUES(380,10390,35,40);
-INSERT INTO OrderDetails VALUES(381,10390,46,45);
-INSERT INTO OrderDetails VALUES(382,10390,72,24);
-INSERT INTO OrderDetails VALUES(383,10391,13,18);
-INSERT INTO OrderDetails VALUES(384,10392,69,50);
-INSERT INTO OrderDetails VALUES(385,10393,2,25);
-INSERT INTO OrderDetails VALUES(386,10393,14,42);
-INSERT INTO OrderDetails VALUES(387,10393,25,7);
-INSERT INTO OrderDetails VALUES(388,10393,26,70);
-INSERT INTO OrderDetails VALUES(389,10393,31,32);
-INSERT INTO OrderDetails VALUES(390,10394,13,10);
-INSERT INTO OrderDetails VALUES(391,10394,62,10);
-INSERT INTO OrderDetails VALUES(392,10395,46,28);
-INSERT INTO OrderDetails VALUES(393,10395,53,70);
-INSERT INTO OrderDetails VALUES(394,10395,69,8);
-INSERT INTO OrderDetails VALUES(395,10396,23,40);
-INSERT INTO OrderDetails VALUES(396,10396,71,60);
-INSERT INTO OrderDetails VALUES(397,10396,72,21);
-INSERT INTO OrderDetails VALUES(398,10397,21,10);
-INSERT INTO OrderDetails VALUES(399,10397,51,18);
-INSERT INTO OrderDetails VALUES(400,10398,35,30);
-INSERT INTO OrderDetails VALUES(401,10398,55,120);
-INSERT INTO OrderDetails VALUES(402,10399,68,60);
-INSERT INTO OrderDetails VALUES(403,10399,71,30);
-INSERT INTO OrderDetails VALUES(404,10399,76,35);
-INSERT INTO OrderDetails VALUES(405,10399,77,14);
-INSERT INTO OrderDetails VALUES(406,10400,29,21);
-INSERT INTO OrderDetails VALUES(407,10400,35,35);
-INSERT INTO OrderDetails VALUES(408,10400,49,30);
-INSERT INTO OrderDetails VALUES(409,10401,30,18);
-INSERT INTO OrderDetails VALUES(410,10401,56,70);
-INSERT INTO OrderDetails VALUES(411,10401,65,20);
-INSERT INTO OrderDetails VALUES(412,10401,71,60);
-INSERT INTO OrderDetails VALUES(413,10402,23,60);
-INSERT INTO OrderDetails VALUES(414,10402,63,65);
-INSERT INTO OrderDetails VALUES(415,10403,16,21);
-INSERT INTO OrderDetails VALUES(416,10403,48,70);
-INSERT INTO OrderDetails VALUES(417,10404,26,30);
-INSERT INTO OrderDetails VALUES(418,10404,42,40);
-INSERT INTO OrderDetails VALUES(419,10404,49,30);
-INSERT INTO OrderDetails VALUES(420,10405,3,50);
-INSERT INTO OrderDetails VALUES(421,10406,1,10);
-INSERT INTO OrderDetails VALUES(422,10406,21,30);
-INSERT INTO OrderDetails VALUES(423,10406,28,42);
-INSERT INTO OrderDetails VALUES(424,10406,36,5);
-INSERT INTO OrderDetails VALUES(425,10406,40,2);
-INSERT INTO OrderDetails VALUES(426,10407,11,30);
-INSERT INTO OrderDetails VALUES(427,10407,69,15);
-INSERT INTO OrderDetails VALUES(428,10407,71,15);
-INSERT INTO OrderDetails VALUES(429,10408,37,10);
-INSERT INTO OrderDetails VALUES(430,10408,54,6);
-INSERT INTO OrderDetails VALUES(431,10408,62,35);
-INSERT INTO OrderDetails VALUES(432,10409,14,12);
-INSERT INTO OrderDetails VALUES(433,10409,21,12);
-INSERT INTO OrderDetails VALUES(434,10410,33,49);
-INSERT INTO OrderDetails VALUES(435,10410,59,16);
-INSERT INTO OrderDetails VALUES(436,10411,41,25);
-INSERT INTO OrderDetails VALUES(437,10411,44,40);
-INSERT INTO OrderDetails VALUES(438,10411,59,9);
-INSERT INTO OrderDetails VALUES(439,10412,14,20);
-INSERT INTO OrderDetails VALUES(440,10413,1,24);
-INSERT INTO OrderDetails VALUES(441,10413,62,40);
-INSERT INTO OrderDetails VALUES(442,10413,76,14);
-INSERT INTO OrderDetails VALUES(443,10414,19,18);
-INSERT INTO OrderDetails VALUES(444,10414,33,50);
-INSERT INTO OrderDetails VALUES(445,10415,17,2);
-INSERT INTO OrderDetails VALUES(446,10415,33,20);
-INSERT INTO OrderDetails VALUES(447,10416,19,20);
-INSERT INTO OrderDetails VALUES(448,10416,53,10);
-INSERT INTO OrderDetails VALUES(449,10416,57,20);
-INSERT INTO OrderDetails VALUES(450,10417,38,50);
-INSERT INTO OrderDetails VALUES(451,10417,46,2);
-INSERT INTO OrderDetails VALUES(452,10417,68,36);
-INSERT INTO OrderDetails VALUES(453,10417,77,35);
-INSERT INTO OrderDetails VALUES(454,10418,2,60);
-INSERT INTO OrderDetails VALUES(455,10418,47,55);
-INSERT INTO OrderDetails VALUES(456,10418,61,16);
-INSERT INTO OrderDetails VALUES(457,10418,74,15);
-INSERT INTO OrderDetails VALUES(458,10419,60,60);
-INSERT INTO OrderDetails VALUES(459,10419,69,20);
-INSERT INTO OrderDetails VALUES(460,10420,9,20);
-INSERT INTO OrderDetails VALUES(461,10420,13,2);
-INSERT INTO OrderDetails VALUES(462,10420,70,8);
-INSERT INTO OrderDetails VALUES(463,10420,73,20);
-INSERT INTO OrderDetails VALUES(464,10421,19,4);
-INSERT INTO OrderDetails VALUES(465,10421,26,30);
-INSERT INTO OrderDetails VALUES(466,10421,53,15);
-INSERT INTO OrderDetails VALUES(467,10421,77,10);
-INSERT INTO OrderDetails VALUES(468,10422,26,2);
-INSERT INTO OrderDetails VALUES(469,10423,31,14);
-INSERT INTO OrderDetails VALUES(470,10423,59,20);
-INSERT INTO OrderDetails VALUES(471,10424,35,60);
-INSERT INTO OrderDetails VALUES(472,10424,38,49);
-INSERT INTO OrderDetails VALUES(473,10424,68,30);
-INSERT INTO OrderDetails VALUES(474,10425,55,10);
-INSERT INTO OrderDetails VALUES(475,10425,76,20);
-INSERT INTO OrderDetails VALUES(476,10426,56,5);
-INSERT INTO OrderDetails VALUES(477,10426,64,7);
-INSERT INTO OrderDetails VALUES(478,10427,14,35);
-INSERT INTO OrderDetails VALUES(479,10428,46,20);
-INSERT INTO OrderDetails VALUES(480,10429,50,40);
-INSERT INTO OrderDetails VALUES(481,10429,63,35);
-INSERT INTO OrderDetails VALUES(482,10430,17,45);
-INSERT INTO OrderDetails VALUES(483,10430,21,50);
-INSERT INTO OrderDetails VALUES(484,10430,56,30);
-INSERT INTO OrderDetails VALUES(485,10430,59,70);
-INSERT INTO OrderDetails VALUES(486,10431,17,50);
-INSERT INTO OrderDetails VALUES(487,10431,40,50);
-INSERT INTO OrderDetails VALUES(488,10431,47,30);
-INSERT INTO OrderDetails VALUES(489,10432,26,10);
-INSERT INTO OrderDetails VALUES(490,10432,54,40);
-INSERT INTO OrderDetails VALUES(491,10433,56,28);
-INSERT INTO OrderDetails VALUES(492,10434,11,6);
-INSERT INTO OrderDetails VALUES(493,10434,76,18);
-INSERT INTO OrderDetails VALUES(494,10435,2,10);
-INSERT INTO OrderDetails VALUES(495,10435,22,12);
-INSERT INTO OrderDetails VALUES(496,10435,72,10);
-INSERT INTO OrderDetails VALUES(497,10436,46,5);
-INSERT INTO OrderDetails VALUES(498,10436,56,40);
-INSERT INTO OrderDetails VALUES(499,10436,64,30);
-INSERT INTO OrderDetails VALUES(500,10436,75,24);
-INSERT INTO OrderDetails VALUES(501,10437,53,15);
-INSERT INTO OrderDetails VALUES(502,10438,19,15);
-INSERT INTO OrderDetails VALUES(503,10438,34,20);
-INSERT INTO OrderDetails VALUES(504,10438,57,15);
-INSERT INTO OrderDetails VALUES(505,10439,12,15);
-INSERT INTO OrderDetails VALUES(506,10439,16,16);
-INSERT INTO OrderDetails VALUES(507,10439,64,6);
-INSERT INTO OrderDetails VALUES(508,10439,74,30);
-INSERT INTO OrderDetails VALUES(509,10440,2,45);
-INSERT INTO OrderDetails VALUES(510,10440,16,49);
-INSERT INTO OrderDetails VALUES(511,10440,29,24);
-INSERT INTO OrderDetails VALUES(512,10440,61,90);
-INSERT INTO OrderDetails VALUES(513,10441,27,50);
-INSERT INTO OrderDetails VALUES(514,10442,11,30);
-INSERT INTO OrderDetails VALUES(515,10442,54,80);
-INSERT INTO OrderDetails VALUES(516,10442,66,60);
-INSERT INTO OrderDetails VALUES(517,10443,11,6);
-INSERT INTO OrderDetails VALUES(518,10443,28,12);
 
-COMMIT;
+
+CREATE TABLE Shipper (
+  shipperId INT AUTO_INCREMENT NOT NULL
+  ,companyName VARCHAR(40) NOT NULL
+  ,phone VARCHAR(44) NULL
+  ,PRIMARY KEY (ShipperId)
+  ) ENGINE=INNODB;
+
+
+
+
+CREATE TABLE SalesOrder (
+  orderId INT AUTO_INCREMENT NOT NULL
+  ,custId INT NOT NULL
+  ,employeeId INT NULL
+  ,orderDate DATETIME NULL
+  ,requiredDate DATETIME NULL
+  ,shippedDate DATETIME NULL
+  ,shipperid INT NOT NULL
+  ,freight DECIMAL(10, 2) NULL
+  ,shipName VARCHAR(40) NULL
+  ,shipAddress VARCHAR(60) NULL
+  ,shipCity VARCHAR(15) NULL
+  ,shipRegion VARCHAR(15) NULL
+  ,shipPostalCode VARCHAR(10) NULL
+  ,shipCountry VARCHAR(15) NULL
+  ,PRIMARY KEY (orderId,custId)
+   , FOREIGN KEY (shipperid)
+      REFERENCES Shipper(shipperid)
+   ,FOREIGN KEY (custId)
+      REFERENCES Customer(custId) 
+
+  ) ENGINE=INNODB;
+
+
+
+CREATE TABLE OrderDetail (
+   orderDetailId INT AUTO_INCREMENT NOT NULL,
+   orderId INT NOT NULL
+  ,productId INT NOT NULL
+  ,unitPrice DECIMAL(10, 2) NOT NULL
+  ,quantity SMALLINT NOT NULL
+  ,discount DECIMAL(10, 2) NOT NULL
+  ,PRIMARY KEY (orderDetailId)
+  ,FOREIGN KEY (orderId)
+      REFERENCES SalesOrder(orderId)
+       ,FOREIGN KEY (productId)
+      REFERENCES Product(productId) 
+  ) ENGINE=INNODB;
+
+
+-- Populate Employess table
+
+
+
+INSERT INTO Employee(employeeid, lastname, firstname, title, titleofcourtesy, birthdate, hiredate, address, city, region, postalcode, country, phone, mgrid)
+  VALUES(1, N'Davis', N'Sara', N'CEO', N'Ms.', '1958-12-08 00:00:00.000', '2002-05-01 00:00:00.000', N'7890 - 20th Ave. E., Apt. 2A', N'Seattle', N'WA', N'10003', N'USA', N'(206) 555-0101', NULL);
+INSERT INTO Employee(employeeid, lastname, firstname, title, titleofcourtesy, birthdate, hiredate, address, city, region, postalcode, country, phone, mgrid)
+  VALUES(2, N'Funk', N'Don', N'Vice President, Sales', N'Dr.', '1962-02-19 00:00:00.000', '2002-08-14 00:00:00.000', N'9012 W. Capital Way', N'Tacoma', N'WA', N'10001', N'USA', N'(206) 555-0100', 1);
+INSERT INTO Employee(employeeid, lastname, firstname, title, titleofcourtesy, birthdate, hiredate, address, city, region, postalcode, country, phone, mgrid)
+  VALUES(3, N'Lew', N'Judy', N'Sales Manager', N'Ms.', '1973-08-30 00:00:00.000', '2002-04-01 00:00:00.000', N'2345 Moss Bay Blvd.', N'Kirkland', N'WA', N'10007', N'USA', N'(206) 555-0103', 2);
+INSERT INTO Employee(employeeid, lastname, firstname, title, titleofcourtesy, birthdate, hiredate, address, city, region, postalcode, country, phone, mgrid)
+  VALUES(4, N'Peled', N'Yael', N'Sales Representative', N'Mrs.', '1947-09-19 00:00:00.000', '2003-05-03 00:00:00.000', N'5678 Old Redmond Rd.', N'Redmond', N'WA', N'10009', N'USA', N'(206) 555-0104', 3);
+INSERT INTO Employee(employeeid, lastname, firstname, title, titleofcourtesy, birthdate, hiredate, address, city, region, postalcode, country, phone, mgrid)
+  VALUES(5, N'Buck', N'Sven', N'Sales Manager', N'Mr.', '1965-03-04 00:00:00.000', '2003-10-17 00:00:00.000', N'8901 Garrett Hill', N'London', NULL, N'10004', N'UK', N'(71) 234-5678', 2);
+INSERT INTO Employee(employeeid, lastname, firstname, title, titleofcourtesy, birthdate, hiredate, address, city, region, postalcode, country, phone, mgrid)
+  VALUES(6, N'Suurs', N'Paul', N'Sales Representative', N'Mr.', '1973-07-02 00:00:00.000', '2003-10-17 00:00:00.000', N'3456 Coventry House, Miner Rd.', N'London', NULL, N'10005', N'UK', N'(71) 345-6789', 5);
+INSERT INTO Employee(employeeid, lastname, firstname, title, titleofcourtesy, birthdate, hiredate, address, city, region, postalcode, country, phone, mgrid)
+  VALUES(7, N'King', N'Russell', N'Sales Representative', N'Mr.', '1970-05-29 00:00:00.000', '2004-01-02 00:00:00.000', N'6789 Edgeham Hollow, Winchester Way', N'London', NULL, N'10002', N'UK', N'(71) 123-4567', 5);
+INSERT INTO Employee(employeeid, lastname, firstname, title, titleofcourtesy, birthdate, hiredate, address, city, region, postalcode, country, phone, mgrid)
+  VALUES(8, N'Cameron', N'Maria', N'Sales Representative', N'Ms.', '1968-01-09 00:00:00.000', '2004-03-05 00:00:00.000', N'4567 - 11th Ave. N.E.', N'Seattle', N'WA', N'10006', N'USA', N'(206) 555-0102', 3);
+INSERT INTO Employee(employeeid, lastname, firstname, title, titleofcourtesy, birthdate, hiredate, address, city, region, postalcode, country, phone, mgrid)
+  VALUES(9, N'Dolgopyatova', N'Zoya', N'Sales Representative', N'Ms.', '1976-01-27 00:00:00.000', '2004-11-15 00:00:00.000', N'1234 Houndstooth Rd.', N'London', NULL, N'10008', N'UK', N'(71) 456-7890', 5);
+
+-- ---  
+
+
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(1, N'Supplier SWRXU', N'Adolphi, Stephan', N'Purchasing Manager', N'2345 Gilbert St.', N'London', NULL, N'10023', N'UK', N'(171) 456-7890', NULL);
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(2, N'Supplier VHQZD', N'Hance, Jim', N'Order Administrator', N'P.O. Box 5678', N'New Orleans', N'LA', N'10013', N'USA', N'(100) 555-0111', NULL);
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(3, N'Supplier STUAZ', N'Parovszky, Alfons', N'Sales Representative', N'1234 Oxford Rd.', N'Ann Arbor', N'MI', N'10026', N'USA', N'(313) 555-0109', N'(313) 555-0112');
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(4, N'Supplier QOVFD', N'Balázs, Erzsébet', N'Marketing Manager', N'7890 Sekimai Musashino-shi', N'Tokyo', NULL, N'10011', N'Japan', N'(03) 6789-0123', NULL);
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(5, N'Supplier EQPNC', N'Holm, Michael', N'Export Administrator', N'Calle del Rosal 4567', N'Oviedo', N'Asturias', N'10029', N'Spain', N'(98) 123 45 67', NULL);
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(6, N'Supplier QWUSF', N'Popkova, Darya', N'Marketing Representative', N'8901 Setsuko Chuo-ku', N'Osaka', NULL, N'10028', N'Japan', N'(06) 789-0123', NULL);
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(7, N'Supplier GQRCV', N'Ræbild, Jesper', N'Marketing Manager', N'5678 Rose St. Moonie Ponds', N'Melbourne', N'Victoria', N'10018', N'Australia', N'(03) 123-4567', N'(03) 456-7890');
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(8, N'Supplier BWGYE', N'Iallo, Lucio', N'Sales Representative', N'9012 King''s Way', N'Manchester', NULL, N'10021', N'UK', N'(161) 567-8901', NULL);
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(9, N'Supplier QQYEU', N'Basalik, Evan', N'Sales Agent', N'Kaloadagatan 4567', N'Göteborg', NULL, N'10022', N'Sweden', N'031-345 67 89', N'031-678 90 12');
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(10, N'Supplier UNAHG', N'Barnett, Dave', N'Marketing Manager', N'Av. das Americanas 2345', N'Sao Paulo', NULL, N'10034', N'Brazil', N'(11) 345 6789', NULL);
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(11, N'Supplier ZPYVS', N'Jain, Mukesh', N'Sales Manager', N'Tiergartenstraße 3456', N'Berlin', NULL, N'10016', N'Germany', N'(010) 3456789', NULL);
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(12, N'Supplier SVIYA', N'Regev, Barak', N'International Marketing Mgr.', N'Bogenallee 9012', N'Frankfurt', NULL, N'10024', N'Germany', N'(069) 234567', NULL);
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(13, N'Supplier TEGSC', N'Brehm, Peter', N'Coordinator Foreign Markets', N'Frahmredder 3456', N'Cuxhaven', NULL, N'10019', N'Germany', N'(04721) 1234', N'(04721) 2345');
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(14, N'Supplier KEREV', N'Keil, Kendall', N'Sales Representative', N'Viale Dante, 6789', N'Ravenna', NULL, N'10015', N'Italy', N'(0544) 56789', N'(0544) 34567');
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(15, N'Supplier NZLIF', N'Sałas-Szlejter, Karolina', N'Marketing Manager', N'Hatlevegen 1234', N'Sandvika', NULL, N'10025', N'Norway', N'(0)9-012345', NULL);
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(16, N'Supplier UHZRG', N'Scholl, Thorsten', N'Regional Account Rep.', N'8901 - 8th Avenue Suite 210', N'Bend', N'OR', N'10035', N'USA', N'(503) 555-0108', NULL);
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(17, N'Supplier QZGUF', N'Kleinerman, Christian', N'Sales Representative', N'Brovallavägen 0123', N'Stockholm', NULL, N'10033', N'Sweden', N'08-234 56 78', NULL);
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(18, N'Supplier LVJUA', N'Canel, Fabrice', N'Sales Manager', N'3456, Rue des Francs-Bourgeois', N'Paris', NULL, N'10031', N'France', N'(1) 90.12.34.56', N'(1) 01.23.45.67');
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(19, N'Supplier JDNUG', N'Chapman, Greg', N'Wholesale Account Agent', N'Order Processing Dept. 7890 Paul Revere Blvd.', N'Boston', N'MA', N'10027', N'USA', N'(617) 555-0110', N'(617) 555-0113');
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(20, N'Supplier CIYNM', N'Köszegi, Emília', N'Owner', N'6789 Serangoon Loop, Suite #402', N'Singapore', NULL, N'10037', N'Singapore', N'012-3456', NULL);
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(21, N'Supplier XOXZA', N'Shakespear, Paul', N'Sales Manager', N'Lyngbysild Fiskebakken 9012', N'Lyngby', NULL, N'10012', N'Denmark', N'67890123', N'78901234');
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(22, N'Supplier FNUXM', N'Skelly, Bonnie L.', N'Accounting Manager', N'Verkoop Rijnweg 8901', N'Zaandam', NULL, N'10014', N'Netherlands', N'(12345) 8901', N'(12345) 5678');
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(23, N'Supplier ELCRN', N'LaMee, Brian', N'Product Manager', N'Valtakatu 1234', N'Lappeenranta', NULL, N'10032', N'Finland', N'(953) 78901', NULL);
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(24, N'Supplier JNNES', N'Clark, Molly', N'Sales Representative', N'6789 Prince Edward Parade Hunter''s Hill', N'Sydney', N'NSW', N'10030', N'Australia', N'(02) 234-5678', N'(02) 567-8901');
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(25, N'Supplier ERVYZ', N'Sprenger, Christof', N'Marketing Manager', N'7890 Rue St. Laurent', N'Montréal', N'Québec', N'10017', N'Canada', N'(514) 456-7890', NULL);
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(26, N'Supplier ZWZDM', N'Cunha, Gonçalo', N'Order Administrator', N'Via dei Gelsomini, 5678', N'Salerno', NULL, N'10020', N'Italy', N'(089) 4567890', N'(089) 4567890');
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(27, N'Supplier ZRYDZ', N'Leoni, Alessandro', N'Sales Manager', N'4567, rue H. Voiron', N'Montceau', NULL, N'10036', N'France', N'89.01.23.45', NULL);
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(28, N'Supplier OAVQT', N'Teper, Jeff', N'Sales Representative', N'Bat. B 2345, rue des Alpes', N'Annecy', NULL, N'10010', N'France', N'01.23.45.67', N'89.01.23.45');
+INSERT INTO Supplier(supplierid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(29, N'Supplier OGLRK', N'Walters, Rob', N'Accounting Manager', N'0123 rue Chasseur', N'Ste-Hyacinthe', N'Québec', N'10009', N'Canada', N'(514) 567-890', N'(514) 678-9012');
+
+-- Category table
+
+INSERT INTO Category(categoryid, categoryname, description)
+  VALUES(1, N'Beverages', N'Soft drinks, coffees, teas, beers, and ales');
+INSERT INTO Category(categoryid, categoryname, description)
+  VALUES(2, N'Condiments', N'Sweet and savory sauces, relishes, spreads, and seasonings');
+INSERT INTO Category(categoryid, categoryname, description)
+  VALUES(3, N'Confections', N'Desserts, candies, and sweet breads');
+INSERT INTO Category(categoryid, categoryname, description)
+  VALUES(4, N'Dairy Products', N'Cheeses');
+INSERT INTO Category(categoryid, categoryname, description)
+  VALUES(5, N'Grains/Cereals', N'Breads, crackers, pasta, and cereal');
+INSERT INTO Category(categoryid, categoryname, description)
+  VALUES(6, N'Meat/Poultry', N'Prepared meats');
+INSERT INTO Category(categoryid, categoryname, description)
+  VALUES(7, N'Produce', N'Dried fruit and bean curd');
+INSERT INTO Category(categoryid, categoryname, description)
+  VALUES(8, N'Seafood', N'Seaweed and fish');
+
+
+-- Populate table Products
+
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(1, N'Product HHYDP', 1, 1, 18.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(2, N'Product RECZE', 1, 1, 19.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(3, N'Product IMEHJ', 1, 2, 10.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(4, N'Product KSBRM', 2, 2, 22.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(5, N'Product EPEIM', 2, 2, 21.35, 1);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(6, N'Product VAIIV', 3, 2, 25.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(7, N'Product HMLNI', 3, 7, 30.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(8, N'Product WVJFP', 3, 2, 40.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(9, N'Product AOZBW', 4, 6, 97.00, 1);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(10, N'Product YHXGE', 4, 8, 31.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(11, N'Product QMVUN', 5, 4, 21.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(12, N'Product OSFNS', 5, 4, 38.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(13, N'Product POXFU', 6, 8, 6.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(14, N'Product PWCJB', 6, 7, 23.25, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(15, N'Product KSZOI', 6, 2, 15.50, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(16, N'Product PAFRH', 7, 3, 17.45, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(17, N'Product BLCAX', 7, 6, 39.00, 1);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(18, N'Product CKEDC', 7, 8, 62.50, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(19, N'Product XKXDO', 8, 3, 9.20, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(20, N'Product QHFFP', 8, 3, 81.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(21, N'Product VJZZH', 8, 3, 10.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(22, N'Product CPHFY', 9, 5, 21.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(23, N'Product JLUDZ', 9, 5, 9.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(24, N'Product QOGNU', 10, 1, 4.50, 1);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(25, N'Product LYLNI', 11, 3, 14.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(26, N'Product HLGZA', 11, 3, 31.23, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(27, N'Product SMIOH', 11, 3, 43.90, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(28, N'Product OFBNT', 12, 7, 45.60, 1);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(29, N'Product VJXYN', 12, 6, 123.79, 1);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(30, N'Product LYERX', 13, 8, 25.89, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(31, N'Product XWOXC', 14, 4, 12.50, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(32, N'Product NUNAW', 14, 4, 32.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(33, N'Product ASTMN', 15, 4, 2.50, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(34, N'Product SWNJY', 16, 1, 14.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(35, N'Product NEVTJ', 16, 1, 18.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(36, N'Product GMKIJ', 17, 8, 19.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(37, N'Product EVFFA', 17, 8, 26.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(38, N'Product QDOMO', 18, 1, 263.50, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(39, N'Product LSOFL', 18, 1, 18.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(40, N'Product YZIXQ', 19, 8, 18.40, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(41, N'Product TTEEX', 19, 8, 9.65, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(42, N'Product RJVNM', 20, 5, 14.00, 1);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(43, N'Product ZZZHR', 20, 1, 46.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(44, N'Product VJIEO', 20, 2, 19.45, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(45, N'Product AQOKR', 21, 8, 9.50, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(46, N'Product CBRRL', 21, 8, 12.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(47, N'Product EZZPR', 22, 3, 9.50, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(48, N'Product MYNXN', 22, 3, 12.75, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(49, N'Product FPYPN', 23, 3, 20.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(50, N'Product BIUDV', 23, 3, 16.25, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(51, N'Product APITJ', 24, 7, 53.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(52, N'Product QSRXF', 24, 5, 7.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(53, N'Product BKGEA', 24, 6, 32.80, 1);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(54, N'Product QAQRL', 25, 6, 7.45, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(55, N'Product YYWRT', 25, 6, 24.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(56, N'Product VKCMF', 26, 5, 38.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(57, N'Product OVLQI', 26, 5, 19.50, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(58, N'Product ACRVI', 27, 8, 13.25, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(59, N'Product UKXRI', 28, 4, 55.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(60, N'Product WHBYK', 28, 4, 34.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(61, N'Product XYZPE', 29, 2, 28.50, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(62, N'Product WUXYK', 29, 3, 49.30, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(63, N'Product ICKNK', 7, 2, 43.90, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(64, N'Product HCQDE', 12, 5, 33.25, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(65, N'Product XYWBZ', 2, 2, 21.05, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(66, N'Product LQMGN', 2, 2, 17.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(67, N'Product XLXQF', 16, 1, 14.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(68, N'Product TBTBL', 8, 3, 12.50, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(69, N'Product COAXA', 15, 4, 36.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(70, N'Product TOONT', 7, 1, 15.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(71, N'Product MYMOI', 15, 4, 21.50, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(72, N'Product GEEOO', 14, 4, 34.80, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(73, N'Product WEUJZ', 17, 8, 15.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(74, N'Product BKAZJ', 4, 7, 10.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(75, N'Product BWRLG', 12, 1, 7.75, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(76, N'Product JYGFE', 23, 1, 18.00, 0);
+INSERT INTO Product(productid, productname, supplierid, categoryid, unitprice, discontinued)
+  VALUES(77, N'Product LUNZZ', 12, 2, 13.00, 0);
+
+
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(1, N'Customer NRZBB', N'Allen, Michael', N'Sales Representative', N'Obere Str. 0123', N'Berlin', NULL, N'10092', N'Germany', N'030-3456789', N'030-0123456');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(2, N'Customer MLTDN', N'Hassall, Mark', N'Owner', N'Avda. de la Constitución 5678', N'México D.F.', NULL, N'10077', N'Mexico', N'(5) 789-0123', N'(5) 456-7890');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(3, N'Customer KBUDE', N'Peoples, John', N'Owner', N'Mataderos  7890', N'México D.F.', NULL, N'10097', N'Mexico', N'(5) 123-4567', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(4, N'Customer HFBZG', N'Arndt, Torsten', N'Sales Representative', N'7890 Hanover Sq.', N'London', NULL, N'10046', N'UK', N'(171) 456-7890', N'(171) 456-7891');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(5, N'Customer HGVLZ', N'Higginbotham, Tom', N'Order Administrator', N'Berguvsvägen  5678', N'Luleå', NULL, N'10112', N'Sweden', N'0921-67 89 01', N'0921-23 45 67');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(6, N'Customer XHXJV', N'Poland, Carole', N'Sales Representative', N'Forsterstr. 7890', N'Mannheim', NULL, N'10117', N'Germany', N'0621-67890', N'0621-12345');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(7, N'Customer QXVLA', N'Bansal, Dushyant', N'Marketing Manager', N'2345, place Kléber', N'Strasbourg', NULL, N'10089', N'France', N'67.89.01.23', N'67.89.01.24');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(8, N'Customer QUHWH', N'Ilyina, Julia', N'Owner', N'C/ Araquil, 0123', N'Madrid', NULL, N'10104', N'Spain', N'(91) 345 67 89', N'(91) 012 34 56');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(9, N'Customer RTXGC', N'Raghav, Amritansh', N'Owner', N'6789, rue des Bouchers', N'Marseille', NULL, N'10105', N'France', N'23.45.67.89', N'23.45.67.80');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(10, N'Customer EEALV', N'Bassols, Pilar Colome', N'Accounting Manager', N'8901 Tsawassen Blvd.', N'Tsawassen', N'BC', N'10111', N'Canada', N'(604) 901-2345', N'(604) 678-9012');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(11, N'Customer UBHAU', N'Jaffe, David', N'Sales Representative', N'Fauntleroy Circus 4567', N'London', NULL, N'10064', N'UK', N'(171) 789-0123', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(12, N'Customer PSNMQ', N'Ray, Mike', N'Sales Agent', N'Cerrito 3456', N'Buenos Aires', NULL, N'10057', N'Argentina', N'(1) 890-1234', N'(1) 567-8901');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(13, N'Customer VMLOG', N'Benito, Almudena', N'Marketing Manager', N'Sierras de Granada 7890', N'México D.F.', NULL, N'10056', N'Mexico', N'(5) 456-7890', N'(5) 123-4567');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(14, N'Customer WNMAF', N'Jelitto, Jacek', N'Owner', N'Hauptstr. 0123', N'Bern', NULL, N'10065', N'Switzerland', N'0452-678901', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(15, N'Customer JUWXK', N'Richardson, Shawn', N'Sales Associate', N'Av. dos Lusíadas, 6789', N'Sao Paulo', N'SP', N'10087', N'Brazil', N'(11) 012-3456', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(16, N'Customer GYBBY', N'Birkby, Dana', N'Sales Representative', N'Berkeley Gardens 0123 Brewery', N'London', NULL, N'10039', N'UK', N'(171) 234-5678', N'(171) 234-5679');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(17, N'Customer FEVNN', N'Jones, TiAnna', N'Order Administrator', N'Walserweg 4567', N'Aachen', NULL, N'10067', N'Germany', N'0241-789012', N'0241-345678');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(18, N'Customer BSVAR', N'Rizaldy, Arif', N'Owner', N'3456, rue des Cinquante Otages', N'Nantes', NULL, N'10041', N'France', N'89.01.23.45', N'89.01.23.46');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(19, N'Customer RFNQC', N'Boseman, Randall', N'Sales Agent', N'5678 King George', N'London', NULL, N'10110', N'UK', N'(171) 345-6789', N'(171) 345-6780');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(20, N'Customer THHDP', N'Kane, John', N'Sales Manager', N'Kirchgasse 9012', N'Graz', NULL, N'10059', N'Austria', N'1234-5678', N'9012-3456');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(21, N'Customer KIdPX', N'Russo, Giuseppe', N'Marketing Assistant', N'Rua Orós, 3456', N'Sao Paulo', N'SP', N'10096', N'Brazil', N'(11) 456-7890', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(22, N'Customer DTDMN', N'Bueno, Janaina Burdan, Neville', N'Accounting Manager', N'C/ Moralzarzal, 5678', N'Madrid', NULL, N'10080', N'Spain', N'(91) 890 12 34', N'(91) 567 89 01');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(23, N'Customer WVFAF', N'Khanna, Karan', N'Assistant Sales Agent', N'4567, chaussée de Tournai', N'Lille', NULL, N'10048', N'France', N'45.67.89.01', N'45.67.89.02');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(24, N'Customer CYZTN', N'San Juan, Patricia', N'Owner', N'Åkergatan 5678', N'Bräcke', NULL, N'10114', N'Sweden', N'0695-67 89 01', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(25, N'Customer AZJED', N'Carlson, Jason', N'Marketing Manager', N'Berliner Platz 9012', N'München', NULL, N'10091', N'Germany', N'089-8901234', N'089-5678901');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(26, N'Customer USDBG', N'Koch, Paul', N'Marketing Manager', N'9012, rue Royale', N'Nantes', NULL, N'10101', N'France', N'34.56.78.90', N'34.56.78.91');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(27, N'Customer WMFEA', N'Schmöllerl, Martin', N'Sales Representative', N'Via Monte Bianco 4567', N'Torino', NULL, N'10099', N'Italy', N'011-2345678', N'011-9012345');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(28, N'Customer XYUFB', N'Cavaglieri, Giorgio', N'Sales Manager', N'Jardim das rosas n. 8901', N'Lisboa', NULL, N'10054', N'Portugal', N'(1) 456-7890', N'(1) 123-4567');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(29, N'Customer MDLWA', N'Kolesnikova, Katerina', N'Marketing Manager', N'Rambla de Cataluña, 8901', N'Barcelona', NULL, N'10081', N'Spain', N'(93) 789 0123', N'(93) 456 7890');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(30, N'Customer KSLQF', N'Shabalin, Rostislav', N'Sales Manager', N'C/ Romero, 1234', N'Sevilla', NULL, N'10075', N'Spain', N'(95) 901 23 45', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(31, N'Customer YJCBX', N'Cheng, Yao-Qiang', N'Sales Associate', N'Av. Brasil, 5678', N'Campinas', N'SP', N'10128', N'Brazil', N'(11) 567-8901', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(32, N'Customer YSIQX', N'Krishnan, Venky', N'Marketing Manager', N'6789 Baker Blvd.', N'Eugene', N'OR', N'10070', N'USA', N'(503) 555-0122', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(33, N'Customer FVXPQ', N'Sigurdarson, Hallur ', N'Owner', N'5ª Ave. Los Palos Grandes 3456', N'Caracas', N'DF', N'10043', N'Venezuela', N'(2) 789-0123', N'(2) 456-7890');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(34, N'Customer IBVRG', N'Cohen, Shy', N'Accounting Manager', N'Rua do Paço, 7890', N'Rio de Janeiro', N'RJ', N'10076', N'Brazil', N'(21) 789-0123', N'(21) 789-0124');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(35, N'Customer UMTLM', N'Langohr, Kris', N'Sales Representative', N'Carrera 1234 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10066', N'Venezuela', N'(5) 567-8901', N'(5) 234-5678');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(36, N'Customer LVJSO', N'Smith, Denise', N'Sales Representative', N'City Center Plaza 2345 Main St.', N'Elgin', N'OR', N'10103', N'USA', N'(503) 555-0126', N'(503) 555-0135');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(37, N'Customer FRXZL', N'Crăciun, Ovidiu V.', N'Sales Associate', N'9012 Johnstown Road', N'Cork', N'Co. Cork', N'10051', N'Ireland', N'8901 234', N'5678 9012');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(38, N'Customer LJUCA', N'Lee, Frank', N'Marketing Manager', N'Garden House Crowther Way 3456', N'Cowes', N'Isle of Wight', N'10063', N'UK', N'(198) 567-8901', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(39, N'Customer GLLAG', N'Song, Lolan', N'Sales Associate', N'Maubelstr. 8901', N'Brandenburg', NULL, N'10060', N'Germany', N'0555-34567', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(40, N'Customer EFFTC', N'De Oliveira, Jose', N'Sales Representative', N'2345, avenue de l''Europe', N'Versailles', NULL, N'10108', N'France', N'12.34.56.78', N'12.34.56.79');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(41, N'Customer XIIWM', N'Litton, Tim', N'Sales Manager', N'3456 rue Alsace-Lorraine', N'Toulouse', NULL, N'10053', N'France', N'90.12.34.56', N'90.12.34.57');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(42, N'Customer IAIJK', N'Steiner, Dominik', N'Marketing Assistant', N'2345 Oak St.', N'Vancouver', N'BC', N'10098', N'Canada', N'(604) 567-8901', N'(604) 234-5678');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(43, N'Customer UISOJ', N'Deshpande, Anu', N'Marketing Manager', N'8901 Orchestra Terrace', N'Walla Walla', N'WA', N'10069', N'USA', N'(509) 555-0119', N'(509) 555-0130');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(44, N'Customer OXFRU', N'Louverdis, George', N'Sales Representative', N'Magazinweg 8901', N'Frankfurt a.M.', NULL, N'10095', N'Germany', N'069-7890123', N'069-4567890');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(45, N'Customer QXPPT', N'Sunkammurali,  Krishna', N'Owner', N'1234 Polk St. Suite 5', N'San Francisco', N'CA', N'10062', N'USA', N'(415) 555-0118', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(46, N'Customer XPNIK', N'Dressler, Marlies', N'Accounting Manager', N'Carrera 7890 con Ave. Bolívar #65-98 Llano Largo', N'Barquisimeto', N'Lara', N'10093', N'Venezuela', N'(9) 789-0123', N'(9) 456-7890');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(47, N'Customer PSQUZ', N'Lupu, Cornel', N'Owner', N'Ave. 5 de Mayo Porlamar 5678', N'I. de Margarita', N'Nueva Esparta', N'10121', N'Venezuela', N'(8) 01-23-45', N'(8) 67-89-01');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(48, N'Customer DVFMB', N'Szymczak, Radosław', N'Sales Manager', N'9012 Chiaroscuro Rd.', N'Portland', N'OR', N'10073', N'USA', N'(503) 555-0117', N'(503) 555-0129');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(49, N'Customer CQRAA', N'Duerr, Bernard', N'Marketing Manager', N'Via Ludovico il Moro 6789', N'Bergamo', NULL, N'10106', N'Italy', N'035-345678', N'035-901234');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(50, N'Customer JYPSC', N'Mace, Donald', N'Sales Agent', N'Rue Joseph-Bens 0123', N'Bruxelles', NULL, N'10074', N'Belgium', N'(02) 890 12 34', N'(02) 567 89 01');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(51, N'Customer PVDZC', N'Taylor, Maurice', N'Marketing Assistant', N'8901 rue St. Laurent', N'Montréal', N'Québec', N'10040', N'Canada', N'(514) 345-6789', N'(514) 012-3456');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(52, N'Customer PZNLA', N'Dupont-Roc, Patrice', N'Marketing Assistant', N'Heerstr. 4567', N'Leipzig', NULL, N'10125', N'Germany', N'0342-12345', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(53, N'Customer GCJSG', N'Mallit, Ken', N'Sales Associate', N'South House 1234 Queensbridge', N'London', NULL, N'10061', N'UK', N'(171) 890-1234', N'(171) 890-1235');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(54, N'Customer TDKEG', N'Tiano, Mike', N'Sales Agent', N'Ing. Gustavo Moncada 0123 Piso 20-A', N'Buenos Aires', NULL, N'10094', N'Argentina', N'(1) 123-4567', N'(1) 890-1234');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(55, N'Customer KZQZT', N'Egelund-Muller, Anja', N'Sales Representative', N'7890 Bering St.', N'Anchorage', N'AK', N'10050', N'USA', N'(907) 555-0115', N'(907) 555-0128');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(56, N'Customer QNIVZ', N'Marinova, Nadejda', N'Owner', N'Mehrheimerstr. 9012', N'Köln', NULL, N'10047', N'Germany', N'0221-0123456', N'0221-7890123');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(57, N'Customer WVAXS', N'Tollevsen, Bjørn', N'Owner', N'5678, boulevard Charonne', N'Paris', NULL, N'10085', N'France', N'(1) 89.01.23.45', N'(1) 89.01.23.46');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(58, N'Customer AHXHT', N'Fakhouri, Fadi', N'Sales Representative', N'Calle Dr. Jorge Cash 8901', N'México D.F.', NULL, N'10116', N'Mexico', N'(5) 890-1234', N'(5) 567-8901');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(59, N'Customer LOLJO', N'Meston, Tosh', N'Sales Manager', N'Geislweg 2345', N'Salzburg', NULL, N'10127', N'Austria', N'4567-8901', N'2345-6789');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(60, N'Customer QZURI', N'Uppal, Sunil', N'Sales Representative', N'Estrada da saúde n. 6789', N'Lisboa', NULL, N'10083', N'Portugal', N'(1) 789-0123', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(61, N'Customer WULWD', N'Florczyk, Krzysztof', N'Accounting Manager', N'Rua da Panificadora, 1234', N'Rio de Janeiro', N'RJ', N'10115', N'Brazil', N'(21) 678-9012', N'(21) 678-9013');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(62, N'Customer WFIZJ', N'Misiec, Anna', N'Marketing Assistant', N'Alameda dos Canàrios, 1234', N'Sao Paulo', N'SP', N'10102', N'Brazil', N'(11) 901-2345', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(63, N'Customer IRRVL', N'Veronesi, Giorgio', N'Accounting Manager', N'Taucherstraße 1234', N'Cunewalde', NULL, N'10126', N'Germany', N'0372-12345', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(64, N'Customer LWGMD', N'Gaffney, Lawrie', N'Sales Representative', N'Av. del Libertador 3456', N'Buenos Aires', NULL, N'10124', N'Argentina', N'(1) 234-5678', N'(1) 901-2345');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(65, N'Customer NYUHS', N'Moore, Michael', N'Assistant Sales Representative', N'6789 Milton Dr.', N'Albuquerque', N'NM', N'10109', N'USA', N'(505) 555-0125', N'(505) 555-0134');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(66, N'Customer LHANT', N'Voss, Florian', N'Sales Associate', N'Strada Provinciale 7890', N'Reggio Emilia', NULL, N'10038', N'Italy', N'0522-012345', N'0522-678901');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(67, N'Customer QVEPD', N'Garden, Euan', N'Assistant Sales Agent', N'Av. Copacabana, 6789', N'Rio de Janeiro', N'RJ', N'10052', N'Brazil', N'(21) 345-6789', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(68, N'Customer CCKOT', N'Myrcha, Jacek', N'Sales Manager', N'Grenzacherweg 0123', N'Genève', NULL, N'10122', N'Switzerland', N'0897-012345', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(69, N'Customer SIUIH', N'Watters, Jason M.', N'Accounting Manager', N'Gran Vía, 4567', N'Madrid', NULL, N'10071', N'Spain', N'(91) 567 8901', N'(91) 234 5678');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(70, N'Customer TMXGN', N'Ginters, Kaspars', N'Owner', N'Erling Skakkes gate 2345', N'Stavern', NULL, N'10123', N'Norway', N'07-89 01 23', N'07-45 67 89');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(71, N'Customer LCOUJ', N'Navarro, Tomás', N'Sales Representative', N'9012 Suffolk Ln.', N'Boise', N'Id', N'10078', N'USA', N'(208) 555-0116', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(72, N'Customer AHPOP', N'Welcker, Brian', N'Sales Manager', N'4567 Wadhurst Rd.', N'London', NULL, N'10088', N'UK', N'(171) 901-2345', N'(171) 901-2346');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(73, N'Customer JMIKW', N'Gonzalez, Nuria', N'Owner', N'Vinbæltet 3456', N'Kobenhavn', NULL, N'10079', N'Denmark', N'12 34 56 78', N'90 12 34 56');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(74, N'Customer YSHXL', N'O’Brien, Dave', N'Marketing Manager', N'9012, rue Lauriston', N'Paris', NULL, N'10058', N'France', N'(1) 23.45.67.89', N'(1) 23.45.67.80');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(75, N'Customer XOJYP', N'Wojciechowska, Agnieszka', N'Sales Manager', N'P.O. Box 1234', N'Lander', N'WY', N'10113', N'USA', N'(307) 555-0114', N'(307) 555-0127');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(76, N'Customer SFOGW', N'Gulbis, Katrin', N'Accounting Manager', N'Boulevard Tirou, 2345', N'Charleroi', NULL, N'10100', N'Belgium', N'(071) 56 78 90 12', N'(071) 34 56 78 90');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(77, N'Customer LCYBZ', N'Osorio, Cristian', N'Marketing Manager', N'2345 Jefferson Way Suite 2', N'Portland', N'OR', N'10042', N'USA', N'(503) 555-0120', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(78, N'Customer NLTYP', N'Young, Robin', N'Marketing Assistant', N'0123 Grizzly Peak Rd.', N'Butte', N'MT', N'10107', N'USA', N'(406) 555-0121', N'(406) 555-0131');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(79, N'Customer FAPSM', N'Wickham, Jim', N'Marketing Manager', N'Luisenstr. 0123', N'Münster', NULL, N'10118', N'Germany', N'0251-456789', N'0251-012345');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(80, N'Customer VONTK', N'Geschwandtner, Jens', N'Owner', N'Avda. Azteca 4567', N'México D.F.', NULL, N'10044', N'Mexico', N'(5) 678-9012', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(81, N'Customer YQQWW', N'Nagel, Jean-Philippe', N'Sales Representative', N'Av. Inês de Castro, 1234', N'Sao Paulo', N'SP', N'10120', N'Brazil', N'(11) 123-4567', N'(11) 234-5678');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(82, N'Customer EYHKM', N'Veninga, Tjeerd', N'Sales Associate', N'1234 DaVinci Blvd.', N'Kirkland', N'WA', N'10119', N'USA', N'(206) 555-0124', N'(206) 555-0133');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(83, N'Customer ZRNDE', N'Fonteneau, Karl', N'Sales Manager', N'Smagsloget 3456', N'Århus', NULL, N'10090', N'Denmark', N'23 45 67 89', N'01 23 45 67');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(84, N'Customer NRCSK', N'Tuntisangaroon, Sittichai', N'Sales Agent', N'6789, rue du Commerce', N'Lyon', NULL, N'10072', N'France', N'78.90.12.34', N'78.90.12.35');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(85, N'Customer ENQZT', N'McLin, Nkenge', N'Accounting Manager', N'5678 rue de l''Abbaye', N'Reims', NULL, N'10082', N'France', N'56.78.90.12', N'56.78.90.13');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(86, N'Customer SNXOJ', N'Syamala, Manoj', N'Sales Representative', N'Adenauerallee 7890', N'Stuttgart', NULL, N'10086', N'Germany', N'0711-345678', N'0711-901234');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(87, N'Customer ZHYOS', N'Ludwig, Michael', N'Accounting Manager', N'Torikatu 9012', N'Oulu', NULL, N'10045', N'Finland', N'981-123456', N'981-789012');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(88, N'Customer SRQVM', N'Li, Yan', N'Sales Manager', N'Rua do Mercado, 4567', N'Resende', N'SP', N'10084', N'Brazil', N'(14) 234-5678', NULL);
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(89, N'Customer YBQTI', N'Smith Jr., Ronaldo', N'Owner', N'8901 - 14th Ave. S. Suite 3B', N'Seattle', N'WA', N'10049', N'USA', N'(206) 555-0123', N'(206) 555-0132');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(90, N'Customer XBBVR', N'Larsson, Katarina', N'Owner/Marketing Assistant', N'Keskuskatu 2345', N'Helsinki', NULL, N'10055', N'Finland', N'90-012 3456', N'90-789 0123');
+INSERT INTO Customer(custid, companyname, contactname, contacttitle, address, city, region, postalcode, country, phone, fax)
+  VALUES(91, N'Customer CCFIZ', N'Conn, Steve', N'Owner', N'ul. Filtrowa 6789', N'Warszawa', NULL, N'10068', N'Poland', N'(26) 234-5678', N'(26) 901-2345');
+
+
+
+INSERT INTO Shipper(shipperid, companyname, phone)
+  VALUES(1, N'Shipper GVSUA', N'(503) 555-0137');
+INSERT INTO Shipper(shipperid, companyname, phone)
+  VALUES(2, N'Shipper ETYNR', N'(425) 555-0136');
+INSERT INTO Shipper(shipperid, companyname, phone)
+  VALUES(3, N'Shipper ZHISN', N'(415) 555-0138');
+
+
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10248, 85, 5, '2006-07-04 00:00:00.000', '2006-08-01 00:00:00.000', '2006-07-16 00:00:00.000', 3, 32.38, N'Ship to 85-B', N'6789 rue de l''Abbaye', N'Reims', NULL, N'10345', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10249, 79, 6, '2006-07-05 00:00:00.000', '2006-08-16 00:00:00.000', '2006-07-10 00:00:00.000', 1, 11.61, N'Ship to 79-C', N'Luisenstr. 9012', N'Münster', NULL, N'10328', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10250, 34, 4, '2006-07-08 00:00:00.000', '2006-08-05 00:00:00.000', '2006-07-12 00:00:00.000', 2, 65.83, N'Destination SCQXA', N'Rua do Paço, 7890', N'Rio de Janeiro', N'RJ', N'10195', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10251, 84, 3, '2006-07-08 00:00:00.000', '2006-08-05 00:00:00.000', '2006-07-15 00:00:00.000', 1, 41.34, N'Ship to 84-A', N'3456, rue du Commerce', N'Lyon', NULL, N'10342', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10252, 76, 4, '2006-07-09 00:00:00.000', '2006-08-06 00:00:00.000', '2006-07-11 00:00:00.000', 2, 51.30, N'Ship to 76-B', N'Boulevard Tirou, 9012', N'Charleroi', NULL, N'10318', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10253, 34, 3, '2006-07-10 00:00:00.000', '2006-07-24 00:00:00.000', '2006-07-16 00:00:00.000', 2, 58.17, N'Destination JPAIY', N'Rua do Paço, 8901', N'Rio de Janeiro', N'RJ', N'10196', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10254, 14, 5, '2006-07-11 00:00:00.000', '2006-08-08 00:00:00.000', '2006-07-23 00:00:00.000', 2, 22.98, N'Destination YUJRD', N'Hauptstr. 1234', N'Bern', NULL, N'10139', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10255, 68, 9, '2006-07-12 00:00:00.000', '2006-08-09 00:00:00.000', '2006-07-15 00:00:00.000', 3, 148.33, N'Ship to 68-A', N'Starenweg 6789', N'Genève', NULL, N'10294', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10256, 88, 3, '2006-07-15 00:00:00.000', '2006-08-12 00:00:00.000', '2006-07-17 00:00:00.000', 2, 13.97, N'Ship to 88-B', N'Rua do Mercado, 5678', N'Resende', N'SP', N'10354', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10257, 35, 4, '2006-07-16 00:00:00.000', '2006-08-13 00:00:00.000', '2006-07-22 00:00:00.000', 3, 81.91, N'Destination JYDLM', N'Carrera1234 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10199', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10258, 20, 1, '2006-07-17 00:00:00.000', '2006-08-14 00:00:00.000', '2006-07-23 00:00:00.000', 1, 140.51, N'Destination RVDMF', N'Kirchgasse 9012', N'Graz', NULL, N'10157', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10259, 13, 4, '2006-07-18 00:00:00.000', '2006-08-15 00:00:00.000', '2006-07-25 00:00:00.000', 3, 3.25, N'Destination LGGCH', N'Sierras de Granada 9012', N'México D.F.', NULL, N'10137', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10260, 56, 4, '2006-07-19 00:00:00.000', '2006-08-16 00:00:00.000', '2006-07-29 00:00:00.000', 1, 55.09, N'Ship to 56-A', N'Mehrheimerstr. 0123', N'Köln', NULL, N'10258', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10261, 61, 4, '2006-07-19 00:00:00.000', '2006-08-16 00:00:00.000', '2006-07-30 00:00:00.000', 2, 3.05, N'Ship to 61-B', N'Rua da Panificadora, 6789', N'Rio de Janeiro', N'RJ', N'10274', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10262, 65, 8, '2006-07-22 00:00:00.000', '2006-08-19 00:00:00.000', '2006-07-25 00:00:00.000', 3, 48.29, N'Ship to 65-B', N'8901 Milton Dr.', N'Albuquerque', N'NM', N'10286', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10263, 20, 9, '2006-07-23 00:00:00.000', '2006-08-20 00:00:00.000', '2006-07-31 00:00:00.000', 3, 146.06, N'Destination FFXKT', N'Kirchgasse 0123', N'Graz', NULL, N'10158', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10264, 24, 6, '2006-07-24 00:00:00.000', '2006-08-21 00:00:00.000', '2006-08-23 00:00:00.000', 3, 3.67, N'Destination KBSBN', N'Åkergatan 9012', N'Bräcke', NULL, N'10167', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10265, 7, 2, '2006-07-25 00:00:00.000', '2006-08-22 00:00:00.000', '2006-08-12 00:00:00.000', 1, 55.28, N'Ship to 7-A', N'0123, place Kléber', N'Strasbourg', NULL, N'10329', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10266, 87, 3, '2006-07-26 00:00:00.000', '2006-09-06 00:00:00.000', '2006-07-31 00:00:00.000', 3, 25.73, N'Ship to 87-B', N'Torikatu 2345', N'Oulu', NULL, N'10351', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10267, 25, 4, '2006-07-29 00:00:00.000', '2006-08-26 00:00:00.000', '2006-08-06 00:00:00.000', 1, 208.58, N'Destination VAPXU', N'Berliner Platz 0123', N'München', NULL, N'10168', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10268, 33, 8, '2006-07-30 00:00:00.000', '2006-08-27 00:00:00.000', '2006-08-02 00:00:00.000', 3, 66.29, N'Destination QJVQH', N'5ª Ave. Los Palos Grandes 5678', N'Caracas', N'DF', N'10193', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10269, 89, 5, '2006-07-31 00:00:00.000', '2006-08-14 00:00:00.000', '2006-08-09 00:00:00.000', 1, 4.56, N'Ship to 89-B', N'8901 - 12th Ave. S.', N'Seattle', N'WA', N'10357', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10270, 87, 1, '2006-08-01 00:00:00.000', '2006-08-29 00:00:00.000', '2006-08-02 00:00:00.000', 1, 136.54, N'Ship to 87-B', N'Torikatu 2345', N'Oulu', NULL, N'10351', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10271, 75, 6, '2006-08-01 00:00:00.000', '2006-08-29 00:00:00.000', '2006-08-30 00:00:00.000', 2, 4.54, N'Ship to 75-C', N'P.O. Box 7890', N'Lander', N'WY', N'10316', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10272, 65, 6, '2006-08-02 00:00:00.000', '2006-08-30 00:00:00.000', '2006-08-06 00:00:00.000', 2, 98.03, N'Ship to 65-A', N'7890 Milton Dr.', N'Albuquerque', N'NM', N'10285', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10273, 63, 3, '2006-08-05 00:00:00.000', '2006-09-02 00:00:00.000', '2006-08-12 00:00:00.000', 3, 76.07, N'Ship to 63-A', N'Taucherstraße 1234', N'Cunewalde', NULL, N'10279', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10274, 85, 6, '2006-08-06 00:00:00.000', '2006-09-03 00:00:00.000', '2006-08-16 00:00:00.000', 1, 6.01, N'Ship to 85-B', N'6789 rue de l''Abbaye', N'Reims', NULL, N'10345', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10275, 49, 1, '2006-08-07 00:00:00.000', '2006-09-04 00:00:00.000', '2006-08-09 00:00:00.000', 1, 26.93, N'Ship to 49-A', N'Via Ludovico il Moro 8901', N'Bergamo', NULL, N'10235', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10276, 80, 8, '2006-08-08 00:00:00.000', '2006-08-22 00:00:00.000', '2006-08-14 00:00:00.000', 3, 13.84, N'Ship to 80-C', N'Avda. Azteca 5678', N'México D.F.', NULL, N'10334', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10277, 52, 2, '2006-08-09 00:00:00.000', '2006-09-06 00:00:00.000', '2006-08-13 00:00:00.000', 3, 125.77, N'Ship to 52-A', N'Heerstr. 9012', N'Leipzig', NULL, N'10247', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10278, 5, 8, '2006-08-12 00:00:00.000', '2006-09-09 00:00:00.000', '2006-08-16 00:00:00.000', 2, 92.69, N'Ship to 5-C', N'Berguvsvägen  1234', N'Luleå', NULL, N'10269', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10279, 44, 8, '2006-08-13 00:00:00.000', '2006-09-10 00:00:00.000', '2006-08-16 00:00:00.000', 2, 25.83, N'Ship to 44-A', N'Magazinweg 4567', N'Frankfurt a.M.', NULL, N'10222', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10280, 5, 2, '2006-08-14 00:00:00.000', '2006-09-11 00:00:00.000', '2006-09-12 00:00:00.000', 1, 8.98, N'Ship to 5-B', N'Berguvsvägen  0123', N'Luleå', NULL, N'10268', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10281, 69, 4, '2006-08-14 00:00:00.000', '2006-08-28 00:00:00.000', '2006-08-21 00:00:00.000', 1, 2.94, N'Ship to 69-A', N'Gran Vía, 9012', N'Madrid', NULL, N'10297', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10282, 69, 4, '2006-08-15 00:00:00.000', '2006-09-12 00:00:00.000', '2006-08-21 00:00:00.000', 1, 12.69, N'Ship to 69-B', N'Gran Vía, 0123', N'Madrid', NULL, N'10298', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10283, 46, 3, '2006-08-16 00:00:00.000', '2006-09-13 00:00:00.000', '2006-08-23 00:00:00.000', 3, 84.81, N'Ship to 46-A', N'Carrera 0123 con Ave. Bolívar #65-98 Llano Largo', N'Barquisimeto', N'Lara', N'10227', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10284, 44, 4, '2006-08-19 00:00:00.000', '2006-09-16 00:00:00.000', '2006-08-27 00:00:00.000', 1, 76.56, N'Ship to 44-A', N'Magazinweg 4567', N'Frankfurt a.M.', NULL, N'10222', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10285, 63, 1, '2006-08-20 00:00:00.000', '2006-09-17 00:00:00.000', '2006-08-26 00:00:00.000', 2, 76.83, N'Ship to 63-B', N'Taucherstraße 2345', N'Cunewalde', NULL, N'10280', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10286, 63, 8, '2006-08-21 00:00:00.000', '2006-09-18 00:00:00.000', '2006-08-30 00:00:00.000', 3, 229.24, N'Ship to 63-B', N'Taucherstraße 2345', N'Cunewalde', NULL, N'10280', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10287, 67, 8, '2006-08-22 00:00:00.000', '2006-09-19 00:00:00.000', '2006-08-28 00:00:00.000', 3, 12.76, N'Ship to 67-A', N'Av. Copacabana, 3456', N'Rio de Janeiro', N'RJ', N'10291', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10288, 66, 4, '2006-08-23 00:00:00.000', '2006-09-20 00:00:00.000', '2006-09-03 00:00:00.000', 1, 7.45, N'Ship to 66-C', N'Strada Provinciale 2345', N'Reggio Emilia', NULL, N'10290', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10289, 11, 7, '2006-08-26 00:00:00.000', '2006-09-23 00:00:00.000', '2006-08-28 00:00:00.000', 3, 22.77, N'Destination DLEUN', N'Fauntleroy Circus 4567', N'London', NULL, N'10132', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10290, 15, 8, '2006-08-27 00:00:00.000', '2006-09-24 00:00:00.000', '2006-09-03 00:00:00.000', 1, 79.70, N'Destination HQZHO', N'Av. dos Lusíadas, 4567', N'Sao Paulo', N'SP', N'10142', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10291, 61, 6, '2006-08-27 00:00:00.000', '2006-09-24 00:00:00.000', '2006-09-04 00:00:00.000', 2, 6.40, N'Ship to 61-A', N'Rua da Panificadora, 5678', N'Rio de Janeiro', N'RJ', N'10273', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10292, 81, 1, '2006-08-28 00:00:00.000', '2006-09-25 00:00:00.000', '2006-09-02 00:00:00.000', 2, 1.35, N'Ship to 81-A', N'Av. Inês de Castro, 6789', N'Sao Paulo', N'SP', N'10335', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10293, 80, 1, '2006-08-29 00:00:00.000', '2006-09-26 00:00:00.000', '2006-09-11 00:00:00.000', 3, 21.18, N'Ship to 80-B', N'Avda. Azteca 4567', N'México D.F.', NULL, N'10333', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10294, 65, 4, '2006-08-30 00:00:00.000', '2006-09-27 00:00:00.000', '2006-09-05 00:00:00.000', 2, 147.26, N'Ship to 65-A', N'7890 Milton Dr.', N'Albuquerque', N'NM', N'10285', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10295, 85, 2, '2006-09-02 00:00:00.000', '2006-09-30 00:00:00.000', '2006-09-10 00:00:00.000', 2, 1.15, N'Ship to 85-C', N'7890 rue de l''Abbaye', N'Reims', NULL, N'10346', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10296, 46, 6, '2006-09-03 00:00:00.000', '2006-10-01 00:00:00.000', '2006-09-11 00:00:00.000', 1, 0.12, N'Ship to 46-C', N'Carrera 2345 con Ave. Bolívar #65-98 Llano Largo', N'Barquisimeto', N'Lara', N'10229', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10297, 7, 5, '2006-09-04 00:00:00.000', '2006-10-16 00:00:00.000', '2006-09-10 00:00:00.000', 2, 5.74, N'Ship to 7-C', N'2345, place Kléber', N'Strasbourg', NULL, N'10331', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10298, 37, 6, '2006-09-05 00:00:00.000', '2006-10-03 00:00:00.000', '2006-09-11 00:00:00.000', 2, 168.22, N'Destination ATSOA', N'4567 Johnstown Road', N'Cork', N'Co. Cork', N'10202', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10299, 67, 4, '2006-09-06 00:00:00.000', '2006-10-04 00:00:00.000', '2006-09-13 00:00:00.000', 2, 29.76, N'Ship to 67-A', N'Av. Copacabana, 3456', N'Rio de Janeiro', N'RJ', N'10291', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10300, 49, 2, '2006-09-09 00:00:00.000', '2006-10-07 00:00:00.000', '2006-09-18 00:00:00.000', 2, 17.68, N'Ship to 49-A', N'Via Ludovico il Moro 8901', N'Bergamo', NULL, N'10235', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10301, 86, 8, '2006-09-09 00:00:00.000', '2006-10-07 00:00:00.000', '2006-09-17 00:00:00.000', 2, 45.08, N'Ship to 86-A', N'Adenauerallee 8901', N'Stuttgart', NULL, N'10347', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10302, 76, 4, '2006-09-10 00:00:00.000', '2006-10-08 00:00:00.000', '2006-10-09 00:00:00.000', 2, 6.27, N'Ship to 76-B', N'Boulevard Tirou, 9012', N'Charleroi', NULL, N'10318', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10303, 30, 7, '2006-09-11 00:00:00.000', '2006-10-09 00:00:00.000', '2006-09-18 00:00:00.000', 2, 107.83, N'Destination IIYDD', N'C/ Romero, 5678', N'Sevilla', NULL, N'10183', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10304, 80, 1, '2006-09-12 00:00:00.000', '2006-10-10 00:00:00.000', '2006-09-17 00:00:00.000', 2, 63.79, N'Ship to 80-C', N'Avda. Azteca 5678', N'México D.F.', NULL, N'10334', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10305, 55, 8, '2006-09-13 00:00:00.000', '2006-10-11 00:00:00.000', '2006-10-09 00:00:00.000', 3, 257.62, N'Ship to 55-B', N'8901 Bering St.', N'Anchorage', N'AK', N'10256', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10306, 69, 1, '2006-09-16 00:00:00.000', '2006-10-14 00:00:00.000', '2006-09-23 00:00:00.000', 3, 7.56, N'Ship to 69-B', N'Gran Vía, 0123', N'Madrid', NULL, N'10298', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10307, 48, 2, '2006-09-17 00:00:00.000', '2006-10-15 00:00:00.000', '2006-09-25 00:00:00.000', 2, 0.56, N'Ship to 48-B', N'6789 Chiaroscuro Rd.', N'Portland', N'OR', N'10233', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10308, 2, 7, '2006-09-18 00:00:00.000', '2006-10-16 00:00:00.000', '2006-09-24 00:00:00.000', 3, 1.61, N'Destination QMVCI', N'Avda. de la Constitución 2345', N'México D.F.', NULL, N'10180', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10309, 37, 3, '2006-09-19 00:00:00.000', '2006-10-17 00:00:00.000', '2006-10-23 00:00:00.000', 1, 47.30, N'Destination ATSOA', N'4567 Johnstown Road', N'Cork', N'Co. Cork', N'10202', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10310, 77, 8, '2006-09-20 00:00:00.000', '2006-10-18 00:00:00.000', '2006-09-27 00:00:00.000', 2, 17.52, N'Ship to 77-B', N'2345 Jefferson Way Suite 2', N'Portland', N'OR', N'10321', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10311, 18, 1, '2006-09-20 00:00:00.000', '2006-10-04 00:00:00.000', '2006-09-26 00:00:00.000', 3, 24.69, N'Destination SNPXM', N'0123, rue des Cinquante Otages', N'Nantes', NULL, N'10148', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10312, 86, 2, '2006-09-23 00:00:00.000', '2006-10-21 00:00:00.000', '2006-10-03 00:00:00.000', 2, 40.26, N'Ship to 86-B', N'Adenauerallee 9012', N'Stuttgart', NULL, N'10348', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10313, 63, 2, '2006-09-24 00:00:00.000', '2006-10-22 00:00:00.000', '2006-10-04 00:00:00.000', 2, 1.96, N'Ship to 63-A', N'Taucherstraße 1234', N'Cunewalde', NULL, N'10279', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10314, 65, 1, '2006-09-25 00:00:00.000', '2006-10-23 00:00:00.000', '2006-10-04 00:00:00.000', 2, 74.16, N'Ship to 65-A', N'7890 Milton Dr.', N'Albuquerque', N'NM', N'10285', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10315, 38, 4, '2006-09-26 00:00:00.000', '2006-10-24 00:00:00.000', '2006-10-03 00:00:00.000', 2, 41.76, N'Destination AXVHD', N'Garden House Crowther Way 9012', N'Cowes', N'Isle of Wight', N'10207', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10316, 65, 1, '2006-09-27 00:00:00.000', '2006-10-25 00:00:00.000', '2006-10-08 00:00:00.000', 3, 150.15, N'Ship to 65-B', N'8901 Milton Dr.', N'Albuquerque', N'NM', N'10286', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10317, 48, 6, '2006-09-30 00:00:00.000', '2006-10-28 00:00:00.000', '2006-10-10 00:00:00.000', 1, 12.69, N'Ship to 48-B', N'6789 Chiaroscuro Rd.', N'Portland', N'OR', N'10233', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10318, 38, 8, '2006-10-01 00:00:00.000', '2006-10-29 00:00:00.000', '2006-10-04 00:00:00.000', 2, 4.73, N'Destination AXVHD', N'Garden House Crowther Way 9012', N'Cowes', N'Isle of Wight', N'10207', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10319, 80, 7, '2006-10-02 00:00:00.000', '2006-10-30 00:00:00.000', '2006-10-11 00:00:00.000', 3, 64.50, N'Ship to 80-B', N'Avda. Azteca 4567', N'México D.F.', NULL, N'10333', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10320, 87, 5, '2006-10-03 00:00:00.000', '2006-10-17 00:00:00.000', '2006-10-18 00:00:00.000', 3, 34.57, N'Ship to 87-A', N'Torikatu 1234', N'Oulu', NULL, N'10350', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10321, 38, 3, '2006-10-03 00:00:00.000', '2006-10-31 00:00:00.000', '2006-10-11 00:00:00.000', 2, 3.43, N'Destination LMVGS', N'Garden House Crowther Way 8901', N'Cowes', N'Isle of Wight', N'10206', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10322, 58, 7, '2006-10-04 00:00:00.000', '2006-11-01 00:00:00.000', '2006-10-23 00:00:00.000', 3, 0.40, N'Ship to 58-A', N'Calle Dr. Jorge Cash 3456', N'México D.F.', NULL, N'10261', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10323, 39, 4, '2006-10-07 00:00:00.000', '2006-11-04 00:00:00.000', '2006-10-14 00:00:00.000', 1, 4.88, N'Destination RMBHM', N'Maubelstr. 1234', N'Brandenburg', NULL, N'10209', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10324, 71, 9, '2006-10-08 00:00:00.000', '2006-11-05 00:00:00.000', '2006-10-10 00:00:00.000', 1, 214.27, N'Ship to 71-C', N'9012 Suffolk Ln.', N'Boise', N'Id', N'10307', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10325, 39, 1, '2006-10-09 00:00:00.000', '2006-10-23 00:00:00.000', '2006-10-14 00:00:00.000', 3, 64.86, N'Destination RMBHM', N'Maubelstr. 1234', N'Brandenburg', NULL, N'10209', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10326, 8, 4, '2006-10-10 00:00:00.000', '2006-11-07 00:00:00.000', '2006-10-14 00:00:00.000', 2, 77.92, N'Ship to 8-A', N'C/ Araquil, 0123', N'Madrid', NULL, N'10359', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10327, 24, 2, '2006-10-11 00:00:00.000', '2006-11-08 00:00:00.000', '2006-10-14 00:00:00.000', 1, 63.36, N'Destination NCKKO', N'Åkergatan 7890', N'Bräcke', NULL, N'10165', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10328, 28, 4, '2006-10-14 00:00:00.000', '2006-11-11 00:00:00.000', '2006-10-17 00:00:00.000', 3, 87.03, N'Destination CIRQO', N'Jardim das rosas n. 8901', N'Lisboa', NULL, N'10176', N'Portugal');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10329, 75, 4, '2006-10-15 00:00:00.000', '2006-11-26 00:00:00.000', '2006-10-23 00:00:00.000', 2, 191.67, N'Ship to 75-C', N'P.O. Box 7890', N'Lander', N'WY', N'10316', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10330, 46, 3, '2006-10-16 00:00:00.000', '2006-11-13 00:00:00.000', '2006-10-28 00:00:00.000', 1, 12.75, N'Ship to 46-A', N'Carrera 0123 con Ave. Bolívar #65-98 Llano Largo', N'Barquisimeto', N'Lara', N'10227', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10331, 9, 9, '2006-10-16 00:00:00.000', '2006-11-27 00:00:00.000', '2006-10-21 00:00:00.000', 1, 10.19, N'Ship to 9-C', N'0123, rue des Bouchers', N'Marseille', NULL, N'10369', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10332, 51, 3, '2006-10-17 00:00:00.000', '2006-11-28 00:00:00.000', '2006-10-21 00:00:00.000', 2, 52.84, N'Ship to 51-B', N'7890 rue St. Laurent', N'Montréal', N'Québec', N'10245', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10333, 87, 5, '2006-10-18 00:00:00.000', '2006-11-15 00:00:00.000', '2006-10-25 00:00:00.000', 3, 0.59, N'Ship to 87-C', N'Torikatu 3456', N'Oulu', NULL, N'10352', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10334, 84, 8, '2006-10-21 00:00:00.000', '2006-11-18 00:00:00.000', '2006-10-28 00:00:00.000', 2, 8.56, N'Ship to 84-B', N'4567, rue du Commerce', N'Lyon', NULL, N'10343', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10335, 37, 7, '2006-10-22 00:00:00.000', '2006-11-19 00:00:00.000', '2006-10-24 00:00:00.000', 2, 42.11, N'Destination ATSOA', N'4567 Johnstown Road', N'Cork', N'Co. Cork', N'10202', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10336, 60, 7, '2006-10-23 00:00:00.000', '2006-11-20 00:00:00.000', '2006-10-25 00:00:00.000', 2, 15.51, N'Ship to 60-B', N'Estrada da saúde n. 3456', N'Lisboa', NULL, N'10271', N'Portugal');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10337, 25, 4, '2006-10-24 00:00:00.000', '2006-11-21 00:00:00.000', '2006-10-29 00:00:00.000', 3, 108.26, N'Destination QOCBL', N'Berliner Platz 1234', N'München', NULL, N'10169', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10338, 55, 4, '2006-10-25 00:00:00.000', '2006-11-22 00:00:00.000', '2006-10-29 00:00:00.000', 3, 84.21, N'Ship to 55-C', N'9012 Bering St.', N'Anchorage', N'AK', N'10257', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10339, 51, 2, '2006-10-28 00:00:00.000', '2006-11-25 00:00:00.000', '2006-11-04 00:00:00.000', 2, 15.66, N'Ship to 51-C', N'8901 rue St. Laurent', N'Montréal', N'Québec', N'10246', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10340, 9, 1, '2006-10-29 00:00:00.000', '2006-11-26 00:00:00.000', '2006-11-08 00:00:00.000', 3, 166.31, N'Ship to 9-A', N'8901, rue des Bouchers', N'Marseille', NULL, N'10367', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10341, 73, 7, '2006-10-29 00:00:00.000', '2006-11-26 00:00:00.000', '2006-11-05 00:00:00.000', 3, 26.78, N'Ship to 73-A', N'Vinbæltet 1234', N'Kobenhavn', NULL, N'10310', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10342, 25, 4, '2006-10-30 00:00:00.000', '2006-11-13 00:00:00.000', '2006-11-04 00:00:00.000', 2, 54.83, N'Destination VAPXU', N'Berliner Platz 0123', N'München', NULL, N'10168', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10343, 44, 4, '2006-10-31 00:00:00.000', '2006-11-28 00:00:00.000', '2006-11-06 00:00:00.000', 1, 110.37, N'Ship to 44-A', N'Magazinweg 4567', N'Frankfurt a.M.', NULL, N'10222', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10344, 89, 4, '2006-11-01 00:00:00.000', '2006-11-29 00:00:00.000', '2006-11-05 00:00:00.000', 2, 23.29, N'Ship to 89-A', N'7890 - 12th Ave. S.', N'Seattle', N'WA', N'10356', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10345, 63, 2, '2006-11-04 00:00:00.000', '2006-12-02 00:00:00.000', '2006-11-11 00:00:00.000', 2, 249.06, N'Ship to 63-B', N'Taucherstraße 2345', N'Cunewalde', NULL, N'10280', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10346, 65, 3, '2006-11-05 00:00:00.000', '2006-12-17 00:00:00.000', '2006-11-08 00:00:00.000', 3, 142.08, N'Ship to 65-A', N'7890 Milton Dr.', N'Albuquerque', N'NM', N'10285', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10347, 21, 4, '2006-11-06 00:00:00.000', '2006-12-04 00:00:00.000', '2006-11-08 00:00:00.000', 3, 3.10, N'Destination KKELL', N'Rua Orós, 4567', N'Sao Paulo', N'SP', N'10162', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10348, 86, 4, '2006-11-07 00:00:00.000', '2006-12-05 00:00:00.000', '2006-11-15 00:00:00.000', 2, 0.78, N'Ship to 86-B', N'Adenauerallee 9012', N'Stuttgart', NULL, N'10348', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10349, 75, 7, '2006-11-08 00:00:00.000', '2006-12-06 00:00:00.000', '2006-11-15 00:00:00.000', 1, 8.63, N'Ship to 75-C', N'P.O. Box 7890', N'Lander', N'WY', N'10316', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10350, 41, 6, '2006-11-11 00:00:00.000', '2006-12-09 00:00:00.000', '2006-12-03 00:00:00.000', 2, 64.19, N'Destination DWJIO', N'9012 rue Alsace-Lorraine', N'Toulouse', NULL, N'10217', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10351, 20, 1, '2006-11-11 00:00:00.000', '2006-12-09 00:00:00.000', '2006-11-20 00:00:00.000', 1, 162.33, N'Destination RVDMF', N'Kirchgasse 9012', N'Graz', NULL, N'10157', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10352, 28, 3, '2006-11-12 00:00:00.000', '2006-11-26 00:00:00.000', '2006-11-18 00:00:00.000', 3, 1.30, N'Destination OTSWR', N'Jardim das rosas n. 9012', N'Lisboa', NULL, N'10177', N'Portugal');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10353, 59, 7, '2006-11-13 00:00:00.000', '2006-12-11 00:00:00.000', '2006-11-25 00:00:00.000', 3, 360.63, N'Ship to 59-B', N'Geislweg 7890', N'Salzburg', NULL, N'10265', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10354, 58, 8, '2006-11-14 00:00:00.000', '2006-12-12 00:00:00.000', '2006-11-20 00:00:00.000', 3, 53.80, N'Ship to 58-C', N'Calle Dr. Jorge Cash 5678', N'México D.F.', NULL, N'10263', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10355, 4, 6, '2006-11-15 00:00:00.000', '2006-12-13 00:00:00.000', '2006-11-20 00:00:00.000', 1, 41.95, N'Ship to 4-A', N'Brook Farm Stratford St. Mary 0123', N'Colchester', N'Essex', N'10238', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10356, 86, 6, '2006-11-18 00:00:00.000', '2006-12-16 00:00:00.000', '2006-11-27 00:00:00.000', 2, 36.71, N'Ship to 86-A', N'Adenauerallee 8901', N'Stuttgart', NULL, N'10347', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10357, 46, 1, '2006-11-19 00:00:00.000', '2006-12-17 00:00:00.000', '2006-12-02 00:00:00.000', 3, 34.88, N'Ship to 46-B', N'Carrera 1234 con Ave. Bolívar #65-98 Llano Largo', N'Barquisimeto', N'Lara', N'10228', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10358, 41, 5, '2006-11-20 00:00:00.000', '2006-12-18 00:00:00.000', '2006-11-27 00:00:00.000', 1, 19.64, N'Ship to 41-C', N'0123 rue Alsace-Lorraine', N'Toulouse', NULL, N'10218', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10359, 72, 5, '2006-11-21 00:00:00.000', '2006-12-19 00:00:00.000', '2006-11-26 00:00:00.000', 3, 288.43, N'Ship to 72-C', N'1234 Wadhurst Rd.', N'London', NULL, N'10309', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10360, 7, 4, '2006-11-22 00:00:00.000', '2006-12-20 00:00:00.000', '2006-12-02 00:00:00.000', 3, 131.70, N'Ship to 7-C', N'2345, place Kléber', N'Strasbourg', NULL, N'10331', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10361, 63, 1, '2006-11-22 00:00:00.000', '2006-12-20 00:00:00.000', '2006-12-03 00:00:00.000', 2, 183.17, N'Ship to 63-C', N'Taucherstraße 3456', N'Cunewalde', NULL, N'10281', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10362, 9, 3, '2006-11-25 00:00:00.000', '2006-12-23 00:00:00.000', '2006-11-28 00:00:00.000', 1, 96.04, N'Ship to 9-B', N'9012, rue des Bouchers', N'Marseille', NULL, N'10368', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10363, 17, 4, '2006-11-26 00:00:00.000', '2006-12-24 00:00:00.000', '2006-12-04 00:00:00.000', 3, 30.54, N'Destination BJCXA', N'Walserweg 7890', N'Aachen', NULL, N'10145', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10364, 19, 1, '2006-11-26 00:00:00.000', '2007-01-07 00:00:00.000', '2006-12-04 00:00:00.000', 1, 71.97, N'Destination QTKCU', N'3456 King George', N'London', NULL, N'10151', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10365, 3, 3, '2006-11-27 00:00:00.000', '2006-12-25 00:00:00.000', '2006-12-02 00:00:00.000', 2, 22.00, N'Destination FQFLS', N'Mataderos  3456', N'México D.F.', NULL, N'10211', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10366, 29, 8, '2006-11-28 00:00:00.000', '2007-01-09 00:00:00.000', '2006-12-30 00:00:00.000', 2, 10.14, N'Destination VPNNG', N'Rambla de Cataluña, 0123', N'Barcelona', NULL, N'10178', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10367, 83, 7, '2006-11-28 00:00:00.000', '2006-12-26 00:00:00.000', '2006-12-02 00:00:00.000', 3, 13.55, N'Ship to 83-B', N'Smagsloget 1234', N'Århus', NULL, N'10340', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10368, 20, 2, '2006-11-29 00:00:00.000', '2006-12-27 00:00:00.000', '2006-12-02 00:00:00.000', 2, 101.95, N'Destination RVDMF', N'Kirchgasse 9012', N'Graz', NULL, N'10157', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10369, 75, 8, '2006-12-02 00:00:00.000', '2006-12-30 00:00:00.000', '2006-12-09 00:00:00.000', 2, 195.68, N'Ship to 75-C', N'P.O. Box 7890', N'Lander', N'WY', N'10316', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10370, 14, 6, '2006-12-03 00:00:00.000', '2006-12-31 00:00:00.000', '2006-12-27 00:00:00.000', 2, 1.17, N'Destination YUJRD', N'Hauptstr. 1234', N'Bern', NULL, N'10139', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10371, 41, 1, '2006-12-03 00:00:00.000', '2006-12-31 00:00:00.000', '2006-12-24 00:00:00.000', 1, 0.45, N'Ship to 41-C', N'0123 rue Alsace-Lorraine', N'Toulouse', NULL, N'10218', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10372, 62, 5, '2006-12-04 00:00:00.000', '2007-01-01 00:00:00.000', '2006-12-09 00:00:00.000', 2, 890.78, N'Ship to 62-A', N'Alameda dos Canàrios, 8901', N'Sao Paulo', N'SP', N'10276', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10373, 37, 4, '2006-12-05 00:00:00.000', '2007-01-02 00:00:00.000', '2006-12-11 00:00:00.000', 3, 124.12, N'Destination KPVYJ', N'5678 Johnstown Road', N'Cork', N'Co. Cork', N'10203', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10374, 91, 1, '2006-12-05 00:00:00.000', '2007-01-02 00:00:00.000', '2006-12-09 00:00:00.000', 3, 3.94, N'Ship to 91-A', N'ul. Filtrowa 5678', N'Warszawa', NULL, N'10364', N'Poland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10375, 36, 3, '2006-12-06 00:00:00.000', '2007-01-03 00:00:00.000', '2006-12-09 00:00:00.000', 2, 20.12, N'Destination HOHCR', N'City Center Plaza 3456 Main St.', N'Elgin', N'OR', N'10201', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10376, 51, 1, '2006-12-09 00:00:00.000', '2007-01-06 00:00:00.000', '2006-12-13 00:00:00.000', 2, 20.39, N'Ship to 51-B', N'7890 rue St. Laurent', N'Montréal', N'Québec', N'10245', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10377, 72, 1, '2006-12-09 00:00:00.000', '2007-01-06 00:00:00.000', '2006-12-13 00:00:00.000', 3, 22.21, N'Ship to 72-C', N'1234 Wadhurst Rd.', N'London', NULL, N'10309', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10378, 24, 5, '2006-12-10 00:00:00.000', '2007-01-07 00:00:00.000', '2006-12-19 00:00:00.000', 3, 5.44, N'Destination KBSBN', N'Åkergatan 9012', N'Bräcke', NULL, N'10167', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10379, 61, 2, '2006-12-11 00:00:00.000', '2007-01-08 00:00:00.000', '2006-12-13 00:00:00.000', 1, 45.03, N'Ship to 61-B', N'Rua da Panificadora, 6789', N'Rio de Janeiro', N'RJ', N'10274', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10380, 37, 8, '2006-12-12 00:00:00.000', '2007-01-09 00:00:00.000', '2007-01-16 00:00:00.000', 3, 35.03, N'Destination KPVYJ', N'5678 Johnstown Road', N'Cork', N'Co. Cork', N'10203', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10381, 46, 3, '2006-12-12 00:00:00.000', '2007-01-09 00:00:00.000', '2006-12-13 00:00:00.000', 3, 7.99, N'Ship to 46-C', N'Carrera 2345 con Ave. Bolívar #65-98 Llano Largo', N'Barquisimeto', N'Lara', N'10229', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10382, 20, 4, '2006-12-13 00:00:00.000', '2007-01-10 00:00:00.000', '2006-12-16 00:00:00.000', 1, 94.77, N'Destination FFXKT', N'Kirchgasse 0123', N'Graz', NULL, N'10158', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10383, 4, 8, '2006-12-16 00:00:00.000', '2007-01-13 00:00:00.000', '2006-12-18 00:00:00.000', 3, 34.24, N'Ship to 4-B', N'Brook Farm Stratford St. Mary 1234', N'Colchester', N'Essex', N'10239', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10384, 5, 3, '2006-12-16 00:00:00.000', '2007-01-13 00:00:00.000', '2006-12-20 00:00:00.000', 3, 168.64, N'Ship to 5-C', N'Berguvsvägen  1234', N'Luleå', NULL, N'10269', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10385, 75, 1, '2006-12-17 00:00:00.000', '2007-01-14 00:00:00.000', '2006-12-23 00:00:00.000', 2, 30.96, N'Ship to 75-B', N'P.O. Box 6789', N'Lander', N'WY', N'10315', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10386, 21, 9, '2006-12-18 00:00:00.000', '2007-01-01 00:00:00.000', '2006-12-25 00:00:00.000', 3, 13.99, N'Destination RNSMS', N'Rua Orós, 2345', N'Sao Paulo', N'SP', N'10160', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10387, 70, 1, '2006-12-18 00:00:00.000', '2007-01-15 00:00:00.000', '2006-12-20 00:00:00.000', 2, 93.63, N'Ship to 70-B', N'Erling Skakkes gate 5678', N'Stavern', NULL, N'10303', N'Norway');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10388, 72, 2, '2006-12-19 00:00:00.000', '2007-01-16 00:00:00.000', '2006-12-20 00:00:00.000', 1, 34.86, N'Ship to 72-C', N'1234 Wadhurst Rd.', N'London', NULL, N'10309', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10389, 10, 4, '2006-12-20 00:00:00.000', '2007-01-17 00:00:00.000', '2006-12-24 00:00:00.000', 2, 47.42, N'Destination OLSSJ', N'2345 Tsawassen Blvd.', N'Tsawassen', N'BC', N'10130', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10390, 20, 6, '2006-12-23 00:00:00.000', '2007-01-20 00:00:00.000', '2006-12-26 00:00:00.000', 1, 126.38, N'Destination RVDMF', N'Kirchgasse 9012', N'Graz', NULL, N'10157', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10391, 17, 3, '2006-12-23 00:00:00.000', '2007-01-20 00:00:00.000', '2006-12-31 00:00:00.000', 3, 5.45, N'Destination AJTHX', N'Walserweg 9012', N'Aachen', NULL, N'10147', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10392, 59, 2, '2006-12-24 00:00:00.000', '2007-01-21 00:00:00.000', '2007-01-01 00:00:00.000', 3, 122.46, N'Ship to 59-A', N'Geislweg 6789', N'Salzburg', NULL, N'10264', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10393, 71, 1, '2006-12-25 00:00:00.000', '2007-01-22 00:00:00.000', '2007-01-03 00:00:00.000', 3, 126.56, N'Ship to 71-B', N'8901 Suffolk Ln.', N'Boise', N'Id', N'10306', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10394, 36, 1, '2006-12-25 00:00:00.000', '2007-01-22 00:00:00.000', '2007-01-03 00:00:00.000', 3, 30.34, N'Destination AWPJG', N'City Center Plaza 2345 Main St.', N'Elgin', N'OR', N'10200', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10395, 35, 6, '2006-12-26 00:00:00.000', '2007-01-23 00:00:00.000', '2007-01-03 00:00:00.000', 1, 184.41, N'Destination JYDLM', N'Carrera1234 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10199', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10396, 25, 1, '2006-12-27 00:00:00.000', '2007-01-10 00:00:00.000', '2007-01-06 00:00:00.000', 3, 135.35, N'Destination VAPXU', N'Berliner Platz 0123', N'München', NULL, N'10168', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10397, 60, 5, '2006-12-27 00:00:00.000', '2007-01-24 00:00:00.000', '2007-01-02 00:00:00.000', 1, 60.26, N'Ship to 60-A', N'Estrada da saúde n. 2345', N'Lisboa', NULL, N'10270', N'Portugal');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10398, 71, 2, '2006-12-30 00:00:00.000', '2007-01-27 00:00:00.000', '2007-01-09 00:00:00.000', 3, 89.16, N'Ship to 71-C', N'9012 Suffolk Ln.', N'Boise', N'Id', N'10307', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10399, 83, 8, '2006-12-31 00:00:00.000', '2007-01-14 00:00:00.000', '2007-01-08 00:00:00.000', 3, 27.36, N'Ship to 83-C', N'Smagsloget 2345', N'Århus', NULL, N'10341', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10400, 19, 1, '2007-01-01 00:00:00.000', '2007-01-29 00:00:00.000', '2007-01-16 00:00:00.000', 3, 83.93, N'Destination BBMRT', N'4567 King George', N'London', NULL, N'10152', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10401, 65, 1, '2007-01-01 00:00:00.000', '2007-01-29 00:00:00.000', '2007-01-10 00:00:00.000', 1, 12.51, N'Ship to 65-A', N'7890 Milton Dr.', N'Albuquerque', N'NM', N'10285', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10402, 20, 8, '2007-01-02 00:00:00.000', '2007-02-13 00:00:00.000', '2007-01-10 00:00:00.000', 2, 67.88, N'Destination FFXKT', N'Kirchgasse 0123', N'Graz', NULL, N'10158', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10403, 20, 4, '2007-01-03 00:00:00.000', '2007-01-31 00:00:00.000', '2007-01-09 00:00:00.000', 3, 73.79, N'Destination RVDMF', N'Kirchgasse 9012', N'Graz', NULL, N'10157', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10404, 49, 2, '2007-01-03 00:00:00.000', '2007-01-31 00:00:00.000', '2007-01-08 00:00:00.000', 1, 155.97, N'Ship to 49-B', N'Via Ludovico il Moro 9012', N'Bergamo', NULL, N'10236', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10405, 47, 1, '2007-01-06 00:00:00.000', '2007-02-03 00:00:00.000', '2007-01-22 00:00:00.000', 1, 34.82, N'Ship to 47-B', N'Ave. 5 de Mayo Porlamar 4567', N'I. de Margarita', N'Nueva Esparta', N'10231', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10406, 62, 7, '2007-01-07 00:00:00.000', '2007-02-18 00:00:00.000', '2007-01-13 00:00:00.000', 1, 108.04, N'Ship to 62-A', N'Alameda dos Canàrios, 8901', N'Sao Paulo', N'SP', N'10276', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10407, 56, 2, '2007-01-07 00:00:00.000', '2007-02-04 00:00:00.000', '2007-01-30 00:00:00.000', 2, 91.48, N'Ship to 56-B', N'Mehrheimerstr. 1234', N'Köln', NULL, N'10259', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10408, 23, 8, '2007-01-08 00:00:00.000', '2007-02-05 00:00:00.000', '2007-01-14 00:00:00.000', 1, 11.26, N'Destination PXQRR', N'5678, chaussée de Tournai', N'Lille', NULL, N'10163', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10409, 54, 3, '2007-01-09 00:00:00.000', '2007-02-06 00:00:00.000', '2007-01-14 00:00:00.000', 1, 29.83, N'Ship to 54-C', N'Ing. Gustavo Moncada 6789 Piso 20-A', N'Buenos Aires', NULL, N'10254', N'Argentina');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10410, 10, 3, '2007-01-10 00:00:00.000', '2007-02-07 00:00:00.000', '2007-01-15 00:00:00.000', 3, 2.40, N'Destination OLSSJ', N'2345 Tsawassen Blvd.', N'Tsawassen', N'BC', N'10130', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10411, 10, 9, '2007-01-10 00:00:00.000', '2007-02-07 00:00:00.000', '2007-01-21 00:00:00.000', 3, 23.65, N'Destination XJIBQ', N'1234 Tsawassen Blvd.', N'Tsawassen', N'BC', N'10129', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10412, 87, 8, '2007-01-13 00:00:00.000', '2007-02-10 00:00:00.000', '2007-01-15 00:00:00.000', 2, 3.77, N'Ship to 87-C', N'Torikatu 3456', N'Oulu', NULL, N'10352', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10413, 41, 3, '2007-01-14 00:00:00.000', '2007-02-11 00:00:00.000', '2007-01-16 00:00:00.000', 2, 95.66, N'Destination DWJIO', N'9012 rue Alsace-Lorraine', N'Toulouse', NULL, N'10217', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10414, 21, 2, '2007-01-14 00:00:00.000', '2007-02-11 00:00:00.000', '2007-01-17 00:00:00.000', 3, 21.48, N'Destination SSYXZ', N'Rua Orós, 3456', N'Sao Paulo', N'SP', N'10161', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10415, 36, 3, '2007-01-15 00:00:00.000', '2007-02-12 00:00:00.000', '2007-01-24 00:00:00.000', 1, 0.20, N'Destination AWPJG', N'City Center Plaza 2345 Main St.', N'Elgin', N'OR', N'10200', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10416, 87, 8, '2007-01-16 00:00:00.000', '2007-02-13 00:00:00.000', '2007-01-27 00:00:00.000', 3, 22.72, N'Ship to 87-A', N'Torikatu 1234', N'Oulu', NULL, N'10350', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10417, 73, 4, '2007-01-16 00:00:00.000', '2007-02-13 00:00:00.000', '2007-01-28 00:00:00.000', 3, 70.29, N'Ship to 73-C', N'Vinbæltet 2345', N'Kobenhavn', NULL, N'10311', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10418, 63, 4, '2007-01-17 00:00:00.000', '2007-02-14 00:00:00.000', '2007-01-24 00:00:00.000', 1, 17.55, N'Ship to 63-B', N'Taucherstraße 2345', N'Cunewalde', NULL, N'10280', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10419, 68, 4, '2007-01-20 00:00:00.000', '2007-02-17 00:00:00.000', '2007-01-30 00:00:00.000', 2, 137.35, N'Ship to 68-A', N'Starenweg 6789', N'Genève', NULL, N'10294', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10420, 88, 3, '2007-01-21 00:00:00.000', '2007-02-18 00:00:00.000', '2007-01-27 00:00:00.000', 1, 44.12, N'Ship to 88-C', N'Rua do Mercado, 6789', N'Resende', N'SP', N'10355', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10421, 61, 8, '2007-01-21 00:00:00.000', '2007-03-04 00:00:00.000', '2007-01-27 00:00:00.000', 1, 99.23, N'Ship to 61-C', N'Rua da Panificadora, 7890', N'Rio de Janeiro', N'RJ', N'10275', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10422, 27, 2, '2007-01-22 00:00:00.000', '2007-02-19 00:00:00.000', '2007-01-31 00:00:00.000', 1, 3.02, N'Destination FFLQT', N'Via Monte Bianco 6789', N'Torino', NULL, N'10174', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10423, 31, 6, '2007-01-23 00:00:00.000', '2007-02-06 00:00:00.000', '2007-02-24 00:00:00.000', 3, 24.50, N'Destination VNIAG', N'Av. Brasil, 9012', N'Campinas', N'SP', N'10187', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10424, 51, 7, '2007-01-23 00:00:00.000', '2007-02-20 00:00:00.000', '2007-01-27 00:00:00.000', 2, 370.61, N'Ship to 51-C', N'8901 rue St. Laurent', N'Montréal', N'Québec', N'10246', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10425, 41, 6, '2007-01-24 00:00:00.000', '2007-02-21 00:00:00.000', '2007-02-14 00:00:00.000', 2, 7.93, N'Destination DWJIO', N'9012 rue Alsace-Lorraine', N'Toulouse', NULL, N'10217', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10426, 29, 4, '2007-01-27 00:00:00.000', '2007-02-24 00:00:00.000', '2007-02-06 00:00:00.000', 1, 18.69, N'Destination WOFLH', N'Rambla de Cataluña, 1234', N'Barcelona', NULL, N'10179', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10427, 59, 4, '2007-01-27 00:00:00.000', '2007-02-24 00:00:00.000', '2007-03-03 00:00:00.000', 2, 31.29, N'Ship to 59-C', N'Geislweg 8901', N'Salzburg', NULL, N'10266', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10428, 66, 7, '2007-01-28 00:00:00.000', '2007-02-25 00:00:00.000', '2007-02-04 00:00:00.000', 1, 11.09, N'Ship to 66-C', N'Strada Provinciale 2345', N'Reggio Emilia', NULL, N'10290', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10429, 37, 3, '2007-01-29 00:00:00.000', '2007-03-12 00:00:00.000', '2007-02-07 00:00:00.000', 2, 56.63, N'Destination DGKOU', N'6789 Johnstown Road', N'Cork', N'Co. Cork', N'10204', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10430, 20, 4, '2007-01-30 00:00:00.000', '2007-02-13 00:00:00.000', '2007-02-03 00:00:00.000', 1, 458.78, N'Destination CUVPF', N'Kirchgasse 1234', N'Graz', NULL, N'10159', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10431, 10, 4, '2007-01-30 00:00:00.000', '2007-02-13 00:00:00.000', '2007-02-07 00:00:00.000', 2, 44.17, N'Destination OLSSJ', N'2345 Tsawassen Blvd.', N'Tsawassen', N'BC', N'10130', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10432, 75, 3, '2007-01-31 00:00:00.000', '2007-02-14 00:00:00.000', '2007-02-07 00:00:00.000', 2, 4.34, N'Ship to 75-A', N'P.O. Box 5678', N'Lander', N'WY', N'10314', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10433, 60, 3, '2007-02-03 00:00:00.000', '2007-03-03 00:00:00.000', '2007-03-04 00:00:00.000', 3, 73.83, N'Ship to 60-A', N'Estrada da saúde n. 2345', N'Lisboa', NULL, N'10270', N'Portugal');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10434, 24, 3, '2007-02-03 00:00:00.000', '2007-03-03 00:00:00.000', '2007-02-13 00:00:00.000', 2, 17.92, N'Destination NCKKO', N'Åkergatan 7890', N'Bräcke', NULL, N'10165', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10435, 16, 8, '2007-02-04 00:00:00.000', '2007-03-18 00:00:00.000', '2007-02-07 00:00:00.000', 2, 9.21, N'Destination QKQNB', N'Berkeley Gardens 5678  Brewery', N'London', NULL, N'10143', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10436, 7, 3, '2007-02-05 00:00:00.000', '2007-03-05 00:00:00.000', '2007-02-11 00:00:00.000', 2, 156.66, N'Ship to 7-C', N'2345, place Kléber', N'Strasbourg', NULL, N'10331', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10437, 87, 8, '2007-02-05 00:00:00.000', '2007-03-05 00:00:00.000', '2007-02-12 00:00:00.000', 1, 19.97, N'Ship to 87-A', N'Torikatu 1234', N'Oulu', NULL, N'10350', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10438, 79, 3, '2007-02-06 00:00:00.000', '2007-03-06 00:00:00.000', '2007-02-14 00:00:00.000', 2, 8.24, N'Ship to 79-A', N'Luisenstr. 7890', N'Münster', NULL, N'10326', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10439, 51, 6, '2007-02-07 00:00:00.000', '2007-03-07 00:00:00.000', '2007-02-10 00:00:00.000', 3, 4.07, N'Ship to 51-C', N'8901 rue St. Laurent', N'Montréal', N'Québec', N'10246', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10440, 71, 4, '2007-02-10 00:00:00.000', '2007-03-10 00:00:00.000', '2007-02-28 00:00:00.000', 2, 86.53, N'Ship to 71-B', N'8901 Suffolk Ln.', N'Boise', N'Id', N'10306', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10441, 55, 3, '2007-02-10 00:00:00.000', '2007-03-24 00:00:00.000', '2007-03-14 00:00:00.000', 2, 73.02, N'Ship to 55-C', N'9012 Bering St.', N'Anchorage', N'AK', N'10257', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10442, 20, 3, '2007-02-11 00:00:00.000', '2007-03-11 00:00:00.000', '2007-02-18 00:00:00.000', 2, 47.94, N'Destination RVDMF', N'Kirchgasse 9012', N'Graz', NULL, N'10157', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10443, 66, 8, '2007-02-12 00:00:00.000', '2007-03-12 00:00:00.000', '2007-02-14 00:00:00.000', 1, 13.95, N'Ship to 66-C', N'Strada Provinciale 2345', N'Reggio Emilia', NULL, N'10290', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10444, 5, 3, '2007-02-12 00:00:00.000', '2007-03-12 00:00:00.000', '2007-02-21 00:00:00.000', 3, 3.50, N'Ship to 5-B', N'Berguvsvägen  0123', N'Luleå', NULL, N'10268', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10445, 5, 3, '2007-02-13 00:00:00.000', '2007-03-13 00:00:00.000', '2007-02-20 00:00:00.000', 1, 9.30, N'Ship to 5-A', N'Berguvsvägen  9012', N'Luleå', NULL, N'10267', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10446, 79, 6, '2007-02-14 00:00:00.000', '2007-03-14 00:00:00.000', '2007-02-19 00:00:00.000', 1, 14.68, N'Ship to 79-C', N'Luisenstr. 9012', N'Münster', NULL, N'10328', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10447, 67, 4, '2007-02-14 00:00:00.000', '2007-03-14 00:00:00.000', '2007-03-07 00:00:00.000', 2, 68.66, N'Ship to 67-C', N'Av. Copacabana, 5678', N'Rio de Janeiro', N'RJ', N'10293', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10448, 64, 4, '2007-02-17 00:00:00.000', '2007-03-17 00:00:00.000', '2007-02-24 00:00:00.000', 2, 38.82, N'Ship to 64-A', N'Av. del Libertador 4567', N'Buenos Aires', NULL, N'10282', N'Argentina');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10449, 7, 3, '2007-02-18 00:00:00.000', '2007-03-18 00:00:00.000', '2007-02-27 00:00:00.000', 2, 53.30, N'Ship to 7-C', N'2345, place Kléber', N'Strasbourg', NULL, N'10331', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10450, 84, 8, '2007-02-19 00:00:00.000', '2007-03-19 00:00:00.000', '2007-03-11 00:00:00.000', 2, 7.23, N'Ship to 84-C', N'5678, rue du Commerce', N'Lyon', NULL, N'10344', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10451, 63, 4, '2007-02-19 00:00:00.000', '2007-03-05 00:00:00.000', '2007-03-12 00:00:00.000', 3, 189.09, N'Ship to 63-C', N'Taucherstraße 3456', N'Cunewalde', NULL, N'10281', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10452, 71, 8, '2007-02-20 00:00:00.000', '2007-03-20 00:00:00.000', '2007-02-26 00:00:00.000', 1, 140.26, N'Ship to 71-B', N'8901 Suffolk Ln.', N'Boise', N'Id', N'10306', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10453, 4, 1, '2007-02-21 00:00:00.000', '2007-03-21 00:00:00.000', '2007-02-26 00:00:00.000', 2, 25.36, N'Ship to 4-C', N'Brook Farm Stratford St. Mary 2345', N'Colchester', N'Essex', N'10240', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10454, 41, 4, '2007-02-21 00:00:00.000', '2007-03-21 00:00:00.000', '2007-02-25 00:00:00.000', 3, 2.74, N'Ship to 41-C', N'0123 rue Alsace-Lorraine', N'Toulouse', NULL, N'10218', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10455, 87, 8, '2007-02-24 00:00:00.000', '2007-04-07 00:00:00.000', '2007-03-03 00:00:00.000', 2, 180.45, N'Ship to 87-B', N'Torikatu 2345', N'Oulu', NULL, N'10351', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10456, 39, 8, '2007-02-25 00:00:00.000', '2007-04-08 00:00:00.000', '2007-02-28 00:00:00.000', 2, 8.12, N'Destination DKMQA', N'Maubelstr. 0123', N'Brandenburg', NULL, N'10208', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10457, 39, 2, '2007-02-25 00:00:00.000', '2007-03-25 00:00:00.000', '2007-03-03 00:00:00.000', 1, 11.57, N'Destination RMBHM', N'Maubelstr. 1234', N'Brandenburg', NULL, N'10209', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10458, 76, 7, '2007-02-26 00:00:00.000', '2007-03-26 00:00:00.000', '2007-03-04 00:00:00.000', 3, 147.06, N'Ship to 76-A', N'Boulevard Tirou, 8901', N'Charleroi', NULL, N'10317', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10459, 84, 4, '2007-02-27 00:00:00.000', '2007-03-27 00:00:00.000', '2007-02-28 00:00:00.000', 2, 25.09, N'Ship to 84-B', N'4567, rue du Commerce', N'Lyon', NULL, N'10343', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10460, 24, 8, '2007-02-28 00:00:00.000', '2007-03-28 00:00:00.000', '2007-03-03 00:00:00.000', 1, 16.27, N'Destination YCMPK', N'Åkergatan 8901', N'Bräcke', NULL, N'10166', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10461, 46, 1, '2007-02-28 00:00:00.000', '2007-03-28 00:00:00.000', '2007-03-05 00:00:00.000', 3, 148.61, N'Ship to 46-A', N'Carrera 0123 con Ave. Bolívar #65-98 Llano Largo', N'Barquisimeto', N'Lara', N'10227', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10462, 16, 2, '2007-03-03 00:00:00.000', '2007-03-31 00:00:00.000', '2007-03-18 00:00:00.000', 1, 6.17, N'Destination ARRMM', N'Berkeley Gardens 6789  Brewery', N'London', NULL, N'10144', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10463, 76, 5, '2007-03-04 00:00:00.000', '2007-04-01 00:00:00.000', '2007-03-06 00:00:00.000', 3, 14.78, N'Ship to 76-B', N'Boulevard Tirou, 9012', N'Charleroi', NULL, N'10318', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10464, 28, 4, '2007-03-04 00:00:00.000', '2007-04-01 00:00:00.000', '2007-03-14 00:00:00.000', 2, 89.00, N'Destination OTSWR', N'Jardim das rosas n. 9012', N'Lisboa', NULL, N'10177', N'Portugal');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10465, 83, 1, '2007-03-05 00:00:00.000', '2007-04-02 00:00:00.000', '2007-03-14 00:00:00.000', 3, 145.04, N'Ship to 83-A', N'Smagsloget 0123', N'Århus', NULL, N'10339', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10466, 15, 4, '2007-03-06 00:00:00.000', '2007-04-03 00:00:00.000', '2007-03-13 00:00:00.000', 1, 11.93, N'Destination GGSQD', N'Av. dos Lusíadas, 2345', N'Sao Paulo', N'SP', N'10140', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10467, 49, 8, '2007-03-06 00:00:00.000', '2007-04-03 00:00:00.000', '2007-03-11 00:00:00.000', 2, 4.93, N'Ship to 49-C', N'Via Ludovico il Moro 0123', N'Bergamo', NULL, N'10237', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10468, 39, 3, '2007-03-07 00:00:00.000', '2007-04-04 00:00:00.000', '2007-03-12 00:00:00.000', 3, 44.12, N'Destination RMBHM', N'Maubelstr. 1234', N'Brandenburg', NULL, N'10209', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10469, 89, 1, '2007-03-10 00:00:00.000', '2007-04-07 00:00:00.000', '2007-03-14 00:00:00.000', 1, 60.18, N'Ship to 89-C', N'9012 - 12th Ave. S.', N'Seattle', N'WA', N'10358', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10470, 9, 4, '2007-03-11 00:00:00.000', '2007-04-08 00:00:00.000', '2007-03-14 00:00:00.000', 2, 64.56, N'Ship to 9-C', N'0123, rue des Bouchers', N'Marseille', NULL, N'10369', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10471, 11, 2, '2007-03-11 00:00:00.000', '2007-04-08 00:00:00.000', '2007-03-18 00:00:00.000', 3, 45.59, N'Destination NZASL', N'Fauntleroy Circus 5678', N'London', NULL, N'10133', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10472, 72, 8, '2007-03-12 00:00:00.000', '2007-04-09 00:00:00.000', '2007-03-19 00:00:00.000', 1, 4.20, N'Ship to 72-A', N'0123 Wadhurst Rd.', N'London', NULL, N'10308', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10473, 38, 1, '2007-03-13 00:00:00.000', '2007-03-27 00:00:00.000', '2007-03-21 00:00:00.000', 3, 16.37, N'Destination AXVHD', N'Garden House Crowther Way 9012', N'Cowes', N'Isle of Wight', N'10207', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10474, 58, 5, '2007-03-13 00:00:00.000', '2007-04-10 00:00:00.000', '2007-03-21 00:00:00.000', 2, 83.49, N'Ship to 58-C', N'Calle Dr. Jorge Cash 5678', N'México D.F.', NULL, N'10263', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10475, 76, 9, '2007-03-14 00:00:00.000', '2007-04-11 00:00:00.000', '2007-04-04 00:00:00.000', 1, 68.52, N'Ship to 76-C', N'Boulevard Tirou, 0123', N'Charleroi', NULL, N'10319', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10476, 35, 8, '2007-03-17 00:00:00.000', '2007-04-14 00:00:00.000', '2007-03-24 00:00:00.000', 3, 4.41, N'Destination SXYQX', N'Carrera 0123 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10198', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10477, 60, 5, '2007-03-17 00:00:00.000', '2007-04-14 00:00:00.000', '2007-03-25 00:00:00.000', 2, 13.02, N'Ship to 60-A', N'Estrada da saúde n. 2345', N'Lisboa', NULL, N'10270', N'Portugal');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10478, 84, 2, '2007-03-18 00:00:00.000', '2007-04-01 00:00:00.000', '2007-03-26 00:00:00.000', 3, 4.81, N'Ship to 84-C', N'5678, rue du Commerce', N'Lyon', NULL, N'10344', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10479, 65, 3, '2007-03-19 00:00:00.000', '2007-04-16 00:00:00.000', '2007-03-21 00:00:00.000', 3, 708.95, N'Ship to 65-C', N'9012 Milton Dr.', N'Albuquerque', N'NM', N'10287', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10480, 23, 6, '2007-03-20 00:00:00.000', '2007-04-17 00:00:00.000', '2007-03-24 00:00:00.000', 2, 1.35, N'Destination AGPCO', N'6789, chaussée de Tournai', N'Lille', NULL, N'10164', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10481, 67, 8, '2007-03-20 00:00:00.000', '2007-04-17 00:00:00.000', '2007-03-25 00:00:00.000', 2, 64.33, N'Ship to 67-A', N'Av. Copacabana, 3456', N'Rio de Janeiro', N'RJ', N'10291', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10482, 43, 1, '2007-03-21 00:00:00.000', '2007-04-18 00:00:00.000', '2007-04-10 00:00:00.000', 3, 7.48, N'Ship to 43-B', N'3456 Orchestra Terrace', N'Walla Walla', N'WA', N'10221', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10483, 89, 7, '2007-03-24 00:00:00.000', '2007-04-21 00:00:00.000', '2007-04-25 00:00:00.000', 2, 15.28, N'Ship to 89-A', N'7890 - 12th Ave. S.', N'Seattle', N'WA', N'10356', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10484, 11, 3, '2007-03-24 00:00:00.000', '2007-04-21 00:00:00.000', '2007-04-01 00:00:00.000', 3, 6.88, N'Destination DLEUN', N'Fauntleroy Circus 4567', N'London', NULL, N'10132', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10485, 47, 4, '2007-03-25 00:00:00.000', '2007-04-08 00:00:00.000', '2007-03-31 00:00:00.000', 2, 64.45, N'Ship to 47-B', N'Ave. 5 de Mayo Porlamar 4567', N'I. de Margarita', N'Nueva Esparta', N'10231', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10486, 35, 1, '2007-03-26 00:00:00.000', '2007-04-23 00:00:00.000', '2007-04-02 00:00:00.000', 2, 30.53, N'Destination UOUWK', N'Carrera 9012 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10197', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10487, 62, 2, '2007-03-26 00:00:00.000', '2007-04-23 00:00:00.000', '2007-03-28 00:00:00.000', 2, 71.07, N'Ship to 62-B', N'Alameda dos Canàrios, 9012', N'Sao Paulo', N'SP', N'10277', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10488, 25, 8, '2007-03-27 00:00:00.000', '2007-04-24 00:00:00.000', '2007-04-02 00:00:00.000', 2, 4.93, N'Destination VAPXU', N'Berliner Platz 0123', N'München', NULL, N'10168', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10489, 59, 6, '2007-03-28 00:00:00.000', '2007-04-25 00:00:00.000', '2007-04-09 00:00:00.000', 2, 5.29, N'Ship to 59-C', N'Geislweg 8901', N'Salzburg', NULL, N'10266', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10490, 35, 7, '2007-03-31 00:00:00.000', '2007-04-28 00:00:00.000', '2007-04-03 00:00:00.000', 2, 210.19, N'Destination JYDLM', N'Carrera1234 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10199', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10491, 28, 8, '2007-03-31 00:00:00.000', '2007-04-28 00:00:00.000', '2007-04-08 00:00:00.000', 3, 16.96, N'Destination OTSWR', N'Jardim das rosas n. 9012', N'Lisboa', NULL, N'10177', N'Portugal');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10492, 10, 3, '2007-04-01 00:00:00.000', '2007-04-29 00:00:00.000', '2007-04-11 00:00:00.000', 1, 62.89, N'Destination XJIBQ', N'1234 Tsawassen Blvd.', N'Tsawassen', N'BC', N'10129', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10493, 41, 4, '2007-04-02 00:00:00.000', '2007-04-30 00:00:00.000', '2007-04-10 00:00:00.000', 3, 10.64, N'Destination OLJND', N'8901 rue Alsace-Lorraine', N'Toulouse', NULL, N'10216', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10494, 15, 4, '2007-04-02 00:00:00.000', '2007-04-30 00:00:00.000', '2007-04-09 00:00:00.000', 2, 65.99, N'Destination EVHYA', N'Av. dos Lusíadas, 3456', N'Sao Paulo', N'SP', N'10141', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10495, 42, 3, '2007-04-03 00:00:00.000', '2007-05-01 00:00:00.000', '2007-04-11 00:00:00.000', 3, 4.65, N'Ship to 42-C', N'2345 Elm St.', N'Vancouver', N'BC', N'10220', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10496, 81, 7, '2007-04-04 00:00:00.000', '2007-05-02 00:00:00.000', '2007-04-07 00:00:00.000', 2, 46.77, N'Ship to 81-C', N'Av. Inês de Castro, 7890', N'Sao Paulo', N'SP', N'10336', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10497, 44, 7, '2007-04-04 00:00:00.000', '2007-05-02 00:00:00.000', '2007-04-07 00:00:00.000', 1, 36.21, N'Ship to 44-A', N'Magazinweg 4567', N'Frankfurt a.M.', NULL, N'10222', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10498, 35, 8, '2007-04-07 00:00:00.000', '2007-05-05 00:00:00.000', '2007-04-11 00:00:00.000', 2, 29.75, N'Destination SXYQX', N'Carrera 0123 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10198', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10499, 46, 4, '2007-04-08 00:00:00.000', '2007-05-06 00:00:00.000', '2007-04-16 00:00:00.000', 2, 102.02, N'Ship to 46-C', N'Carrera 2345 con Ave. Bolívar #65-98 Llano Largo', N'Barquisimeto', N'Lara', N'10229', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10500, 41, 6, '2007-04-09 00:00:00.000', '2007-05-07 00:00:00.000', '2007-04-17 00:00:00.000', 1, 42.68, N'Destination OLJND', N'8901 rue Alsace-Lorraine', N'Toulouse', NULL, N'10216', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10501, 6, 9, '2007-04-09 00:00:00.000', '2007-05-07 00:00:00.000', '2007-04-16 00:00:00.000', 3, 8.85, N'Ship to 6-C', N'Forsterstr. 4567', N'Mannheim', NULL, N'10302', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10502, 58, 2, '2007-04-10 00:00:00.000', '2007-05-08 00:00:00.000', '2007-04-29 00:00:00.000', 1, 69.32, N'Ship to 58-B', N'Calle Dr. Jorge Cash 4567', N'México D.F.', NULL, N'10262', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10503, 37, 6, '2007-04-11 00:00:00.000', '2007-05-09 00:00:00.000', '2007-04-16 00:00:00.000', 2, 16.74, N'Destination ATSOA', N'4567 Johnstown Road', N'Cork', N'Co. Cork', N'10202', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10504, 89, 4, '2007-04-11 00:00:00.000', '2007-05-09 00:00:00.000', '2007-04-18 00:00:00.000', 3, 59.13, N'Ship to 89-B', N'8901 - 12th Ave. S.', N'Seattle', N'WA', N'10357', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10505, 51, 3, '2007-04-14 00:00:00.000', '2007-05-12 00:00:00.000', '2007-04-21 00:00:00.000', 3, 7.13, N'Ship to 51-B', N'7890 rue St. Laurent', N'Montréal', N'Québec', N'10245', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10506, 39, 9, '2007-04-15 00:00:00.000', '2007-05-13 00:00:00.000', '2007-05-02 00:00:00.000', 2, 21.19, N'Destination DKMQA', N'Maubelstr. 0123', N'Brandenburg', NULL, N'10208', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10507, 3, 7, '2007-04-15 00:00:00.000', '2007-05-13 00:00:00.000', '2007-04-22 00:00:00.000', 1, 47.45, N'Destination FQFLS', N'Mataderos  3456', N'México D.F.', NULL, N'10211', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10508, 56, 1, '2007-04-16 00:00:00.000', '2007-05-14 00:00:00.000', '2007-05-13 00:00:00.000', 2, 4.99, N'Ship to 56-C', N'Mehrheimerstr. 2345', N'Köln', NULL, N'10260', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10509, 6, 4, '2007-04-17 00:00:00.000', '2007-05-15 00:00:00.000', '2007-04-29 00:00:00.000', 1, 0.15, N'Ship to 6-A', N'Forsterstr. 2345', N'Mannheim', NULL, N'10300', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10510, 71, 6, '2007-04-18 00:00:00.000', '2007-05-16 00:00:00.000', '2007-04-28 00:00:00.000', 3, 367.63, N'Ship to 71-A', N'7890 Suffolk Ln.', N'Boise', N'Id', N'10305', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10511, 9, 4, '2007-04-18 00:00:00.000', '2007-05-16 00:00:00.000', '2007-04-21 00:00:00.000', 3, 350.64, N'Ship to 9-B', N'9012, rue des Bouchers', N'Marseille', NULL, N'10368', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10512, 21, 7, '2007-04-21 00:00:00.000', '2007-05-19 00:00:00.000', '2007-04-24 00:00:00.000', 2, 3.53, N'Destination RNSMS', N'Rua Orós, 2345', N'Sao Paulo', N'SP', N'10160', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10513, 86, 7, '2007-04-22 00:00:00.000', '2007-06-03 00:00:00.000', '2007-04-28 00:00:00.000', 1, 105.65, N'Ship to 86-A', N'Adenauerallee 8901', N'Stuttgart', NULL, N'10347', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10514, 20, 3, '2007-04-22 00:00:00.000', '2007-05-20 00:00:00.000', '2007-05-16 00:00:00.000', 2, 789.95, N'Destination CUVPF', N'Kirchgasse 1234', N'Graz', NULL, N'10159', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10515, 63, 2, '2007-04-23 00:00:00.000', '2007-05-07 00:00:00.000', '2007-05-23 00:00:00.000', 1, 204.47, N'Ship to 63-B', N'Taucherstraße 2345', N'Cunewalde', NULL, N'10280', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10516, 37, 2, '2007-04-24 00:00:00.000', '2007-05-22 00:00:00.000', '2007-05-01 00:00:00.000', 3, 62.78, N'Destination DGKOU', N'6789 Johnstown Road', N'Cork', N'Co. Cork', N'10204', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10517, 53, 3, '2007-04-24 00:00:00.000', '2007-05-22 00:00:00.000', '2007-04-29 00:00:00.000', 3, 32.07, N'Ship to 53-A', N'South House 2345 Queensbridge', N'London', NULL, N'10250', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10518, 80, 4, '2007-04-25 00:00:00.000', '2007-05-09 00:00:00.000', '2007-05-05 00:00:00.000', 2, 218.15, N'Ship to 80-B', N'Avda. Azteca 4567', N'México D.F.', NULL, N'10333', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10519, 14, 6, '2007-04-28 00:00:00.000', '2007-05-26 00:00:00.000', '2007-05-01 00:00:00.000', 3, 91.76, N'Destination NRTZZ', N'Hauptstr. 0123', N'Bern', NULL, N'10138', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10520, 70, 7, '2007-04-29 00:00:00.000', '2007-05-27 00:00:00.000', '2007-05-01 00:00:00.000', 1, 13.37, N'Ship to 70-B', N'Erling Skakkes gate 5678', N'Stavern', NULL, N'10303', N'Norway');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10521, 12, 8, '2007-04-29 00:00:00.000', '2007-05-27 00:00:00.000', '2007-05-02 00:00:00.000', 2, 17.22, N'Destination QTHBC', N'Cerrito 6789', N'Buenos Aires', NULL, N'10134', N'Argentina');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10522, 44, 4, '2007-04-30 00:00:00.000', '2007-05-28 00:00:00.000', '2007-05-06 00:00:00.000', 1, 45.33, N'Ship to 44-A', N'Magazinweg 4567', N'Frankfurt a.M.', NULL, N'10222', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10523, 72, 7, '2007-05-01 00:00:00.000', '2007-05-29 00:00:00.000', '2007-05-30 00:00:00.000', 2, 77.63, N'Ship to 72-C', N'1234 Wadhurst Rd.', N'London', NULL, N'10309', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10524, 5, 1, '2007-05-01 00:00:00.000', '2007-05-29 00:00:00.000', '2007-05-07 00:00:00.000', 2, 244.79, N'Ship to 5-A', N'Berguvsvägen  9012', N'Luleå', NULL, N'10267', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10525, 9, 1, '2007-05-02 00:00:00.000', '2007-05-30 00:00:00.000', '2007-05-23 00:00:00.000', 2, 11.06, N'Ship to 9-B', N'9012, rue des Bouchers', N'Marseille', NULL, N'10368', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10526, 87, 4, '2007-05-05 00:00:00.000', '2007-06-02 00:00:00.000', '2007-05-15 00:00:00.000', 2, 58.59, N'Ship to 87-C', N'Torikatu 3456', N'Oulu', NULL, N'10352', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10527, 63, 7, '2007-05-05 00:00:00.000', '2007-06-02 00:00:00.000', '2007-05-07 00:00:00.000', 1, 41.90, N'Ship to 63-B', N'Taucherstraße 2345', N'Cunewalde', NULL, N'10280', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10528, 32, 6, '2007-05-06 00:00:00.000', '2007-05-20 00:00:00.000', '2007-05-09 00:00:00.000', 2, 3.35, N'Destination LLUXZ', N'1234 Baker Blvd.', N'Eugene', N'OR', N'10189', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10529, 50, 5, '2007-05-07 00:00:00.000', '2007-06-04 00:00:00.000', '2007-05-09 00:00:00.000', 2, 66.69, N'Ship to 50-B', N'Rue Joseph-Bens 4567', N'Bruxelles', NULL, N'10242', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10530, 59, 3, '2007-05-08 00:00:00.000', '2007-06-05 00:00:00.000', '2007-05-12 00:00:00.000', 2, 339.22, N'Ship to 59-C', N'Geislweg 8901', N'Salzburg', NULL, N'10266', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10531, 54, 7, '2007-05-08 00:00:00.000', '2007-06-05 00:00:00.000', '2007-05-19 00:00:00.000', 1, 8.12, N'Ship to 54-A', N'Ing. Gustavo Moncada 4567 Piso 20-A', N'Buenos Aires', NULL, N'10252', N'Argentina');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10532, 19, 7, '2007-05-09 00:00:00.000', '2007-06-06 00:00:00.000', '2007-05-12 00:00:00.000', 3, 74.46, N'Destination QTKCU', N'3456 King George', N'London', NULL, N'10151', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10533, 24, 8, '2007-05-12 00:00:00.000', '2007-06-09 00:00:00.000', '2007-05-22 00:00:00.000', 1, 188.04, N'Destination KBSBN', N'Åkergatan 9012', N'Bräcke', NULL, N'10167', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10534, 44, 8, '2007-05-12 00:00:00.000', '2007-06-09 00:00:00.000', '2007-05-14 00:00:00.000', 2, 27.94, N'Ship to 44-A', N'Magazinweg 4567', N'Frankfurt a.M.', NULL, N'10222', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10535, 3, 4, '2007-05-13 00:00:00.000', '2007-06-10 00:00:00.000', '2007-05-21 00:00:00.000', 1, 15.64, N'Destination FQFLS', N'Mataderos  3456', N'México D.F.', NULL, N'10211', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10536, 44, 3, '2007-05-14 00:00:00.000', '2007-06-11 00:00:00.000', '2007-06-06 00:00:00.000', 2, 58.88, N'Ship to 44-B', N'Magazinweg 5678', N'Frankfurt a.M.', NULL, N'10223', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10537, 68, 1, '2007-05-14 00:00:00.000', '2007-05-28 00:00:00.000', '2007-05-19 00:00:00.000', 1, 78.85, N'Ship to 68-B', N'Starenweg 7890', N'Genève', NULL, N'10295', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10538, 11, 9, '2007-05-15 00:00:00.000', '2007-06-12 00:00:00.000', '2007-05-16 00:00:00.000', 3, 4.87, N'Destination DLEUN', N'Fauntleroy Circus 4567', N'London', NULL, N'10132', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10539, 11, 6, '2007-05-16 00:00:00.000', '2007-06-13 00:00:00.000', '2007-05-23 00:00:00.000', 3, 12.36, N'Destination DLEUN', N'Fauntleroy Circus 4567', N'London', NULL, N'10132', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10540, 63, 3, '2007-05-19 00:00:00.000', '2007-06-16 00:00:00.000', '2007-06-13 00:00:00.000', 3, 1007.64, N'Ship to 63-C', N'Taucherstraße 3456', N'Cunewalde', NULL, N'10281', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10541, 34, 2, '2007-05-19 00:00:00.000', '2007-06-16 00:00:00.000', '2007-05-29 00:00:00.000', 1, 68.65, N'Destination SCQXA', N'Rua do Paço, 7890', N'Rio de Janeiro', N'RJ', N'10195', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10542, 39, 1, '2007-05-20 00:00:00.000', '2007-06-17 00:00:00.000', '2007-05-26 00:00:00.000', 3, 10.95, N'Destination DKMQA', N'Maubelstr. 0123', N'Brandenburg', NULL, N'10208', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10543, 46, 8, '2007-05-21 00:00:00.000', '2007-06-18 00:00:00.000', '2007-05-23 00:00:00.000', 2, 48.17, N'Ship to 46-B', N'Carrera 1234 con Ave. Bolívar #65-98 Llano Largo', N'Barquisimeto', N'Lara', N'10228', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10544, 48, 4, '2007-05-21 00:00:00.000', '2007-06-18 00:00:00.000', '2007-05-30 00:00:00.000', 1, 24.91, N'Ship to 48-C', N'7890 Chiaroscuro Rd.', N'Portland', N'OR', N'10234', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10545, 43, 8, '2007-05-22 00:00:00.000', '2007-06-19 00:00:00.000', '2007-06-26 00:00:00.000', 2, 11.92, N'Ship to 43-B', N'3456 Orchestra Terrace', N'Walla Walla', N'WA', N'10221', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10546, 84, 1, '2007-05-23 00:00:00.000', '2007-06-20 00:00:00.000', '2007-05-27 00:00:00.000', 3, 194.72, N'Ship to 84-C', N'5678, rue du Commerce', N'Lyon', NULL, N'10344', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10547, 72, 3, '2007-05-23 00:00:00.000', '2007-06-20 00:00:00.000', '2007-06-02 00:00:00.000', 2, 178.43, N'Ship to 72-C', N'1234 Wadhurst Rd.', N'London', NULL, N'10309', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10548, 79, 3, '2007-05-26 00:00:00.000', '2007-06-23 00:00:00.000', '2007-06-02 00:00:00.000', 2, 1.43, N'Ship to 79-A', N'Luisenstr. 7890', N'Münster', NULL, N'10326', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10549, 63, 5, '2007-05-27 00:00:00.000', '2007-06-10 00:00:00.000', '2007-05-30 00:00:00.000', 1, 171.24, N'Ship to 63-C', N'Taucherstraße 3456', N'Cunewalde', NULL, N'10281', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10550, 30, 7, '2007-05-28 00:00:00.000', '2007-06-25 00:00:00.000', '2007-06-06 00:00:00.000', 3, 4.32, N'Destination GGQIR', N'C/ Romero, 6789', N'Sevilla', NULL, N'10184', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10551, 28, 4, '2007-05-28 00:00:00.000', '2007-07-09 00:00:00.000', '2007-06-06 00:00:00.000', 3, 72.95, N'Destination OTSWR', N'Jardim das rosas n. 9012', N'Lisboa', NULL, N'10177', N'Portugal');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10552, 35, 2, '2007-05-29 00:00:00.000', '2007-06-26 00:00:00.000', '2007-06-05 00:00:00.000', 1, 83.22, N'Destination UOUWK', N'Carrera 9012 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10197', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10553, 87, 2, '2007-05-30 00:00:00.000', '2007-06-27 00:00:00.000', '2007-06-03 00:00:00.000', 2, 149.49, N'Ship to 87-B', N'Torikatu 2345', N'Oulu', NULL, N'10351', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10554, 56, 4, '2007-05-30 00:00:00.000', '2007-06-27 00:00:00.000', '2007-06-05 00:00:00.000', 3, 120.97, N'Ship to 56-C', N'Mehrheimerstr. 2345', N'Köln', NULL, N'10260', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10555, 71, 6, '2007-06-02 00:00:00.000', '2007-06-30 00:00:00.000', '2007-06-04 00:00:00.000', 3, 252.49, N'Ship to 71-B', N'8901 Suffolk Ln.', N'Boise', N'Id', N'10306', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10556, 73, 2, '2007-06-03 00:00:00.000', '2007-07-15 00:00:00.000', '2007-06-13 00:00:00.000', 1, 9.80, N'Ship to 73-A', N'Vinbæltet 1234', N'Kobenhavn', NULL, N'10310', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10557, 44, 9, '2007-06-03 00:00:00.000', '2007-06-17 00:00:00.000', '2007-06-06 00:00:00.000', 2, 96.72, N'Ship to 44-C', N'Magazinweg 6789', N'Frankfurt a.M.', NULL, N'10224', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10558, 4, 1, '2007-06-04 00:00:00.000', '2007-07-02 00:00:00.000', '2007-06-10 00:00:00.000', 2, 72.97, N'Ship to 4-B', N'Brook Farm Stratford St. Mary 1234', N'Colchester', N'Essex', N'10239', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10559, 7, 6, '2007-06-05 00:00:00.000', '2007-07-03 00:00:00.000', '2007-06-13 00:00:00.000', 1, 8.05, N'Ship to 7-B', N'1234, place Kléber', N'Strasbourg', NULL, N'10330', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10560, 25, 8, '2007-06-06 00:00:00.000', '2007-07-04 00:00:00.000', '2007-06-09 00:00:00.000', 1, 36.65, N'Destination QOCBL', N'Berliner Platz 1234', N'München', NULL, N'10169', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10561, 24, 2, '2007-06-06 00:00:00.000', '2007-07-04 00:00:00.000', '2007-06-09 00:00:00.000', 2, 242.21, N'Destination YCMPK', N'Åkergatan 8901', N'Bräcke', NULL, N'10166', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10562, 66, 1, '2007-06-09 00:00:00.000', '2007-07-07 00:00:00.000', '2007-06-12 00:00:00.000', 1, 22.95, N'Ship to 66-B', N'Strada Provinciale 1234', N'Reggio Emilia', NULL, N'10289', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10563, 67, 2, '2007-06-10 00:00:00.000', '2007-07-22 00:00:00.000', '2007-06-24 00:00:00.000', 2, 60.43, N'Ship to 67-B', N'Av. Copacabana, 4567', N'Rio de Janeiro', N'RJ', N'10292', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10564, 65, 4, '2007-06-10 00:00:00.000', '2007-07-08 00:00:00.000', '2007-06-16 00:00:00.000', 3, 13.75, N'Ship to 65-B', N'8901 Milton Dr.', N'Albuquerque', N'NM', N'10286', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10565, 51, 8, '2007-06-11 00:00:00.000', '2007-07-09 00:00:00.000', '2007-06-18 00:00:00.000', 2, 7.15, N'Ship to 51-C', N'8901 rue St. Laurent', N'Montréal', N'Québec', N'10246', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10566, 7, 9, '2007-06-12 00:00:00.000', '2007-07-10 00:00:00.000', '2007-06-18 00:00:00.000', 1, 88.40, N'Ship to 7-C', N'2345, place Kléber', N'Strasbourg', NULL, N'10331', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10567, 37, 1, '2007-06-12 00:00:00.000', '2007-07-10 00:00:00.000', '2007-06-17 00:00:00.000', 1, 33.97, N'Destination DGKOU', N'6789 Johnstown Road', N'Cork', N'Co. Cork', N'10204', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10568, 29, 3, '2007-06-13 00:00:00.000', '2007-07-11 00:00:00.000', '2007-07-09 00:00:00.000', 3, 6.54, N'Destination VPNNG', N'Rambla de Cataluña, 0123', N'Barcelona', NULL, N'10178', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10569, 65, 5, '2007-06-16 00:00:00.000', '2007-07-14 00:00:00.000', '2007-07-11 00:00:00.000', 1, 58.98, N'Ship to 65-B', N'8901 Milton Dr.', N'Albuquerque', N'NM', N'10286', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10570, 51, 3, '2007-06-17 00:00:00.000', '2007-07-15 00:00:00.000', '2007-06-19 00:00:00.000', 3, 188.99, N'Ship to 51-C', N'8901 rue St. Laurent', N'Montréal', N'Québec', N'10246', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10571, 20, 8, '2007-06-17 00:00:00.000', '2007-07-29 00:00:00.000', '2007-07-04 00:00:00.000', 3, 26.06, N'Destination RVDMF', N'Kirchgasse 9012', N'Graz', NULL, N'10157', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10572, 5, 3, '2007-06-18 00:00:00.000', '2007-07-16 00:00:00.000', '2007-06-25 00:00:00.000', 2, 116.43, N'Ship to 5-B', N'Berguvsvägen  0123', N'Luleå', NULL, N'10268', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10573, 3, 7, '2007-06-19 00:00:00.000', '2007-07-17 00:00:00.000', '2007-06-20 00:00:00.000', 3, 84.84, N'Destination LANNN', N'Mataderos  4567', N'México D.F.', NULL, N'10212', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10574, 82, 4, '2007-06-19 00:00:00.000', '2007-07-17 00:00:00.000', '2007-06-30 00:00:00.000', 2, 37.60, N'Ship to 82-A', N'8901 DaVinci Blvd.', N'Kirkland', N'WA', N'10337', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10575, 52, 5, '2007-06-20 00:00:00.000', '2007-07-04 00:00:00.000', '2007-06-30 00:00:00.000', 1, 127.34, N'Ship to 52-C', N'Heerstr. 1234', N'Leipzig', NULL, N'10249', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10576, 80, 3, '2007-06-23 00:00:00.000', '2007-07-07 00:00:00.000', '2007-06-30 00:00:00.000', 3, 18.56, N'Ship to 80-C', N'Avda. Azteca 5678', N'México D.F.', NULL, N'10334', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10577, 82, 9, '2007-06-23 00:00:00.000', '2007-08-04- 00:00:00.000', '2007-06-30 00:00:00.000', 2, 25.41, N'Ship to 82-B', N'9012 DaVinci Blvd.', N'Kirkland', N'WA', N'10338', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10578, 11, 4, '2007-06-24 00:00:00.000', '2007-07-22 00:00:00.000', '2007-07-25 00:00:00.000', 3, 29.60, N'Destination NZASL', N'Fauntleroy Circus 5678', N'London', NULL, N'10133', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10579, 45, 1, '2007-06-25 00:00:00.000', '2007-07-23 00:00:00.000', '2007-07-04 00:00:00.000', 2, 13.73, N'Ship to 45-C', N'9012 Polk St. Suite 5', N'San Francisco', N'CA', N'10226', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10580, 56, 4, '2007-06-26 00:00:00.000', '2007-07-24 00:00:00.000', '2007-07-01 00:00:00.000', 3, 75.89, N'Ship to 56-C', N'Mehrheimerstr. 2345', N'Köln', NULL, N'10260', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10581, 21, 3, '2007-06-26 00:00:00.000', '2007-07-24 00:00:00.000', '2007-07-02 00:00:00.000', 1, 3.01, N'Destination SSYXZ', N'Rua Orós, 3456', N'Sao Paulo', N'SP', N'10161', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10582, 6, 3, '2007-06-27 00:00:00.000', '2007-07-25 00:00:00.000', '2007-07-14 00:00:00.000', 2, 27.71, N'Ship to 6-A', N'Forsterstr. 2345', N'Mannheim', NULL, N'10300', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10583, 87, 2, '2007-06-30 00:00:00.000', '2007-07-28 00:00:00.000', '2007-07-04 00:00:00.000', 2, 7.28, N'Ship to 87-C', N'Torikatu 3456', N'Oulu', NULL, N'10352', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10584, 7, 4, '2007-06-30 00:00:00.000', '2007-07-28 00:00:00.000', '2007-07-04 00:00:00.000', 1, 59.14, N'Ship to 7-B', N'1234, place Kléber', N'Strasbourg', NULL, N'10330', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10585, 88, 7, '2007-07-01 00:00:00.000', '2007-07-29 00:00:00.000', '2007-07-10 00:00:00.000', 1, 13.41, N'Ship to 88-A', N'Rua do Mercado, 4567', N'Resende', N'SP', N'10353', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10586, 66, 9, '2007-07-02 00:00:00.000', '2007-07-30 00:00:00.000', '2007-07-09 00:00:00.000', 1, 0.48, N'Ship to 66-B', N'Strada Provinciale 1234', N'Reggio Emilia', NULL, N'10289', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10587, 61, 1, '2007-07-02 00:00:00.000', '2007-07-30 00:00:00.000', '2007-07-09 00:00:00.000', 1, 62.52, N'Ship to 61-C', N'Rua da Panificadora, 7890', N'Rio de Janeiro', N'RJ', N'10275', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10588, 63, 2, '2007-07-03 00:00:00.000', '2007-07-31 00:00:00.000', '2007-07-10 00:00:00.000', 3, 194.67, N'Ship to 63-A', N'Taucherstraße 1234', N'Cunewalde', NULL, N'10279', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10589, 32, 8, '2007-07-04 00:00:00.000', '2007-08-01- 00:00:00.000', '2007-07-14 00:00:00.000', 2, 4.42, N'Destination AVQUS', N'2345 Baker Blvd.', N'Eugene', N'OR', N'10190', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10590, 51, 4, '2007-07-07 00:00:00.000', '2007-08-04- 00:00:00.000', '2007-07-14 00:00:00.000', 3, 44.77, N'Ship to 51-B', N'7890 rue St. Laurent', N'Montréal', N'Québec', N'10245', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10591, 83, 1, '2007-07-07 00:00:00.000', '2007-07-21 00:00:00.000', '2007-07-16 00:00:00.000', 1, 55.92, N'Ship to 83-A', N'Smagsloget 0123', N'Århus', NULL, N'10339', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10592, 44, 3, '2007-07-08 00:00:00.000', '2007-08-05- 00:00:00.000', '2007-07-16 00:00:00.000', 1, 32.10, N'Ship to 44-B', N'Magazinweg 5678', N'Frankfurt a.M.', NULL, N'10223', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10593, 44, 7, '2007-07-09 00:00:00.000', '2007-08-06- 00:00:00.000', '2007-08-13 00:00:00.000', 2, 174.20, N'Ship to 44-C', N'Magazinweg 6789', N'Frankfurt a.M.', NULL, N'10224', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10594, 55, 3, '2007-07-09 00:00:00.000', '2007-08-06- 00:00:00.000', '2007-07-16 00:00:00.000', 2, 5.24, N'Ship to 55-B', N'8901 Bering St.', N'Anchorage', N'AK', N'10256', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10595, 20, 2, '2007-07-10 00:00:00.000', '2007-08-07 00:00:00.000', '2007-07-14 00:00:00.000', 1, 96.78, N'Destination CUVPF', N'Kirchgasse 1234', N'Graz', NULL, N'10159', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10596, 89, 8, '2007-07-11 00:00:00.000', '2007-08-08 00:00:00.000', '2007-08-12 00:00:00.000', 1, 16.34, N'Ship to 89-C', N'9012 - 12th Ave. S.', N'Seattle', N'WA', N'10358', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10597, 59, 7, '2007-07-11 00:00:00.000', '2007-08-08 00:00:00.000', '2007-07-18 00:00:00.000', 3, 35.12, N'Ship to 59-B', N'Geislweg 7890', N'Salzburg', NULL, N'10265', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10598, 65, 1, '2007-07-14 00:00:00.000', '2007-08-11 00:00:00.000', '2007-07-18 00:00:00.000', 3, 44.42, N'Ship to 65-C', N'9012 Milton Dr.', N'Albuquerque', N'NM', N'10287', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10599, 11, 6, '2007-07-15 00:00:00.000', '2007-08-26 00:00:00.000', '2007-07-21 00:00:00.000', 3, 29.98, N'Destination DLEUN', N'Fauntleroy Circus 4567', N'London', NULL, N'10132', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10600, 36, 4, '2007-07-16 00:00:00.000', '2007-08-13 00:00:00.000', '2007-07-21 00:00:00.000', 1, 45.13, N'Destination HOHCR', N'City Center Plaza 3456 Main St.', N'Elgin', N'OR', N'10201', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10601, 35, 7, '2007-07-16 00:00:00.000', '2007-08-27 00:00:00.000', '2007-07-22 00:00:00.000', 1, 58.30, N'Destination UOUWK', N'Carrera 9012 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10197', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10602, 83, 8, '2007-07-17 00:00:00.000', '2007-08-14 00:00:00.000', '2007-07-22 00:00:00.000', 2, 2.92, N'Ship to 83-A', N'Smagsloget 0123', N'Århus', NULL, N'10339', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10603, 71, 8, '2007-07-18 00:00:00.000', '2007-08-15 00:00:00.000', '2007-08-08 00:00:00.000', 2, 48.77, N'Ship to 71-C', N'9012 Suffolk Ln.', N'Boise', N'Id', N'10307', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10604, 28, 1, '2007-07-18 00:00:00.000', '2007-08-15 00:00:00.000', '2007-07-29 00:00:00.000', 1, 7.46, N'Destination CIRQO', N'Jardim das rosas n. 8901', N'Lisboa', NULL, N'10176', N'Portugal');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10605, 51, 1, '2007-07-21 00:00:00.000', '2007-08-18 00:00:00.000', '2007-07-29 00:00:00.000', 2, 379.13, N'Ship to 51-B', N'7890 rue St. Laurent', N'Montréal', N'Québec', N'10245', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10606, 81, 4, '2007-07-22 00:00:00.000', '2007-08-19 00:00:00.000', '2007-07-31 00:00:00.000', 3, 79.40, N'Ship to 81-C', N'Av. Inês de Castro, 7890', N'Sao Paulo', N'SP', N'10336', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10607, 71, 5, '2007-07-22 00:00:00.000', '2007-08-19 00:00:00.000', '2007-07-25 00:00:00.000', 1, 200.24, N'Ship to 71-C', N'9012 Suffolk Ln.', N'Boise', N'Id', N'10307', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10608, 79, 4, '2007-07-23 00:00:00.000', '2007-08-20 00:00:00.000', '2007-08-01- 00:00:00.000', 2, 27.79, N'Ship to 79-C', N'Luisenstr. 9012', N'Münster', NULL, N'10328', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10609, 18, 7, '2007-07-24 00:00:00.000', '2007-08-21 00:00:00.000', '2007-07-30 00:00:00.000', 2, 1.85, N'Destination SNPXM', N'0123, rue des Cinquante Otages', N'Nantes', NULL, N'10148', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10610, 41, 8, '2007-07-25 00:00:00.000', '2007-08-22 00:00:00.000', '2007-08-06- 00:00:00.000', 1, 26.78, N'Ship to 41-C', N'0123 rue Alsace-Lorraine', N'Toulouse', NULL, N'10218', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10611, 91, 6, '2007-07-25 00:00:00.000', '2007-08-22 00:00:00.000', '2007-08-01- 00:00:00.000', 2, 80.65, N'Ship to 91-B', N'ul. Filtrowa 6789', N'Warszawa', NULL, N'10365', N'Poland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10612, 71, 1, '2007-07-28 00:00:00.000', '2007-08-25 00:00:00.000', '2007-08-01- 00:00:00.000', 2, 544.08, N'Ship to 71-A', N'7890 Suffolk Ln.', N'Boise', N'Id', N'10305', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10613, 35, 4, '2007-07-29 00:00:00.000', '2007-08-26 00:00:00.000', '2007-08-01- 00:00:00.000', 2, 8.11, N'Destination JYDLM', N'Carrera1234 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10199', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10614, 6, 8, '2007-07-29 00:00:00.000', '2007-08-26 00:00:00.000', '2007-08-01- 00:00:00.000', 3, 1.93, N'Ship to 6-A', N'Forsterstr. 2345', N'Mannheim', NULL, N'10300', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10615, 90, 2, '2007-07-30 00:00:00.000', '2007-08-27 00:00:00.000', '2007-08-06- 00:00:00.000', 3, 0.75, N'Ship to 90-B', N'Keskuskatu 3456', N'Helsinki', NULL, N'10362', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10616, 32, 1, '2007-07-31 00:00:00.000', '2007-08-28 00:00:00.000', '2007-08-05- 00:00:00.000', 2, 116.53, N'Destination LLUXZ', N'1234 Baker Blvd.', N'Eugene', N'OR', N'10189', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10617, 32, 4, '2007-07-31 00:00:00.000', '2007-08-28 00:00:00.000', '2007-08-04- 00:00:00.000', 2, 18.53, N'Destination AVQUS', N'2345 Baker Blvd.', N'Eugene', N'OR', N'10190', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10618, 51, 1, '2007-08-01- 00:00:00.000', '2007-09-12 00:00:00.000', '2007-08-08 00:00:00.000', 1, 154.68, N'Ship to 51-C', N'8901 rue St. Laurent', N'Montréal', N'Québec', N'10246', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10619, 51, 3, '2007-08-04- 00:00:00.000', '2007-09-01 00:00:00.000', '2007-08-07 00:00:00.000', 3, 91.05, N'Ship to 51-B', N'7890 rue St. Laurent', N'Montréal', N'Québec', N'10245', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10620, 42, 2, '2007-08-05- 00:00:00.000', '2007-09-02 00:00:00.000', '2007-08-14 00:00:00.000', 3, 0.94, N'Ship to 42-A', N'1234 Elm St.', N'Vancouver', N'BC', N'10219', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10621, 38, 4, '2007-08-05- 00:00:00.000', '2007-09-02 00:00:00.000', '2007-08-11 00:00:00.000', 2, 23.73, N'Destination LMVGS', N'Garden House Crowther Way 8901', N'Cowes', N'Isle of Wight', N'10206', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10622, 67, 4, '2007-08-06- 00:00:00.000', '2007-09-03 00:00:00.000', '2007-08-11 00:00:00.000', 3, 50.97, N'Ship to 67-A', N'Av. Copacabana, 3456', N'Rio de Janeiro', N'RJ', N'10291', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10623, 25, 8, '2007-08-07 00:00:00.000', '2007-09-04 00:00:00.000', '2007-08-12 00:00:00.000', 2, 97.18, N'Destination VAPXU', N'Berliner Platz 0123', N'München', NULL, N'10168', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10624, 78, 4, '2007-08-07 00:00:00.000', '2007-09-04 00:00:00.000', '2007-08-19 00:00:00.000', 2, 94.80, N'Ship to 78-C', N'6789 Grizzly Peak Rd.', N'Butte', N'MT', N'10325', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10625, 2, 3, '2007-08-08 00:00:00.000', '2007-09-05 00:00:00.000', '2007-08-14 00:00:00.000', 1, 43.90, N'Destination QOTQA', N'Avda. de la Constitución 3456', N'México D.F.', NULL, N'10181', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10626, 5, 1, '2007-08-11 00:00:00.000', '2007-09-08 00:00:00.000', '2007-08-20 00:00:00.000', 2, 138.69, N'Ship to 5-A', N'Berguvsvägen  9012', N'Luleå', NULL, N'10267', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10627, 71, 8, '2007-08-11 00:00:00.000', '2007-09-22 00:00:00.000', '2007-08-21 00:00:00.000', 3, 107.46, N'Ship to 71-B', N'8901 Suffolk Ln.', N'Boise', N'Id', N'10306', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10628, 7, 4, '2007-08-12 00:00:00.000', '2007-09-09 00:00:00.000', '2007-08-20 00:00:00.000', 3, 30.36, N'Ship to 7-B', N'1234, place Kléber', N'Strasbourg', NULL, N'10330', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10629, 30, 4, '2007-08-12 00:00:00.000', '2007-09-09 00:00:00.000', '2007-08-20 00:00:00.000', 3, 85.46, N'Destination IIYDD', N'C/ Romero, 5678', N'Sevilla', NULL, N'10183', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10630, 39, 1, '2007-08-13 00:00:00.000', '2007-09-10 00:00:00.000', '2007-08-19 00:00:00.000', 2, 32.35, N'Destination RMBHM', N'Maubelstr. 1234', N'Brandenburg', NULL, N'10209', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10631, 41, 8, '2007-08-14 00:00:00.000', '2007-09-11 00:00:00.000', '2007-08-15 00:00:00.000', 1, 0.87, N'Destination OLJND', N'8901 rue Alsace-Lorraine', N'Toulouse', NULL, N'10216', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10632, 86, 8, '2007-08-14 00:00:00.000', '2007-09-11 00:00:00.000', '2007-08-19 00:00:00.000', 1, 41.38, N'Ship to 86-C', N'Adenauerallee 0123', N'Stuttgart', NULL, N'10349', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10633, 20, 7, '2007-08-15 00:00:00.000', '2007-09-12 00:00:00.000', '2007-08-18 00:00:00.000', 3, 477.90, N'Destination FFXKT', N'Kirchgasse 0123', N'Graz', NULL, N'10158', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10634, 23, 4, '2007-08-15 00:00:00.000', '2007-09-12 00:00:00.000', '2007-08-21 00:00:00.000', 3, 487.38, N'Destination AGPCO', N'6789, chaussée de Tournai', N'Lille', NULL, N'10164', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10635, 49, 8, '2007-08-18 00:00:00.000', '2007-09-15 00:00:00.000', '2007-08-21 00:00:00.000', 3, 47.46, N'Ship to 49-A', N'Via Ludovico il Moro 8901', N'Bergamo', NULL, N'10235', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10636, 87, 4, '2007-08-19 00:00:00.000', '2007-09-16 00:00:00.000', '2007-08-26 00:00:00.000', 1, 1.15, N'Ship to 87-A', N'Torikatu 1234', N'Oulu', NULL, N'10350', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10637, 62, 6, '2007-08-19 00:00:00.000', '2007-09-16 00:00:00.000', '2007-08-26 00:00:00.000', 1, 201.29, N'Ship to 62-C', N'Alameda dos Canàrios, 0123', N'Sao Paulo', N'SP', N'10278', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10638, 47, 3, '2007-08-20 00:00:00.000', '2007-09-17 00:00:00.000', '2007-09-01 00:00:00.000', 1, 158.44, N'Ship to 47-B', N'Ave. 5 de Mayo Porlamar 4567', N'I. de Margarita', N'Nueva Esparta', N'10231', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10639, 70, 7, '2007-08-20 00:00:00.000', '2007-09-17 00:00:00.000', '2007-08-27 00:00:00.000', 3, 38.64, N'Ship to 70-B', N'Erling Skakkes gate 5678', N'Stavern', NULL, N'10303', N'Norway');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10640, 86, 4, '2007-08-21 00:00:00.000', '2007-09-18 00:00:00.000', '2007-08-28 00:00:00.000', 1, 23.55, N'Ship to 86-A', N'Adenauerallee 8901', N'Stuttgart', NULL, N'10347', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10641, 35, 4, '2007-08-22 00:00:00.000', '2007-09-19 00:00:00.000', '2007-08-26 00:00:00.000', 2, 179.61, N'Destination JYDLM', N'Carrera1234 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10199', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10642, 73, 7, '2007-08-22 00:00:00.000', '2007-09-19 00:00:00.000', '2007-09-05 00:00:00.000', 3, 41.89, N'Ship to 73-C', N'Vinbæltet 2345', N'Kobenhavn', NULL, N'10311', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10643, 1, 6, '2007-08-25 00:00:00.000', '2007-09-22 00:00:00.000', '2007-09-02 00:00:00.000', 1, 29.46, N'Destination LOUIE', N'Obere Str. 6789', N'Berlin', NULL, N'10154', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10644, 88, 3, '2007-08-25 00:00:00.000', '2007-09-22 00:00:00.000', '2007-09-01 00:00:00.000', 2, 0.14, N'Ship to 88-A', N'Rua do Mercado, 4567', N'Resende', N'SP', N'10353', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10645, 34, 4, '2007-08-26 00:00:00.000', '2007-09-23 00:00:00.000', '2007-09-02 00:00:00.000', 1, 12.41, N'Destination DPCVR', N'Rua do Paço, 6789', N'Rio de Janeiro', N'RJ', N'10194', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10646, 37, 9, '2007-08-27 00:00:00.000', '2007-10-08 00:00:00.000', '2007-09-03 00:00:00.000', 3, 142.33, N'Destination ATSOA', N'4567 Johnstown Road', N'Cork', N'Co. Cork', N'10202', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10647, 61, 4, '2007-08-27 00:00:00.000', '2007-09-10 00:00:00.000', '2007-09-03 00:00:00.000', 2, 45.54, N'Ship to 61-B', N'Rua da Panificadora, 6789', N'Rio de Janeiro', N'RJ', N'10274', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10648, 67, 5, '2007-08-28 00:00:00.000', '2007-10-09 00:00:00.000', '2007-09-09 00:00:00.000', 2, 14.25, N'Ship to 67-C', N'Av. Copacabana, 5678', N'Rio de Janeiro', N'RJ', N'10293', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10649, 50, 5, '2007-08-28 00:00:00.000', '2007-09-25 00:00:00.000', '2007-08-29 00:00:00.000', 3, 6.20, N'Ship to 50-B', N'Rue Joseph-Bens 4567', N'Bruxelles', NULL, N'10242', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10650, 21, 5, '2007-08-29 00:00:00.000', '2007-09-26 00:00:00.000', '2007-09-03 00:00:00.000', 3, 176.81, N'Destination SSYXZ', N'Rua Orós, 3456', N'Sao Paulo', N'SP', N'10161', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10651, 86, 8, '2007-09-01 00:00:00.000', '2007-09-29 00:00:00.000', '2007-09-11 00:00:00.000', 2, 20.60, N'Ship to 86-A', N'Adenauerallee 8901', N'Stuttgart', NULL, N'10347', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10652, 31, 4, '2007-09-01 00:00:00.000', '2007-09-29 00:00:00.000', '2007-09-08 00:00:00.000', 2, 7.14, N'Destination VNIAG', N'Av. Brasil, 9012', N'Campinas', N'SP', N'10187', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10653, 25, 1, '2007-09-02 00:00:00.000', '2007-09-30 00:00:00.000', '2007-09-19 00:00:00.000', 1, 93.25, N'Destination QOCBL', N'Berliner Platz 1234', N'München', NULL, N'10169', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10654, 5, 5, '2007-09-02 00:00:00.000', '2007-09-30 00:00:00.000', '2007-09-11 00:00:00.000', 1, 55.26, N'Ship to 5-C', N'Berguvsvägen  1234', N'Luleå', NULL, N'10269', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10655, 66, 1, '2007-09-03 00:00:00.000', '2007-10-01 00:00:00.000', '2007-09-11 00:00:00.000', 2, 4.41, N'Ship to 66-B', N'Strada Provinciale 1234', N'Reggio Emilia', NULL, N'10289', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10656, 32, 6, '2007-09-04 00:00:00.000', '2007-10-02 00:00:00.000', '2007-09-10 00:00:00.000', 1, 57.15, N'Destination AVQUS', N'2345 Baker Blvd.', N'Eugene', N'OR', N'10190', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10657, 71, 2, '2007-09-04 00:00:00.000', '2007-10-02 00:00:00.000', '2007-09-15 00:00:00.000', 2, 352.69, N'Ship to 71-A', N'7890 Suffolk Ln.', N'Boise', N'Id', N'10305', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10658, 63, 4, '2007-09-05 00:00:00.000', '2007-10-03 00:00:00.000', '2007-09-08 00:00:00.000', 1, 364.15, N'Ship to 63-C', N'Taucherstraße 3456', N'Cunewalde', NULL, N'10281', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10659, 62, 7, '2007-09-05 00:00:00.000', '2007-10-03 00:00:00.000', '2007-09-10 00:00:00.000', 2, 105.81, N'Ship to 62-B', N'Alameda dos Canàrios, 9012', N'Sao Paulo', N'SP', N'10277', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10660, 36, 8, '2007-09-08 00:00:00.000', '2007-10-06 00:00:00.000', '2007-10-15 00:00:00.000', 1, 111.29, N'Destination HOHCR', N'City Center Plaza 3456 Main St.', N'Elgin', N'OR', N'10201', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10661, 37, 7, '2007-09-09 00:00:00.000', '2007-10-07 00:00:00.000', '2007-09-15 00:00:00.000', 3, 17.55, N'Destination ATSOA', N'4567 Johnstown Road', N'Cork', N'Co. Cork', N'10202', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10662, 48, 3, '2007-09-09 00:00:00.000', '2007-10-07 00:00:00.000', '2007-09-18 00:00:00.000', 2, 1.28, N'Ship to 48-C', N'7890 Chiaroscuro Rd.', N'Portland', N'OR', N'10234', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10663, 9, 2, '2007-09-10 00:00:00.000', '2007-09-24 00:00:00.000', '2007-10-03 00:00:00.000', 2, 113.15, N'Ship to 9-B', N'9012, rue des Bouchers', N'Marseille', NULL, N'10368', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10664, 28, 1, '2007-09-10 00:00:00.000', '2007-10-08 00:00:00.000', '2007-09-19 00:00:00.000', 3, 1.27, N'Destination OTSWR', N'Jardim das rosas n. 9012', N'Lisboa', NULL, N'10177', N'Portugal');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10665, 48, 1, '2007-09-11 00:00:00.000', '2007-10-09 00:00:00.000', '2007-09-17 00:00:00.000', 2, 26.31, N'Ship to 48-B', N'6789 Chiaroscuro Rd.', N'Portland', N'OR', N'10233', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10666, 68, 7, '2007-09-12 00:00:00.000', '2007-10-10 00:00:00.000', '2007-09-22 00:00:00.000', 2, 232.42, N'Ship to 68-A', N'Starenweg 6789', N'Genève', NULL, N'10294', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10667, 20, 7, '2007-09-12 00:00:00.000', '2007-10-10 00:00:00.000', '2007-09-19 00:00:00.000', 1, 78.09, N'Destination CUVPF', N'Kirchgasse 1234', N'Graz', NULL, N'10159', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10668, 86, 1, '2007-09-15 00:00:00.000', '2007-10-13 00:00:00.000', '2007-09-23 00:00:00.000', 2, 47.22, N'Ship to 86-C', N'Adenauerallee 0123', N'Stuttgart', NULL, N'10349', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10669, 73, 2, '2007-09-15 00:00:00.000', '2007-10-13 00:00:00.000', '2007-09-22 00:00:00.000', 1, 24.39, N'Ship to 73-A', N'Vinbæltet 1234', N'Kobenhavn', NULL, N'10310', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10670, 25, 4, '2007-09-16 00:00:00.000', '2007-10-14 00:00:00.000', '2007-09-18 00:00:00.000', 1, 203.48, N'Destination QOCBL', N'Berliner Platz 1234', N'München', NULL, N'10169', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10671, 26, 1, '2007-09-17 00:00:00.000', '2007-10-15 00:00:00.000', '2007-09-24 00:00:00.000', 1, 30.34, N'Destination OPXJT', N'4567, rue Royale', N'Nantes', NULL, N'10172', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10672, 5, 9, '2007-09-17 00:00:00.000', '2007-10-01 00:00:00.000', '2007-09-26 00:00:00.000', 2, 95.75, N'Ship to 5-C', N'Berguvsvägen  1234', N'Luleå', NULL, N'10269', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10673, 90, 2, '2007-09-18 00:00:00.000', '2007-10-16 00:00:00.000', '2007-09-19 00:00:00.000', 1, 22.76, N'Ship to 90-B', N'Keskuskatu 3456', N'Helsinki', NULL, N'10362', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10674, 38, 4, '2007-09-18 00:00:00.000', '2007-10-16 00:00:00.000', '2007-09-30 00:00:00.000', 2, 0.90, N'Destination QVTLW', N'Garden House Crowther Way 7890', N'Cowes', N'Isle of Wight', N'10205', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10675, 25, 5, '2007-09-19 00:00:00.000', '2007-10-17 00:00:00.000', '2007-09-23 00:00:00.000', 2, 31.85, N'Destination WEGWI', N'Berliner Platz 2345', N'München', NULL, N'10170', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10676, 80, 2, '2007-09-22 00:00:00.000', '2007-10-20 00:00:00.000', '2007-09-29 00:00:00.000', 2, 2.01, N'Ship to 80-C', N'Avda. Azteca 5678', N'México D.F.', NULL, N'10334', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10677, 3, 1, '2007-09-22 00:00:00.000', '2007-10-20 00:00:00.000', '2007-09-26 00:00:00.000', 3, 4.03, N'Destination LANNN', N'Mataderos  4567', N'México D.F.', NULL, N'10212', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10678, 71, 7, '2007-09-23 00:00:00.000', '2007-10-21 00:00:00.000', '2007-10-16 00:00:00.000', 3, 388.98, N'Ship to 71-A', N'7890 Suffolk Ln.', N'Boise', N'Id', N'10305', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10679, 7, 8, '2007-09-23 00:00:00.000', '2007-10-21 00:00:00.000', '2007-09-30 00:00:00.000', 3, 27.94, N'Ship to 7-A', N'0123, place Kléber', N'Strasbourg', NULL, N'10329', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10680, 55, 1, '2007-09-24 00:00:00.000', '2007-10-22 00:00:00.000', '2007-09-26 00:00:00.000', 1, 26.61, N'Ship to 55-B', N'8901 Bering St.', N'Anchorage', N'AK', N'10256', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10681, 32, 3, '2007-09-25 00:00:00.000', '2007-10-23 00:00:00.000', '2007-09-30 00:00:00.000', 3, 76.13, N'Destination AVQUS', N'2345 Baker Blvd.', N'Eugene', N'OR', N'10190', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10682, 3, 3, '2007-09-25 00:00:00.000', '2007-10-23 00:00:00.000', '2007-10-01 00:00:00.000', 2, 36.13, N'Destination RTGIS', N'Mataderos  2345', N'México D.F.', NULL, N'10210', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10683, 18, 2, '2007-09-26 00:00:00.000', '2007-10-24 00:00:00.000', '2007-10-01 00:00:00.000', 1, 4.40, N'Destination FVRGC', N'2345, rue des Cinquante Otages', N'Nantes', NULL, N'10150', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10684, 56, 3, '2007-09-26 00:00:00.000', '2007-10-24 00:00:00.000', '2007-09-30 00:00:00.000', 1, 145.63, N'Ship to 56-B', N'Mehrheimerstr. 1234', N'Köln', NULL, N'10259', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10685, 31, 4, '2007-09-29 00:00:00.000', '2007-10-13 00:00:00.000', '2007-10-03 00:00:00.000', 2, 33.75, N'Destination VNIAG', N'Av. Brasil, 9012', N'Campinas', N'SP', N'10187', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10686, 59, 2, '2007-09-30 00:00:00.000', '2007-10-28 00:00:00.000', '2007-10-08 00:00:00.000', 1, 96.50, N'Ship to 59-B', N'Geislweg 7890', N'Salzburg', NULL, N'10265', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10687, 37, 9, '2007-09-30 00:00:00.000', '2007-10-28 00:00:00.000', '2007-10-30 00:00:00.000', 2, 296.43, N'Destination KPVYJ', N'5678 Johnstown Road', N'Cork', N'Co. Cork', N'10203', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10688, 83, 4, '2007-10-01 00:00:00.000', '2007-10-15 00:00:00.000', '2007-10-07 00:00:00.000', 2, 299.09, N'Ship to 83-A', N'Smagsloget 0123', N'Århus', NULL, N'10339', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10689, 5, 1, '2007-10-01 00:00:00.000', '2007-10-29 00:00:00.000', '2007-10-07 00:00:00.000', 2, 13.42, N'Ship to 5-B', N'Berguvsvägen  0123', N'Luleå', NULL, N'10268', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10690, 34, 1, '2007-10-02 00:00:00.000', '2007-10-30 00:00:00.000', '2007-10-03 00:00:00.000', 1, 15.80, N'Destination JPAIY', N'Rua do Paço, 8901', N'Rio de Janeiro', N'RJ', N'10196', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10691, 63, 2, '2007-10-03 00:00:00.000', '2007-11-14 00:00:00.000', '2007-10-22 00:00:00.000', 2, 810.05, N'Ship to 63-B', N'Taucherstraße 2345', N'Cunewalde', NULL, N'10280', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10692, 1, 4, '2007-10-03 00:00:00.000', '2007-10-31 00:00:00.000', '2007-10-13 00:00:00.000', 2, 61.02, N'Destination RSVRP', N'Obere Str. 8901', N'Berlin', NULL, N'10156', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10693, 89, 3, '2007-10-06 00:00:00.000', '2007-10-20 00:00:00.000', '2007-10-10 00:00:00.000', 3, 139.34, N'Ship to 89-C', N'9012 - 12th Ave. S.', N'Seattle', N'WA', N'10358', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10694, 63, 8, '2007-10-06 00:00:00.000', '2007-11-03 00:00:00.000', '2007-10-09 00:00:00.000', 3, 398.36, N'Ship to 63-A', N'Taucherstraße 1234', N'Cunewalde', NULL, N'10279', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10695, 90, 7, '2007-10-07 00:00:00.000', '2007-11-18 00:00:00.000', '2007-10-14 00:00:00.000', 1, 16.72, N'Ship to 90-C', N'Keskuskatu 4567', N'Helsinki', NULL, N'10363', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10696, 89, 8, '2007-10-08 00:00:00.000', '2007-11-19 00:00:00.000', '2007-10-14 00:00:00.000', 3, 102.55, N'Ship to 89-A', N'7890 - 12th Ave. S.', N'Seattle', N'WA', N'10356', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10697, 47, 3, '2007-10-08 00:00:00.000', '2007-11-05 00:00:00.000', '2007-10-14 00:00:00.000', 1, 45.52, N'Ship to 47-B', N'Ave. 5 de Mayo Porlamar 4567', N'I. de Margarita', N'Nueva Esparta', N'10231', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10698, 20, 4, '2007-10-09 00:00:00.000', '2007-11-06 00:00:00.000', '2007-10-17 00:00:00.000', 1, 272.47, N'Destination RVDMF', N'Kirchgasse 9012', N'Graz', NULL, N'10157', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10699, 52, 3, '2007-10-09 00:00:00.000', '2007-11-06 00:00:00.000', '2007-10-13 00:00:00.000', 3, 0.58, N'Ship to 52-B', N'Heerstr. 0123', N'Leipzig', NULL, N'10248', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10700, 71, 3, '2007-10-10 00:00:00.000', '2007-11-07 00:00:00.000', '2007-10-16 00:00:00.000', 1, 65.10, N'Ship to 71-C', N'9012 Suffolk Ln.', N'Boise', N'Id', N'10307', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10701, 37, 6, '2007-10-13 00:00:00.000', '2007-10-27 00:00:00.000', '2007-10-15 00:00:00.000', 3, 220.31, N'Destination KPVYJ', N'5678 Johnstown Road', N'Cork', N'Co. Cork', N'10203', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10702, 1, 4, '2007-10-13 00:00:00.000', '2007-11-24 00:00:00.000', '2007-10-21 00:00:00.000', 1, 23.94, N'Destination ZELZJ', N'Obere Str. 7890', N'Berlin', NULL, N'10155', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10703, 24, 6, '2007-10-14 00:00:00.000', '2007-11-11 00:00:00.000', '2007-10-20 00:00:00.000', 2, 152.30, N'Destination KBSBN', N'Åkergatan 9012', N'Bräcke', NULL, N'10167', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10704, 62, 6, '2007-10-14 00:00:00.000', '2007-11-11 00:00:00.000', '2007-11-07 00:00:00.000', 1, 4.78, N'Ship to 62-C', N'Alameda dos Canàrios, 0123', N'Sao Paulo', N'SP', N'10278', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10705, 35, 9, '2007-10-15 00:00:00.000', '2007-11-12 00:00:00.000', '2007-11-18 00:00:00.000', 2, 3.52, N'Destination JYDLM', N'Carrera1234 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10199', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10706, 55, 8, '2007-10-16 00:00:00.000', '2007-11-13 00:00:00.000', '2007-10-21 00:00:00.000', 3, 135.63, N'Ship to 55-C', N'9012 Bering St.', N'Anchorage', N'AK', N'10257', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10707, 4, 4, '2007-10-16 00:00:00.000', '2007-10-30 00:00:00.000', '2007-10-23 00:00:00.000', 3, 21.74, N'Ship to 4-A', N'Brook Farm Stratford St. Mary 0123', N'Colchester', N'Essex', N'10238', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10708, 77, 6, '2007-10-17 00:00:00.000', '2007-11-28 00:00:00.000', '2007-11-05 00:00:00.000', 2, 2.96, N'Ship to 77-C', N'3456 Jefferson Way Suite 2', N'Portland', N'OR', N'10322', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10709, 31, 1, '2007-10-17 00:00:00.000', '2007-11-14 00:00:00.000', '2007-11-20 00:00:00.000', 3, 210.80, N'Destination GWPFK', N'Av. Brasil, 0123', N'Campinas', N'SP', N'10188', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10710, 27, 1, '2007-10-20 00:00:00.000', '2007-11-17 00:00:00.000', '2007-10-23 00:00:00.000', 1, 4.98, N'Destination FFLQT', N'Via Monte Bianco 6789', N'Torino', NULL, N'10174', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10711, 71, 5, '2007-10-21 00:00:00.000', '2007-12-02 00:00:00.000', '2007-10-29 00:00:00.000', 2, 52.41, N'Ship to 71-A', N'7890 Suffolk Ln.', N'Boise', N'Id', N'10305', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10712, 37, 3, '2007-10-21 00:00:00.000', '2007-11-18 00:00:00.000', '2007-10-31 00:00:00.000', 1, 89.93, N'Destination KPVYJ', N'5678 Johnstown Road', N'Cork', N'Co. Cork', N'10203', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10713, 71, 1, '2007-10-22 00:00:00.000', '2007-11-19 00:00:00.000', '2007-10-24 00:00:00.000', 1, 167.05, N'Ship to 71-C', N'9012 Suffolk Ln.', N'Boise', N'Id', N'10307', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10714, 71, 5, '2007-10-22 00:00:00.000', '2007-11-19 00:00:00.000', '2007-10-27 00:00:00.000', 3, 24.49, N'Ship to 71-A', N'7890 Suffolk Ln.', N'Boise', N'Id', N'10305', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10715, 9, 3, '2007-10-23 00:00:00.000', '2007-11-06 00:00:00.000', '2007-10-29 00:00:00.000', 1, 63.20, N'Ship to 9-B', N'9012, rue des Bouchers', N'Marseille', NULL, N'10368', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10716, 64, 4, '2007-10-24 00:00:00.000', '2007-11-21 00:00:00.000', '2007-10-27 00:00:00.000', 2, 22.57, N'Ship to 64-B', N'Av. del Libertador 5678', N'Buenos Aires', NULL, N'10283', N'Argentina');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10717, 25, 1, '2007-10-24 00:00:00.000', '2007-11-21 00:00:00.000', '2007-10-29 00:00:00.000', 2, 59.25, N'Destination QOCBL', N'Berliner Platz 1234', N'München', NULL, N'10169', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10718, 39, 1, '2007-10-27 00:00:00.000', '2007-11-24 00:00:00.000', '2007-10-29 00:00:00.000', 3, 170.88, N'Destination DKMQA', N'Maubelstr. 0123', N'Brandenburg', NULL, N'10208', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10719, 45, 8, '2007-10-27 00:00:00.000', '2007-11-24 00:00:00.000', '2007-11-05 00:00:00.000', 2, 51.44, N'Ship to 45-A', N'8901 Polk St. Suite 5', N'San Francisco', N'CA', N'10225', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10720, 61, 8, '2007-10-28 00:00:00.000', '2007-11-11 00:00:00.000', '2007-11-05 00:00:00.000', 2, 9.53, N'Ship to 61-C', N'Rua da Panificadora, 7890', N'Rio de Janeiro', N'RJ', N'10275', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10721, 63, 5, '2007-10-29 00:00:00.000', '2007-11-26 00:00:00.000', '2007-10-31 00:00:00.000', 3, 48.92, N'Ship to 63-A', N'Taucherstraße 1234', N'Cunewalde', NULL, N'10279', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10722, 71, 8, '2007-10-29 00:00:00.000', '2007-12-10 00:00:00.000', '2007-11-04 00:00:00.000', 1, 74.58, N'Ship to 71-A', N'7890 Suffolk Ln.', N'Boise', N'Id', N'10305', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10723, 89, 3, '2007-10-30 00:00:00.000', '2007-11-27 00:00:00.000', '2007-11-25 00:00:00.000', 1, 21.72, N'Ship to 89-C', N'9012 - 12th Ave. S.', N'Seattle', N'WA', N'10358', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10724, 51, 8, '2007-10-30 00:00:00.000', '2007-12-11 00:00:00.000', '2007-11-05 00:00:00.000', 2, 57.75, N'Ship to 51-A', N'6789 rue St. Laurent', N'Montréal', N'Québec', N'10244', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10725, 21, 4, '2007-10-31 00:00:00.000', '2007-11-28 00:00:00.000', '2007-11-05 00:00:00.000', 3, 10.83, N'Destination KKELL', N'Rua Orós, 4567', N'Sao Paulo', N'SP', N'10162', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10726, 19, 4, '2007-11-03 00:00:00.000', '2007-11-17 00:00:00.000', '2007-12-05 00:00:00.000', 1, 16.56, N'Destination FRCGJ', N'5678 King George', N'London', NULL, N'10153', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10727, 66, 2, '2007-11-03 00:00:00.000', '2007-12-01 00:00:00.000', '2007-12-05 00:00:00.000', 1, 89.90, N'Ship to 66-A', N'Strada Provinciale 0123', N'Reggio Emilia', NULL, N'10288', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10728, 62, 4, '2007-11-04 00:00:00.000', '2007-12-02 00:00:00.000', '2007-11-11 00:00:00.000', 2, 58.33, N'Ship to 62-A', N'Alameda dos Canàrios, 8901', N'Sao Paulo', N'SP', N'10276', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10729, 47, 8, '2007-11-04 00:00:00.000', '2007-12-16 00:00:00.000', '2007-11-14 00:00:00.000', 3, 141.06, N'Ship to 47-A', N'Ave. 5 de Mayo Porlamar 3456', N'I. de Margarita', N'Nueva Esparta', N'10230', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10730, 9, 5, '2007-11-05 00:00:00.000', '2007-12-03 00:00:00.000', '2007-11-14 00:00:00.000', 1, 20.12, N'Ship to 9-A', N'8901, rue des Bouchers', N'Marseille', NULL, N'10367', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10731, 14, 7, '2007-11-06 00:00:00.000', '2007-12-04 00:00:00.000', '2007-11-14 00:00:00.000', 1, 96.65, N'Destination YUJRD', N'Hauptstr. 1234', N'Bern', NULL, N'10139', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10732, 9, 3, '2007-11-06 00:00:00.000', '2007-12-04 00:00:00.000', '2007-11-07 00:00:00.000', 1, 16.97, N'Ship to 9-A', N'8901, rue des Bouchers', N'Marseille', NULL, N'10367', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10733, 5, 1, '2007-11-07 00:00:00.000', '2007-12-05 00:00:00.000', '2007-11-10 00:00:00.000', 3, 110.11, N'Ship to 5-A', N'Berguvsvägen  9012', N'Luleå', NULL, N'10267', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10734, 31, 2, '2007-11-07 00:00:00.000', '2007-12-05 00:00:00.000', '2007-11-12 00:00:00.000', 3, 1.63, N'Destination VNIAG', N'Av. Brasil, 9012', N'Campinas', N'SP', N'10187', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10735, 45, 6, '2007-11-10 00:00:00.000', '2007-12-08 00:00:00.000', '2007-11-21 00:00:00.000', 2, 45.97, N'Ship to 45-A', N'8901 Polk St. Suite 5', N'San Francisco', N'CA', N'10225', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10736, 37, 9, '2007-11-11 00:00:00.000', '2007-12-09 00:00:00.000', '2007-11-21 00:00:00.000', 2, 44.10, N'Destination DGKOU', N'6789 Johnstown Road', N'Cork', N'Co. Cork', N'10204', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10737, 85, 2, '2007-11-11 00:00:00.000', '2007-12-09 00:00:00.000', '2007-11-18 00:00:00.000', 2, 7.79, N'Ship to 85-C', N'7890 rue de l''Abbaye', N'Reims', NULL, N'10346', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10738, 74, 2, '2007-11-12 00:00:00.000', '2007-12-10 00:00:00.000', '2007-11-18 00:00:00.000', 1, 2.91, N'Ship to 74-A', N'3456, rue Lauriston', N'Paris', NULL, N'10312', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10739, 85, 3, '2007-11-12 00:00:00.000', '2007-12-10 00:00:00.000', '2007-11-17 00:00:00.000', 3, 11.08, N'Ship to 85-C', N'7890 rue de l''Abbaye', N'Reims', NULL, N'10346', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10740, 89, 4, '2007-11-13 00:00:00.000', '2007-12-11 00:00:00.000', '2007-11-25 00:00:00.000', 2, 81.88, N'Ship to 89-B', N'8901 - 12th Ave. S.', N'Seattle', N'WA', N'10357', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10741, 4, 4, '2007-11-14 00:00:00.000', '2007-11-28 00:00:00.000', '2007-11-18 00:00:00.000', 3, 10.96, N'Ship to 4-C', N'Brook Farm Stratford St. Mary 2345', N'Colchester', N'Essex', N'10240', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10742, 10, 3, '2007-11-14 00:00:00.000', '2007-12-12 00:00:00.000', '2007-11-18 00:00:00.000', 3, 243.73, N'Destination LPHSI', N'3456 Tsawassen Blvd.', N'Tsawassen', N'BC', N'10131', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10743, 4, 1, '2007-11-17 00:00:00.000', '2007-12-15 00:00:00.000', '2007-11-21 00:00:00.000', 2, 23.72, N'Ship to 4-C', N'Brook Farm Stratford St. Mary 2345', N'Colchester', N'Essex', N'10240', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10744, 83, 6, '2007-11-17 00:00:00.000', '2007-12-15 00:00:00.000', '2007-11-24 00:00:00.000', 1, 69.19, N'Ship to 83-A', N'Smagsloget 0123', N'Århus', NULL, N'10339', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10745, 63, 9, '2007-11-18 00:00:00.000', '2007-12-16 00:00:00.000', '2007-11-27 00:00:00.000', 1, 3.52, N'Ship to 63-C', N'Taucherstraße 3456', N'Cunewalde', NULL, N'10281', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10746, 14, 1, '2007-11-19 00:00:00.000', '2007-12-17 00:00:00.000', '2007-11-21 00:00:00.000', 3, 31.43, N'Destination NRTZZ', N'Hauptstr. 0123', N'Bern', NULL, N'10138', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10747, 59, 6, '2007-11-19 00:00:00.000', '2007-12-17 00:00:00.000', '2007-11-26 00:00:00.000', 1, 117.33, N'Ship to 59-B', N'Geislweg 7890', N'Salzburg', NULL, N'10265', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10748, 71, 3, '2007-11-20 00:00:00.000', '2007-12-18 00:00:00.000', '2007-11-28 00:00:00.000', 1, 232.55, N'Ship to 71-B', N'8901 Suffolk Ln.', N'Boise', N'Id', N'10306', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10749, 38, 4, '2007-11-20 00:00:00.000', '2007-12-18 00:00:00.000', '2007-12-19 00:00:00.000', 2, 61.53, N'Destination QVTLW', N'Garden House Crowther Way 7890', N'Cowes', N'Isle of Wight', N'10205', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10750, 87, 9, '2007-11-21 00:00:00.000', '2007-12-19 00:00:00.000', '2007-11-24 00:00:00.000', 1, 79.30, N'Ship to 87-C', N'Torikatu 3456', N'Oulu', NULL, N'10352', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10751, 68, 3, '2007-11-24 00:00:00.000', '2007-12-22 00:00:00.000', '2007-12-03 00:00:00.000', 3, 130.79, N'Ship to 68-A', N'Starenweg 6789', N'Genève', NULL, N'10294', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10752, 53, 2, '2007-11-24 00:00:00.000', '2007-12-22 00:00:00.000', '2007-11-28 00:00:00.000', 3, 1.39, N'Ship to 53-C', N'South House 3456 Queensbridge', N'London', NULL, N'10251', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10753, 27, 3, '2007-11-25 00:00:00.000', '2007-12-23 00:00:00.000', '2007-11-27 00:00:00.000', 1, 7.70, N'Destination DICGM', N'Via Monte Bianco 7890', N'Torino', NULL, N'10175', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10754, 49, 6, '2007-11-25 00:00:00.000', '2007-12-23 00:00:00.000', '2007-11-27 00:00:00.000', 3, 2.38, N'Ship to 49-B', N'Via Ludovico il Moro 9012', N'Bergamo', NULL, N'10236', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10755, 9, 4, '2007-11-26 00:00:00.000', '2007-12-24 00:00:00.000', '2007-11-28 00:00:00.000', 2, 16.71, N'Ship to 9-C', N'0123, rue des Bouchers', N'Marseille', NULL, N'10369', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10756, 75, 8, '2007-11-27 00:00:00.000', '2007-12-25 00:00:00.000', '2007-12-02 00:00:00.000', 2, 73.21, N'Ship to 75-C', N'P.O. Box 7890', N'Lander', N'WY', N'10316', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10757, 71, 6, '2007-11-27 00:00:00.000', '2007-12-25 00:00:00.000', '2007-12-15 00:00:00.000', 1, 8.19, N'Ship to 71-B', N'8901 Suffolk Ln.', N'Boise', N'Id', N'10306', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10758, 68, 3, '2007-11-28 00:00:00.000', '2007-12-26 00:00:00.000', '2007-12-04 00:00:00.000', 3, 138.17, N'Ship to 68-C', N'Starenweg 8901', N'Genève', NULL, N'10296', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10759, 2, 3, '2007-11-28 00:00:00.000', '2007-12-26 00:00:00.000', '2007-12-12 00:00:00.000', 3, 11.99, N'Destination QOTQA', N'Avda. de la Constitución 3456', N'México D.F.', NULL, N'10181', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10760, 50, 4, '2007-12-01 00:00:00.000', '2007-12-29 00:00:00.000', '2007-12-10 00:00:00.000', 1, 155.64, N'Ship to 50-B', N'Rue Joseph-Bens 4567', N'Bruxelles', NULL, N'10242', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10761, 65, 5, '2007-12-02 00:00:00.000', '2007-12-30 00:00:00.000', '2007-12-08 00:00:00.000', 2, 18.66, N'Ship to 65-B', N'8901 Milton Dr.', N'Albuquerque', N'NM', N'10286', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10762, 24, 3, '2007-12-02 00:00:00.000', '2007-12-30 00:00:00.000', '2007-12-09 00:00:00.000', 1, 328.74, N'Destination YCMPK', N'Åkergatan 8901', N'Bräcke', NULL, N'10166', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10763, 23, 3, '2007-12-03 00:00:00.000', '2007-12-31 00:00:00.000', '2007-12-08 00:00:00.000', 3, 37.35, N'Destination PXQRR', N'5678, chaussée de Tournai', N'Lille', NULL, N'10163', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10764, 20, 6, '2007-12-03 00:00:00.000', '2007-12-31 00:00:00.000', '2007-12-08 00:00:00.000', 3, 145.45, N'Destination CUVPF', N'Kirchgasse 1234', N'Graz', NULL, N'10159', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10765, 63, 3, '2007-12-04 00:00:00.000', '2008-01-01 00:00:00.000', '2007-12-09 00:00:00.000', 3, 42.74, N'Ship to 63-A', N'Taucherstraße 1234', N'Cunewalde', NULL, N'10279', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10766, 56, 4, '2007-12-05 00:00:00.000', '2008-01-02 00:00:00.000', '2007-12-09 00:00:00.000', 1, 157.55, N'Ship to 56-C', N'Mehrheimerstr. 2345', N'Köln', NULL, N'10260', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10767, 76, 4, '2007-12-05 00:00:00.000', '2008-01-02 00:00:00.000', '2007-12-15 00:00:00.000', 3, 1.59, N'Ship to 76-B', N'Boulevard Tirou, 9012', N'Charleroi', NULL, N'10318', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10768, 4, 3, '2007-12-08 00:00:00.000', '2008-01-05 00:00:00.000', '2007-12-15 00:00:00.000', 2, 146.32, N'Ship to 4-B', N'Brook Farm Stratford St. Mary 1234', N'Colchester', N'Essex', N'10239', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10769, 83, 3, '2007-12-08 00:00:00.000', '2008-01-05 00:00:00.000', '2007-12-12 00:00:00.000', 1, 65.06, N'Ship to 83-C', N'Smagsloget 2345', N'Århus', NULL, N'10341', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10770, 34, 8, '2007-12-09 00:00:00.000', '2008-01-06 00:00:00.000', '2007-12-17 00:00:00.000', 3, 5.32, N'Destination JPAIY', N'Rua do Paço, 8901', N'Rio de Janeiro', N'RJ', N'10196', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10771, 20, 9, '2007-12-10 00:00:00.000', '2008-01-07 00:00:00.000', '2008-01-02 00:00:00.000', 2, 11.19, N'Destination CUVPF', N'Kirchgasse 1234', N'Graz', NULL, N'10159', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10772, 44, 3, '2007-12-10 00:00:00.000', '2008-01-07 00:00:00.000', '2007-12-19 00:00:00.000', 2, 91.28, N'Ship to 44-B', N'Magazinweg 5678', N'Frankfurt a.M.', NULL, N'10223', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10773, 20, 1, '2007-12-11 00:00:00.000', '2008-01-08 00:00:00.000', '2007-12-16 00:00:00.000', 3, 96.43, N'Destination FFXKT', N'Kirchgasse 0123', N'Graz', NULL, N'10158', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10774, 24, 4, '2007-12-11 00:00:00.000', '2007-12-25 00:00:00.000', '2007-12-12 00:00:00.000', 1, 48.20, N'Destination KBSBN', N'Åkergatan 9012', N'Bräcke', NULL, N'10167', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10775, 78, 7, '2007-12-12 00:00:00.000', '2008-01-09 00:00:00.000', '2007-12-26 00:00:00.000', 1, 20.25, N'Ship to 78-A', N'4567 Grizzly Peak Rd.', N'Butte', N'MT', N'10323', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10776, 20, 1, '2007-12-15 00:00:00.000', '2008-01-12 00:00:00.000', '2007-12-18 00:00:00.000', 3, 351.53, N'Destination RVDMF', N'Kirchgasse 9012', N'Graz', NULL, N'10157', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10777, 31, 7, '2007-12-15 00:00:00.000', '2007-12-29 00:00:00.000', '2008-01-21 00:00:00.000', 2, 3.01, N'Destination GWPFK', N'Av. Brasil, 0123', N'Campinas', N'SP', N'10188', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10778, 5, 3, '2007-12-16 00:00:00.000', '2008-01-13 00:00:00.000', '2007-12-24 00:00:00.000', 1, 6.79, N'Ship to 5-A', N'Berguvsvägen  9012', N'Luleå', NULL, N'10267', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10779, 52, 3, '2007-12-16 00:00:00.000', '2008-01-13 00:00:00.000', '2008-01-14 00:00:00.000', 2, 58.13, N'Ship to 52-A', N'Heerstr. 9012', N'Leipzig', NULL, N'10247', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10780, 46, 2, '2007-12-16 00:00:00.000', '2007-12-30 00:00:00.000', '2007-12-25 00:00:00.000', 1, 42.13, N'Ship to 46-C', N'Carrera 2345 con Ave. Bolívar #65-98 Llano Largo', N'Barquisimeto', N'Lara', N'10229', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10781, 87, 2, '2007-12-17 00:00:00.000', '2008-01-14 00:00:00.000', '2007-12-19 00:00:00.000', 3, 73.16, N'Ship to 87-A', N'Torikatu 1234', N'Oulu', NULL, N'10350', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10782, 12, 9, '2007-12-17 00:00:00.000', '2008-01-14 00:00:00.000', '2007-12-22 00:00:00.000', 3, 1.10, N'Destination CJDJB', N'Cerrito 8901', N'Buenos Aires', NULL, N'10136', N'Argentina');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10783, 34, 4, '2007-12-18 00:00:00.000', '2008-01-15 00:00:00.000', '2007-12-19 00:00:00.000', 2, 124.98, N'Destination DPCVR', N'Rua do Paço, 6789', N'Rio de Janeiro', N'RJ', N'10194', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10784, 49, 4, '2007-12-18 00:00:00.000', '2008-01-15 00:00:00.000', '2007-12-22 00:00:00.000', 3, 70.09, N'Ship to 49-A', N'Via Ludovico il Moro 8901', N'Bergamo', NULL, N'10235', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10785, 33, 1, '2007-12-18 00:00:00.000', '2008-01-15 00:00:00.000', '2007-12-24 00:00:00.000', 3, 1.51, N'Destination FQJFJ', N'5ª Ave. Los Palos Grandes 4567', N'Caracas', N'DF', N'10192', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10786, 62, 8, '2007-12-19 00:00:00.000', '2008-01-16 00:00:00.000', '2007-12-23 00:00:00.000', 1, 110.87, N'Ship to 62-B', N'Alameda dos Canàrios, 9012', N'Sao Paulo', N'SP', N'10277', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10787, 41, 2, '2007-12-19 00:00:00.000', '2008-01-02 00:00:00.000', '2007-12-26 00:00:00.000', 1, 249.93, N'Destination DWJIO', N'9012 rue Alsace-Lorraine', N'Toulouse', NULL, N'10217', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10788, 63, 1, '2007-12-22 00:00:00.000', '2008-01-19 00:00:00.000', '2008-01-19 00:00:00.000', 2, 42.70, N'Ship to 63-C', N'Taucherstraße 3456', N'Cunewalde', NULL, N'10281', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10789, 23, 1, '2007-12-22 00:00:00.000', '2008-01-19 00:00:00.000', '2007-12-31 00:00:00.000', 2, 100.60, N'Destination PXQRR', N'5678, chaussée de Tournai', N'Lille', NULL, N'10163', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10790, 31, 6, '2007-12-22 00:00:00.000', '2008-01-19 00:00:00.000', '2007-12-26 00:00:00.000', 1, 28.23, N'Destination XOIGC', N'Av. Brasil, 8901', N'Campinas', N'SP', N'10186', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10791, 25, 6, '2007-12-23 00:00:00.000', '2008-01-20 00:00:00.000', '2008-01-01 00:00:00.000', 2, 16.85, N'Destination QOCBL', N'Berliner Platz 1234', N'München', NULL, N'10169', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10792, 91, 1, '2007-12-23 00:00:00.000', '2008-01-20 00:00:00.000', '2007-12-31 00:00:00.000', 3, 23.79, N'Ship to 91-C', N'ul. Filtrowa 7890', N'Warszawa', NULL, N'10366', N'Poland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10793, 4, 3, '2007-12-24 00:00:00.000', '2008-01-21 00:00:00.000', '2008-01-08 00:00:00.000', 3, 4.52, N'Ship to 4-B', N'Brook Farm Stratford St. Mary 1234', N'Colchester', N'Essex', N'10239', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10794, 61, 6, '2007-12-24 00:00:00.000', '2008-01-21 00:00:00.000', '2008-01-02 00:00:00.000', 1, 21.49, N'Ship to 61-C', N'Rua da Panificadora, 7890', N'Rio de Janeiro', N'RJ', N'10275', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10795, 20, 8, '2007-12-24 00:00:00.000', '2008-01-21 00:00:00.000', '2008-01-20 00:00:00.000', 2, 126.66, N'Destination FFXKT', N'Kirchgasse 0123', N'Graz', NULL, N'10158', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10796, 35, 3, '2007-12-25 00:00:00.000', '2008-01-22 00:00:00.000', '2008-01-14 00:00:00.000', 1, 26.52, N'Destination UOUWK', N'Carrera 9012 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10197', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10797, 17, 7, '2007-12-25 00:00:00.000', '2008-01-22 00:00:00.000', '2008-01-05 00:00:00.000', 2, 33.35, N'Destination AJTHX', N'Walserweg 9012', N'Aachen', NULL, N'10147', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10798, 38, 2, '2007-12-26 00:00:00.000', '2008-01-23 00:00:00.000', '2008-01-05 00:00:00.000', 1, 2.33, N'Destination AXVHD', N'Garden House Crowther Way 9012', N'Cowes', N'Isle of Wight', N'10207', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10799, 39, 9, '2007-12-26 00:00:00.000', '2008-02-06 00:00:00.000', '2008-01-05 00:00:00.000', 3, 30.76, N'Destination DKMQA', N'Maubelstr. 0123', N'Brandenburg', NULL, N'10208', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10800, 72, 1, '2007-12-26 00:00:00.000', '2008-01-23 00:00:00.000', '2008-01-05 00:00:00.000', 3, 137.44, N'Ship to 72-C', N'1234 Wadhurst Rd.', N'London', NULL, N'10309', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10801, 8, 4, '2007-12-29 00:00:00.000', '2008-01-26 00:00:00.000', '2007-12-31 00:00:00.000', 2, 97.09, N'Ship to 8-C', N'C/ Araquil, 1234', N'Madrid', NULL, N'10360', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10802, 73, 4, '2007-12-29 00:00:00.000', '2008-01-26 00:00:00.000', '2008-01-02 00:00:00.000', 2, 257.26, N'Ship to 73-A', N'Vinbæltet 1234', N'Kobenhavn', NULL, N'10310', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10803, 88, 4, '2007-12-30 00:00:00.000', '2008-01-27 00:00:00.000', '2008-01-06 00:00:00.000', 1, 55.23, N'Ship to 88-B', N'Rua do Mercado, 5678', N'Resende', N'SP', N'10354', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10804, 72, 6, '2007-12-30 00:00:00.000', '2008-01-27 00:00:00.000', '2008-01-07 00:00:00.000', 2, 27.33, N'Ship to 72-C', N'1234 Wadhurst Rd.', N'London', NULL, N'10309', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10805, 77, 2, '2007-12-30 00:00:00.000', '2008-01-27 00:00:00.000', '2008-01-09 00:00:00.000', 3, 237.34, N'Ship to 77-A', N'1234 Jefferson Way Suite 2', N'Portland', N'OR', N'10320', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10806, 84, 3, '2007-12-31 00:00:00.000', '2008-01-28 00:00:00.000', '2008-01-05 00:00:00.000', 2, 22.11, N'Ship to 84-C', N'5678, rue du Commerce', N'Lyon', NULL, N'10344', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10807, 27, 4, '2007-12-31 00:00:00.000', '2008-01-28 00:00:00.000', '2008-01-30 00:00:00.000', 1, 1.36, N'Destination XNLFB', N'Via Monte Bianco 5678', N'Torino', NULL, N'10173', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10808, 55, 2, '2008-01-01 00:00:00.000', '2008-01-29 00:00:00.000', '2008-01-09 00:00:00.000', 3, 45.53, N'Ship to 55-B', N'8901 Bering St.', N'Anchorage', N'AK', N'10256', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10809, 88, 7, '2008-01-01 00:00:00.000', '2008-01-29 00:00:00.000', '2008-01-07 00:00:00.000', 1, 4.87, N'Ship to 88-C', N'Rua do Mercado, 6789', N'Resende', N'SP', N'10355', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10810, 42, 2, '2008-01-01 00:00:00.000', '2008-01-29 00:00:00.000', '2008-01-07 00:00:00.000', 3, 4.33, N'Ship to 42-A', N'1234 Elm St.', N'Vancouver', N'BC', N'10219', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10811, 47, 8, '2008-01-02 00:00:00.000', '2008-01-30 00:00:00.000', '2008-01-08 00:00:00.000', 1, 31.22, N'Ship to 47-B', N'Ave. 5 de Mayo Porlamar 4567', N'I. de Margarita', N'Nueva Esparta', N'10231', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10812, 66, 5, '2008-01-02 00:00:00.000', '2008-01-30 00:00:00.000', '2008-01-12 00:00:00.000', 1, 59.78, N'Ship to 66-B', N'Strada Provinciale 1234', N'Reggio Emilia', NULL, N'10289', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10813, 67, 1, '2008-01-05 00:00:00.000', '2008-02-02 00:00:00.000', '2008-01-09 00:00:00.000', 1, 47.38, N'Ship to 67-C', N'Av. Copacabana, 5678', N'Rio de Janeiro', N'RJ', N'10293', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10814, 84, 3, '2008-01-05 00:00:00.000', '2008-02-02 00:00:00.000', '2008-01-14 00:00:00.000', 3, 130.94, N'Ship to 84-B', N'4567, rue du Commerce', N'Lyon', NULL, N'10343', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10815, 71, 2, '2008-01-05 00:00:00.000', '2008-02-02 00:00:00.000', '2008-01-14 00:00:00.000', 3, 14.62, N'Ship to 71-A', N'7890 Suffolk Ln.', N'Boise', N'Id', N'10305', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10816, 32, 4, '2008-01-06 00:00:00.000', '2008-02-03 00:00:00.000', '2008-02-04 00:00:00.000', 2, 719.78, N'Destination AVQUS', N'2345 Baker Blvd.', N'Eugene', N'OR', N'10190', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10817, 39, 3, '2008-01-06 00:00:00.000', '2008-01-20 00:00:00.000', '2008-01-13 00:00:00.000', 2, 306.07, N'Destination RMBHM', N'Maubelstr. 1234', N'Brandenburg', NULL, N'10209', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10818, 49, 7, '2008-01-07 00:00:00.000', '2008-02-04 00:00:00.000', '2008-01-12 00:00:00.000', 3, 65.48, N'Ship to 49-B', N'Via Ludovico il Moro 9012', N'Bergamo', NULL, N'10236', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10819, 12, 2, '2008-01-07 00:00:00.000', '2008-02-04 00:00:00.000', '2008-01-16 00:00:00.000', 3, 19.76, N'Destination QTHBC', N'Cerrito 6789', N'Buenos Aires', NULL, N'10134', N'Argentina');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10820, 65, 3, '2008-01-07 00:00:00.000', '2008-02-04 00:00:00.000', '2008-01-13 00:00:00.000', 2, 37.52, N'Ship to 65-B', N'8901 Milton Dr.', N'Albuquerque', N'NM', N'10286', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10821, 75, 1, '2008-01-08 00:00:00.000', '2008-02-05 00:00:00.000', '2008-01-15 00:00:00.000', 1, 36.68, N'Ship to 75-A', N'P.O. Box 5678', N'Lander', N'WY', N'10314', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10822, 82, 6, '2008-01-08 00:00:00.000', '2008-02-05 00:00:00.000', '2008-01-16 00:00:00.000', 3, 7.00, N'Ship to 82-B', N'9012 DaVinci Blvd.', N'Kirkland', N'WA', N'10338', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10823, 46, 5, '2008-01-09 00:00:00.000', '2008-02-06 00:00:00.000', '2008-01-13 00:00:00.000', 2, 163.97, N'Ship to 46-A', N'Carrera 0123 con Ave. Bolívar #65-98 Llano Largo', N'Barquisimeto', N'Lara', N'10227', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10824, 24, 8, '2008-01-09 00:00:00.000', '2008-02-06 00:00:00.000', '2008-01-30 00:00:00.000', 1, 1.23, N'Destination NCKKO', N'Åkergatan 7890', N'Bräcke', NULL, N'10165', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10825, 17, 1, '2008-01-09 00:00:00.000', '2008-02-06 00:00:00.000', '2008-01-14 00:00:00.000', 1, 79.25, N'Destination BJCXA', N'Walserweg 7890', N'Aachen', NULL, N'10145', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10826, 7, 6, '2008-01-12 00:00:00.000', '2008-02-09 00:00:00.000', '2008-02-06 00:00:00.000', 1, 7.09, N'Ship to 7-C', N'2345, place Kléber', N'Strasbourg', NULL, N'10331', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10827, 9, 1, '2008-01-12 00:00:00.000', '2008-01-26 00:00:00.000', '2008-02-06 00:00:00.000', 2, 63.54, N'Ship to 9-B', N'9012, rue des Bouchers', N'Marseille', NULL, N'10368', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10828, 64, 9, '2008-01-13 00:00:00.000', '2008-01-27 00:00:00.000', '2008-02-04 00:00:00.000', 1, 90.85, N'Ship to 64-B', N'Av. del Libertador 5678', N'Buenos Aires', NULL, N'10283', N'Argentina');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10829, 38, 9, '2008-01-13 00:00:00.000', '2008-02-10 00:00:00.000', '2008-01-23 00:00:00.000', 1, 154.72, N'Destination QVTLW', N'Garden House Crowther Way 7890', N'Cowes', N'Isle of Wight', N'10205', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10830, 81, 4, '2008-01-13 00:00:00.000', '2008-02-24 00:00:00.000', '2008-01-21 00:00:00.000', 2, 81.83, N'Ship to 81-C', N'Av. Inês de Castro, 7890', N'Sao Paulo', N'SP', N'10336', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10831, 70, 3, '2008-01-14 00:00:00.000', '2008-02-11 00:00:00.000', '2008-01-23 00:00:00.000', 2, 72.19, N'Ship to 70-B', N'Erling Skakkes gate 5678', N'Stavern', NULL, N'10303', N'Norway');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10832, 41, 2, '2008-01-14 00:00:00.000', '2008-02-11 00:00:00.000', '2008-01-19 00:00:00.000', 2, 43.26, N'Ship to 41-C', N'0123 rue Alsace-Lorraine', N'Toulouse', NULL, N'10218', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10833, 56, 6, '2008-01-15 00:00:00.000', '2008-02-12 00:00:00.000', '2008-01-23 00:00:00.000', 2, 71.49, N'Ship to 56-B', N'Mehrheimerstr. 1234', N'Köln', NULL, N'10259', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10834, 81, 1, '2008-01-15 00:00:00.000', '2008-02-12 00:00:00.000', '2008-01-19 00:00:00.000', 3, 29.78, N'Ship to 81-A', N'Av. Inês de Castro, 6789', N'Sao Paulo', N'SP', N'10335', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10835, 1, 1, '2008-01-15 00:00:00.000', '2008-02-12 00:00:00.000', '2008-01-21 00:00:00.000', 3, 69.53, N'Destination LOUIE', N'Obere Str. 6789', N'Berlin', NULL, N'10154', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10836, 20, 7, '2008-01-16 00:00:00.000', '2008-02-13 00:00:00.000', '2008-01-21 00:00:00.000', 1, 411.88, N'Destination CUVPF', N'Kirchgasse 1234', N'Graz', NULL, N'10159', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10837, 5, 9, '2008-01-16 00:00:00.000', '2008-02-13 00:00:00.000', '2008-01-23 00:00:00.000', 3, 13.32, N'Ship to 5-A', N'Berguvsvägen  9012', N'Luleå', NULL, N'10267', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10838, 47, 3, '2008-01-19 00:00:00.000', '2008-02-16 00:00:00.000', '2008-01-23 00:00:00.000', 3, 59.28, N'Ship to 47-A', N'Ave. 5 de Mayo Porlamar 3456', N'I. de Margarita', N'Nueva Esparta', N'10230', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10839, 81, 3, '2008-01-19 00:00:00.000', '2008-02-16 00:00:00.000', '2008-01-22 00:00:00.000', 3, 35.43, N'Ship to 81-C', N'Av. Inês de Castro, 7890', N'Sao Paulo', N'SP', N'10336', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10840, 47, 4, '2008-01-19 00:00:00.000', '2008-03-02 00:00:00.000', '2008-02-16 00:00:00.000', 2, 2.71, N'Ship to 47-A', N'Ave. 5 de Mayo Porlamar 3456', N'I. de Margarita', N'Nueva Esparta', N'10230', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10841, 76, 5, '2008-01-20 00:00:00.000', '2008-02-17 00:00:00.000', '2008-01-29 00:00:00.000', 2, 424.30, N'Ship to 76-B', N'Boulevard Tirou, 9012', N'Charleroi', NULL, N'10318', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10842, 80, 1, '2008-01-20 00:00:00.000', '2008-02-17 00:00:00.000', '2008-01-29 00:00:00.000', 3, 54.42, N'Ship to 80-A', N'Avda. Azteca 3456', N'México D.F.', NULL, N'10332', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10843, 84, 4, '2008-01-21 00:00:00.000', '2008-02-18 00:00:00.000', '2008-01-26 00:00:00.000', 2, 9.26, N'Ship to 84-C', N'5678, rue du Commerce', N'Lyon', NULL, N'10344', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10844, 59, 8, '2008-01-21 00:00:00.000', '2008-02-18 00:00:00.000', '2008-01-26 00:00:00.000', 2, 25.22, N'Ship to 59-A', N'Geislweg 6789', N'Salzburg', NULL, N'10264', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10845, 63, 8, '2008-01-21 00:00:00.000', '2008-02-04 00:00:00.000', '2008-01-30 00:00:00.000', 1, 212.98, N'Ship to 63-A', N'Taucherstraße 1234', N'Cunewalde', NULL, N'10279', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10846, 76, 2, '2008-01-22 00:00:00.000', '2008-03-05 00:00:00.000', '2008-01-23 00:00:00.000', 3, 56.46, N'Ship to 76-C', N'Boulevard Tirou, 0123', N'Charleroi', NULL, N'10319', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10847, 71, 4, '2008-01-22 00:00:00.000', '2008-02-05 00:00:00.000', '2008-02-10 00:00:00.000', 3, 487.57, N'Ship to 71-A', N'7890 Suffolk Ln.', N'Boise', N'Id', N'10305', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10848, 16, 7, '2008-01-23 00:00:00.000', '2008-02-20 00:00:00.000', '2008-01-29 00:00:00.000', 2, 38.24, N'Destination QKQNB', N'Berkeley Gardens 5678  Brewery', N'London', NULL, N'10143', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10849, 39, 9, '2008-01-23 00:00:00.000', '2008-02-20 00:00:00.000', '2008-01-30 00:00:00.000', 2, 0.56, N'Destination DKMQA', N'Maubelstr. 0123', N'Brandenburg', NULL, N'10208', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10850, 84, 1, '2008-01-23 00:00:00.000', '2008-03-06 00:00:00.000', '2008-01-30 00:00:00.000', 1, 49.19, N'Ship to 84-C', N'5678, rue du Commerce', N'Lyon', NULL, N'10344', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10851, 67, 5, '2008-01-26 00:00:00.000', '2008-02-23 00:00:00.000', '2008-02-02 00:00:00.000', 1, 160.55, N'Ship to 67-C', N'Av. Copacabana, 5678', N'Rio de Janeiro', N'RJ', N'10293', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10852, 65, 8, '2008-01-26 00:00:00.000', '2008-02-09 00:00:00.000', '2008-01-30 00:00:00.000', 1, 174.05, N'Ship to 65-A', N'7890 Milton Dr.', N'Albuquerque', N'NM', N'10285', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10853, 6, 9, '2008-01-27 00:00:00.000', '2008-02-24 00:00:00.000', '2008-02-03 00:00:00.000', 2, 53.83, N'Ship to 6-B', N'Forsterstr. 3456', N'Mannheim', NULL, N'10301', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10854, 20, 3, '2008-01-27 00:00:00.000', '2008-02-24 00:00:00.000', '2008-02-05 00:00:00.000', 2, 100.22, N'Destination CUVPF', N'Kirchgasse 1234', N'Graz', NULL, N'10159', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10855, 55, 3, '2008-01-27 00:00:00.000', '2008-02-24 00:00:00.000', '2008-02-04 00:00:00.000', 1, 170.97, N'Ship to 55-A', N'7890 Bering St.', N'Anchorage', N'AK', N'10255', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10856, 3, 3, '2008-01-28 00:00:00.000', '2008-02-25 00:00:00.000', '2008-02-10 00:00:00.000', 2, 58.43, N'Destination FQFLS', N'Mataderos  3456', N'México D.F.', NULL, N'10211', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10857, 5, 8, '2008-01-28 00:00:00.000', '2008-02-25 00:00:00.000', '2008-02-06 00:00:00.000', 2, 188.85, N'Ship to 5-B', N'Berguvsvägen  0123', N'Luleå', NULL, N'10268', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10858, 40, 2, '2008-01-29 00:00:00.000', '2008-02-26 00:00:00.000', '2008-02-03 00:00:00.000', 1, 52.51, N'Destination POAEW', N'7890, avenue de l''Europe', N'Versailles', NULL, N'10215', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10859, 25, 1, '2008-01-29 00:00:00.000', '2008-02-26 00:00:00.000', '2008-02-02 00:00:00.000', 2, 76.10, N'Destination QOCBL', N'Berliner Platz 1234', N'München', NULL, N'10169', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10860, 26, 3, '2008-01-29 00:00:00.000', '2008-02-26 00:00:00.000', '2008-02-04 00:00:00.000', 3, 19.26, N'Destination XBVKN', N'3456, rue Royale', N'Nantes', NULL, N'10171', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10861, 89, 4, '2008-01-30 00:00:00.000', '2008-02-27 00:00:00.000', '2008-02-17 00:00:00.000', 2, 14.93, N'Ship to 89-C', N'9012 - 12th Ave. S.', N'Seattle', N'WA', N'10358', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10862, 44, 8, '2008-01-30 00:00:00.000', '2008-03-13 00:00:00.000', '2008-02-02 00:00:00.000', 2, 53.23, N'Ship to 44-C', N'Magazinweg 6789', N'Frankfurt a.M.', NULL, N'10224', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10863, 35, 4, '2008-02-02 00:00:00.000', '2008-03-02 00:00:00.000', '2008-02-17 00:00:00.000', 2, 30.26, N'Destination UOUWK', N'Carrera 9012 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10197', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10864, 4, 4, '2008-02-02 00:00:00.000', '2008-03-02 00:00:00.000', '2008-02-09 00:00:00.000', 2, 3.04, N'Ship to 4-C', N'Brook Farm Stratford St. Mary 2345', N'Colchester', N'Essex', N'10240', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10865, 63, 2, '2008-02-02 00:00:00.000', '2008-02-16 00:00:00.000', '2008-02-12 00:00:00.000', 1, 348.14, N'Ship to 63-A', N'Taucherstraße 1234', N'Cunewalde', NULL, N'10279', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10866, 5, 5, '2008-02-03 00:00:00.000', '2008-03-03 00:00:00.000', '2008-02-12 00:00:00.000', 1, 109.11, N'Ship to 5-B', N'Berguvsvägen  0123', N'Luleå', NULL, N'10268', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10867, 48, 6, '2008-02-03 00:00:00.000', '2008-03-17 00:00:00.000', '2008-02-11 00:00:00.000', 1, 1.93, N'Ship to 48-B', N'6789 Chiaroscuro Rd.', N'Portland', N'OR', N'10233', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10868, 62, 7, '2008-02-04 00:00:00.000', '2008-03-04 00:00:00.000', '2008-02-23 00:00:00.000', 2, 191.27, N'Ship to 62-C', N'Alameda dos Canàrios, 0123', N'Sao Paulo', N'SP', N'10278', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10869, 72, 5, '2008-02-04 00:00:00.000', '2008-03-04 00:00:00.000', '2008-02-09 00:00:00.000', 1, 143.28, N'Ship to 72-A', N'0123 Wadhurst Rd.', N'London', NULL, N'10308', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10870, 91, 5, '2008-02-04 00:00:00.000', '2008-03-04 00:00:00.000', '2008-02-13 00:00:00.000', 3, 12.04, N'Ship to 91-A', N'ul. Filtrowa 5678', N'Warszawa', NULL, N'10364', N'Poland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10871, 9, 9, '2008-02-05 00:00:00.000', '2008-03-05 00:00:00.000', '2008-02-10 00:00:00.000', 2, 112.27, N'Ship to 9-B', N'9012, rue des Bouchers', N'Marseille', NULL, N'10368', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10872, 30, 5, '2008-02-05 00:00:00.000', '2008-03-05 00:00:00.000', '2008-02-09 00:00:00.000', 2, 175.32, N'Destination GGQIR', N'C/ Romero, 6789', N'Sevilla', NULL, N'10184', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10873, 90, 4, '2008-02-06 00:00:00.000', '2008-03-06 00:00:00.000', '2008-02-09 00:00:00.000', 1, 0.82, N'Ship to 90-B', N'Keskuskatu 3456', N'Helsinki', NULL, N'10362', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10874, 30, 5, '2008-02-06 00:00:00.000', '2008-03-06 00:00:00.000', '2008-02-11 00:00:00.000', 2, 19.58, N'Destination IIYDD', N'C/ Romero, 5678', N'Sevilla', NULL, N'10183', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10875, 5, 4, '2008-02-06 00:00:00.000', '2008-03-06 00:00:00.000', '2008-03-03 00:00:00.000', 2, 32.37, N'Ship to 5-A', N'Berguvsvägen  9012', N'Luleå', NULL, N'10267', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10876, 9, 7, '2008-02-09 00:00:00.000', '2008-03-09 00:00:00.000', '2008-02-12 00:00:00.000', 3, 60.42, N'Ship to 9-A', N'8901, rue des Bouchers', N'Marseille', NULL, N'10367', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10877, 67, 1, '2008-02-09 00:00:00.000', '2008-03-09 00:00:00.000', '2008-02-19 00:00:00.000', 1, 38.06, N'Ship to 67-B', N'Av. Copacabana, 4567', N'Rio de Janeiro', N'RJ', N'10292', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10878, 63, 4, '2008-02-10 00:00:00.000', '2008-03-10 00:00:00.000', '2008-02-12 00:00:00.000', 1, 46.69, N'Ship to 63-B', N'Taucherstraße 2345', N'Cunewalde', NULL, N'10280', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10879, 90, 3, '2008-02-10 00:00:00.000', '2008-03-10 00:00:00.000', '2008-02-12 00:00:00.000', 3, 8.50, N'Ship to 90-A', N'Keskuskatu 2345', N'Helsinki', NULL, N'10361', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10880, 24, 7, '2008-02-10 00:00:00.000', '2008-03-24 00:00:00.000', '2008-02-18 00:00:00.000', 1, 88.01, N'Destination KBSBN', N'Åkergatan 9012', N'Bräcke', NULL, N'10167', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10881, 12, 4, '2008-02-11 00:00:00.000', '2008-03-11 00:00:00.000', '2008-02-18 00:00:00.000', 1, 2.84, N'Destination IGLOB', N'Cerrito 7890', N'Buenos Aires', NULL, N'10135', N'Argentina');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10882, 71, 4, '2008-02-11 00:00:00.000', '2008-03-11 00:00:00.000', '2008-02-20 00:00:00.000', 3, 23.10, N'Ship to 71-B', N'8901 Suffolk Ln.', N'Boise', N'Id', N'10306', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10883, 48, 8, '2008-02-12 00:00:00.000', '2008-03-12 00:00:00.000', '2008-02-20 00:00:00.000', 3, 0.53, N'Ship to 48-C', N'7890 Chiaroscuro Rd.', N'Portland', N'OR', N'10234', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10884, 45, 4, '2008-02-12 00:00:00.000', '2008-03-12 00:00:00.000', '2008-02-13 00:00:00.000', 2, 90.97, N'Ship to 45-C', N'9012 Polk St. Suite 5', N'San Francisco', N'CA', N'10226', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10885, 76, 6, '2008-02-12 00:00:00.000', '2008-03-12 00:00:00.000', '2008-02-18 00:00:00.000', 3, 5.64, N'Ship to 76-B', N'Boulevard Tirou, 9012', N'Charleroi', NULL, N'10318', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10886, 34, 1, '2008-02-13 00:00:00.000', '2008-03-13 00:00:00.000', '2008-03-02 00:00:00.000', 1, 4.99, N'Destination SCQXA', N'Rua do Paço, 7890', N'Rio de Janeiro', N'RJ', N'10195', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10887, 29, 8, '2008-02-13 00:00:00.000', '2008-03-13 00:00:00.000', '2008-02-16 00:00:00.000', 3, 1.25, N'Destination VPNNG', N'Rambla de Cataluña, 0123', N'Barcelona', NULL, N'10178', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10888, 30, 1, '2008-02-16 00:00:00.000', '2008-03-16 00:00:00.000', '2008-02-23 00:00:00.000', 2, 51.87, N'Destination IIYDD', N'C/ Romero, 5678', N'Sevilla', NULL, N'10183', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10889, 65, 9, '2008-02-16 00:00:00.000', '2008-03-16 00:00:00.000', '2008-02-23 00:00:00.000', 3, 280.61, N'Ship to 65-C', N'9012 Milton Dr.', N'Albuquerque', N'NM', N'10287', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10890, 18, 7, '2008-02-16 00:00:00.000', '2008-03-16 00:00:00.000', '2008-02-18 00:00:00.000', 1, 32.76, N'Destination JNSYI', N'1234, rue des Cinquante Otages', N'Nantes', NULL, N'10149', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10891, 44, 7, '2008-02-17 00:00:00.000', '2008-03-17 00:00:00.000', '2008-02-19 00:00:00.000', 2, 20.37, N'Ship to 44-A', N'Magazinweg 4567', N'Frankfurt a.M.', NULL, N'10222', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10892, 50, 4, '2008-02-17 00:00:00.000', '2008-03-17 00:00:00.000', '2008-02-19 00:00:00.000', 2, 120.27, N'Ship to 50-A', N'Rue Joseph-Bens 3456', N'Bruxelles', NULL, N'10241', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10893, 39, 9, '2008-02-18 00:00:00.000', '2008-03-18 00:00:00.000', '2008-02-20 00:00:00.000', 2, 77.78, N'Destination RMBHM', N'Maubelstr. 1234', N'Brandenburg', NULL, N'10209', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10894, 71, 1, '2008-02-18 00:00:00.000', '2008-03-18 00:00:00.000', '2008-02-20 00:00:00.000', 1, 116.13, N'Ship to 71-A', N'7890 Suffolk Ln.', N'Boise', N'Id', N'10305', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10895, 20, 3, '2008-02-18 00:00:00.000', '2008-03-18 00:00:00.000', '2008-02-23 00:00:00.000', 1, 162.75, N'Destination CUVPF', N'Kirchgasse 1234', N'Graz', NULL, N'10159', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10896, 50, 7, '2008-02-19 00:00:00.000', '2008-03-19 00:00:00.000', '2008-02-27 00:00:00.000', 3, 32.45, N'Ship to 50-A', N'Rue Joseph-Bens 3456', N'Bruxelles', NULL, N'10241', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10897, 37, 3, '2008-02-19 00:00:00.000', '2008-03-19 00:00:00.000', '2008-02-25 00:00:00.000', 2, 603.54, N'Destination DGKOU', N'6789 Johnstown Road', N'Cork', N'Co. Cork', N'10204', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10898, 54, 4, '2008-02-20 00:00:00.000', '2008-03-20 00:00:00.000', '2008-03-06 00:00:00.000', 2, 1.27, N'Ship to 54-B', N'Ing. Gustavo Moncada 5678 Piso 20-A', N'Buenos Aires', NULL, N'10253', N'Argentina');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10899, 46, 5, '2008-02-20 00:00:00.000', '2008-03-20 00:00:00.000', '2008-02-26 00:00:00.000', 3, 1.21, N'Ship to 46-C', N'Carrera 2345 con Ave. Bolívar #65-98 Llano Largo', N'Barquisimeto', N'Lara', N'10229', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10900, 88, 1, '2008-02-20 00:00:00.000', '2008-03-20 00:00:00.000', '2008-03-04 00:00:00.000', 2, 1.66, N'Ship to 88-A', N'Rua do Mercado, 4567', N'Resende', N'SP', N'10353', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10901, 35, 4, '2008-02-23 00:00:00.000', '2008-03-23 00:00:00.000', '2008-02-26 00:00:00.000', 1, 62.09, N'Destination UOUWK', N'Carrera 9012 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10197', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10902, 24, 1, '2008-02-23 00:00:00.000', '2008-03-23 00:00:00.000', '2008-03-03 00:00:00.000', 1, 44.15, N'Destination NCKKO', N'Åkergatan 7890', N'Bräcke', NULL, N'10165', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10903, 34, 3, '2008-02-24 00:00:00.000', '2008-03-24 00:00:00.000', '2008-03-04 00:00:00.000', 3, 36.71, N'Destination DPCVR', N'Rua do Paço, 6789', N'Rio de Janeiro', N'RJ', N'10194', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10904, 89, 3, '2008-02-24 00:00:00.000', '2008-03-24 00:00:00.000', '2008-02-27 00:00:00.000', 3, 162.95, N'Ship to 89-A', N'7890 - 12th Ave. S.', N'Seattle', N'WA', N'10356', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10905, 88, 9, '2008-02-24 00:00:00.000', '2008-03-24 00:00:00.000', '2008-03-06 00:00:00.000', 2, 13.72, N'Ship to 88-A', N'Rua do Mercado, 4567', N'Resende', N'SP', N'10353', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10906, 91, 4, '2008-02-25 00:00:00.000', '2008-03-11 00:00:00.000', '2008-03-03 00:00:00.000', 3, 26.29, N'Ship to 91-B', N'ul. Filtrowa 6789', N'Warszawa', NULL, N'10365', N'Poland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10907, 74, 6, '2008-02-25 00:00:00.000', '2008-03-25 00:00:00.000', '2008-02-27 00:00:00.000', 3, 9.19, N'Ship to 74-B', N'4567, rue Lauriston', N'Paris', NULL, N'10313', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10908, 66, 4, '2008-02-26 00:00:00.000', '2008-03-26 00:00:00.000', '2008-03-06 00:00:00.000', 2, 32.96, N'Ship to 66-B', N'Strada Provinciale 1234', N'Reggio Emilia', NULL, N'10289', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10909, 70, 1, '2008-02-26 00:00:00.000', '2008-03-26 00:00:00.000', '2008-03-10 00:00:00.000', 2, 53.05, N'Ship to 70-C', N'Erling Skakkes gate 6789', N'Stavern', NULL, N'10304', N'Norway');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10910, 90, 1, '2008-02-26 00:00:00.000', '2008-03-26 00:00:00.000', '2008-03-04 00:00:00.000', 3, 38.11, N'Ship to 90-A', N'Keskuskatu 2345', N'Helsinki', NULL, N'10361', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10911, 30, 3, '2008-02-26 00:00:00.000', '2008-03-26 00:00:00.000', '2008-03-05 00:00:00.000', 1, 38.19, N'Destination IIYDD', N'C/ Romero, 5678', N'Sevilla', NULL, N'10183', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10912, 37, 2, '2008-02-26 00:00:00.000', '2008-03-26 00:00:00.000', '2008-03-18 00:00:00.000', 2, 580.91, N'Destination DGKOU', N'6789 Johnstown Road', N'Cork', N'Co. Cork', N'10204', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10913, 62, 4, '2008-02-26 00:00:00.000', '2008-03-26 00:00:00.000', '2008-03-04 00:00:00.000', 1, 33.05, N'Ship to 62-A', N'Alameda dos Canàrios, 8901', N'Sao Paulo', N'SP', N'10276', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10914, 62, 6, '2008-02-27 00:00:00.000', '2008-03-27 00:00:00.000', '2008-03-02 00:00:00.000', 1, 21.19, N'Ship to 62-B', N'Alameda dos Canàrios, 9012', N'Sao Paulo', N'SP', N'10277', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10915, 80, 2, '2008-02-27 00:00:00.000', '2008-03-27 00:00:00.000', '2008-03-02 00:00:00.000', 2, 3.51, N'Ship to 80-C', N'Avda. Azteca 5678', N'México D.F.', NULL, N'10334', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10916, 64, 1, '2008-02-27 00:00:00.000', '2008-03-27 00:00:00.000', '2008-03-09 00:00:00.000', 2, 63.77, N'Ship to 64-C', N'Av. del Libertador 6789', N'Buenos Aires', NULL, N'10284', N'Argentina');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10917, 69, 4, '2008-03-02 00:00:00.000', '2008-03-30 00:00:00.000', '2008-03-11 00:00:00.000', 2, 8.29, N'Ship to 69-C', N'Gran Vía, 1234', N'Madrid', NULL, N'10299', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10918, 10, 3, '2008-03-02 00:00:00.000', '2008-03-30 00:00:00.000', '2008-03-11 00:00:00.000', 3, 48.83, N'Destination OLSSJ', N'2345 Tsawassen Blvd.', N'Tsawassen', N'BC', N'10130', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10919, 47, 2, '2008-03-02 00:00:00.000', '2008-03-30 00:00:00.000', '2008-03-04 00:00:00.000', 2, 19.80, N'Ship to 47-B', N'Ave. 5 de Mayo Porlamar 4567', N'I. de Margarita', N'Nueva Esparta', N'10231', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10920, 4, 4, '2008-03-03 00:00:00.000', '2008-03-31 00:00:00.000', '2008-03-09 00:00:00.000', 2, 29.61, N'Ship to 4-A', N'Brook Farm Stratford St. Mary 0123', N'Colchester', N'Essex', N'10238', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10921, 83, 1, '2008-03-03 00:00:00.000', '2008-04-14 00:00:00.000', '2008-03-09 00:00:00.000', 1, 176.48, N'Ship to 83-A', N'Smagsloget 0123', N'Århus', NULL, N'10339', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10922, 34, 5, '2008-03-03 00:00:00.000', '2008-03-31 00:00:00.000', '2008-03-05 00:00:00.000', 3, 62.74, N'Destination DPCVR', N'Rua do Paço, 6789', N'Rio de Janeiro', N'RJ', N'10194', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10923, 41, 7, '2008-03-03 00:00:00.000', '2008-04-14 00:00:00.000', '2008-03-13 00:00:00.000', 3, 68.26, N'Destination OLJND', N'8901 rue Alsace-Lorraine', N'Toulouse', NULL, N'10216', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10924, 5, 3, '2008-03-04 00:00:00.000', '2008-04-01 00:00:00.000', '2008-04-08 00:00:00.000', 2, 151.52, N'Ship to 5-A', N'Berguvsvägen  9012', N'Luleå', NULL, N'10267', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10925, 34, 3, '2008-03-04 00:00:00.000', '2008-04-01 00:00:00.000', '2008-03-13 00:00:00.000', 1, 2.27, N'Destination JPAIY', N'Rua do Paço, 8901', N'Rio de Janeiro', N'RJ', N'10196', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10926, 2, 4, '2008-03-04 00:00:00.000', '2008-04-01 00:00:00.000', '2008-03-11 00:00:00.000', 3, 39.92, N'Destination RAIGI', N'Avda. de la Constitución 4567', N'México D.F.', NULL, N'10182', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10927, 40, 4, '2008-03-05 00:00:00.000', '2008-04-02 00:00:00.000', '2008-04-08 00:00:00.000', 1, 19.79, N'Destination WWJLO', N'6789, avenue de l''Europe', N'Versailles', NULL, N'10214', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10928, 29, 1, '2008-03-05 00:00:00.000', '2008-04-02 00:00:00.000', '2008-03-18 00:00:00.000', 1, 1.36, N'Destination WOFLH', N'Rambla de Cataluña, 1234', N'Barcelona', NULL, N'10179', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10929, 25, 6, '2008-03-05 00:00:00.000', '2008-04-02 00:00:00.000', '2008-03-12 00:00:00.000', 1, 33.93, N'Destination QOCBL', N'Berliner Platz 1234', N'München', NULL, N'10169', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10930, 76, 4, '2008-03-06 00:00:00.000', '2008-04-17 00:00:00.000', '2008-03-18 00:00:00.000', 3, 15.55, N'Ship to 76-A', N'Boulevard Tirou, 8901', N'Charleroi', NULL, N'10317', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10931, 68, 4, '2008-03-06 00:00:00.000', '2008-03-20 00:00:00.000', '2008-03-19 00:00:00.000', 2, 13.60, N'Ship to 68-B', N'Starenweg 7890', N'Genève', NULL, N'10295', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10932, 9, 8, '2008-03-06 00:00:00.000', '2008-04-03 00:00:00.000', '2008-03-24 00:00:00.000', 1, 134.64, N'Ship to 9-B', N'9012, rue des Bouchers', N'Marseille', NULL, N'10368', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10933, 38, 6, '2008-03-06 00:00:00.000', '2008-04-03 00:00:00.000', '2008-03-16 00:00:00.000', 3, 54.15, N'Destination QVTLW', N'Garden House Crowther Way 7890', N'Cowes', N'Isle of Wight', N'10205', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10934, 44, 3, '2008-03-09 00:00:00.000', '2008-04-06 00:00:00.000', '2008-03-12 00:00:00.000', 3, 32.01, N'Ship to 44-C', N'Magazinweg 6789', N'Frankfurt a.M.', NULL, N'10224', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10935, 88, 4, '2008-03-09 00:00:00.000', '2008-04-06 00:00:00.000', '2008-03-18 00:00:00.000', 3, 47.59, N'Ship to 88-A', N'Rua do Mercado, 4567', N'Resende', N'SP', N'10353', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10936, 32, 3, '2008-03-09 00:00:00.000', '2008-04-06 00:00:00.000', '2008-03-18 00:00:00.000', 2, 33.68, N'Destination AVQUS', N'2345 Baker Blvd.', N'Eugene', N'OR', N'10190', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10937, 12, 7, '2008-03-10 00:00:00.000', '2008-03-24 00:00:00.000', '2008-03-13 00:00:00.000', 3, 31.51, N'Destination QTHBC', N'Cerrito 6789', N'Buenos Aires', NULL, N'10134', N'Argentina');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10938, 63, 3, '2008-03-10 00:00:00.000', '2008-04-07 00:00:00.000', '2008-03-16 00:00:00.000', 2, 31.89, N'Ship to 63-C', N'Taucherstraße 3456', N'Cunewalde', NULL, N'10281', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10939, 49, 2, '2008-03-10 00:00:00.000', '2008-04-07 00:00:00.000', '2008-03-13 00:00:00.000', 2, 76.33, N'Ship to 49-A', N'Via Ludovico il Moro 8901', N'Bergamo', NULL, N'10235', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10940, 9, 8, '2008-03-11 00:00:00.000', '2008-04-08 00:00:00.000', '2008-03-23 00:00:00.000', 3, 19.77, N'Ship to 9-C', N'0123, rue des Bouchers', N'Marseille', NULL, N'10369', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10941, 71, 7, '2008-03-11 00:00:00.000', '2008-04-08 00:00:00.000', '2008-03-20 00:00:00.000', 2, 400.81, N'Ship to 71-A', N'7890 Suffolk Ln.', N'Boise', N'Id', N'10305', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10942, 66, 9, '2008-03-11 00:00:00.000', '2008-04-08 00:00:00.000', '2008-03-18 00:00:00.000', 3, 17.95, N'Ship to 66-C', N'Strada Provinciale 2345', N'Reggio Emilia', NULL, N'10290', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10943, 11, 4, '2008-03-11 00:00:00.000', '2008-04-08 00:00:00.000', '2008-03-19 00:00:00.000', 2, 2.17, N'Destination NZASL', N'Fauntleroy Circus 5678', N'London', NULL, N'10133', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10944, 10, 6, '2008-03-12 00:00:00.000', '2008-03-26 00:00:00.000', '2008-03-13 00:00:00.000', 3, 52.92, N'Destination XJIBQ', N'1234 Tsawassen Blvd.', N'Tsawassen', N'BC', N'10129', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10945, 52, 4, '2008-03-12 00:00:00.000', '2008-04-09 00:00:00.000', '2008-03-18 00:00:00.000', 1, 10.22, N'Ship to 52-B', N'Heerstr. 0123', N'Leipzig', NULL, N'10248', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10946, 83, 1, '2008-03-12 00:00:00.000', '2008-04-09 00:00:00.000', '2008-03-19 00:00:00.000', 2, 27.20, N'Ship to 83-B', N'Smagsloget 1234', N'Århus', NULL, N'10340', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10947, 11, 3, '2008-03-13 00:00:00.000', '2008-04-10 00:00:00.000', '2008-03-16 00:00:00.000', 2, 3.26, N'Destination NZASL', N'Fauntleroy Circus 5678', N'London', NULL, N'10133', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10948, 30, 3, '2008-03-13 00:00:00.000', '2008-04-10 00:00:00.000', '2008-03-19 00:00:00.000', 3, 23.39, N'Destination GGQIR', N'C/ Romero, 6789', N'Sevilla', NULL, N'10184', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10949, 10, 2, '2008-03-13 00:00:00.000', '2008-04-10 00:00:00.000', '2008-03-17 00:00:00.000', 3, 74.44, N'Destination OLSSJ', N'2345 Tsawassen Blvd.', N'Tsawassen', N'BC', N'10130', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10950, 49, 1, '2008-03-16 00:00:00.000', '2008-04-13 00:00:00.000', '2008-03-23 00:00:00.000', 2, 2.50, N'Ship to 49-B', N'Via Ludovico il Moro 9012', N'Bergamo', NULL, N'10236', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10951, 68, 9, '2008-03-16 00:00:00.000', '2008-04-27 00:00:00.000', '2008-04-07 00:00:00.000', 2, 30.85, N'Ship to 68-A', N'Starenweg 6789', N'Genève', NULL, N'10294', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10952, 1, 1, '2008-03-16 00:00:00.000', '2008-04-27 00:00:00.000', '2008-03-24 00:00:00.000', 1, 40.42, N'Destination LOUIE', N'Obere Str. 6789', N'Berlin', NULL, N'10154', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10953, 4, 9, '2008-03-16 00:00:00.000', '2008-03-30 00:00:00.000', '2008-03-25 00:00:00.000', 2, 23.72, N'Ship to 4-B', N'Brook Farm Stratford St. Mary 1234', N'Colchester', N'Essex', N'10239', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10954, 47, 5, '2008-03-17 00:00:00.000', '2008-04-28 00:00:00.000', '2008-03-20 00:00:00.000', 1, 27.91, N'Ship to 47-B', N'Ave. 5 de Mayo Porlamar 4567', N'I. de Margarita', N'Nueva Esparta', N'10231', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10955, 24, 8, '2008-03-17 00:00:00.000', '2008-04-14 00:00:00.000', '2008-03-20 00:00:00.000', 2, 3.26, N'Destination YCMPK', N'Åkergatan 8901', N'Bräcke', NULL, N'10166', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10956, 6, 6, '2008-03-17 00:00:00.000', '2008-04-28 00:00:00.000', '2008-03-20 00:00:00.000', 2, 44.65, N'Ship to 6-B', N'Forsterstr. 3456', N'Mannheim', NULL, N'10301', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10957, 35, 8, '2008-03-18 00:00:00.000', '2008-04-15 00:00:00.000', '2008-03-27 00:00:00.000', 3, 105.36, N'Destination UOUWK', N'Carrera 9012 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10197', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10958, 54, 7, '2008-03-18 00:00:00.000', '2008-04-15 00:00:00.000', '2008-03-27 00:00:00.000', 2, 49.56, N'Ship to 54-C', N'Ing. Gustavo Moncada 6789 Piso 20-A', N'Buenos Aires', NULL, N'10254', N'Argentina');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10959, 31, 6, '2008-03-18 00:00:00.000', '2008-04-29 00:00:00.000', '2008-03-23 00:00:00.000', 2, 4.98, N'Destination GWPFK', N'Av. Brasil, 0123', N'Campinas', N'SP', N'10188', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10960, 35, 3, '2008-03-19 00:00:00.000', '2008-04-02 00:00:00.000', '2008-04-08 00:00:00.000', 1, 2.08, N'Destination SXYQX', N'Carrera 0123 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10198', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10961, 62, 8, '2008-03-19 00:00:00.000', '2008-04-16 00:00:00.000', '2008-03-30 00:00:00.000', 1, 104.47, N'Ship to 62-A', N'Alameda dos Canàrios, 8901', N'Sao Paulo', N'SP', N'10276', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10962, 63, 8, '2008-03-19 00:00:00.000', '2008-04-16 00:00:00.000', '2008-03-23 00:00:00.000', 2, 275.79, N'Ship to 63-B', N'Taucherstraße 2345', N'Cunewalde', NULL, N'10280', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10963, 28, 9, '2008-03-19 00:00:00.000', '2008-04-16 00:00:00.000', '2008-03-26 00:00:00.000', 3, 2.70, N'Destination CIRQO', N'Jardim das rosas n. 8901', N'Lisboa', NULL, N'10176', N'Portugal');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10964, 74, 3, '2008-03-20 00:00:00.000', '2008-04-17 00:00:00.000', '2008-03-24 00:00:00.000', 2, 87.38, N'Ship to 74-B', N'4567, rue Lauriston', N'Paris', NULL, N'10313', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10965, 55, 6, '2008-03-20 00:00:00.000', '2008-04-17 00:00:00.000', '2008-03-30 00:00:00.000', 3, 144.38, N'Ship to 55-B', N'8901 Bering St.', N'Anchorage', N'AK', N'10256', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10966, 14, 4, '2008-03-20 00:00:00.000', '2008-04-17 00:00:00.000', '2008-04-08 00:00:00.000', 1, 27.19, N'Destination NRTZZ', N'Hauptstr. 0123', N'Bern', NULL, N'10138', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10967, 79, 2, '2008-03-23 00:00:00.000', '2008-04-20 00:00:00.000', '2008-04-02 00:00:00.000', 2, 62.22, N'Ship to 79-B', N'Luisenstr. 8901', N'Münster', NULL, N'10327', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10968, 20, 1, '2008-03-23 00:00:00.000', '2008-04-20 00:00:00.000', '2008-04-01 00:00:00.000', 3, 74.60, N'Destination CUVPF', N'Kirchgasse 1234', N'Graz', NULL, N'10159', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10969, 15, 1, '2008-03-23 00:00:00.000', '2008-04-20 00:00:00.000', '2008-03-30 00:00:00.000', 2, 0.21, N'Destination EVHYA', N'Av. dos Lusíadas, 3456', N'Sao Paulo', N'SP', N'10141', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10970, 8, 9, '2008-03-24 00:00:00.000', '2008-04-07 00:00:00.000', '2008-04-24 00:00:00.000', 1, 16.16, N'Ship to 8-C', N'C/ Araquil, 1234', N'Madrid', NULL, N'10360', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10971, 26, 2, '2008-03-24 00:00:00.000', '2008-04-21 00:00:00.000', '2008-04-02 00:00:00.000', 2, 121.82, N'Destination XBVKN', N'3456, rue Royale', N'Nantes', NULL, N'10171', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10972, 40, 4, '2008-03-24 00:00:00.000', '2008-04-21 00:00:00.000', '2008-03-26 00:00:00.000', 2, 0.02, N'Destination MVTWX', N'5678, avenue de l''Europe', N'Versailles', NULL, N'10213', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10973, 40, 6, '2008-03-24 00:00:00.000', '2008-04-21 00:00:00.000', '2008-03-27 00:00:00.000', 2, 15.17, N'Destination WWJLO', N'6789, avenue de l''Europe', N'Versailles', NULL, N'10214', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10974, 75, 3, '2008-03-25 00:00:00.000', '2008-04-08 00:00:00.000', '2008-04-03 00:00:00.000', 3, 12.96, N'Ship to 75-B', N'P.O. Box 6789', N'Lander', N'WY', N'10315', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10975, 10, 1, '2008-03-25 00:00:00.000', '2008-04-22 00:00:00.000', '2008-03-27 00:00:00.000', 3, 32.27, N'Destination OLSSJ', N'2345 Tsawassen Blvd.', N'Tsawassen', N'BC', N'10130', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10976, 35, 1, '2008-03-25 00:00:00.000', '2008-05-06 00:00:00.000', '2008-04-03 00:00:00.000', 1, 37.97, N'Destination SXYQX', N'Carrera 0123 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10198', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10977, 24, 8, '2008-03-26 00:00:00.000', '2008-04-23 00:00:00.000', '2008-04-10 00:00:00.000', 3, 208.50, N'Destination NCKKO', N'Åkergatan 7890', N'Bräcke', NULL, N'10165', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10978, 50, 9, '2008-03-26 00:00:00.000', '2008-04-23 00:00:00.000', '2008-04-23 00:00:00.000', 2, 32.82, N'Ship to 50-A', N'Rue Joseph-Bens 3456', N'Bruxelles', NULL, N'10241', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10979, 20, 8, '2008-03-26 00:00:00.000', '2008-04-23 00:00:00.000', '2008-03-31 00:00:00.000', 2, 353.07, N'Destination CUVPF', N'Kirchgasse 1234', N'Graz', NULL, N'10159', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10980, 24, 4, '2008-03-27 00:00:00.000', '2008-05-08 00:00:00.000', '2008-04-17 00:00:00.000', 1, 1.26, N'Destination YCMPK', N'Åkergatan 8901', N'Bräcke', NULL, N'10166', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10981, 34, 1, '2008-03-27 00:00:00.000', '2008-04-24 00:00:00.000', '2008-04-02 00:00:00.000', 2, 193.37, N'Destination JPAIY', N'Rua do Paço, 8901', N'Rio de Janeiro', N'RJ', N'10196', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10982, 10, 2, '2008-03-27 00:00:00.000', '2008-04-24 00:00:00.000', '2008-04-08 00:00:00.000', 1, 14.01, N'Destination XJIBQ', N'1234 Tsawassen Blvd.', N'Tsawassen', N'BC', N'10129', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10983, 71, 2, '2008-03-27 00:00:00.000', '2008-04-24 00:00:00.000', '2008-04-06 00:00:00.000', 2, 657.54, N'Ship to 71-B', N'8901 Suffolk Ln.', N'Boise', N'Id', N'10306', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10984, 71, 1, '2008-03-30 00:00:00.000', '2008-04-27 00:00:00.000', '2008-04-03 00:00:00.000', 3, 211.22, N'Ship to 71-B', N'8901 Suffolk Ln.', N'Boise', N'Id', N'10306', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10985, 37, 2, '2008-03-30 00:00:00.000', '2008-04-27 00:00:00.000', '2008-04-02 00:00:00.000', 1, 91.51, N'Destination ATSOA', N'4567 Johnstown Road', N'Cork', N'Co. Cork', N'10202', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10986, 54, 8, '2008-03-30 00:00:00.000', '2008-04-27 00:00:00.000', '2008-04-21 00:00:00.000', 2, 217.86, N'Ship to 54-A', N'Ing. Gustavo Moncada 4567 Piso 20-A', N'Buenos Aires', NULL, N'10252', N'Argentina');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10987, 19, 8, '2008-03-31 00:00:00.000', '2008-04-28 00:00:00.000', '2008-04-06 00:00:00.000', 1, 185.48, N'Destination FRCGJ', N'5678 King George', N'London', NULL, N'10153', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10988, 65, 3, '2008-03-31 00:00:00.000', '2008-04-28 00:00:00.000', '2008-04-10 00:00:00.000', 2, 61.14, N'Ship to 65-A', N'7890 Milton Dr.', N'Albuquerque', N'NM', N'10285', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10989, 61, 2, '2008-03-31 00:00:00.000', '2008-04-28 00:00:00.000', '2008-04-02 00:00:00.000', 1, 34.76, N'Ship to 61-A', N'Rua da Panificadora, 5678', N'Rio de Janeiro', N'RJ', N'10273', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10990, 20, 2, '2008-04-01 00:00:00.000', '2008-05-13 00:00:00.000', '2008-04-07 00:00:00.000', 3, 117.61, N'Destination RVDMF', N'Kirchgasse 9012', N'Graz', NULL, N'10157', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10991, 63, 1, '2008-04-01 00:00:00.000', '2008-04-29 00:00:00.000', '2008-04-07 00:00:00.000', 1, 38.51, N'Ship to 63-A', N'Taucherstraße 1234', N'Cunewalde', NULL, N'10279', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10992, 77, 1, '2008-04-01 00:00:00.000', '2008-04-29 00:00:00.000', '2008-04-03 00:00:00.000', 3, 4.27, N'Ship to 77-C', N'3456 Jefferson Way Suite 2', N'Portland', N'OR', N'10322', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10993, 24, 7, '2008-04-01 00:00:00.000', '2008-04-29 00:00:00.000', '2008-04-10 00:00:00.000', 3, 8.81, N'Destination NCKKO', N'Åkergatan 7890', N'Bräcke', NULL, N'10165', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10994, 83, 2, '2008-04-02 00:00:00.000', '2008-04-16 00:00:00.000', '2008-04-09 00:00:00.000', 3, 65.53, N'Ship to 83-C', N'Smagsloget 2345', N'Århus', NULL, N'10341', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10995, 58, 1, '2008-04-02 00:00:00.000', '2008-04-30 00:00:00.000', '2008-04-06 00:00:00.000', 3, 46.00, N'Ship to 58-B', N'Calle Dr. Jorge Cash 4567', N'México D.F.', NULL, N'10262', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10996, 63, 4, '2008-04-02 00:00:00.000', '2008-04-30 00:00:00.000', '2008-04-10 00:00:00.000', 2, 1.12, N'Ship to 63-C', N'Taucherstraße 3456', N'Cunewalde', NULL, N'10281', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10997, 46, 8, '2008-04-03 00:00:00.000', '2008-05-15 00:00:00.000', '2008-04-13 00:00:00.000', 2, 73.91, N'Ship to 46-A', N'Carrera 0123 con Ave. Bolívar #65-98 Llano Largo', N'Barquisimeto', N'Lara', N'10227', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10998, 91, 8, '2008-04-03 00:00:00.000', '2008-04-17 00:00:00.000', '2008-04-17 00:00:00.000', 2, 20.31, N'Ship to 91-A', N'ul. Filtrowa 5678', N'Warszawa', NULL, N'10364', N'Poland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(10999, 56, 6, '2008-04-03 00:00:00.000', '2008-05-01 00:00:00.000', '2008-04-10 00:00:00.000', 2, 96.35, N'Ship to 56-B', N'Mehrheimerstr. 1234', N'Köln', NULL, N'10259', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11000, 65, 2, '2008-04-06 00:00:00.000', '2008-05-04 00:00:00.000', '2008-04-14 00:00:00.000', 3, 55.12, N'Ship to 65-A', N'7890 Milton Dr.', N'Albuquerque', N'NM', N'10285', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11001, 24, 2, '2008-04-06 00:00:00.000', '2008-05-04 00:00:00.000', '2008-04-14 00:00:00.000', 2, 197.30, N'Destination YCMPK', N'Åkergatan 8901', N'Bräcke', NULL, N'10166', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11002, 71, 4, '2008-04-06 00:00:00.000', '2008-05-04 00:00:00.000', '2008-04-16 00:00:00.000', 1, 141.16, N'Ship to 71-A', N'7890 Suffolk Ln.', N'Boise', N'Id', N'10305', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11003, 78, 3, '2008-04-06 00:00:00.000', '2008-05-04 00:00:00.000', '2008-04-08 00:00:00.000', 3, 14.91, N'Ship to 78-B', N'5678 Grizzly Peak Rd.', N'Butte', N'MT', N'10324', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11004, 50, 3, '2008-04-07 00:00:00.000', '2008-05-05 00:00:00.000', '2008-04-20 00:00:00.000', 1, 44.84, N'Ship to 50-C', N'Rue Joseph-Bens 5678', N'Bruxelles', NULL, N'10243', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11005, 90, 2, '2008-04-07 00:00:00.000', '2008-05-05 00:00:00.000', '2008-04-10 00:00:00.000', 1, 0.75, N'Ship to 90-A', N'Keskuskatu 2345', N'Helsinki', NULL, N'10361', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11006, 32, 3, '2008-04-07 00:00:00.000', '2008-05-05 00:00:00.000', '2008-04-15 00:00:00.000', 2, 25.19, N'Destination LLUXZ', N'1234 Baker Blvd.', N'Eugene', N'OR', N'10189', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11007, 60, 8, '2008-04-08 00:00:00.000', '2008-05-06 00:00:00.000', '2008-04-13 00:00:00.000', 2, 202.24, N'Ship to 60-C', N'Estrada da saúde n. 4567', N'Lisboa', NULL, N'10272', N'Portugal');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11008, 20, 7, '2008-04-08 00:00:00.000', '2008-05-06 00:00:00.000', NULL, 3, 79.46, N'Destination CUVPF', N'Kirchgasse 1234', N'Graz', NULL, N'10159', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11009, 30, 2, '2008-04-08 00:00:00.000', '2008-05-06 00:00:00.000', '2008-04-10 00:00:00.000', 1, 59.11, N'Destination WVLDH', N'C/ Romero, 7890', N'Sevilla', NULL, N'10185', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11010, 66, 2, '2008-04-09 00:00:00.000', '2008-05-07 00:00:00.000', '2008-04-21 00:00:00.000', 2, 28.71, N'Ship to 66-A', N'Strada Provinciale 0123', N'Reggio Emilia', NULL, N'10288', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11011, 1, 3, '2008-04-09 00:00:00.000', '2008-05-07 00:00:00.000', '2008-04-13 00:00:00.000', 1, 1.21, N'Destination LOUIE', N'Obere Str. 6789', N'Berlin', NULL, N'10154', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11012, 25, 1, '2008-04-09 00:00:00.000', '2008-04-23 00:00:00.000', '2008-04-17 00:00:00.000', 3, 242.95, N'Destination WEGWI', N'Berliner Platz 2345', N'München', NULL, N'10170', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11013, 69, 2, '2008-04-09 00:00:00.000', '2008-05-07 00:00:00.000', '2008-04-10 00:00:00.000', 1, 32.99, N'Ship to 69-A', N'Gran Vía, 9012', N'Madrid', NULL, N'10297', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11014, 47, 2, '2008-04-10 00:00:00.000', '2008-05-08 00:00:00.000', '2008-04-15 00:00:00.000', 3, 23.60, N'Ship to 47-A', N'Ave. 5 de Mayo Porlamar 3456', N'I. de Margarita', N'Nueva Esparta', N'10230', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11015, 70, 2, '2008-04-10 00:00:00.000', '2008-04-24 00:00:00.000', '2008-04-20 00:00:00.000', 2, 4.62, N'Ship to 70-C', N'Erling Skakkes gate 6789', N'Stavern', NULL, N'10304', N'Norway');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11016, 4, 9, '2008-04-10 00:00:00.000', '2008-05-08 00:00:00.000', '2008-04-13 00:00:00.000', 2, 33.80, N'Ship to 4-A', N'Brook Farm Stratford St. Mary 0123', N'Colchester', N'Essex', N'10238', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11017, 20, 9, '2008-04-13 00:00:00.000', '2008-05-11 00:00:00.000', '2008-04-20 00:00:00.000', 2, 754.26, N'Destination CUVPF', N'Kirchgasse 1234', N'Graz', NULL, N'10159', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11018, 48, 4, '2008-04-13 00:00:00.000', '2008-05-11 00:00:00.000', '2008-04-16 00:00:00.000', 2, 11.65, N'Ship to 48-B', N'6789 Chiaroscuro Rd.', N'Portland', N'OR', N'10233', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11019, 64, 6, '2008-04-13 00:00:00.000', '2008-05-11 00:00:00.000', NULL, 3, 3.17, N'Ship to 64-B', N'Av. del Libertador 5678', N'Buenos Aires', NULL, N'10283', N'Argentina');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11020, 56, 2, '2008-04-14 00:00:00.000', '2008-05-12 00:00:00.000', '2008-04-16 00:00:00.000', 2, 43.30, N'Ship to 56-B', N'Mehrheimerstr. 1234', N'Köln', NULL, N'10259', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11021, 63, 3, '2008-04-14 00:00:00.000', '2008-05-12 00:00:00.000', '2008-04-21 00:00:00.000', 1, 297.18, N'Ship to 63-B', N'Taucherstraße 2345', N'Cunewalde', NULL, N'10280', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11022, 34, 9, '2008-04-14 00:00:00.000', '2008-05-12 00:00:00.000', '2008-05-04 00:00:00.000', 2, 6.27, N'Destination SCQXA', N'Rua do Paço, 7890', N'Rio de Janeiro', N'RJ', N'10195', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11023, 11, 1, '2008-04-14 00:00:00.000', '2008-04-28 00:00:00.000', '2008-04-24 00:00:00.000', 2, 123.83, N'Destination NZASL', N'Fauntleroy Circus 5678', N'London', NULL, N'10133', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11024, 19, 4, '2008-04-15 00:00:00.000', '2008-05-13 00:00:00.000', '2008-04-20 00:00:00.000', 1, 74.36, N'Destination BBMRT', N'4567 King George', N'London', NULL, N'10152', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11025, 87, 6, '2008-04-15 00:00:00.000', '2008-05-13 00:00:00.000', '2008-04-24 00:00:00.000', 3, 29.17, N'Ship to 87-C', N'Torikatu 3456', N'Oulu', NULL, N'10352', N'Finland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11026, 27, 4, '2008-04-15 00:00:00.000', '2008-05-13 00:00:00.000', '2008-04-28 00:00:00.000', 1, 47.09, N'Destination DICGM', N'Via Monte Bianco 7890', N'Torino', NULL, N'10175', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11027, 10, 1, '2008-04-16 00:00:00.000', '2008-05-14 00:00:00.000', '2008-04-20 00:00:00.000', 1, 52.52, N'Destination XJIBQ', N'1234 Tsawassen Blvd.', N'Tsawassen', N'BC', N'10129', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11028, 39, 2, '2008-04-16 00:00:00.000', '2008-05-14 00:00:00.000', '2008-04-22 00:00:00.000', 1, 29.59, N'Destination DKMQA', N'Maubelstr. 0123', N'Brandenburg', NULL, N'10208', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11029, 14, 4, '2008-04-16 00:00:00.000', '2008-05-14 00:00:00.000', '2008-04-27 00:00:00.000', 1, 47.84, N'Destination YUJRD', N'Hauptstr. 1234', N'Bern', NULL, N'10139', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11030, 71, 7, '2008-04-17 00:00:00.000', '2008-05-15 00:00:00.000', '2008-04-27 00:00:00.000', 2, 830.75, N'Ship to 71-C', N'9012 Suffolk Ln.', N'Boise', N'Id', N'10307', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11031, 71, 6, '2008-04-17 00:00:00.000', '2008-05-15 00:00:00.000', '2008-04-24 00:00:00.000', 2, 227.22, N'Ship to 71-C', N'9012 Suffolk Ln.', N'Boise', N'Id', N'10307', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11032, 89, 2, '2008-04-17 00:00:00.000', '2008-05-15 00:00:00.000', '2008-04-23 00:00:00.000', 3, 606.19, N'Ship to 89-B', N'8901 - 12th Ave. S.', N'Seattle', N'WA', N'10357', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11033, 68, 7, '2008-04-17 00:00:00.000', '2008-05-15 00:00:00.000', '2008-04-23 00:00:00.000', 3, 84.74, N'Ship to 68-A', N'Starenweg 6789', N'Genève', NULL, N'10294', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11034, 55, 8, '2008-04-20 00:00:00.000', '2008-06-01 00:00:00.000', '2008-04-27 00:00:00.000', 1, 40.32, N'Ship to 55-B', N'8901 Bering St.', N'Anchorage', N'AK', N'10256', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11035, 76, 2, '2008-04-20 00:00:00.000', '2008-05-18 00:00:00.000', '2008-04-24 00:00:00.000', 2, 0.17, N'Ship to 76-B', N'Boulevard Tirou, 9012', N'Charleroi', NULL, N'10318', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11036, 17, 8, '2008-04-20 00:00:00.000', '2008-05-18 00:00:00.000', '2008-04-22 00:00:00.000', 3, 149.47, N'Destination YPUYI', N'Walserweg 8901', N'Aachen', NULL, N'10146', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11037, 30, 7, '2008-04-21 00:00:00.000', '2008-05-19 00:00:00.000', '2008-04-27 00:00:00.000', 1, 3.20, N'Destination GGQIR', N'C/ Romero, 6789', N'Sevilla', NULL, N'10184', N'Spain');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11038, 76, 1, '2008-04-21 00:00:00.000', '2008-05-19 00:00:00.000', '2008-04-30 00:00:00.000', 2, 29.59, N'Ship to 76-A', N'Boulevard Tirou, 8901', N'Charleroi', NULL, N'10317', N'Belgium');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11039, 47, 1, '2008-04-21 00:00:00.000', '2008-05-19 00:00:00.000', NULL, 2, 65.00, N'Ship to 47-C', N'Ave. 5 de Mayo Porlamar 5678', N'I. de Margarita', N'Nueva Esparta', N'10232', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11040, 32, 4, '2008-04-22 00:00:00.000', '2008-05-20 00:00:00.000', NULL, 3, 18.84, N'Destination VYOBK', N'3456 Baker Blvd.', N'Eugene', N'OR', N'10191', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11041, 14, 3, '2008-04-22 00:00:00.000', '2008-05-20 00:00:00.000', '2008-04-28 00:00:00.000', 2, 48.22, N'Destination YUJRD', N'Hauptstr. 1234', N'Bern', NULL, N'10139', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11042, 15, 2, '2008-04-22 00:00:00.000', '2008-05-06 00:00:00.000', '2008-05-01 00:00:00.000', 1, 29.99, N'Destination EVHYA', N'Av. dos Lusíadas, 3456', N'Sao Paulo', N'SP', N'10141', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11043, 74, 5, '2008-04-22 00:00:00.000', '2008-05-20 00:00:00.000', '2008-04-29 00:00:00.000', 2, 8.80, N'Ship to 74-B', N'4567, rue Lauriston', N'Paris', NULL, N'10313', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11044, 91, 4, '2008-04-23 00:00:00.000', '2008-05-21 00:00:00.000', '2008-05-01 00:00:00.000', 1, 8.72, N'Ship to 91-B', N'ul. Filtrowa 6789', N'Warszawa', NULL, N'10365', N'Poland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11045, 10, 6, '2008-04-23 00:00:00.000', '2008-05-21 00:00:00.000', NULL, 2, 70.58, N'Destination LPHSI', N'3456 Tsawassen Blvd.', N'Tsawassen', N'BC', N'10131', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11046, 86, 8, '2008-04-23 00:00:00.000', '2008-05-21 00:00:00.000', '2008-04-24 00:00:00.000', 2, 71.64, N'Ship to 86-C', N'Adenauerallee 0123', N'Stuttgart', NULL, N'10349', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11047, 19, 7, '2008-04-24 00:00:00.000', '2008-05-22 00:00:00.000', '2008-05-01 00:00:00.000', 3, 46.62, N'Destination FRCGJ', N'5678 King George', N'London', NULL, N'10153', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11048, 10, 7, '2008-04-24 00:00:00.000', '2008-05-22 00:00:00.000', '2008-04-30 00:00:00.000', 3, 24.12, N'Destination XJIBQ', N'1234 Tsawassen Blvd.', N'Tsawassen', N'BC', N'10129', N'Canada');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11049, 31, 3, '2008-04-24 00:00:00.000', '2008-05-22 00:00:00.000', '2008-05-04 00:00:00.000', 1, 8.34, N'Destination XOIGC', N'Av. Brasil, 8901', N'Campinas', N'SP', N'10186', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11050, 24, 8, '2008-04-27 00:00:00.000', '2008-05-25 00:00:00.000', '2008-05-05 00:00:00.000', 2, 59.41, N'Destination YCMPK', N'Åkergatan 8901', N'Bräcke', NULL, N'10166', N'Sweden');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11051, 41, 7, '2008-04-27 00:00:00.000', '2008-05-25 00:00:00.000', NULL, 3, 2.79, N'Destination OLJND', N'8901 rue Alsace-Lorraine', N'Toulouse', NULL, N'10216', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11052, 34, 3, '2008-04-27 00:00:00.000', '2008-05-25 00:00:00.000', '2008-05-01 00:00:00.000', 1, 67.26, N'Destination DPCVR', N'Rua do Paço, 6789', N'Rio de Janeiro', N'RJ', N'10194', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11053, 59, 2, '2008-04-27 00:00:00.000', '2008-05-25 00:00:00.000', '2008-04-29 00:00:00.000', 2, 53.05, N'Ship to 59-A', N'Geislweg 6789', N'Salzburg', NULL, N'10264', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11054, 12, 8, '2008-04-28 00:00:00.000', '2008-05-26 00:00:00.000', NULL, 1, 0.33, N'Destination QTHBC', N'Cerrito 6789', N'Buenos Aires', NULL, N'10134', N'Argentina');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11055, 35, 7, '2008-04-28 00:00:00.000', '2008-05-26 00:00:00.000', '2008-05-05 00:00:00.000', 2, 120.92, N'Destination JYDLM', N'Carrera1234 con Ave. Carlos Soublette #8-35', N'San Cristóbal', N'Táchira', N'10199', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11056, 19, 8, '2008-04-28 00:00:00.000', '2008-05-12 00:00:00.000', '2008-05-01 00:00:00.000', 2, 278.96, N'Destination QTKCU', N'3456 King George', N'London', NULL, N'10151', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11057, 53, 3, '2008-04-29 00:00:00.000', '2008-05-27 00:00:00.000', '2008-05-01 00:00:00.000', 3, 4.13, N'Ship to 53-C', N'South House 3456 Queensbridge', N'London', NULL, N'10251', N'UK');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11058, 6, 9, '2008-04-29 00:00:00.000', '2008-05-27 00:00:00.000', NULL, 3, 31.14, N'Ship to 6-A', N'Forsterstr. 2345', N'Mannheim', NULL, N'10300', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11059, 67, 2, '2008-04-29 00:00:00.000', '2008-06-10 00:00:00.000', NULL, 2, 85.80, N'Ship to 67-A', N'Av. Copacabana, 3456', N'Rio de Janeiro', N'RJ', N'10291', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11060, 27, 2, '2008-04-30 00:00:00.000', '2008-05-28 00:00:00.000', '2008-05-04 00:00:00.000', 2, 10.98, N'Destination DICGM', N'Via Monte Bianco 7890', N'Torino', NULL, N'10175', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11061, 32, 4, '2008-04-30 00:00:00.000', '2008-06-11 00:00:00.000', NULL, 3, 14.01, N'Destination VYOBK', N'3456 Baker Blvd.', N'Eugene', N'OR', N'10191', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11062, 66, 4, '2008-04-30 00:00:00.000', '2008-05-28 00:00:00.000', NULL, 2, 29.93, N'Ship to 66-B', N'Strada Provinciale 1234', N'Reggio Emilia', NULL, N'10289', N'Italy');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11063, 37, 3, '2008-04-30 00:00:00.000', '2008-05-28 00:00:00.000', '2008-05-06 00:00:00.000', 2, 81.73, N'Destination KPVYJ', N'5678 Johnstown Road', N'Cork', N'Co. Cork', N'10203', N'Ireland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11064, 71, 1, '2008-05-01 00:00:00.000', '2008-05-29 00:00:00.000', '2008-05-04 00:00:00.000', 1, 30.09, N'Ship to 71-C', N'9012 Suffolk Ln.', N'Boise', N'Id', N'10307', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11065, 46, 8, '2008-05-01 00:00:00.000', '2008-05-29 00:00:00.000', NULL, 1, 12.91, N'Ship to 46-C', N'Carrera 2345 con Ave. Bolívar #65-98 Llano Largo', N'Barquisimeto', N'Lara', N'10229', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11066, 89, 7, '2008-05-01 00:00:00.000', '2008-05-29 00:00:00.000', '2008-05-04 00:00:00.000', 2, 44.72, N'Ship to 89-A', N'7890 - 12th Ave. S.', N'Seattle', N'WA', N'10356', N'USA');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11067, 17, 1, '2008-05-04 00:00:00.000', '2008-05-18 00:00:00.000', '2008-05-06 00:00:00.000', 2, 7.98, N'Destination BJCXA', N'Walserweg 7890', N'Aachen', NULL, N'10145', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11068, 62, 8, '2008-05-04 00:00:00.000', '2008-06-01 00:00:00.000', NULL, 2, 81.75, N'Ship to 62-A', N'Alameda dos Canàrios, 8901', N'Sao Paulo', N'SP', N'10276', N'Brazil');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11069, 80, 1, '2008-05-04 00:00:00.000', '2008-06-01 00:00:00.000', '2008-05-06 00:00:00.000', 2, 15.67, N'Ship to 80-B', N'Avda. Azteca 4567', N'México D.F.', NULL, N'10333', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11070, 44, 2, '2008-05-05 00:00:00.000', '2008-06-02 00:00:00.000', NULL, 1, 136.00, N'Ship to 44-A', N'Magazinweg 4567', N'Frankfurt a.M.', NULL, N'10222', N'Germany');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11071, 46, 1, '2008-05-05 00:00:00.000', '2008-06-02 00:00:00.000', NULL, 1, 0.93, N'Ship to 46-B', N'Carrera 1234 con Ave. Bolívar #65-98 Llano Largo', N'Barquisimeto', N'Lara', N'10228', N'Venezuela');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11072, 20, 4, '2008-05-05 00:00:00.000', '2008-06-02 00:00:00.000', NULL, 2, 258.64, N'Destination RVDMF', N'Kirchgasse 9012', N'Graz', NULL, N'10157', N'Austria');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11073, 58, 2, '2008-05-05 00:00:00.000', '2008-06-02 00:00:00.000', NULL, 2, 24.95, N'Ship to 58-B', N'Calle Dr. Jorge Cash 4567', N'México D.F.', NULL, N'10262', N'Mexico');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11074, 73, 7, '2008-05-06 00:00:00.000', '2008-06-03 00:00:00.000', NULL, 2, 18.44, N'Ship to 73-A', N'Vinbæltet 1234', N'Kobenhavn', NULL, N'10310', N'Denmark');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11075, 68, 8, '2008-05-06 00:00:00.000', '2008-06-03 00:00:00.000', NULL, 2, 6.19, N'Ship to 68-A', N'Starenweg 6789', N'Genève', NULL, N'10294', N'Switzerland');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11076, 9, 4, '2008-05-06 00:00:00.000', '2008-06-03 00:00:00.000', NULL, 2, 38.28, N'Ship to 9-A', N'8901, rue des Bouchers', N'Marseille', NULL, N'10367', N'France');
+INSERT INTO SalesOrder(orderid, custid, employeeid, orderdate, requireddate, shippeddate, shipperid, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry)
+  VALUES(11077, 65, 1, '2008-05-06 00:00:00.000', '2008-06-03 00:00:00.000', NULL, 2, 8.53, N'Ship to 65-A', N'7890 Milton Dr.', N'Albuquerque', N'NM', N'10285', N'USA');
+
+
+
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10248, 11, 14.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10248, 42, 9.80, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10248, 72, 34.80, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10249, 14, 18.60, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10249, 51, 42.40, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10250, 41, 7.70, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10250, 51, 42.40, 35, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10250, 65, 16.80, 15, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10251, 22, 16.80, 6, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10251, 57, 15.60, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10251, 65, 16.80, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10252, 20, 64.80, 40, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10252, 33, 2.00, 25, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10252, 60, 27.20, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10253, 31, 10.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10253, 39, 14.40, 42, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10253, 49, 16.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10254, 24, 3.60, 15, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10254, 55, 19.20, 21, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10254, 74, 8.00, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10255, 2, 15.20, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10255, 16, 13.90, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10255, 36, 15.20, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10255, 59, 44.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10256, 53, 26.20, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10256, 77, 10.40, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10257, 27, 35.10, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10257, 39, 14.40, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10257, 77, 10.40, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10258, 2, 15.20, 50, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10258, 5, 17.00, 65, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10258, 32, 25.60, 6, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10259, 21, 8.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10259, 37, 20.80, 1, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10260, 41, 7.70, 16, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10260, 57, 15.60, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10260, 62, 39.40, 15, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10260, 70, 12.00, 21, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10261, 21, 8.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10261, 35, 14.40, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10262, 5, 17.00, 12, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10262, 7, 24.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10262, 56, 30.40, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10263, 16, 13.90, 60, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10263, 24, 3.60, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10263, 30, 20.70, 60, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10263, 74, 8.00, 36, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10264, 2, 15.20, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10264, 41, 7.70, 25, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10265, 17, 31.20, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10265, 70, 12.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10266, 12, 30.40, 12, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10267, 40, 14.70, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10267, 59, 44.00, 70, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10267, 76, 14.40, 15, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10268, 29, 99.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10268, 72, 27.80, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10269, 33, 2.00, 60, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10269, 72, 27.80, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10270, 36, 15.20, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10270, 43, 36.80, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10271, 33, 2.00, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10272, 20, 64.80, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10272, 31, 10.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10272, 72, 27.80, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10273, 10, 24.80, 24, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10273, 31, 10.00, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10273, 33, 2.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10273, 40, 14.70, 60, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10273, 76, 14.40, 33, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10274, 71, 17.20, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10274, 72, 27.80, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10275, 24, 3.60, 12, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10275, 59, 44.00, 6, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10276, 10, 24.80, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10276, 13, 4.80, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10277, 28, 36.40, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10277, 62, 39.40, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10278, 44, 15.50, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10278, 59, 44.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10278, 63, 35.10, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10278, 73, 12.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10279, 17, 31.20, 15, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10280, 24, 3.60, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10280, 55, 19.20, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10280, 75, 6.20, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10281, 19, 7.30, 1, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10281, 24, 3.60, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10281, 35, 14.40, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10282, 30, 20.70, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10282, 57, 15.60, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10283, 15, 12.40, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10283, 19, 7.30, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10283, 60, 27.20, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10283, 72, 27.80, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10284, 27, 35.10, 15, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10284, 44, 15.50, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10284, 60, 27.20, 20, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10284, 67, 11.20, 5, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10285, 1, 14.40, 45, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10285, 40, 14.70, 40, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10285, 53, 26.20, 36, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10286, 35, 14.40, 100, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10286, 62, 39.40, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10287, 16, 13.90, 40, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10287, 34, 11.20, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10287, 46, 9.60, 15, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10288, 54, 5.90, 10, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10288, 68, 10.00, 3, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10289, 3, 8.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10289, 64, 26.60, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10290, 5, 17.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10290, 29, 99.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10290, 49, 16.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10290, 77, 10.40, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10291, 13, 4.80, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10291, 44, 15.50, 24, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10291, 51, 42.40, 2, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10292, 20, 64.80, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10293, 18, 50.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10293, 24, 3.60, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10293, 63, 35.10, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10293, 75, 6.20, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10294, 1, 14.40, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10294, 17, 31.20, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10294, 43, 36.80, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10294, 60, 27.20, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10294, 75, 6.20, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10295, 56, 30.40, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10296, 11, 16.80, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10296, 16, 13.90, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10296, 69, 28.80, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10297, 39, 14.40, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10297, 72, 27.80, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10298, 2, 15.20, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10298, 36, 15.20, 40, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10298, 59, 44.00, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10298, 62, 39.40, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10299, 19, 7.30, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10299, 70, 12.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10300, 66, 13.60, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10300, 68, 10.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10301, 40, 14.70, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10301, 56, 30.40, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10302, 17, 31.20, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10302, 28, 36.40, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10302, 43, 36.80, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10303, 40, 14.70, 40, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10303, 65, 16.80, 30, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10303, 68, 10.00, 15, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10304, 49, 16.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10304, 59, 44.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10304, 71, 17.20, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10305, 18, 50.00, 25, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10305, 29, 99.00, 25, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10305, 39, 14.40, 30, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10306, 30, 20.70, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10306, 53, 26.20, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10306, 54, 5.90, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10307, 62, 39.40, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10307, 68, 10.00, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10308, 69, 28.80, 1, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10308, 70, 12.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10309, 4, 17.60, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10309, 6, 20.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10309, 42, 11.20, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10309, 43, 36.80, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10309, 71, 17.20, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10310, 16, 13.90, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10310, 62, 39.40, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10311, 42, 11.20, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10311, 69, 28.80, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10312, 28, 36.40, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10312, 43, 36.80, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10312, 53, 26.20, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10312, 75, 6.20, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10313, 36, 15.20, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10314, 32, 25.60, 40, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10314, 58, 10.60, 30, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10314, 62, 39.40, 25, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10315, 34, 11.20, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10315, 70, 12.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10316, 41, 7.70, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10316, 62, 39.40, 70, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10317, 1, 14.40, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10318, 41, 7.70, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10318, 76, 14.40, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10319, 17, 31.20, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10319, 28, 36.40, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10319, 76, 14.40, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10320, 71, 17.20, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10321, 35, 14.40, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10322, 52, 5.60, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10323, 15, 12.40, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10323, 25, 11.20, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10323, 39, 14.40, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10324, 16, 13.90, 21, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10324, 35, 14.40, 70, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10324, 46, 9.60, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10324, 59, 44.00, 40, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10324, 63, 35.10, 80, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10325, 6, 20.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10325, 13, 4.80, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10325, 14, 18.60, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10325, 31, 10.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10325, 72, 27.80, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10326, 4, 17.60, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10326, 57, 15.60, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10326, 75, 6.20, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10327, 2, 15.20, 25, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10327, 11, 16.80, 50, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10327, 30, 20.70, 35, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10327, 58, 10.60, 30, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10328, 59, 44.00, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10328, 65, 16.80, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10328, 68, 10.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10329, 19, 7.30, 10, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10329, 30, 20.70, 8, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10329, 38, 210.80, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10329, 56, 30.40, 12, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10330, 26, 24.90, 50, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10330, 72, 27.80, 25, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10331, 54, 5.90, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10332, 18, 50.00, 40, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10332, 42, 11.20, 10, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10332, 47, 7.60, 16, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10333, 14, 18.60, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10333, 21, 8.00, 10, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10333, 71, 17.20, 40, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10334, 52, 5.60, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10334, 68, 10.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10335, 2, 15.20, 7, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10335, 31, 10.00, 25, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10335, 32, 25.60, 6, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10335, 51, 42.40, 48, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10336, 4, 17.60, 18, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10337, 23, 7.20, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10337, 26, 24.90, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10337, 36, 15.20, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10337, 37, 20.80, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10337, 72, 27.80, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10338, 17, 31.20, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10338, 30, 20.70, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10339, 4, 17.60, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10339, 17, 31.20, 70, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10339, 62, 39.40, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10340, 18, 50.00, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10340, 41, 7.70, 12, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10340, 43, 36.80, 40, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10341, 33, 2.00, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10341, 59, 44.00, 9, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10342, 2, 15.20, 24, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10342, 31, 10.00, 56, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10342, 36, 15.20, 40, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10342, 55, 19.20, 40, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10343, 64, 26.60, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10343, 68, 10.00, 4, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10343, 76, 14.40, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10344, 4, 17.60, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10344, 8, 32.00, 70, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10345, 8, 32.00, 70, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10345, 19, 7.30, 80, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10345, 42, 11.20, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10346, 17, 31.20, 36, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10346, 56, 30.40, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10347, 25, 11.20, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10347, 39, 14.40, 50, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10347, 40, 14.70, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10347, 75, 6.20, 6, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10348, 1, 14.40, 15, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10348, 23, 7.20, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10349, 54, 5.90, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10350, 50, 13.00, 15, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10350, 69, 28.80, 18, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10351, 38, 210.80, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10351, 41, 7.70, 13, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10351, 44, 15.50, 77, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10351, 65, 16.80, 10, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10352, 24, 3.60, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10352, 54, 5.90, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10353, 11, 16.80, 12, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10353, 38, 210.80, 50, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10354, 1, 14.40, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10354, 29, 99.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10355, 24, 3.60, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10355, 57, 15.60, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10356, 31, 10.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10356, 55, 19.20, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10356, 69, 28.80, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10357, 10, 24.80, 30, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10357, 26, 24.90, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10357, 60, 27.20, 8, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10358, 24, 3.60, 10, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10358, 34, 11.20, 10, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10358, 36, 15.20, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10359, 16, 13.90, 56, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10359, 31, 10.00, 70, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10359, 60, 27.20, 80, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10360, 28, 36.40, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10360, 29, 99.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10360, 38, 210.80, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10360, 49, 16.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10360, 54, 5.90, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10361, 39, 14.40, 54, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10361, 60, 27.20, 55, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10362, 25, 11.20, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10362, 51, 42.40, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10362, 54, 5.90, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10363, 31, 10.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10363, 75, 6.20, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10363, 76, 14.40, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10364, 69, 28.80, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10364, 71, 17.20, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10365, 11, 16.80, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10366, 65, 16.80, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10366, 77, 10.40, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10367, 34, 11.20, 36, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10367, 54, 5.90, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10367, 65, 16.80, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10367, 77, 10.40, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10368, 21, 8.00, 5, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10368, 28, 36.40, 13, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10368, 57, 15.60, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10368, 64, 26.60, 35, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10369, 29, 99.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10369, 56, 30.40, 18, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10370, 1, 14.40, 15, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10370, 64, 26.60, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10370, 74, 8.00, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10371, 36, 15.20, 6, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10372, 20, 64.80, 12, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10372, 38, 210.80, 40, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10372, 60, 27.20, 70, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10372, 72, 27.80, 42, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10373, 58, 10.60, 80, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10373, 71, 17.20, 50, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10374, 31, 10.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10374, 58, 10.60, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10375, 14, 18.60, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10375, 54, 5.90, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10376, 31, 10.00, 42, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10377, 28, 36.40, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10377, 39, 14.40, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10378, 71, 17.20, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10379, 41, 7.70, 8, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10379, 63, 35.10, 16, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10379, 65, 16.80, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10380, 30, 20.70, 18, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10380, 53, 26.20, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10380, 60, 27.20, 6, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10380, 70, 12.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10381, 74, 8.00, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10382, 5, 17.00, 32, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10382, 18, 50.00, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10382, 29, 99.00, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10382, 33, 2.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10382, 74, 8.00, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10383, 13, 4.80, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10383, 50, 13.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10383, 56, 30.40, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10384, 20, 64.80, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10384, 60, 27.20, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10385, 7, 24.00, 10, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10385, 60, 27.20, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10385, 68, 10.00, 8, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10386, 24, 3.60, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10386, 34, 11.20, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10387, 24, 3.60, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10387, 28, 36.40, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10387, 59, 44.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10387, 71, 17.20, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10388, 45, 7.60, 15, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10388, 52, 5.60, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10388, 53, 26.20, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10389, 10, 24.80, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10389, 55, 19.20, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10389, 62, 39.40, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10389, 70, 12.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10390, 31, 10.00, 60, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10390, 35, 14.40, 40, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10390, 46, 9.60, 45, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10390, 72, 27.80, 24, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10391, 13, 4.80, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10392, 69, 28.80, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10393, 2, 15.20, 25, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10393, 14, 18.60, 42, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10393, 25, 11.20, 7, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10393, 26, 24.90, 70, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10393, 31, 10.00, 32, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10394, 13, 4.80, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10394, 62, 39.40, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10395, 46, 9.60, 28, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10395, 53, 26.20, 70, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10395, 69, 28.80, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10396, 23, 7.20, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10396, 71, 17.20, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10396, 72, 27.80, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10397, 21, 8.00, 10, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10397, 51, 42.40, 18, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10398, 35, 14.40, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10398, 55, 19.20, 120, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10399, 68, 10.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10399, 71, 17.20, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10399, 76, 14.40, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10399, 77, 10.40, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10400, 29, 99.00, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10400, 35, 14.40, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10400, 49, 16.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10401, 30, 20.70, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10401, 56, 30.40, 70, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10401, 65, 16.80, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10401, 71, 17.20, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10402, 23, 7.20, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10402, 63, 35.10, 65, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10403, 16, 13.90, 21, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10403, 48, 10.20, 70, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10404, 26, 24.90, 30, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10404, 42, 11.20, 40, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10404, 49, 16.00, 30, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10405, 3, 8.00, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10406, 1, 14.40, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10406, 21, 8.00, 30, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10406, 28, 36.40, 42, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10406, 36, 15.20, 5, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10406, 40, 14.70, 2, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10407, 11, 16.80, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10407, 69, 28.80, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10407, 71, 17.20, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10408, 37, 20.80, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10408, 54, 5.90, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10408, 62, 39.40, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10409, 14, 18.60, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10409, 21, 8.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10410, 33, 2.00, 49, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10410, 59, 44.00, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10411, 41, 7.70, 25, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10411, 44, 15.50, 40, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10411, 59, 44.00, 9, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10412, 14, 18.60, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10413, 1, 14.40, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10413, 62, 39.40, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10413, 76, 14.40, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10414, 19, 7.30, 18, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10414, 33, 2.00, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10415, 17, 31.20, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10415, 33, 2.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10416, 19, 7.30, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10416, 53, 26.20, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10416, 57, 15.60, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10417, 38, 210.80, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10417, 46, 9.60, 2, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10417, 68, 10.00, 36, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10417, 77, 10.40, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10418, 2, 15.20, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10418, 47, 7.60, 55, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10418, 61, 22.80, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10418, 74, 8.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10419, 60, 27.20, 60, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10419, 69, 28.80, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10420, 9, 77.60, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10420, 13, 4.80, 2, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10420, 70, 12.00, 8, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10420, 73, 12.00, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10421, 19, 7.30, 4, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10421, 26, 24.90, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10421, 53, 26.20, 15, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10421, 77, 10.40, 10, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10422, 26, 24.90, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10423, 31, 10.00, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10423, 59, 44.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10424, 35, 14.40, 60, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10424, 38, 210.80, 49, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10424, 68, 10.00, 30, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10425, 55, 19.20, 10, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10425, 76, 14.40, 20, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10426, 56, 30.40, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10426, 64, 26.60, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10427, 14, 18.60, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10428, 46, 9.60, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10429, 50, 13.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10429, 63, 35.10, 35, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10430, 17, 31.20, 45, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10430, 21, 8.00, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10430, 56, 30.40, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10430, 59, 44.00, 70, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10431, 17, 31.20, 50, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10431, 40, 14.70, 50, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10431, 47, 7.60, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10432, 26, 24.90, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10432, 54, 5.90, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10433, 56, 30.40, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10434, 11, 16.80, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10434, 76, 14.40, 18, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10435, 2, 15.20, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10435, 22, 16.80, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10435, 72, 27.80, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10436, 46, 9.60, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10436, 56, 30.40, 40, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10436, 64, 26.60, 30, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10436, 75, 6.20, 24, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10437, 53, 26.20, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10438, 19, 7.30, 15, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10438, 34, 11.20, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10438, 57, 15.60, 15, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10439, 12, 30.40, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10439, 16, 13.90, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10439, 64, 26.60, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10439, 74, 8.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10440, 2, 15.20, 45, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10440, 16, 13.90, 49, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10440, 29, 99.00, 24, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10440, 61, 22.80, 90, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10441, 27, 35.10, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10442, 11, 16.80, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10442, 54, 5.90, 80, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10442, 66, 13.60, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10443, 11, 16.80, 6, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10443, 28, 36.40, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10444, 17, 31.20, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10444, 26, 24.90, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10444, 35, 14.40, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10444, 41, 7.70, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10445, 39, 14.40, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10445, 54, 5.90, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10446, 19, 7.30, 12, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10446, 24, 3.60, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10446, 31, 10.00, 3, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10446, 52, 5.60, 15, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10447, 19, 7.30, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10447, 65, 16.80, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10447, 71, 17.20, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10448, 26, 24.90, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10448, 40, 14.70, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10449, 10, 24.80, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10449, 52, 5.60, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10449, 62, 39.40, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10450, 10, 24.80, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10450, 54, 5.90, 6, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10451, 55, 19.20, 120, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10451, 64, 26.60, 35, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10451, 65, 16.80, 28, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10451, 77, 10.40, 55, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10452, 28, 36.40, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10452, 44, 15.50, 100, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10453, 48, 10.20, 15, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10453, 70, 12.00, 25, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10454, 16, 13.90, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10454, 33, 2.00, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10454, 46, 9.60, 10, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10455, 39, 14.40, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10455, 53, 26.20, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10455, 61, 22.80, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10455, 71, 17.20, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10456, 21, 8.00, 40, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10456, 49, 16.00, 21, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10457, 59, 44.00, 36, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10458, 26, 24.90, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10458, 28, 36.40, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10458, 43, 36.80, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10458, 56, 30.40, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10458, 71, 17.20, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10459, 7, 24.00, 16, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10459, 46, 9.60, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10459, 72, 27.80, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10460, 68, 10.00, 21, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10460, 75, 6.20, 4, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10461, 21, 8.00, 40, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10461, 30, 20.70, 28, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10461, 55, 19.20, 60, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10462, 13, 4.80, 1, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10462, 23, 7.20, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10463, 19, 7.30, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10463, 42, 11.20, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10464, 4, 17.60, 16, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10464, 43, 36.80, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10464, 56, 30.40, 30, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10464, 60, 27.20, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10465, 24, 3.60, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10465, 29, 99.00, 18, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10465, 40, 14.70, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10465, 45, 7.60, 30, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10465, 50, 13.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10466, 11, 16.80, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10466, 46, 9.60, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10467, 24, 3.60, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10467, 25, 11.20, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10468, 30, 20.70, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10468, 43, 36.80, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10469, 2, 15.20, 40, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10469, 16, 13.90, 35, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10469, 44, 15.50, 2, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10470, 18, 50.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10470, 23, 7.20, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10470, 64, 26.60, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10471, 7, 24.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10471, 56, 30.40, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10472, 24, 3.60, 80, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10472, 51, 42.40, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10473, 33, 2.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10473, 71, 17.20, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10474, 14, 18.60, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10474, 28, 36.40, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10474, 40, 14.70, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10474, 75, 6.20, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10475, 31, 10.00, 35, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10475, 66, 13.60, 60, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10475, 76, 14.40, 42, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10476, 55, 19.20, 2, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10476, 70, 12.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10477, 1, 14.40, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10477, 21, 8.00, 21, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10477, 39, 14.40, 20, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10478, 10, 24.80, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10479, 38, 210.80, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10479, 53, 26.20, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10479, 59, 44.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10479, 64, 26.60, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10480, 47, 7.60, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10480, 59, 44.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10481, 49, 16.00, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10481, 60, 27.20, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10482, 40, 14.70, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10483, 34, 11.20, 35, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10483, 77, 10.40, 30, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10484, 21, 8.00, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10484, 40, 14.70, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10484, 51, 42.40, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10485, 2, 15.20, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10485, 3, 8.00, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10485, 55, 19.20, 30, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10485, 70, 12.00, 60, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10486, 11, 16.80, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10486, 51, 42.40, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10486, 74, 8.00, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10487, 19, 7.30, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10487, 26, 24.90, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10487, 54, 5.90, 24, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10488, 59, 44.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10488, 73, 12.00, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10489, 11, 16.80, 15, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10489, 16, 13.90, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10490, 59, 44.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10490, 68, 10.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10490, 75, 6.20, 36, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10491, 44, 15.50, 15, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10491, 77, 10.40, 7, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10492, 25, 11.20, 60, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10492, 42, 11.20, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10493, 65, 16.80, 15, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10493, 66, 13.60, 10, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10493, 69, 28.80, 10, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10494, 56, 30.40, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10495, 23, 7.20, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10495, 41, 7.70, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10495, 77, 10.40, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10496, 31, 10.00, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10497, 56, 30.40, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10497, 72, 27.80, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10497, 77, 10.40, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10498, 24, 4.50, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10498, 40, 18.40, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10498, 42, 14.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10499, 28, 45.60, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10499, 49, 20.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10500, 15, 15.50, 12, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10500, 28, 45.60, 8, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10501, 54, 7.45, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10502, 45, 9.50, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10502, 53, 32.80, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10502, 67, 14.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10503, 14, 23.25, 70, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10503, 65, 21.05, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10504, 2, 19.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10504, 21, 10.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10504, 53, 32.80, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10504, 61, 28.50, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10505, 62, 49.30, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10506, 25, 14.00, 18, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10506, 70, 15.00, 14, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10507, 43, 46.00, 15, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10507, 48, 12.75, 15, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10508, 13, 6.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10508, 39, 18.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10509, 28, 45.60, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10510, 29, 123.79, 36, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10510, 75, 7.75, 36, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10511, 4, 22.00, 50, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10511, 7, 30.00, 50, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10511, 8, 40.00, 10, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10512, 24, 4.50, 10, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10512, 46, 12.00, 9, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10512, 47, 9.50, 6, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10512, 60, 34.00, 12, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10513, 21, 10.00, 40, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10513, 32, 32.00, 50, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10513, 61, 28.50, 15, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10514, 20, 81.00, 39, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10514, 28, 45.60, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10514, 56, 38.00, 70, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10514, 65, 21.05, 39, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10514, 75, 7.75, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10515, 9, 97.00, 16, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10515, 16, 17.45, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10515, 27, 43.90, 120, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10515, 33, 2.50, 16, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10515, 60, 34.00, 84, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10516, 18, 62.50, 25, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10516, 41, 9.65, 80, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10516, 42, 14.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10517, 52, 7.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10517, 59, 55.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10517, 70, 15.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10518, 24, 4.50, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10518, 38, 263.50, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10518, 44, 19.45, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10519, 10, 31.00, 16, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10519, 56, 38.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10519, 60, 34.00, 10, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10520, 24, 4.50, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10520, 53, 32.80, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10521, 35, 18.00, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10521, 41, 9.65, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10521, 68, 12.50, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10522, 1, 18.00, 40, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10522, 8, 40.00, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10522, 30, 25.89, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10522, 40, 18.40, 25, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10523, 17, 39.00, 25, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10523, 20, 81.00, 15, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10523, 37, 26.00, 18, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10523, 41, 9.65, 6, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10524, 10, 31.00, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10524, 30, 25.89, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10524, 43, 46.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10524, 54, 7.45, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10525, 36, 19.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10525, 40, 18.40, 15, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10526, 1, 18.00, 8, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10526, 13, 6.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10526, 56, 38.00, 30, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10527, 4, 22.00, 50, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10527, 36, 19.00, 30, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10528, 11, 21.00, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10528, 33, 2.50, 8, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10528, 72, 34.80, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10529, 55, 24.00, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10529, 68, 12.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10529, 69, 36.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10530, 17, 39.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10530, 43, 46.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10530, 61, 28.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10530, 76, 18.00, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10531, 59, 55.00, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10532, 30, 25.89, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10532, 66, 17.00, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10533, 4, 22.00, 50, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10533, 72, 34.80, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10533, 73, 15.00, 24, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10534, 30, 25.89, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10534, 40, 18.40, 10, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10534, 54, 7.45, 10, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10535, 11, 21.00, 50, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10535, 40, 18.40, 10, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10535, 57, 19.50, 5, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10535, 59, 55.00, 15, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10536, 12, 38.00, 15, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10536, 31, 12.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10536, 33, 2.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10536, 60, 34.00, 35, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10537, 31, 12.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10537, 51, 53.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10537, 58, 13.25, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10537, 72, 34.80, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10537, 73, 15.00, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10538, 70, 15.00, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10538, 72, 34.80, 1, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10539, 13, 6.00, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10539, 21, 10.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10539, 33, 2.50, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10539, 49, 20.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10540, 3, 10.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10540, 26, 31.23, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10540, 38, 263.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10540, 68, 12.50, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10541, 24, 4.50, 35, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10541, 38, 263.50, 4, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10541, 65, 21.05, 36, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10541, 71, 21.50, 9, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10542, 11, 21.00, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10542, 54, 7.45, 24, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10543, 12, 38.00, 30, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10543, 23, 9.00, 70, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10544, 28, 45.60, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10544, 67, 14.00, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10545, 11, 21.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10546, 7, 30.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10546, 35, 18.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10546, 62, 49.30, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10547, 32, 32.00, 24, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10547, 36, 19.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10548, 34, 14.00, 10, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10548, 41, 9.65, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10549, 31, 12.50, 55, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10549, 45, 9.50, 100, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10549, 51, 53.00, 48, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10550, 17, 39.00, 8, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10550, 19, 9.20, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10550, 21, 10.00, 6, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10550, 61, 28.50, 10, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10551, 16, 17.45, 40, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10551, 35, 18.00, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10551, 44, 19.45, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10552, 69, 36.00, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10552, 75, 7.75, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10553, 11, 21.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10553, 16, 17.45, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10553, 22, 21.00, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10553, 31, 12.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10553, 35, 18.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10554, 16, 17.45, 30, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10554, 23, 9.00, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10554, 62, 49.30, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10554, 77, 13.00, 10, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10555, 14, 23.25, 30, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10555, 19, 9.20, 35, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10555, 24, 4.50, 18, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10555, 51, 53.00, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10555, 56, 38.00, 40, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10556, 72, 34.80, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10557, 64, 33.25, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10557, 75, 7.75, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10558, 47, 9.50, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10558, 51, 53.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10558, 52, 7.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10558, 53, 32.80, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10558, 73, 15.00, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10559, 41, 9.65, 12, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10559, 55, 24.00, 18, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10560, 30, 25.89, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10560, 62, 49.30, 15, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10561, 44, 19.45, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10561, 51, 53.00, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10562, 33, 2.50, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10562, 62, 49.30, 10, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10563, 36, 19.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10563, 52, 7.00, 70, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10564, 17, 39.00, 16, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10564, 31, 12.50, 6, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10564, 55, 24.00, 25, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10565, 24, 4.50, 25, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10565, 64, 33.25, 18, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10566, 11, 21.00, 35, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10566, 18, 62.50, 18, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10566, 76, 18.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10567, 31, 12.50, 60, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10567, 51, 53.00, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10567, 59, 55.00, 40, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10568, 10, 31.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10569, 31, 12.50, 35, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10569, 76, 18.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10570, 11, 21.00, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10570, 56, 38.00, 60, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10571, 14, 23.25, 11, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10571, 42, 14.00, 28, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10572, 16, 17.45, 12, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10572, 32, 32.00, 10, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10572, 40, 18.40, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10572, 75, 7.75, 15, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10573, 17, 39.00, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10573, 34, 14.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10573, 53, 32.80, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10574, 33, 2.50, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10574, 40, 18.40, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10574, 62, 49.30, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10574, 64, 33.25, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10575, 59, 55.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10575, 63, 43.90, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10575, 72, 34.80, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10575, 76, 18.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10576, 1, 18.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10576, 31, 12.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10576, 44, 19.45, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10577, 39, 18.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10577, 75, 7.75, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10577, 77, 13.00, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10578, 35, 18.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10578, 57, 19.50, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10579, 15, 15.50, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10579, 75, 7.75, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10580, 14, 23.25, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10580, 41, 9.65, 9, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10580, 65, 21.05, 30, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10581, 75, 7.75, 50, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10582, 57, 19.50, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10582, 76, 18.00, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10583, 29, 123.79, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10583, 60, 34.00, 24, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10583, 69, 36.00, 10, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10584, 31, 12.50, 50, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10585, 47, 9.50, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10586, 52, 7.00, 4, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10587, 26, 31.23, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10587, 35, 18.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10587, 77, 13.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10588, 18, 62.50, 40, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10588, 42, 14.00, 100, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10589, 35, 18.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10590, 1, 18.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10590, 77, 13.00, 60, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10591, 3, 10.00, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10591, 7, 30.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10591, 54, 7.45, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10592, 15, 15.50, 25, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10592, 26, 31.23, 5, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10593, 20, 81.00, 21, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10593, 69, 36.00, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10593, 76, 18.00, 4, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10594, 52, 7.00, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10594, 58, 13.25, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10595, 35, 18.00, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10595, 61, 28.50, 120, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10595, 69, 36.00, 65, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10596, 56, 38.00, 5, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10596, 63, 43.90, 24, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10596, 75, 7.75, 30, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10597, 24, 4.50, 35, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10597, 57, 19.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10597, 65, 21.05, 12, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10598, 27, 43.90, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10598, 71, 21.50, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10599, 62, 49.30, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10600, 54, 7.45, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10600, 73, 15.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10601, 13, 6.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10601, 59, 55.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10602, 77, 13.00, 5, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10603, 22, 21.00, 48, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10603, 49, 20.00, 25, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10604, 48, 12.75, 6, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10604, 76, 18.00, 10, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10605, 16, 17.45, 30, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10605, 59, 55.00, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10605, 60, 34.00, 70, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10605, 71, 21.50, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10606, 4, 22.00, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10606, 55, 24.00, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10606, 62, 49.30, 10, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10607, 7, 30.00, 45, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10607, 17, 39.00, 100, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10607, 33, 2.50, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10607, 40, 18.40, 42, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10607, 72, 34.80, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10608, 56, 38.00, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10609, 1, 18.00, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10609, 10, 31.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10609, 21, 10.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10610, 36, 19.00, 21, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10611, 1, 18.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10611, 2, 19.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10611, 60, 34.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10612, 10, 31.00, 70, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10612, 36, 19.00, 55, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10612, 49, 20.00, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10612, 60, 34.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10612, 76, 18.00, 80, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10613, 13, 6.00, 8, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10613, 75, 7.75, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10614, 11, 21.00, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10614, 21, 10.00, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10614, 39, 18.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10615, 55, 24.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10616, 38, 263.50, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10616, 56, 38.00, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10616, 70, 15.00, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10616, 71, 21.50, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10617, 59, 55.00, 30, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10618, 6, 25.00, 70, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10618, 56, 38.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10618, 68, 12.50, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10619, 21, 10.00, 42, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10619, 22, 21.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10620, 24, 4.50, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10620, 52, 7.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10621, 19, 9.20, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10621, 23, 9.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10621, 70, 15.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10621, 71, 21.50, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10622, 2, 19.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10622, 68, 12.50, 18, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10623, 14, 23.25, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10623, 19, 9.20, 15, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10623, 21, 10.00, 25, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10623, 24, 4.50, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10623, 35, 18.00, 30, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10624, 28, 45.60, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10624, 29, 123.79, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10624, 44, 19.45, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10625, 14, 23.25, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10625, 42, 14.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10625, 60, 34.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10626, 53, 32.80, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10626, 60, 34.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10626, 71, 21.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10627, 62, 49.30, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10627, 73, 15.00, 35, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10628, 1, 18.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10629, 29, 123.79, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10629, 64, 33.25, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10630, 55, 24.00, 12, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10630, 76, 18.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10631, 75, 7.75, 8, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10632, 2, 19.00, 30, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10632, 33, 2.50, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10633, 12, 38.00, 36, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10633, 13, 6.00, 13, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10633, 26, 31.23, 35, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10633, 62, 49.30, 80, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10634, 7, 30.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10634, 18, 62.50, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10634, 51, 53.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10634, 75, 7.75, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10635, 4, 22.00, 10, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10635, 5, 21.35, 15, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10635, 22, 21.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10636, 4, 22.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10636, 58, 13.25, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10637, 11, 21.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10637, 50, 16.25, 25, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10637, 56, 38.00, 60, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10638, 45, 9.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10638, 65, 21.05, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10638, 72, 34.80, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10639, 18, 62.50, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10640, 69, 36.00, 20, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10640, 70, 15.00, 15, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10641, 2, 19.00, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10641, 40, 18.40, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10642, 21, 10.00, 30, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10642, 61, 28.50, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10643, 28, 45.60, 15, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10643, 39, 18.00, 21, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10643, 46, 12.00, 2, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10644, 18, 62.50, 4, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10644, 43, 46.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10644, 46, 12.00, 21, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10645, 18, 62.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10645, 36, 19.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10646, 1, 18.00, 15, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10646, 10, 31.00, 18, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10646, 71, 21.50, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10646, 77, 13.00, 35, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10647, 19, 9.20, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10647, 39, 18.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10648, 22, 21.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10648, 24, 4.50, 15, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10649, 28, 45.60, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10649, 72, 34.80, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10650, 30, 25.89, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10650, 53, 32.80, 25, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10650, 54, 7.45, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10651, 19, 9.20, 12, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10651, 22, 21.00, 20, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10652, 30, 25.89, 2, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10652, 42, 14.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10653, 16, 17.45, 30, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10653, 60, 34.00, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10654, 4, 22.00, 12, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10654, 39, 18.00, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10654, 54, 7.45, 6, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10655, 41, 9.65, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10656, 14, 23.25, 3, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10656, 44, 19.45, 28, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10656, 47, 9.50, 6, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10657, 15, 15.50, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10657, 41, 9.65, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10657, 46, 12.00, 45, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10657, 47, 9.50, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10657, 56, 38.00, 45, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10657, 60, 34.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10658, 21, 10.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10658, 40, 18.40, 70, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10658, 60, 34.00, 55, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10658, 77, 13.00, 70, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10659, 31, 12.50, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10659, 40, 18.40, 24, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10659, 70, 15.00, 40, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10660, 20, 81.00, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10661, 39, 18.00, 3, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10661, 58, 13.25, 49, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10662, 68, 12.50, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10663, 40, 18.40, 30, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10663, 42, 14.00, 30, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10663, 51, 53.00, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10664, 10, 31.00, 24, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10664, 56, 38.00, 12, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10664, 65, 21.05, 15, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10665, 51, 53.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10665, 59, 55.00, 1, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10665, 76, 18.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10666, 29, 123.79, 36, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10666, 65, 21.05, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10667, 69, 36.00, 45, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10667, 71, 21.50, 14, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10668, 31, 12.50, 8, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10668, 55, 24.00, 4, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10668, 64, 33.25, 15, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10669, 36, 19.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10670, 23, 9.00, 32, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10670, 46, 12.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10670, 67, 14.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10670, 73, 15.00, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10670, 75, 7.75, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10671, 16, 17.45, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10671, 62, 49.30, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10671, 65, 21.05, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10672, 38, 263.50, 15, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10672, 71, 21.50, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10673, 16, 17.45, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10673, 42, 14.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10673, 43, 46.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10674, 23, 9.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10675, 14, 23.25, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10675, 53, 32.80, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10675, 58, 13.25, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10676, 10, 31.00, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10676, 19, 9.20, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10676, 44, 19.45, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10677, 26, 31.23, 30, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10677, 33, 2.50, 8, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10678, 12, 38.00, 100, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10678, 33, 2.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10678, 41, 9.65, 120, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10678, 54, 7.45, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10679, 59, 55.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10680, 16, 17.45, 50, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10680, 31, 12.50, 20, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10680, 42, 14.00, 40, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10681, 19, 9.20, 30, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10681, 21, 10.00, 12, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10681, 64, 33.25, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10682, 33, 2.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10682, 66, 17.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10682, 75, 7.75, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10683, 52, 7.00, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10684, 40, 18.40, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10684, 47, 9.50, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10684, 60, 34.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10685, 10, 31.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10685, 41, 9.65, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10685, 47, 9.50, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10686, 17, 39.00, 30, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10686, 26, 31.23, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10687, 9, 97.00, 50, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10687, 29, 123.79, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10687, 36, 19.00, 6, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10688, 10, 31.00, 18, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10688, 28, 45.60, 60, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10688, 34, 14.00, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10689, 1, 18.00, 35, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10690, 56, 38.00, 20, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10690, 77, 13.00, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10691, 1, 18.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10691, 29, 123.79, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10691, 43, 46.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10691, 44, 19.45, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10691, 62, 49.30, 48, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10692, 63, 43.90, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10693, 9, 97.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10693, 54, 7.45, 60, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10693, 69, 36.00, 30, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10693, 73, 15.00, 15, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10694, 7, 30.00, 90, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10694, 59, 55.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10694, 70, 15.00, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10695, 8, 40.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10695, 12, 38.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10695, 24, 4.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10696, 17, 39.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10696, 46, 12.00, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10697, 19, 9.20, 7, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10697, 35, 18.00, 9, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10697, 58, 13.25, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10697, 70, 15.00, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10698, 11, 21.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10698, 17, 39.00, 8, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10698, 29, 123.79, 12, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10698, 65, 21.05, 65, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10698, 70, 15.00, 8, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10699, 47, 9.50, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10700, 1, 18.00, 5, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10700, 34, 14.00, 12, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10700, 68, 12.50, 40, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10700, 71, 21.50, 60, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10701, 59, 55.00, 42, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10701, 71, 21.50, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10701, 76, 18.00, 35, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10702, 3, 10.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10702, 76, 18.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10703, 2, 19.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10703, 59, 55.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10703, 73, 15.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10704, 4, 22.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10704, 24, 4.50, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10704, 48, 12.75, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10705, 31, 12.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10705, 32, 32.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10706, 16, 17.45, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10706, 43, 46.00, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10706, 59, 55.00, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10707, 55, 24.00, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10707, 57, 19.50, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10707, 70, 15.00, 28, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10708, 5, 21.35, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10708, 36, 19.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10709, 8, 40.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10709, 51, 53.00, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10709, 60, 34.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10710, 19, 9.20, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10710, 47, 9.50, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10711, 19, 9.20, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10711, 41, 9.65, 42, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10711, 53, 32.80, 120, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10712, 53, 32.80, 3, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10712, 56, 38.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10713, 10, 31.00, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10713, 26, 31.23, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10713, 45, 9.50, 110, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10713, 46, 12.00, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10714, 2, 19.00, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10714, 17, 39.00, 27, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10714, 47, 9.50, 50, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10714, 56, 38.00, 18, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10714, 58, 13.25, 12, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10715, 10, 31.00, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10715, 71, 21.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10716, 21, 10.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10716, 51, 53.00, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10716, 61, 28.50, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10717, 21, 10.00, 32, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10717, 54, 7.45, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10717, 69, 36.00, 25, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10718, 12, 38.00, 36, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10718, 16, 17.45, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10718, 36, 19.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10718, 62, 49.30, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10719, 18, 62.50, 12, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10719, 30, 25.89, 3, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10719, 54, 7.45, 40, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10720, 35, 18.00, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10720, 71, 21.50, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10721, 44, 19.45, 50, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10722, 2, 19.00, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10722, 31, 12.50, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10722, 68, 12.50, 45, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10722, 75, 7.75, 42, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10723, 26, 31.23, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10724, 10, 31.00, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10724, 61, 28.50, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10725, 41, 9.65, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10725, 52, 7.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10725, 55, 24.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10726, 4, 22.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10726, 11, 21.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10727, 17, 39.00, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10727, 56, 38.00, 10, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10727, 59, 55.00, 10, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10728, 30, 25.89, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10728, 40, 18.40, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10728, 55, 24.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10728, 60, 34.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10729, 1, 18.00, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10729, 21, 10.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10729, 50, 16.25, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10730, 16, 17.45, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10730, 31, 12.50, 3, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10730, 65, 21.05, 10, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10731, 21, 10.00, 40, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10731, 51, 53.00, 30, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10732, 76, 18.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10733, 14, 23.25, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10733, 28, 45.60, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10733, 52, 7.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10734, 6, 25.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10734, 30, 25.89, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10734, 76, 18.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10735, 61, 28.50, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10735, 77, 13.00, 2, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10736, 65, 21.05, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10736, 75, 7.75, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10737, 13, 6.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10737, 41, 9.65, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10738, 16, 17.45, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10739, 36, 19.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10739, 52, 7.00, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10740, 28, 45.60, 5, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10740, 35, 18.00, 35, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10740, 45, 9.50, 40, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10740, 56, 38.00, 14, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10741, 2, 19.00, 15, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10742, 3, 10.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10742, 60, 34.00, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10742, 72, 34.80, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10743, 46, 12.00, 28, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10744, 40, 18.40, 50, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10745, 18, 62.50, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10745, 44, 19.45, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10745, 59, 55.00, 45, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10745, 72, 34.80, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10746, 13, 6.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10746, 42, 14.00, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10746, 62, 49.30, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10746, 69, 36.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10747, 31, 12.50, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10747, 41, 9.65, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10747, 63, 43.90, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10747, 69, 36.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10748, 23, 9.00, 44, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10748, 40, 18.40, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10748, 56, 38.00, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10749, 56, 38.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10749, 59, 55.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10749, 76, 18.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10750, 14, 23.25, 5, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10750, 45, 9.50, 40, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10750, 59, 55.00, 25, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10751, 26, 31.23, 12, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10751, 30, 25.89, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10751, 50, 16.25, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10751, 73, 15.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10752, 1, 18.00, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10752, 69, 36.00, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10753, 45, 9.50, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10753, 74, 10.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10754, 40, 18.40, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10755, 47, 9.50, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10755, 56, 38.00, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10755, 57, 19.50, 14, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10755, 69, 36.00, 25, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10756, 18, 62.50, 21, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10756, 36, 19.00, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10756, 68, 12.50, 6, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10756, 69, 36.00, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10757, 34, 14.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10757, 59, 55.00, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10757, 62, 49.30, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10757, 64, 33.25, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10758, 26, 31.23, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10758, 52, 7.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10758, 70, 15.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10759, 32, 32.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10760, 25, 14.00, 12, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10760, 27, 43.90, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10760, 43, 46.00, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10761, 25, 14.00, 35, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10761, 75, 7.75, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10762, 39, 18.00, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10762, 47, 9.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10762, 51, 53.00, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10762, 56, 38.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10763, 21, 10.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10763, 22, 21.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10763, 24, 4.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10764, 3, 10.00, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10764, 39, 18.00, 130, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10765, 65, 21.05, 80, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10766, 2, 19.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10766, 7, 30.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10766, 68, 12.50, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10767, 42, 14.00, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10768, 22, 21.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10768, 31, 12.50, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10768, 60, 34.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10768, 71, 21.50, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10769, 41, 9.65, 30, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10769, 52, 7.00, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10769, 61, 28.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10769, 62, 49.30, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10770, 11, 21.00, 15, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10771, 71, 21.50, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10772, 29, 123.79, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10772, 59, 55.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10773, 17, 39.00, 33, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10773, 31, 12.50, 70, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10773, 75, 7.75, 7, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10774, 31, 12.50, 2, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10774, 66, 17.00, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10775, 10, 31.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10775, 67, 14.00, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10776, 31, 12.50, 16, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10776, 42, 14.00, 12, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10776, 45, 9.50, 27, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10776, 51, 53.00, 120, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10777, 42, 14.00, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10778, 41, 9.65, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10779, 16, 17.45, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10779, 62, 49.30, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10780, 70, 15.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10780, 77, 13.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10781, 54, 7.45, 3, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10781, 56, 38.00, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10781, 74, 10.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10782, 31, 12.50, 1, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10783, 31, 12.50, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10783, 38, 263.50, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10784, 36, 19.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10784, 39, 18.00, 2, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10784, 72, 34.80, 30, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10785, 10, 31.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10785, 75, 7.75, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10786, 8, 40.00, 30, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10786, 30, 25.89, 15, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10786, 75, 7.75, 42, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10787, 2, 19.00, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10787, 29, 123.79, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10788, 19, 9.20, 50, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10788, 75, 7.75, 40, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10789, 18, 62.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10789, 35, 18.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10789, 63, 43.90, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10789, 68, 12.50, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10790, 7, 30.00, 3, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10790, 56, 38.00, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10791, 29, 123.79, 14, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10791, 41, 9.65, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10792, 2, 19.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10792, 54, 7.45, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10792, 68, 12.50, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10793, 41, 9.65, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10793, 52, 7.00, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10794, 14, 23.25, 15, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10794, 54, 7.45, 6, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10795, 16, 17.45, 65, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10795, 17, 39.00, 35, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10796, 26, 31.23, 21, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10796, 44, 19.45, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10796, 64, 33.25, 35, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10796, 69, 36.00, 24, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10797, 11, 21.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10798, 62, 49.30, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10798, 72, 34.80, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10799, 13, 6.00, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10799, 24, 4.50, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10799, 59, 55.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10800, 11, 21.00, 50, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10800, 51, 53.00, 10, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10800, 54, 7.45, 7, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10801, 17, 39.00, 40, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10801, 29, 123.79, 20, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10802, 30, 25.89, 25, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10802, 51, 53.00, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10802, 55, 24.00, 60, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10802, 62, 49.30, 5, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10803, 19, 9.20, 24, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10803, 25, 14.00, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10803, 59, 55.00, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10804, 10, 31.00, 36, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10804, 28, 45.60, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10804, 49, 20.00, 4, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10805, 34, 14.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10805, 38, 263.50, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10806, 2, 19.00, 20, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10806, 65, 21.05, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10806, 74, 10.00, 15, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10807, 40, 18.40, 1, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10808, 56, 38.00, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10808, 76, 18.00, 50, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10809, 52, 7.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10810, 13, 6.00, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10810, 25, 14.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10810, 70, 15.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10811, 19, 9.20, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10811, 23, 9.00, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10811, 40, 18.40, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10812, 31, 12.50, 16, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10812, 72, 34.80, 40, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10812, 77, 13.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10813, 2, 19.00, 12, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10813, 46, 12.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10814, 41, 9.65, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10814, 43, 46.00, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10814, 48, 12.75, 8, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10814, 61, 28.50, 30, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10815, 33, 2.50, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10816, 38, 263.50, 30, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10816, 62, 49.30, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10817, 26, 31.23, 40, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10817, 38, 263.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10817, 40, 18.40, 60, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10817, 62, 49.30, 25, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10818, 32, 32.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10818, 41, 9.65, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10819, 43, 46.00, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10819, 75, 7.75, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10820, 56, 38.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10821, 35, 18.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10821, 51, 53.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10822, 62, 49.30, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10822, 70, 15.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10823, 11, 21.00, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10823, 57, 19.50, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10823, 59, 55.00, 40, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10823, 77, 13.00, 15, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10824, 41, 9.65, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10824, 70, 15.00, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10825, 26, 31.23, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10825, 53, 32.80, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10826, 31, 12.50, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10826, 57, 19.50, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10827, 10, 31.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10827, 39, 18.00, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10828, 20, 81.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10828, 38, 263.50, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10829, 2, 19.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10829, 8, 40.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10829, 13, 6.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10829, 60, 34.00, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10830, 6, 25.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10830, 39, 18.00, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10830, 60, 34.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10830, 68, 12.50, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10831, 19, 9.20, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10831, 35, 18.00, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10831, 38, 263.50, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10831, 43, 46.00, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10832, 13, 6.00, 3, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10832, 25, 14.00, 10, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10832, 44, 19.45, 16, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10832, 64, 33.25, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10833, 7, 30.00, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10833, 31, 12.50, 9, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10833, 53, 32.80, 9, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10834, 29, 123.79, 8, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10834, 30, 25.89, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10835, 59, 55.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10835, 77, 13.00, 2, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10836, 22, 21.00, 52, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10836, 35, 18.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10836, 57, 19.50, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10836, 60, 34.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10836, 64, 33.25, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10837, 13, 6.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10837, 40, 18.40, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10837, 47, 9.50, 40, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10837, 76, 18.00, 21, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10838, 1, 18.00, 4, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10838, 18, 62.50, 25, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10838, 36, 19.00, 50, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10839, 58, 13.25, 30, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10839, 72, 34.80, 15, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10840, 25, 14.00, 6, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10840, 39, 18.00, 10, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10841, 10, 31.00, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10841, 56, 38.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10841, 59, 55.00, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10841, 77, 13.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10842, 11, 21.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10842, 43, 46.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10842, 68, 12.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10842, 70, 15.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10843, 51, 53.00, 4, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10844, 22, 21.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10845, 23, 9.00, 70, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10845, 35, 18.00, 25, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10845, 42, 14.00, 42, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10845, 58, 13.25, 60, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10845, 64, 33.25, 48, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10846, 4, 22.00, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10846, 70, 15.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10846, 74, 10.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10847, 1, 18.00, 80, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10847, 19, 9.20, 12, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10847, 37, 26.00, 60, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10847, 45, 9.50, 36, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10847, 60, 34.00, 45, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10847, 71, 21.50, 55, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10848, 5, 21.35, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10848, 9, 97.00, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10849, 3, 10.00, 49, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10849, 26, 31.23, 18, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10850, 25, 14.00, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10850, 33, 2.50, 4, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10850, 70, 15.00, 30, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10851, 2, 19.00, 5, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10851, 25, 14.00, 10, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10851, 57, 19.50, 10, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10851, 59, 55.00, 42, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10852, 2, 19.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10852, 17, 39.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10852, 62, 49.30, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10853, 18, 62.50, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10854, 10, 31.00, 100, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10854, 13, 6.00, 65, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10855, 16, 17.45, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10855, 31, 12.50, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10855, 56, 38.00, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10855, 65, 21.05, 15, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10856, 2, 19.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10856, 42, 14.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10857, 3, 10.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10857, 26, 31.23, 35, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10857, 29, 123.79, 10, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10858, 7, 30.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10858, 27, 43.90, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10858, 70, 15.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10859, 24, 4.50, 40, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10859, 54, 7.45, 35, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10859, 64, 33.25, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10860, 51, 53.00, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10860, 76, 18.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10861, 17, 39.00, 42, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10861, 18, 62.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10861, 21, 10.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10861, 33, 2.50, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10861, 62, 49.30, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10862, 11, 21.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10862, 52, 7.00, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10863, 1, 18.00, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10863, 58, 13.25, 12, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10864, 35, 18.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10864, 67, 14.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10865, 38, 263.50, 60, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10865, 39, 18.00, 80, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10866, 2, 19.00, 21, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10866, 24, 4.50, 6, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10866, 30, 25.89, 40, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10867, 53, 32.80, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10868, 26, 31.23, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10868, 35, 18.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10868, 49, 20.00, 42, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10869, 1, 18.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10869, 11, 21.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10869, 23, 9.00, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10869, 68, 12.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10870, 35, 18.00, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10870, 51, 53.00, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10871, 6, 25.00, 50, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10871, 16, 17.45, 12, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10871, 17, 39.00, 16, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10872, 55, 24.00, 10, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10872, 62, 49.30, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10872, 64, 33.25, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10872, 65, 21.05, 21, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10873, 21, 10.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10873, 28, 45.60, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10874, 10, 31.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10875, 19, 9.20, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10875, 47, 9.50, 21, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10875, 49, 20.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10876, 46, 12.00, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10876, 64, 33.25, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10877, 16, 17.45, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10877, 18, 62.50, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10878, 20, 81.00, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10879, 40, 18.40, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10879, 65, 21.05, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10879, 76, 18.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10880, 23, 9.00, 30, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10880, 61, 28.50, 30, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10880, 70, 15.00, 50, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10881, 73, 15.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10882, 42, 14.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10882, 49, 20.00, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10882, 54, 7.45, 32, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10883, 24, 4.50, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10884, 21, 10.00, 40, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10884, 56, 38.00, 21, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10884, 65, 21.05, 12, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10885, 2, 19.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10885, 24, 4.50, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10885, 70, 15.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10885, 77, 13.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10886, 10, 31.00, 70, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10886, 31, 12.50, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10886, 77, 13.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10887, 25, 14.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10888, 2, 19.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10888, 68, 12.50, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10889, 11, 21.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10889, 38, 263.50, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10890, 17, 39.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10890, 34, 14.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10890, 41, 9.65, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10891, 30, 25.89, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10892, 59, 55.00, 40, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10893, 8, 40.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10893, 24, 4.50, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10893, 29, 123.79, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10893, 30, 25.89, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10893, 36, 19.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10894, 13, 6.00, 28, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10894, 69, 36.00, 50, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10894, 75, 7.75, 120, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10895, 24, 4.50, 110, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10895, 39, 18.00, 45, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10895, 40, 18.40, 91, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10895, 60, 34.00, 100, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10896, 45, 9.50, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10896, 56, 38.00, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10897, 29, 123.79, 80, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10897, 30, 25.89, 36, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10898, 13, 6.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10899, 39, 18.00, 8, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10900, 70, 15.00, 3, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10901, 41, 9.65, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10901, 71, 21.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10902, 55, 24.00, 30, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10902, 62, 49.30, 6, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10903, 13, 6.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10903, 65, 21.05, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10903, 68, 12.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10904, 58, 13.25, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10904, 62, 49.30, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10905, 1, 18.00, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10906, 61, 28.50, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10907, 75, 7.75, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10908, 7, 30.00, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10908, 52, 7.00, 14, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10909, 7, 30.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10909, 16, 17.45, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10909, 41, 9.65, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10910, 19, 9.20, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10910, 49, 20.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10910, 61, 28.50, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10911, 1, 18.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10911, 17, 39.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10911, 67, 14.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10912, 11, 21.00, 40, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10912, 29, 123.79, 60, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10913, 4, 22.00, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10913, 33, 2.50, 40, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10913, 58, 13.25, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10914, 71, 21.50, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10915, 17, 39.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10915, 33, 2.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10915, 54, 7.45, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10916, 16, 17.45, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10916, 32, 32.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10916, 57, 19.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10917, 30, 25.89, 1, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10917, 60, 34.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10918, 1, 18.00, 60, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10918, 60, 34.00, 25, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10919, 16, 17.45, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10919, 25, 14.00, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10919, 40, 18.40, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10920, 50, 16.25, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10921, 35, 18.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10921, 63, 43.90, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10922, 17, 39.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10922, 24, 4.50, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10923, 42, 14.00, 10, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10923, 43, 46.00, 10, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10923, 67, 14.00, 24, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10924, 10, 31.00, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10924, 28, 45.60, 30, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10924, 75, 7.75, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10925, 36, 19.00, 25, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10925, 52, 7.00, 12, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10926, 11, 21.00, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10926, 13, 6.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10926, 19, 9.20, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10926, 72, 34.80, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10927, 20, 81.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10927, 52, 7.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10927, 76, 18.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10928, 47, 9.50, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10928, 76, 18.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10929, 21, 10.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10929, 75, 7.75, 49, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10929, 77, 13.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10930, 21, 10.00, 36, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10930, 27, 43.90, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10930, 55, 24.00, 25, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10930, 58, 13.25, 30, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10931, 13, 6.00, 42, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10931, 57, 19.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10932, 16, 17.45, 30, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10932, 62, 49.30, 14, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10932, 72, 34.80, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10932, 75, 7.75, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10933, 53, 32.80, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10933, 61, 28.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10934, 6, 25.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10935, 1, 18.00, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10935, 18, 62.50, 4, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10935, 23, 9.00, 8, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10936, 36, 19.00, 30, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10937, 28, 45.60, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10937, 34, 14.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10938, 13, 6.00, 20, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10938, 43, 46.00, 24, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10938, 60, 34.00, 49, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10938, 71, 21.50, 35, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10939, 2, 19.00, 10, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10939, 67, 14.00, 40, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10940, 7, 30.00, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10940, 13, 6.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10941, 31, 12.50, 44, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10941, 62, 49.30, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10941, 68, 12.50, 80, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10941, 72, 34.80, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10942, 49, 20.00, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10943, 13, 6.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10943, 22, 21.00, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10943, 46, 12.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10944, 11, 21.00, 5, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10944, 44, 19.45, 18, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10944, 56, 38.00, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10945, 13, 6.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10945, 31, 12.50, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10946, 10, 31.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10946, 24, 4.50, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10946, 77, 13.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10947, 59, 55.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10948, 50, 16.25, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10948, 51, 53.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10948, 55, 24.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10949, 6, 25.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10949, 10, 31.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10949, 17, 39.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10949, 62, 49.30, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10950, 4, 22.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10951, 33, 2.50, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10951, 41, 9.65, 6, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10951, 75, 7.75, 50, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10952, 6, 25.00, 16, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10952, 28, 45.60, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10953, 20, 81.00, 50, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10953, 31, 12.50, 50, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10954, 16, 17.45, 28, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10954, 31, 12.50, 25, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10954, 45, 9.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10954, 60, 34.00, 24, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10955, 75, 7.75, 12, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10956, 21, 10.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10956, 47, 9.50, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10956, 51, 53.00, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10957, 30, 25.89, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10957, 35, 18.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10957, 64, 33.25, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10958, 5, 21.35, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10958, 7, 30.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10958, 72, 34.80, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10959, 75, 7.75, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10960, 24, 4.50, 10, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10960, 41, 9.65, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10961, 52, 7.00, 6, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10961, 76, 18.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10962, 7, 30.00, 45, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10962, 13, 6.00, 77, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10962, 53, 32.80, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10962, 69, 36.00, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10962, 76, 18.00, 44, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10963, 60, 34.00, 2, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10964, 18, 62.50, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10964, 38, 263.50, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10964, 69, 36.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10965, 51, 53.00, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10966, 37, 26.00, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10966, 56, 38.00, 12, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10966, 62, 49.30, 12, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10967, 19, 9.20, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10967, 49, 20.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10968, 12, 38.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10968, 24, 4.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10968, 64, 33.25, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10969, 46, 12.00, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10970, 52, 7.00, 40, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10971, 29, 123.79, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10972, 17, 39.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10972, 33, 2.50, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10973, 26, 31.23, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10973, 41, 9.65, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10973, 75, 7.75, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10974, 63, 43.90, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10975, 8, 40.00, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10975, 75, 7.75, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10976, 28, 45.60, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10977, 39, 18.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10977, 47, 9.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10977, 51, 53.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10977, 63, 43.90, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10978, 8, 40.00, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10978, 21, 10.00, 40, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10978, 40, 18.40, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10978, 44, 19.45, 6, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10979, 7, 30.00, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10979, 12, 38.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10979, 24, 4.50, 80, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10979, 27, 43.90, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10979, 31, 12.50, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10979, 63, 43.90, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10980, 75, 7.75, 40, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10981, 38, 263.50, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10982, 7, 30.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10982, 43, 46.00, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10983, 13, 6.00, 84, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10983, 57, 19.50, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10984, 16, 17.45, 55, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10984, 24, 4.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10984, 36, 19.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10985, 16, 17.45, 36, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10985, 18, 62.50, 8, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10985, 32, 32.00, 35, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10986, 11, 21.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10986, 20, 81.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10986, 76, 18.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10986, 77, 13.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10987, 7, 30.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10987, 43, 46.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10987, 72, 34.80, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10988, 7, 30.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10988, 62, 49.30, 40, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10989, 6, 25.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10989, 11, 21.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10989, 41, 9.65, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10990, 21, 10.00, 65, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10990, 34, 14.00, 60, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10990, 55, 24.00, 65, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10990, 61, 28.50, 66, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10991, 2, 19.00, 50, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10991, 70, 15.00, 20, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10991, 76, 18.00, 90, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10992, 72, 34.80, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10993, 29, 123.79, 50, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10993, 41, 9.65, 35, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10994, 59, 55.00, 18, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10995, 51, 53.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10995, 60, 34.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10996, 42, 14.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10997, 32, 32.00, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10997, 46, 12.00, 20, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10997, 52, 7.00, 20, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10998, 24, 4.50, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10998, 61, 28.50, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10998, 74, 10.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10998, 75, 7.75, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10999, 41, 9.65, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10999, 51, 53.00, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(10999, 77, 13.00, 21, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11000, 4, 22.00, 25, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11000, 24, 4.50, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11000, 77, 13.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11001, 7, 30.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11001, 22, 21.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11001, 46, 12.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11001, 55, 24.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11002, 13, 6.00, 56, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11002, 35, 18.00, 15, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11002, 42, 14.00, 24, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11002, 55, 24.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11003, 1, 18.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11003, 40, 18.40, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11003, 52, 7.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11004, 26, 31.23, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11004, 76, 18.00, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11005, 1, 18.00, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11005, 59, 55.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11006, 1, 18.00, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11006, 29, 123.79, 2, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11007, 8, 40.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11007, 29, 123.79, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11007, 42, 14.00, 14, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11008, 28, 45.60, 70, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11008, 34, 14.00, 90, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11008, 71, 21.50, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11009, 24, 4.50, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11009, 36, 19.00, 18, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11009, 60, 34.00, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11010, 7, 30.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11010, 24, 4.50, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11011, 58, 13.25, 40, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11011, 71, 21.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11012, 19, 9.20, 50, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11012, 60, 34.00, 36, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11012, 71, 21.50, 60, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11013, 23, 9.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11013, 42, 14.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11013, 45, 9.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11013, 68, 12.50, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11014, 41, 9.65, 28, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11015, 30, 25.89, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11015, 77, 13.00, 18, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11016, 31, 12.50, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11016, 36, 19.00, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11017, 3, 10.00, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11017, 59, 55.00, 110, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11017, 70, 15.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11018, 12, 38.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11018, 18, 62.50, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11018, 56, 38.00, 5, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11019, 46, 12.00, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11019, 49, 20.00, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11020, 10, 31.00, 24, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11021, 2, 19.00, 11, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11021, 20, 81.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11021, 26, 31.23, 63, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11021, 51, 53.00, 44, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11021, 72, 34.80, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11022, 19, 9.20, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11022, 69, 36.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11023, 7, 30.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11023, 43, 46.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11024, 26, 31.23, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11024, 33, 2.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11024, 65, 21.05, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11024, 71, 21.50, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11025, 1, 18.00, 10, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11025, 13, 6.00, 20, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11026, 18, 62.50, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11026, 51, 53.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11027, 24, 4.50, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11027, 62, 49.30, 21, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11028, 55, 24.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11028, 59, 55.00, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11029, 56, 38.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11029, 63, 43.90, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11030, 2, 19.00, 100, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11030, 5, 21.35, 70, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11030, 29, 123.79, 60, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11030, 59, 55.00, 100, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11031, 1, 18.00, 45, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11031, 13, 6.00, 80, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11031, 24, 4.50, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11031, 64, 33.25, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11031, 71, 21.50, 16, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11032, 36, 19.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11032, 38, 263.50, 25, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11032, 59, 55.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11033, 53, 32.80, 70, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11033, 69, 36.00, 36, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11034, 21, 10.00, 15, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11034, 44, 19.45, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11034, 61, 28.50, 6, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11035, 1, 18.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11035, 35, 18.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11035, 42, 14.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11035, 54, 7.45, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11036, 13, 6.00, 7, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11036, 59, 55.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11037, 70, 15.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11038, 40, 18.40, 5, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11038, 52, 7.00, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11038, 71, 21.50, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11039, 28, 45.60, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11039, 35, 18.00, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11039, 49, 20.00, 60, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11039, 57, 19.50, 28, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11040, 21, 10.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11041, 2, 19.00, 30, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11041, 63, 43.90, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11042, 44, 19.45, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11042, 61, 28.50, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11043, 11, 21.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11044, 62, 49.30, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11045, 33, 2.50, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11045, 51, 53.00, 24, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11046, 12, 38.00, 20, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11046, 32, 32.00, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11046, 35, 18.00, 18, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11047, 1, 18.00, 25, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11047, 5, 21.35, 30, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11048, 68, 12.50, 42, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11049, 2, 19.00, 10, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11049, 12, 38.00, 4, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11050, 76, 18.00, 50, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11051, 24, 4.50, 10, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11052, 43, 46.00, 30, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11052, 61, 28.50, 10, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11053, 18, 62.50, 35, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11053, 32, 32.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11053, 64, 33.25, 25, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11054, 33, 2.50, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11054, 67, 14.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11055, 24, 4.50, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11055, 25, 14.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11055, 51, 53.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11055, 57, 19.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11056, 7, 30.00, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11056, 55, 24.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11056, 60, 34.00, 50, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11057, 70, 15.00, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11058, 21, 10.00, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11058, 60, 34.00, 21, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11058, 61, 28.50, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11059, 13, 6.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11059, 17, 39.00, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11059, 60, 34.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11060, 60, 34.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11060, 77, 13.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11061, 60, 34.00, 15, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11062, 53, 32.80, 10, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11062, 70, 15.00, 12, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11063, 34, 14.00, 30, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11063, 40, 18.40, 40, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11063, 41, 9.65, 30, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11064, 17, 39.00, 77, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11064, 41, 9.65, 12, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11064, 53, 32.80, 25, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11064, 55, 24.00, 4, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11064, 68, 12.50, 55, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11065, 30, 25.89, 4, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11065, 54, 7.45, 20, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11066, 16, 17.45, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11066, 19, 9.20, 42, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11066, 34, 14.00, 35, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11067, 41, 9.65, 9, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11068, 28, 45.60, 8, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11068, 43, 46.00, 36, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11068, 77, 13.00, 28, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11069, 39, 18.00, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11070, 1, 18.00, 40, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11070, 2, 19.00, 20, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11070, 16, 17.45, 30, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11070, 31, 12.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11071, 7, 30.00, 15, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11071, 13, 6.00, 10, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11072, 2, 19.00, 8, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11072, 41, 9.65, 40, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11072, 50, 16.25, 22, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11072, 64, 33.25, 130, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11073, 11, 21.00, 10, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11073, 24, 4.50, 20, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11074, 16, 17.45, 14, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11075, 2, 19.00, 10, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11075, 46, 12.00, 30, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11075, 76, 18.00, 2, 0.15);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11076, 6, 25.00, 20, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11076, 14, 23.25, 20, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11076, 19, 9.20, 10, 0.25);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 2, 19.00, 24, 0.2);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 3, 10.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 4, 22.00, 1, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 6, 25.00, 1, 0.02);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 7, 30.00, 1, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 8, 40.00, 2, 0.1);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 10, 31.00, 1, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 12, 38.00, 2, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 13, 6.00, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 14, 23.25, 1, 0.03);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 16, 17.45, 2, 0.03);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 20, 81.00, 1, 0.04);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 23, 9.00, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 32, 32.00, 1, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 39, 18.00, 2, 0.05);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 41, 9.65, 3, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 46, 12.00, 3, 0.02);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 52, 7.00, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 55, 24.00, 2, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 60, 34.00, 2, 0.06);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 64, 33.25, 2, 0.03);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 66, 17.00, 1, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 73, 15.00, 2, 0.01);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 75, 7.75, 4, 0);
+INSERT INTO OrderDetail(orderid, productid, unitprice, quantity, discount)
+  VALUES(11077, 77, 13.00, 2, 0);
+
+
+-- Region 
+
+INSERT INTO Region VALUES (1,'Eastern');
+INSERT INTO Region VALUES (2,'Western');
+INSERT INTO Region VALUES (3,'Northern');
+INSERT INTO Region VALUES (4,'Southern');
+
+-- Territory 
+
+INSERT INTO Territory  VALUES ('01581','Westboro',1);
+INSERT INTO Territory  VALUES ('01730','Bedford',1);
+INSERT INTO Territory  VALUES ('01833','Georgetow',1);
+INSERT INTO Territory  VALUES ('02116','Boston',1);
+INSERT INTO Territory  VALUES ('02139','Cambridge',1);
+INSERT INTO Territory  VALUES ('02184','Braintree',1);
+INSERT INTO Territory  VALUES ('02903','Providence',1);
+INSERT INTO Territory  VALUES ('03049','Hollis',3);
+INSERT INTO Territory  VALUES ('03801','Portsmouth',3);
+INSERT INTO Territory  VALUES ('06897','Wilton',1);
+INSERT INTO Territory  VALUES ('07960','Morristown',1);
+INSERT INTO Territory  VALUES ('08837','Edison',1);
+INSERT INTO Territory  VALUES ('10019','New York',1);
+INSERT INTO Territory  VALUES ('10038','New York',1);
+INSERT INTO Territory  VALUES ('11747','Mellvile',1);
+INSERT INTO Territory  VALUES ('14450','Fairport',1);
+INSERT INTO Territory  VALUES ('19428','Philadelphia',3);
+INSERT INTO Territory  VALUES ('19713','Neward',1);
+INSERT INTO Territory  VALUES ('20852','Rockville',1);
+INSERT INTO Territory  VALUES ('27403','Greensboro',1);
+INSERT INTO Territory  VALUES ('27511','Cary',1);
+INSERT INTO Territory  VALUES ('29202','Columbia',4);
+INSERT INTO Territory  VALUES ('30346','Atlanta',4);
+INSERT INTO Territory  VALUES ('31406','Savannah',4);
+INSERT INTO Territory  VALUES ('32859','Orlando',4);
+INSERT INTO Territory  VALUES ('33607','Tampa',4);
+INSERT INTO Territory  VALUES ('40222','Louisville',1);
+INSERT INTO Territory  VALUES ('44122','Beachwood',3);
+INSERT INTO Territory  VALUES ('45839','Findlay',3);
+INSERT INTO Territory  VALUES ('48075','Southfield',3);
+INSERT INTO Territory  VALUES ('48084','Troy',3);
+INSERT INTO Territory  VALUES ('48304','Bloomfield Hills',3);
+INSERT INTO Territory  VALUES ('53404','Racine',3);
+INSERT INTO Territory  VALUES ('55113','Roseville',3);
+INSERT INTO Territory  VALUES ('55439','Minneapolis',3);
+INSERT INTO Territory  VALUES ('60179','Hoffman Estates',2);
+INSERT INTO Territory  VALUES ('60601','Chicago',2);
+INSERT INTO Territory  VALUES ('72716','Bentonville',4);
+INSERT INTO Territory  VALUES ('75234','Dallas',4);
+INSERT INTO Territory  VALUES ('78759','Austin',4);
+INSERT INTO Territory  VALUES ('80202','Denver',2);
+INSERT INTO Territory  VALUES ('80909','Colorado Springs',2);
+INSERT INTO Territory  VALUES ('85014','Phoenix',2);
+INSERT INTO Territory  VALUES ('85251','Scottsdale',2);
+INSERT INTO Territory  VALUES ('90405','Santa Monica',2);
+INSERT INTO Territory  VALUES ('94025','Menlo Park',2);
+INSERT INTO Territory  VALUES ('94105','San Francisco',2);
+INSERT INTO Territory  VALUES ('95008','Campbell',2);
+INSERT INTO Territory  VALUES ('95054','Santa Clara',2);
+INSERT INTO Territory  VALUES ('95060','Santa Cruz',2);
+INSERT INTO Territory  VALUES ('98004','Bellevue',2);
+INSERT INTO Territory  VALUES ('98052','Redmond',2);
+INSERT INTO Territory  VALUES ('98104','Seattle',2);
+
+-- EmployeeTerritory
+
+INSERT INTO EmployeeTerritory  VALUES (1,'06897');
+INSERT INTO EmployeeTerritory  VALUES (1,'19713');
+INSERT INTO EmployeeTerritory  VALUES (2,'01581');
+INSERT INTO EmployeeTerritory  VALUES (2,'01730');
+INSERT INTO EmployeeTerritory  VALUES (2,'01833');
+INSERT INTO EmployeeTerritory  VALUES (2,'02116');
+INSERT INTO EmployeeTerritory  VALUES (2,'02139');
+INSERT INTO EmployeeTerritory  VALUES (2,'02184');
+INSERT INTO EmployeeTerritory  VALUES (2,'40222');
+INSERT INTO EmployeeTerritory  VALUES (3,'30346');
+INSERT INTO EmployeeTerritory  VALUES (3,'31406');
+INSERT INTO EmployeeTerritory  VALUES (3,'32859');
+INSERT INTO EmployeeTerritory  VALUES (3,'33607');
+INSERT INTO EmployeeTerritory  VALUES (4,'20852');
+INSERT INTO EmployeeTerritory  VALUES (4,'27403');
+INSERT INTO EmployeeTerritory  VALUES (4,'27511');
+INSERT INTO EmployeeTerritory  VALUES (5,'02903');
+INSERT INTO EmployeeTerritory  VALUES (5,'07960');
+INSERT INTO EmployeeTerritory  VALUES (5,'08837');
+INSERT INTO EmployeeTerritory  VALUES (5,'10019');
+INSERT INTO EmployeeTerritory  VALUES (5,'10038');
+INSERT INTO EmployeeTerritory  VALUES (5,'11747');
+INSERT INTO EmployeeTerritory  VALUES (5,'14450');
+INSERT INTO EmployeeTerritory  VALUES (6,'85014');
+INSERT INTO EmployeeTerritory  VALUES (6,'85251');
+INSERT INTO EmployeeTerritory  VALUES (6,'98004');
+INSERT INTO EmployeeTerritory  VALUES (6,'98052');
+INSERT INTO EmployeeTerritory  VALUES (6,'98104');
+INSERT INTO EmployeeTerritory  VALUES (7,'60179');
+INSERT INTO EmployeeTerritory  VALUES (7,'60601');
+INSERT INTO EmployeeTerritory  VALUES (7,'80202');
+INSERT INTO EmployeeTerritory  VALUES (7,'80909');
+INSERT INTO EmployeeTerritory  VALUES (7,'90405');
+INSERT INTO EmployeeTerritory  VALUES (7,'94025');
+INSERT INTO EmployeeTerritory  VALUES (7,'94105');
+INSERT INTO EmployeeTerritory  VALUES (7,'95008');
+INSERT INTO EmployeeTerritory  VALUES (7,'95054');
+INSERT INTO EmployeeTerritory  VALUES (7,'95060');
+INSERT INTO EmployeeTerritory  VALUES (8,'19428');
+INSERT INTO EmployeeTerritory  VALUES (8,'44122');
+INSERT INTO EmployeeTerritory  VALUES (8,'45839');
+INSERT INTO EmployeeTerritory  VALUES (8,'53404');
+INSERT INTO EmployeeTerritory  VALUES (9,'03049');
+INSERT INTO EmployeeTerritory  VALUES (9,'03801');
+INSERT INTO EmployeeTerritory  VALUES (9,'48075');
+INSERT INTO EmployeeTerritory  VALUES (9,'48084');
+INSERT INTO EmployeeTerritory  VALUES (9,'48304');
+INSERT INTO EmployeeTerritory  VALUES (9,'55113');
+INSERT INTO EmployeeTerritory  VALUES (9,'55439');
