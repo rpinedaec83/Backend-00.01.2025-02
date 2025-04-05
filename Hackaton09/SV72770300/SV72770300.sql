@@ -283,3 +283,103 @@ Use northwind;
 
 	select * from employee;
 
+-- Ejercicio 31
+-- Obtener todos los productos cuyo nombre comienzan con C y tienen un precio comprendido entre 28 y 81.
+
+	select * from product;
+    select * from product 
+    where ProductName like 'Product_C%' and (unitPrice between 28 and 81);
+    
+-- Ejercicio 32
+-- Obtener todos los clientes del Pais de USA,Francia y UK.
+
+	select * from customer;
+    select * from customer 
+    where Country in('USA','France','UK');
+    
+-- Ejercicio 33
+-- Obtener todos los productos descontinuados o con stock cero.
+
+	select * from product;
+	select * from product 
+    where discontinued = true;
+    
+-- Ejercicio 34
+-- Obtener todas las ordenes hechas por el empleado King Russell.
+
+	select * from salesorder, employee;
+
+	select 
+		o.OrderId,
+        concat(e.LastName, ' ' ,e.FirstName) as Employee
+	from salesorder as o
+    inner join employee as e on e.EmployeeId = o.EmployeeId
+    where concat(e.LastName, ' ' ,e.FirstName) like 'King Russell';
+    
+-- Ejercicio 35
+-- Obtener todas las ordenes por el cliente cuya compania es "Customer MLTDN".
+
+	select * from salesorder, customer;
+
+    select 
+		o.orderId,
+        c.CompanyName
+	from salesorder as o
+    inner join customer as c on c.custId = o.custId
+    where c.CompanyName = 'Customer MLTDN';
+    
+-- Ejercicio 36
+-- Obtener todas las ordenes hechas por el empleado King Russell, Lew Judy y Davis Sara.
+
+	select * from employee;
+
+	select 
+		o.OrderId,
+        concat(e.LastName, ' ' ,e.FirstName) as Employee
+	from salesorder as o
+    inner join employee as e on e.EmployeeId = o.EmployeeId
+    where concat(e.LastName, ' ' ,e.FirstName) in('King Russell', 'Lew Judy', 'Davis Sara');
+    
+-- Ejercicio 37
+-- Obtener todos los productos(codigo, nombre, precio, stock) de la orden 10257.
+	
+    select * from product;
+    select * from orderdetail;
+    
+    select 
+		od.ProductId,
+        p.ProductName,
+        p.unitPrice,
+        p.unitsInStock
+	from orderdetail as od
+    inner join product as p on p.ProductId = od.ProductId
+    where od.OrderId = 10257;
+    
+-- Ejercicio 38
+-- Obtener todos los productos(codigo, nombre, precio, stock) de las ordenes hechas desde 2007 hasta la fecha de hoy.   
+        
+    select * from orderdetail, salesorder, product;
+    
+    select 
+		od.ProductId,
+        p.ProductName,
+        p.unitPrice,
+        p.UnitsInStock
+	from orderdetail as od
+    inner join product as p on p.ProductId = od.ProductId
+    inner join salesorder as o on o.OrderId = od.OrderId
+    where o.OrderDate between '2007-01-01' and curdate(); -- current_date();
+    
+-- Ejercicio 39
+-- Calcular los 15 productos mas caros. 
+
+	select * from product;
+    select * from product order by unitPrice desc
+    limit 15;
+    
+-- Ejercicio 40
+-- Calcular los 5 productos mas baratos.
+
+	select * from product;
+    select * from product order by unitPrice asc
+    limit 5;
