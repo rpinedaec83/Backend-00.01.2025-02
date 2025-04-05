@@ -88,3 +88,99 @@ Use northwind;
 	select * from salesorder;
     select * from salesorder 
     where OrderDate like '2008-__-01%';
+
+-- Ejercicio 11
+-- Mostrar todos los clientes que no tienen fax.
+
+	select * from customer;
+	select * from customer 
+    where fax is null;
+    
+-- Ejercicio 12
+-- Mostrar todos los clientes que tienen fax.
+
+	select * from customer;
+	select * from customer 
+    where fax is not null;
+    
+-- Ejercicio 13
+-- Mostrar el nombre del producto, el precio, el stock y el nombre de la categoría a la que pertenece.
+
+	select * from product, category;
+    select 
+        p.ProductName,
+        p.unitPrice,
+        p.unitsInStock,
+        c.CategoryName
+    from product as p
+    inner join category as c on c.CategoryId = p.CategoryId;
+    
+-- Ejercicio 14
+-- Mostrar el nombre del producto, el precio producto, el código del proveedor y el nombre de la compañía proveedora.
+
+	select * from product, supplier;
+    select 
+        p.ProductName,
+        p.unitPrice,
+        p.SupplierId,
+        s.companyName
+    from product as p
+    inner join supplier as s on s.SupplierId = p.SupplierId;
+    
+-- Ejercicio 15
+-- Mostrar el número de orden, el código del producto, el precio, la cantidad y el total pagado por producto.
+
+	select * from orderdetail, product;
+    select 
+		od.OrderId,
+        od.ProductId,
+        p.unitPrice,
+        od.Quantity,
+        od.unitPrice * od.Quantity as Total
+	from orderdetail as od 
+    inner join product as p on p.ProductId = od.ProductId;
+    
+-- Ejercicio 16
+-- Mostrar el número de la orden, fecha, código del producto, precio, código del empleado y su nombre completo.
+    
+    select * from orderdetail, salesorder, product, employee;
+
+    select 
+		od.OrderId,
+        o.OrderDate,
+        od.ProductId,
+        p.unitPrice,
+        o.EmployeeId,
+        concat(e.FirstName, ' ',e.LastName) as 'Full Name'
+	from orderdetail as od
+    inner join salesorder as o on od.OrderId = o.OrderId
+    inner join employee as e on e.EmployeeId = o.EmployeeId
+    inner join product as p on p.ProductId = od.ProductId;
+    
+-- Ejercicio 17
+-- Mostrar los 10 productos con menor stock
+
+	select * from product;
+    select * from product order by unitsInStock asc
+    limit 10;
+    
+-- Ejercicio 18 - Corregir
+-- Mostrar los 10 productos con mayor stock
+    
+	select * from product;
+    select * from product order by unitsInStock desc
+    limit 10;
+    
+-- Ejercicio 19
+-- Mostrar los 10 productos con menor precio
+
+	select * from product;
+    select * from product order by unitPrice asc
+    limit 10;
+    
+-- Ejercicio 20
+-- Mostrar los 10 productos con mayor precio
+
+    select * from product;
+    select * from product order by unitPrice desc
+    limit 10;
