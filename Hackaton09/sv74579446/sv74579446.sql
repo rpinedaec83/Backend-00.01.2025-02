@@ -179,7 +179,6 @@ where productName like 'M%'
   and unitPrice between 28 and 129;
 
 -- 32 Obtener todos los clientes del Pais de USA,Francia y UK
- 
 select * from customer
 where country in ('USA','France','UK');
 
