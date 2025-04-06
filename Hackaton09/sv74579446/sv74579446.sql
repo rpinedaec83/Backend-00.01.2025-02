@@ -1,4 +1,4 @@
--- 1.  Seleccionar los clientes que viven en el país de "usa"
+-- 1. Seleccionar los clientes que viven en el país de "usa"
 use northwind;
 select * from customer 
 where upper(country) = 'USA';
