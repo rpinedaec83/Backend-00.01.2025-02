@@ -276,9 +276,7 @@ order by Anio, Mes;
 /** 47 Seleccionar el nombre de la compañía del cliente, el código de la orden de compra, la fecha de la orden de compra,
  código del producto, cantidad pedida del producto, nombre del producto, el nombre de la compañía proveedora y la ciudad del proveedor*/
  
-select c.companyName as Cliente, o.OrderID, o.OrderDate, 
-       p.productId, od.Quantity, p.productName, 
-       s.companyName as proveedor, s.city
+select c.companyName as Cliente, o.OrderID, o.OrderDate, p.productId, od.Quantity, p.productName, s.companyName as proveedor, s.city
 from salesOrder o
 join customer c on o.custId = c.custId
 join orderDetail od on o.orderId = od.orderId
