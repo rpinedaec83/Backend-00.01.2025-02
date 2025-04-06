@@ -6,7 +6,7 @@ WHERE upper(country) = 'USA';
 -- 2. Seleccionar los proveedores que viven en la ciudad de "BERLIN"
 SELECT * 
 FROM supplier 
-WHERE upper(city) = 'BERLIN';
+WHERE upper(city) = 'BERLIN'; 
 
 -- 3. Seleccionar los empleados con código 3,5 y 8
 SELECT * 
