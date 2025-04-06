@@ -501,5 +501,5 @@ WHERE
     AND od.quantity BETWEEN 23 AND 187  -- Cantidad en rango
 ORDER BY
     s.companyName ASC,
-    od.quantity DESC;
+    od.quantity DESC; 
 
