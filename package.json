@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "handlebars": "^4.7.8",
     "node-localstorage": "^3.0.5"
   }
 }
