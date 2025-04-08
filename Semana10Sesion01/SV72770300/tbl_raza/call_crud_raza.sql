@@ -1,0 +1,10 @@
+call crud_raza(1, null, null, null, null);
+call crud_raza(2, 'Doberman', 1, null, 1);
+call crud_raza(2, 'Basset hound', 1, null, 1);
+call crud_raza(3, 'Poodle', null, 4, null);
+call crud_raza(3, 'Europea pelo corto', null, 1, null);
+call crud_raza(3, null, 1, 4, 1);
+call crud_raza(3, null, 1, 1, 1);
+call crud_raza(3, null, 1, 3, 1);
+call crud_raza(3, null, null, 2, 1);
+call crud_raza(4, null, null, 3, null);
