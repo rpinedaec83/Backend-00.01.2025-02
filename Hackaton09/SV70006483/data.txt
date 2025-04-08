@@ -1,0 +1,100 @@
+Tablas y Columnas en Español:
+Tabla: categories
+
+CategoryID → IDCategoria
+
+CategoryName → NombreCategoria
+
+Description → Descripcion
+
+Tabla: customers
+
+CustomerID → IDCliente
+
+CustomerName → NombreCliente
+
+ContactName → NombreContacto
+
+Address → Direccion
+
+City → Ciudad
+
+PostalCode → CodigoPostal
+
+Country → Pais
+
+Tabla: employees
+
+EmployeeID → IDEmpleado
+
+LastName → Apellido
+
+FirstName → Nombre
+
+BirthDate → FechaNacimiento
+
+Photo → Foto
+
+Notes → Notas
+
+Tabla: orderdetails
+
+OrderDetailID → IDDetallePedido
+
+OrderID → IDPedido
+
+ProductID → IDProducto
+
+Quantity → Cantidad
+
+Tabla: orders
+
+OrderID → IDPedido
+
+CustomerID → IDCliente
+
+EmployeeID → IDEmpleado
+
+OrderDate → FechaPedido
+
+ShipperID → IDTransportista
+
+Tabla: products
+
+ProductID → IDProducto
+
+ProductName → NombreProducto
+
+SupplierID → IDProveedor
+
+CategoryID → IDCategoria
+
+Unit → Unidad
+
+Price → Precio
+
+Tabla: shippers
+
+ShipperID → IDTransportista
+
+ShipperName → NombreTransportista
+
+Phone → Telefono
+
+Tabla: suppliers
+
+SupplierID → IDProveedor
+
+SupplierName → NombreProveedor
+
+ContactName → NombreContacto
+
+Address → Direccion
+
+City → Ciudad
+
+PostalCode → CodigoPostal
+
+Country → Pais
+
+Phone → Telefono
