@@ -1,0 +1,37 @@
+{
+  "name": "sv70146250-hackaton07",
+  "version": "1.0.0",
+  "description": "\"Uso de APIs\"",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KevinCossioM/Backend-00.01.2025-02.git"
+  },
+  "keywords": [
+    "backend",
+    "nodejs",
+    "api",
+    "axios",
+    "nodemon",
+    "hackaton",
+    "idat"
+  ],
+  "author": "Kevin Cossio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KevinCossioM/Backend-00.01.2025-02/issues"
+  },
+  "homepage": "https://github.com/KevinCossioM/Backend-00.01.2025-02#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "dependencies": {
+    "axios": "^1.8.4"
+  }
+}
