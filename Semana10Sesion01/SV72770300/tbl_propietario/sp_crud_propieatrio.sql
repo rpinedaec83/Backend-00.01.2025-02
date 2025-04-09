@@ -25,7 +25,7 @@ begin
             telefono = ifnull(ptelefono, telefono),
             id_nacionalidad = ifnull(pid_nacionalidad, id_nacionalidad),
             is_activo = ifnull(pis_activo, is_activo),
-            usuario_creacion = ifnull(usuario_creacion, pusuario_creacion),
+            usuario_creacion = ifnull(pusuario_creacion, usuario_creacion),
             fecha_creacion = current_timestamp(),
             usuario_modificacion = pusuario_modificacion,
             fecha_modificacion = current_timestamp()
