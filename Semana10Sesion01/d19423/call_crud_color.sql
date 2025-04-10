@@ -5,6 +5,8 @@ call crud_color(3,null,0, 5, 1);
 call crud_color(4,null,null, 4,1);
 
 
+
+
 select now();
 select saludar('Roberto','Pineda',null);
 select saludar('Roberto','Pineda','rpineda@x-codec.net');
