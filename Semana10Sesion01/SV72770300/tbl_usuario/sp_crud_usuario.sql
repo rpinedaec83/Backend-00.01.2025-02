@@ -3,7 +3,7 @@ drop procedure if exists crud_usuario
 DELIMITER $$
 
 create procedure crud_usuario(in opcion int, in pusername varchar(100), in pcontrasena varchar(100), in pemail varchar(100), 
-in pis_activo bit, pid int, in pusuario_creacion int, in pusuario_modificacion int)
+in pis_activo bit, pid int, in pusuario int)
 
 begin
 	IF opcion = 1 then
@@ -12,8 +12,8 @@ begin
     end;
     elseif opcion = 2 then
     begin
-		insert into tbl_usuario(username, password, email, usuario_creacion, usuario_modificacion)
-        values(pusername, pcontrasena, pemail, pusuario_creacion, pusuario_modificacion);
+		insert into tbl_usuario(username, password, email, usuario_creacion)
+        values(pusername, pcontrasena, pemail, pusuario);
     end;
     elseif opcion = 3 then
     begin
@@ -21,10 +21,8 @@ begin
 			set username = ifnull(pusername, username),
             password = ifnull(pcontrasena, password),
             email = ifnull(pemail, email),
-            usuario_creacion = ifnull(pusuario_creacion, usuario_creacion),
             is_activo = ifnull(pis_activo, is_activo),
-            fecha_creacion = current_timestamp(),
-            usuario_modificacion = pusuario_modificacion,
+            usuario_modificacion = pusuario,
             fecha_modificacion = current_timestamp()
 		where id = pid;
     end;
@@ -32,7 +30,7 @@ begin
     begin
 		update tbl_usuario
 			set is_activo = 0,
-            usuario_modificacion = pusuario_modificacion,
+            usuario_modificacion = pusuario,
             fecha_modificacion = current_timestamp()
 		where id = pid;
     end;

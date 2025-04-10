@@ -3,7 +3,7 @@ drop procedure if exists crud_mascota_vacuna
 DELIMITER $$
 
 create procedure crud_mascota_vacuna(in opcion int, in pid_mascota int, in pid_vacuna int, in pfecha_aplicacion date, 
-in pis_activo bit, pid int, in pusuario_creacion int, in pusuario_modificacion int)
+in pis_activo bit, pid int, in pusuario int)
 
 begin
 	IF opcion = 1 then
@@ -12,8 +12,8 @@ begin
     end;
     elseif opcion = 2 then
     begin
-		insert into tbl_mascota_vacuna(id_mascota, id_vacuna, fecha_aplicacion, usuario_creacion, usuario_modificacion)
-        values(pid_mascota, pid_vacuna, now(), pusuario_creacion, pusuario_modificacion);
+		insert into tbl_mascota_vacuna(id_mascota, id_vacuna, fecha_aplicacion, usuario_creacion)
+        values(pid_mascota, pid_vacuna, now(), pusuario);
     end;
     elseif opcion = 3 then
     begin
@@ -21,10 +21,8 @@ begin
 			set id_mascota = ifnull(pid_mascota, id_mascota),
             id_vacuna = ifnull(pid_vacuna, pid_vacuna),
             fecha_aplicacion = ifnull(pfecha_aplicacion, now()),
-            usuario_creacion = ifnull(pusuario_creacion, usuario_creacion),
             is_activo = ifnull(pis_activo, is_activo),
-            fecha_creacion = current_timestamp(),
-            usuario_modificacion = pusuario_modificacion,
+            usuario_modificacion = pusuario,
             fecha_modificacion = current_timestamp()
 		where id = pid;
     end;
@@ -32,7 +30,7 @@ begin
     begin
 		update tbl_mascota_vacuna
 			set is_activo = 0,
-            usuario_modificacion = pusuario_modificacion,
+            usuario_modificacion = pusuario,
             fecha_modificacion = current_timestamp()
 		where id = pid;
     end;
