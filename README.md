@@ -1,10 +1,6 @@
 # Backend-00.01.2025-02
 Repo Backend 00.01.2025-02
 
-<<<<<<<<< Temporary merge branch 1
-=========
-
->>>>>>>>> Temporary merge branch 2
 ## La primera vez
 git remote add fuentes https://github.com/rpinedaec83/Backend-00.01.2025-02.git
 
