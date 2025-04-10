@@ -21,3 +21,4 @@ inner join tbl_color c on m.id_color = c.id;
 
 delete from tbl_color where id = 5;
 
+>>>>>>>>> Temporary merge branch 2
