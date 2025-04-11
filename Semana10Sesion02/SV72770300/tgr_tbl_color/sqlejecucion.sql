@@ -6,3 +6,5 @@ delete from tbl_color where id=7;
 select * from tbl_color;
 
 select * from vw_info_mascota;
+
+-- --------------
