@@ -1,0 +1,26 @@
+[{
+  "_id": {
+    "$oid": "68040e26e7d4cdf91b2b8791"
+  },
+  "nombre": "Juan Pérez",
+  "dni": "12345678",
+  "cargo": "Carpintero",
+  "salario": 2000,
+  "fechaIngreso": {
+    "$date": "2024-06-01T00:00:00.000Z"
+  },
+  "turno": "mañana"
+},
+{
+  "_id": {
+    "$oid": "68040f4be7d4cdf91b2b8797"
+  },
+  "nombre": "María López",
+  "dni": "87654321",
+  "cargo": "Supervisor",
+  "salario": 3000,
+  "fechaIngreso": {
+    "$date": "2023-01-15T00:00:00.000Z"
+  },
+  "turno": "tarde"
+}]

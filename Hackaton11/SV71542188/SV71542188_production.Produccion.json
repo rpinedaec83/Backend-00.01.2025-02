@@ -1,0 +1,37 @@
+[{
+  "_id": {
+    "$oid": "68040e36e7d4cdf91b2b8792"
+  },
+  "producto": "Armario ropero",
+  "cantidad": 20,
+  "fechaInicio": {
+    "$date": "2025-04-15T00:00:00.000Z"
+  },
+  "fechaFin": {
+    "$date": "2025-04-18T00:00:00.000Z"
+  },
+  "empleadosInvolucrados": [
+    {
+      "nombre": "Juan Pérez",
+      "dni": "12345678"
+    },
+    {
+      "nombre": "María López",
+      "dni": "87654321"
+    }
+  ],
+  "materiaPrimaUsada": [
+    {
+      "nombre": "Madera",
+      "cantidad": 50,
+      "unidad": "m³"
+    }
+  ],
+  "insumosUsados": [
+    {
+      "nombre": "Tornillos",
+      "cantidad": 200,
+      "unidad": "unidades"
+    }
+  ]
+}]

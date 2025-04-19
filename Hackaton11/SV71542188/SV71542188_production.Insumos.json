@@ -1,0 +1,39 @@
+[{
+  "_id": {
+    "$oid": "68040e1ce7d4cdf91b2b8790"
+  },
+  "nombre": "Tornillos",
+  "cantidad": 500,
+  "unidad": "unidades",
+  "proveedor": "Proveedor B",
+  "costo": 100,
+  "fechaCompra": {
+    "$date": "2025-04-10T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68040f2ce7d4cdf91b2b8795"
+  },
+  "nombre": "Tuercas",
+  "cantidad": 5000,
+  "unidad": "unidades",
+  "proveedor": "Proveedor B",
+  "costo": 100,
+  "fechaCompra": {
+    "$date": "2025-04-10T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68040f2ce7d4cdf91b2b8796"
+  },
+  "nombre": "Pegamento",
+  "cantidad": 20,
+  "unidad": "litros",
+  "proveedor": "Proveedor D",
+  "costo": 200,
+  "fechaCompra": {
+    "$date": "2025-04-11T00:00:00.000Z"
+  }
+}]
