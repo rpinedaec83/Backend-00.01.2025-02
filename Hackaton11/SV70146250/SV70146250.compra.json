@@ -1,0 +1,17 @@
+[{
+  "_id": {
+    "$oid": "68041b8bae869259a1ca3491"
+  },
+  "ruc": "14145533341",
+  "monto_total": 3200,
+  "detalles": [
+    {
+      "materia_insumo_id": {
+        "$oid": "680415bfae869259a1ca348f"
+      },
+      "unidad_medicion": "unidad",
+      "cantidad": 4,
+      "monto": 800
+    }
+  ]
+}]

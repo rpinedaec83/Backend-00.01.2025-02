@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "680419e0ae869259a1ca3490"
+  },
+  "tipo": "Laminado",
+  "nombre": "Armario Empotrado de Cedro",
+  "cantidad_total": 10,
+  "empleado": 81234562,
+  "detalles": [
+    {
+      "materia_insumo_id": {
+        "$oid": "680415bfae869259a1ca348f"
+      },
+      "nombre": "Tabla MDF Cedro",
+      "unidad_medida": "unidad"
+    }
+  ]
+}]

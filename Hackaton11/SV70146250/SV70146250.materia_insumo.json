@@ -1,0 +1,9 @@
+[{
+  "_id": {
+    "$oid": "680415bfae869259a1ca348f"
+  },
+  "nombre": "Tabla MDF Cedro",
+  "unidad_medicion": "unidad",
+  "cantidad": 40,
+  "tipo": "Material de armado"
+}]

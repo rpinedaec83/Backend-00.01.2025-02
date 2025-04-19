@@ -1,0 +1,10 @@
+[{
+  "_id": {
+    "$oid": "680414daae869259a1ca348d"
+  },
+  "nombre": "Luis",
+  "apellido": "Gonzales",
+  "cargo": "Especialista en armarios",
+  "salario": 2000,
+  "dni": "81234562"
+}]
