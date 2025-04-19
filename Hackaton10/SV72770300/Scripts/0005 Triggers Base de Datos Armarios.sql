@@ -1,4 +1,4 @@
--- Trigger tbl_usuario
+-- -Trigger tbl_usuario
 
 CREATE TABLE `tbl_usuario_audit` (
   `id` int,
