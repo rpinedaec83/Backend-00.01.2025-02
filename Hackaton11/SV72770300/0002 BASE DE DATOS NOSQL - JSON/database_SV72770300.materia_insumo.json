@@ -1,0 +1,45 @@
+[{
+  "_id": {
+    "$oid": "680421a6b3caf449d38674cd"
+  },
+  "nombre": "Madera contrachapada",
+  "unidad_medicion": "Pliego",
+  "cantidad": 20,
+  "tipo": "Materia prima"
+},
+{
+  "_id": {
+    "$oid": "680421a6b3caf449d38674ce"
+  },
+  "nombre": "Madera de fibra de densidad media (MDF)",
+  "unidad_medicion": "Pliego",
+  "cantidad": 50,
+  "tipo": "Materia prima"
+},
+{
+  "_id": {
+    "$oid": "680421a6b3caf449d38674cf"
+  },
+  "nombre": "Tornillos autoperforantes",
+  "unidad_medicion": "Bolsa",
+  "cantidad": 5,
+  "tipo": "Insumo"
+},
+{
+  "_id": {
+    "$oid": "680421a6b3caf449d38674d1"
+  },
+  "nombre": "Manijas",
+  "unidad_medicion": "Unidad",
+  "cantidad": 8,
+  "tipo": "Insumo"
+},
+{
+  "_id": {
+    "$oid": "680421a6b3caf449d38674d2"
+  },
+  "cantidad": 7,
+  "nombre": "Pintura o barniz",
+  "tipo": "Insumo",
+  "unidad_medicion": "Litros"
+}]

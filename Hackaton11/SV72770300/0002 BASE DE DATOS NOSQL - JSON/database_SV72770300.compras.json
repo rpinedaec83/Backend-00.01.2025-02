@@ -1,0 +1,72 @@
+[{
+  "_id": {
+    "$oid": "68043092b3caf449d38674d8"
+  },
+  "proveedor": {
+    "$oid": "68041db1b3caf449d38674c9"
+  },
+  "monto_total": 1400,
+  "fecha": {
+    "$date": "2025-04-19T23:24:02.268Z"
+  },
+  "detalle_compra": [
+    {
+      "_id": {
+        "$oid": "68043092b3caf449d38674d3"
+      },
+      "detalle_materia_id": {
+        "$oid": "680421a6b3caf449d38674cf"
+      },
+      "unidad_medida": "Bolsa",
+      "cantidad": 10,
+      "monto": 500
+    },
+    {
+      "_id": {
+        "$oid": "68043092b3caf449d38674d4"
+      },
+      "detalle_materia_id": {
+        "$oid": "680421a6b3caf449d38674d0"
+      },
+      "unidad_medida": "Unidad",
+      "cantidad": 8,
+      "monto": 500
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "68043092b3caf449d38674d9"
+  },
+  "proveedor": {
+    "$oid": "68041db1b3caf449d38674cb"
+  },
+  "monto_total": 545.5,
+  "fecha": {
+    "$date": "2025-04-19T23:24:02.268Z"
+  },
+  "detalle_compra": [
+    {
+      "_id": {
+        "$oid": "68043092b3caf449d38674d5"
+      },
+      "detalle_materia_id": {
+        "$oid": "680421a6b3caf449d38674d0"
+      },
+      "unidad_medida": "Unidad",
+      "cantidad": "5",
+      "monto": 350
+    },
+    {
+      "_id": {
+        "$oid": "68043092b3caf449d38674d7"
+      },
+      "detalle_materia_id": {
+        "$oid": "680421a6b3caf449d38674d2"
+      },
+      "unidad_medida": "Litros",
+      "cantidad": 6,
+      "monto": 450
+    }
+  ]
+}]

@@ -1,0 +1,24 @@
+[{
+  "_id": {
+    "$oid": "68041db1b3caf449d38674c9"
+  },
+  "nombre": "Garciherrajes S.A.",
+  "ruc": "20606422793",
+  "telefono": "999123456"
+},
+{
+  "_id": {
+    "$oid": "68041db1b3caf449d38674ca"
+  },
+  "nombre": "Gimatec S.A.",
+  "ruc": "20777888999",
+  "telefono": "945678901"
+},
+{
+  "_id": {
+    "$oid": "68041db1b3caf449d38674cc"
+  },
+  "nombre": "Mademaq S.A.",
+  "ruc": "20525994741",
+  "telefono": "978456875"
+}]
