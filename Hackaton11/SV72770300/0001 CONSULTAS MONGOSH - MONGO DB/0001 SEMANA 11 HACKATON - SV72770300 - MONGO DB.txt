@@ -1,0 +1,802 @@
+1) Crear la base de datos.
+
+	use database_SV72770300
+
+2) Ver las colecciones
+
+	show collection
+
+3) Insertamos datos en la colección
+
+	db.nombre.colection.insertOne({ - 
+		key:"value"
+	})
+
+4) Visualizar las bases de datos creadas.
+
+	show dbs
+
+5) Visualizar los documentos o datos.
+
+	db.name.collection.find()
+
+
+
+
+
+6) Colección "Empleados"
+
+- Insertar
+
+db.empleados.insertMany([{
+	dni: "78129345",
+	nombre: "Camila",
+	apellido: "Vargas Quispe",
+	cargo: "Gerente de Producción",
+	sueldo: 2500.54
+	},
+
+	{
+	dni: "23678901",
+	nombre: "Sebastián",
+	apellido: "Rojas Torres",
+	cargo: "Supervisor de Producción",
+	sueldo: 2200.19
+	},
+
+	{
+	dni: "12789043",
+	nombre: "Valentina",
+	apellido: "Silva Ruiz",
+	cargo: "Operario de Corte",
+	sueldo: 2000.65
+	},
+
+	{
+	dni: "89234506",
+	nombre: "Gabriel",
+	apellido: "Castro Fernández",
+	cargo: "Operario de Ensamblaje",
+	sueldo: 1800.79
+	},
+
+	{
+	dni: "67501283",
+	nombre: "Antonella",
+	apellido: "Gutiérrez Ramos",
+	cargo: "Operario de Control de Calidad",
+	sueldo: 1750.68
+	}
+])
+
+- Actualizar
+
+db.empleados.updateOne({
+	_id: ObjectId('6804174bb3caf449d38674c4')
+	},
+	{$set:{
+		dni: "01456792",
+		sueldo: 2800.52
+	}})
+
+db.empleados.updateOne({
+	_id: ObjectId('6804174bb3caf449d38674c6')
+	},
+	{$set:{
+		nombre: "Sofía",
+		cargo: "Planificador de la Producción",
+		sueldo: 2100.69
+	}})
+
+db.empleados.updateOne({
+	_id: ObjectId('6804174bb3caf449d38674c7')
+	},
+	{$set:{
+		apellido: "Chávez Díaz"
+	}})
+
+- Leer
+
+db.empleados.find()
+
+{
+  _id: ObjectId('6804174bb3caf449d38674c4'),
+  dni: '01456792',
+  nombre: 'Camila',
+  apellido: 'Vargas Quispe',
+  cargo: 'Gerente de Producción',
+  sueldo: 2800.52
+}	
+
+{
+  _id: ObjectId('6804174bb3caf449d38674c5'),
+  dni: '23678901',
+  nombre: 'Sebastián',
+  apellido: 'Rojas Torres',
+  cargo: 'Supervisor de Producción',
+  sueldo: 2200.19
+}
+
+{
+  _id: ObjectId('6804174bb3caf449d38674c6'),
+  dni: '12789043',
+  nombre: 'Sofía',
+  apellido: 'Silva Ruiz',
+  cargo: 'Planificador de la Producción',
+  sueldo: 2100.69
+}
+
+{
+  _id: ObjectId('6804174bb3caf449d38674c7'),
+  dni: '89234506',
+  nombre: 'Gabriel',
+  apellido: 'Chávez Díaz',
+  cargo: 'Operario de Ensamblaje',
+  sueldo: 1800.79
+}
+
+{
+  _id: ObjectId('6804174bb3caf449d38674c8'),
+  dni: '67501283',
+  nombre: 'Antonella',
+  apellido: 'Gutiérrez Ramos',
+  cargo: 'Operario de Control de Calidad',
+  sueldo: 1750.68
+}
+
+- Eliminar
+
+db.empleados.deleteOne({_id:ObjectId('6804174bb3caf449d38674c8')})
+
+
+
+
+
+7) Colección "Proveedores"
+
+- Insertar
+
+db.proveedores.insertMany([{
+	nombre:"Garciherrajes, S.A.",
+	ruc:"20606422793",
+	telefono:"999123456"
+	},
+
+	{
+	nombre:"Gimatec, S.A",
+	ruc:"20604915351",
+	telefono:"945678901"
+	},
+
+	{
+	nombre:"Maquinorte de Puebla, S.A.",
+	ruc:"20605100016",
+	telefono:"987654321"
+	},
+
+	{
+	nombre:"Mademaq S.A.",
+	ruc:"20525994741",
+	telefono:"991650326"
+}])
+
+
+- Actualizar
+
+db.proveedores.updateOne({
+	_id:ObjectId('68041db1b3caf449d38674c9')
+	},
+	{$set:{
+		nombre:"Garciherrajes S.A."
+	}})
+
+db.proveedores.updateOne({
+	_id:ObjectId('68041db1b3caf449d38674ca')
+	},
+	{$set:{
+		nombre:"Gimatec S.A.",
+		ruc: "20777888999"
+	}})
+
+db.proveedores.updateOne({
+	_id:ObjectId('68041db1b3caf449d38674cb')
+	},
+	{$set:{
+		nombre:"Sodimac S.A."
+	}})
+
+db.proveedores.updateOne({
+	_id: ObjectId('68041db1b3caf449d38674cc')
+	},
+	{$set:{
+		telefono:"978456875"
+	}})
+
+- Leer
+
+db.proveedores.find()
+
+{
+  _id: ObjectId('68041db1b3caf449d38674c9'),
+  nombre: 'Garciherrajes S.A.',
+  ruc: '20606422793',
+  telefono: '999123456'
+}
+
+{
+  _id: ObjectId('68041db1b3caf449d38674ca'),
+  nombre: 'Gimatec S.A.',
+  ruc: '20777888999',
+  telefono: '945678901'
+}
+
+{
+  _id: ObjectId('68041db1b3caf449d38674cb'),
+  nombre: 'Sodimac S.A.',
+  ruc: '20605100016',
+  telefono: '987654321'
+}
+
+{
+  _id: ObjectId('68041db1b3caf449d38674cc'),
+  nombre: 'Mademaq S.A.',
+  ruc: '20525994741',
+  telefono: '978456875'
+}
+
+- Eliminar
+
+db.proveedores.deleteOne({_id: ObjectId('68041db1b3caf449d38674cb')})
+
+
+
+
+8) Colección "Materia Insumo"
+
+- Insertar
+
+db.materia_insumo.insertMany([{
+nombre: "Madera contrachapada",
+unidad_medicion: "Pliego",
+cantidad: 20,
+tipo: "Materia prima"
+},
+
+{
+nombre: "Madera de fibra de densidad media",
+unidad_medicion: "Pliego",
+cantidad: 30,
+tipo: "Materia prima"
+},
+
+{
+nombre: "Tornillos autoperforantes",
+unidad_medicion: "Bolsa",
+cantidad: 5,
+tipo: "Insumo"
+},
+
+{
+nombre: "Bisagras",
+unidad_medicion: "Unidad",
+cantidad: 6,
+tipo: "Insumo"
+},
+
+{
+nombre: "Manijas/Tiradores",
+unidad_medicion: "Unidad",
+cantidad: 8,
+tipo: "Insumo"
+},
+
+{
+
+
+}])
+
+- Actualizar
+
+db.materia_insumo.updateOne({
+	_id: ObjectId('680421a6b3caf449d38674d2')
+	},{
+	$set:{
+		nombre: "Pintura o barniz",
+		unidad_medicion: "Litros",
+		cantidad: 7,
+		tipo: "Insumo"
+	}})
+
+db.materia_insumo.updateOne({
+	_id: ObjectId('680421a6b3caf449d38674ce')
+	},{
+	$set:{
+		nombre: "Madera de fibra de densidad media (MDF)",
+		cantidad: 50
+	}})
+
+db.materia_insumo.updateOne({
+	_id: ObjectId('680421a6b3caf449d38674d1')
+	},{
+	$set:{
+		nombre: "Manijas"
+	}})
+
+- Leer
+
+db.materia_insumo.find()
+
+{
+  _id: ObjectId('680421a6b3caf449d38674cd'),
+  nombre: 'Madera contrachapada',
+  unidad_medicion: 'Pliego',
+  cantidad: 20,
+  tipo: 'Materia prima'
+}
+
+{
+  _id: ObjectId('680421a6b3caf449d38674ce'),
+  nombre: 'Madera de fibra de densidad media (MDF)',
+  unidad_medicion: 'Pliego',
+  cantidad: 50,
+  tipo: 'Materia prima'
+}
+
+{
+  _id: ObjectId('680421a6b3caf449d38674cf'),
+  nombre: 'Tornillos autoperforantes',
+  unidad_medicion: 'Bolsa',
+  cantidad: 5,
+  tipo: 'Insumo'
+}
+
+{
+  _id: ObjectId('680421a6b3caf449d38674d0'),
+  nombre: 'Bisagras',
+  unidad_medicion: 'Unidad',
+  cantidad: 6,
+  tipo: 'Insumo'
+}
+
+{
+  _id: ObjectId('680421a6b3caf449d38674d1'),
+  nombre: 'Manijas',
+  unidad_medicion: 'Unidad',
+  cantidad: 8,
+  tipo: 'Insumo'
+}
+
+{
+  _id: ObjectId('680421a6b3caf449d38674d2'),
+  cantidad: 7,
+  nombre: 'Pintura o barniz',
+  tipo: 'Insumo',
+  unidad_medicion: 'Litros'
+}
+
+- Eliminar
+
+db.materia_insumo.deleteOne({_id: ObjectId('680421a6b3caf449d38674d0')})
+
+
+
+
+9) Colección "Compra" y "Detalle Compra"
+
+- Insertar
+
+--- Agregar un id a un arreglo interno
+
+db.compras.insertMany([{
+	proveedor: ObjectId('68041db1b3caf449d38674c9'),
+	monto_total: 1400.00,
+	fecha: new Date(),
+	detalle_compra:[
+  		{_id: new ObjectId(),
+		detalle_materia_id: ObjectId('680421a6b3caf449d38674cf'),
+		unidad_medida: "Bolsa",
+		cantidad: 7,
+		monto: 400.00
+		},
+
+		{
+		_id: new ObjectId(),
+		detalle_materia_id: ObjectId('680421a6b3caf449d38674d0'),
+		unidad_medida: "Unidad",
+		cantidad: 5,
+		monto: 350.00
+		}
+	]},
+
+	{
+	proveedor: ObjectId('68041db1b3caf449d38674cb'),
+	monto_total: 545.50,
+	fecha: new Date(),
+	detalle_compra:[
+		{
+		_id: new ObjectId(),
+		detalle_materia_id: ObjectId('680421a6b3caf449d38674d0'),
+		unidad_medida: "Unidad",
+		cantidad: "5",
+		monto: 350.00
+		},
+
+		{
+		_id: new ObjectId(),
+		detalle_materia_id: ObjectId('680421a6b3caf449d38674d1'),
+		unidad_medida: "Unidad",
+		cantidad: 15,
+		monto: 150.00
+		},
+
+		{
+		_id: new ObjectId(),
+		detalle_materia_id: ObjectId('680421a6b3caf449d38674d2'),
+		unidad_medida: "Litros",
+		cantidad: 3,
+		monto: 200.00
+		}
+	]
+}}])
+
+- Actualizar
+
+db.compras.updateOne({
+	_id: ObjectId('68043092b3caf449d38674d8'),
+	"detalle_compra._id": ObjectId('68043092b3caf449d38674d3')
+	},{
+	$set:{
+		"detalle_compra.$.cantidad": 10,
+		"detalle_compra.$.monto": 500
+	}
+	})
+
+db.compras.updateOne({
+	_id: ObjectId('68043092b3caf449d38674d8'),
+	"detalle_compra._id": ObjectId('68043092b3caf449d38674d4')
+	},{
+	$set:{
+		"detalle_compra.$.cantidad": 8,
+		"detalle_compra.$.monto": 500
+	}
+	})
+
+db.compras.updateOne({
+	_id: ObjectId('68043092b3caf449d38674d9'),
+	"detalle_compra._id": ObjectId('68043092b3caf449d38674d7')
+	},{
+	$set:{
+		"detalle_compra.$.cantidad": 6,
+		"detalle_compra.$.monto": 450
+	}
+	})
+
+- Leer
+
+db.compras.find()
+
+{
+  _id: ObjectId('68043092b3caf449d38674d8'),
+  proveedor: ObjectId('68041db1b3caf449d38674c9'),
+  monto_total: 1400,
+  fecha: 2025-04-19T23:24:02.268Z,
+  detalle_compra: [
+    {
+      _id: ObjectId('68043092b3caf449d38674d3'),
+      detalle_materia_id: ObjectId('680421a6b3caf449d38674cf'),
+      unidad_medida: 'Bolsa',
+      cantidad: 10,
+      monto: 500
+    },
+    {
+      _id: ObjectId('68043092b3caf449d38674d4'),
+      detalle_materia_id: ObjectId('680421a6b3caf449d38674d0'),
+      unidad_medida: 'Unidad',
+      cantidad: 8,
+      monto: 500
+    }
+  ]
+}
+
+{
+  _id: ObjectId('68043092b3caf449d38674d9'),
+  proveedor: ObjectId('68041db1b3caf449d38674cb'),
+  monto_total: 545.5,
+  fecha: 2025-04-19T23:24:02.268Z,
+  detalle_compra: [
+    {
+      _id: ObjectId('68043092b3caf449d38674d5'),
+      detalle_materia_id: ObjectId('680421a6b3caf449d38674d0'),
+      unidad_medida: 'Unidad',
+      cantidad: '5',
+      monto: 350
+    },
+    {
+      _id: ObjectId('68043092b3caf449d38674d6'),
+      detalle_materia_id: ObjectId('680421a6b3caf449d38674d1'),
+      unidad_medida: 'Unidad',
+      cantidad: 15,
+      monto: 150
+    },
+    {
+      _id: ObjectId('68043092b3caf449d38674d7'),
+      detalle_materia_id: ObjectId('680421a6b3caf449d38674d2'),
+      unidad_medida: 'Litros',
+      cantidad: 6,
+      monto: 450
+    }
+  ]
+}
+
+- Eliminar
+
+--- Uso de $pull para eliminar el elemento de una matriz en el documento de compras
+
+db.compras.updateOne(
+  { _id: ObjectId('68043092b3caf449d38674d9') },
+  { $pull: { detalle_compra: { _id: ObjectId('68043092b3caf449d38674d6') } } }
+)
+
+
+
+
+10) Colección "Producción" y "Detalle Producción"
+
+- Insertar
+
+--- Agregar un id a un arreglo interno
+
+db.produccion.insertMany([{
+	tipo: "Empotrado",
+	nombre: "Armario Empotrado Clásico",
+	cantidad_total: 10,
+	empleado: ObjectId('6804174bb3caf449d38674c4'),
+	detalle_produccion:[
+	{
+		_id: new ObjectId(),
+		detalle_materia_id: ObjectId('680421a6b3caf449d38674ce'),
+		unidad_medicion: "Pliego",
+		cantidad: 12
+	},
+
+	{
+		_id: new ObjectId(),
+		detalle_materia_id: ObjectId('680421a6b3caf449d38674d0'),
+		unidad_medicion: "Bolsa",
+		cantidad: 3
+	},
+
+	{
+		_id: new ObjectId(),
+		detalle_materia_id: ObjectId('680421a6b3caf449d38674d2'),
+		unidad_medicion: "Litro",
+		cantidad: 2
+	}]},
+
+	{
+	tipo: "Modular",
+	nombre: "Armario Modular Personalizable",
+	cantidad_total: 8,
+	empleado: ObjectId('6804174bb3caf449d38674c7'),
+	detalle_produccion:[
+	{
+
+	}]
+}])
+
+- Actualizar
+
+db.produccion.updateOne({
+	_id: ObjectId('68043937b3caf449d38674de')
+	},{
+	$set:{
+	detalle_produccion: [
+	{
+		_id: new ObjectId(),
+		detalle_materia_id: ObjectId('680421a6b3caf449d38674cd'),
+		unidad_medicion: "Pliego",
+		cantidad: 10
+	},
+
+	{
+		_id: new ObjectId(),
+	detalle_materia_id: ObjectId('680421a6b3caf449d38674d1'),
+	unidad_medicion: "Unidad",
+	cantidad: 6
+	}
+]}})
+
+- Leer
+
+db.produccion.find()
+
+{
+  _id: ObjectId('68043937b3caf449d38674dd'),
+  tipo: 'Empotrado',
+  nombre: 'Armario Empotrado Clásico',
+  cantidad_total: 10,
+  empleado: ObjectId('6804174bb3caf449d38674c4'),
+  detalle_produccion: [
+    {
+      _id: ObjectId('68043937b3caf449d38674da'),
+      detalle_materia_id: ObjectId('680421a6b3caf449d38674ce'),
+      unidad_medicion: 'Pliego',
+      cantidad: 12
+    },
+    {
+      _id: ObjectId('68043937b3caf449d38674db'),
+      detalle_materia_id: ObjectId('680421a6b3caf449d38674d0'),
+      unidad_medicion: 'Bolsa',
+      cantidad: 3
+    },
+    {
+      _id: ObjectId('68043937b3caf449d38674dc'),
+      detalle_materia_id: ObjectId('680421a6b3caf449d38674d2'),
+      unidad_medicion: 'Litro',
+      cantidad: 2
+    }
+  ]
+}
+
+{
+  _id: ObjectId('68043937b3caf449d38674de'),
+  tipo: 'Modular',
+  nombre: 'Armario Modular Personalizable',
+  cantidad_total: 8,
+  empleado: ObjectId('6804174bb3caf449d38674c7'),
+  detalle_produccion: [
+    {
+      _id: ObjectId('68043adcb3caf449d38674df'),
+      detalle_materia_id: ObjectId('680421a6b3caf449d38674cd'),
+      unidad_medicion: 'Pliego',
+      cantidad: 10
+    },
+    {
+      _id: ObjectId('68043adcb3caf449d38674e0'),
+      detalle_materia_id: ObjectId('680421a6b3caf449d38674d1'),
+      unidad_medicion: 'Unidad',
+      cantidad: 6
+    }
+  ]
+}
+
+- Eliminar
+
+--- Uso de $pull para eliminar el elemento de una matriz en el documento de produccion
+
+db.produccion.updateOne(
+  { _id: ObjectId('68043937b3caf449d38674dd') },
+  { $pull: { detalle_produccion: { _id: ObjectId('68043937b3caf449d38674db') } } }
+)
+
+
+
+
+
+11) Unir colecciones "Compras" y "Proveedores"
+
+db.compras.aggregate(
+[
+{
+  $lookup:{
+    from:"proveedores",
+    localField:"proveedor",
+    foreignField:"_id",
+  as: "proveedor"
+  }
+},
+{
+  $unwind:"$proveedor"
+}
+]
+)
+
+--- Consulta
+
+{
+  _id: ObjectId('68043092b3caf449d38674d8'),
+  proveedor: {
+    _id: ObjectId('68041db1b3caf449d38674c9'),
+    nombre: 'Garciherrajes S.A.',
+    ruc: '20606422793',
+    telefono: '999123456'
+  },
+  monto_total: 1400,
+  fecha: 2025-04-19T23:24:02.268Z,
+  detalle_compra: [
+    {
+      _id: ObjectId('68043092b3caf449d38674d3'),
+      detalle_materia_id: ObjectId('680421a6b3caf449d38674cf'),
+      unidad_medida: 'Bolsa',
+      cantidad: 10,
+      monto: 500
+    },
+    {
+      _id: ObjectId('68043092b3caf449d38674d4'),
+      detalle_materia_id: ObjectId('680421a6b3caf449d38674d0'),
+      unidad_medida: 'Unidad',
+      cantidad: 8,
+      monto: 500
+    }
+  ]
+}
+
+
+
+12) Unir colecciones "Producción" y "Empleados"
+
+db.produccion.aggregate(
+[
+{
+  $lookup:{
+    from:"empleados",
+    localField:"empleado",
+    foreignField:"_id",
+  as: "empleado"
+  }
+},
+{
+  $unwind:"$empleado"
+}
+]
+)
+
+--- Consulta
+
+{
+  _id: ObjectId('68043937b3caf449d38674dd'),
+  tipo: 'Empotrado',
+  nombre: 'Armario Empotrado Clásico',
+  cantidad_total: 10,
+  empleado: {
+    _id: ObjectId('6804174bb3caf449d38674c4'),
+    dni: '01456792',
+    nombre: 'Camila',
+    apellido: 'Vargas Quispe',
+    cargo: 'Gerente de Producción',
+    sueldo: 2800.52
+  },
+  detalle_produccion: [
+    {
+      _id: ObjectId('68043937b3caf449d38674da'),
+      detalle_materia_id: ObjectId('680421a6b3caf449d38674ce'),
+      unidad_medicion: 'Pliego',
+      cantidad: 12
+    },
+    {
+      _id: ObjectId('68043937b3caf449d38674dc'),
+      detalle_materia_id: ObjectId('680421a6b3caf449d38674d2'),
+      unidad_medicion: 'Litro',
+      cantidad: 2
+    }
+  ]
+}
+
+{
+  _id: ObjectId('68043937b3caf449d38674de'),
+  tipo: 'Modular',
+  nombre: 'Armario Modular Personalizable',
+  cantidad_total: 8,
+  empleado: {
+    _id: ObjectId('6804174bb3caf449d38674c7'),
+    dni: '89234506',
+    nombre: 'Gabriel',
+    apellido: 'Chávez Díaz',
+    cargo: 'Operario de Ensamblaje',
+    sueldo: 1800.79
+  },
+  detalle_produccion: [
+    {
+      _id: ObjectId('68043adcb3caf449d38674df'),
+      detalle_materia_id: ObjectId('680421a6b3caf449d38674cd'),
+      unidad_medicion: 'Pliego',
+      cantidad: 10
+    },
+    {
+      _id: ObjectId('68043adcb3caf449d38674e0'),
+      detalle_materia_id: ObjectId('680421a6b3caf449d38674d1'),
+      unidad_medicion: 'Unidad',
+      cantidad: 6
+    }
+  ]
+}
