@@ -1,0 +1,17 @@
+[
+  {
+    "_id": "680494a8a96d8c48f8ba25f5",
+    "user": "680494a6a96d8c48f8ba25f0",
+    "position": "Analista",
+    "salary": 4000,
+    "firstName": "Carlos",
+    "lastName": "Gómez",
+    "dni": "12345678",
+    "createdBy": "680494a6a96d8c48f8ba25f0",
+    "updatedBy": "680494a6a96d8c48f8ba25f0",
+    "updatedAt": "2025-04-13T12:05:08.000Z",
+    "isActive": false,
+    "createdAt": "2025-04-20T06:31:04.378Z",
+    "__v": 0
+  }
+]
