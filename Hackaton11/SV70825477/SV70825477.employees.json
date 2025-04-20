@@ -1,0 +1,29 @@
+[{
+  "_id": {
+    "$oid": "68042dcd81d9bd38a69303c6"
+  },
+  "firstname": "Juan",
+  "Position": "Administrador",
+  "Salary": 235,
+  "Dni": "78456123"
+},
+{
+  "_id": {
+    "$oid": "68042f2d81d9bd38a69303c7"
+  },
+  "firstname": "Carlos",
+  "lastname": "Corso",
+  "Dni": "78456123",
+  "Salaty": 923,
+  "Position": "Administrador"
+},
+{
+  "_id": {
+    "$oid": "6804306381d9bd38a69303c8"
+  },
+  "firstname": "Leo",
+  "lastname": "Crisostomo",
+  "Position": "Gerente",
+  "Salary": 365,
+  "Dni": "78945653"
+}]

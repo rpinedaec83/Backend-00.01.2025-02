@@ -1,0 +1,20 @@
+[{
+  "_id": {
+    "$oid": "6804399f81d9bd38a69303ca"
+  },
+  "suplier": {
+    "$oid": "6804355081d9bd38a69303c9"
+  },
+  "totalAnount": 456,
+  "date": {
+    "$date": "2025-04-20T00:02:39.255Z"
+  },
+  "Details": [
+    {
+      "materials": null,
+      "unitMeasure": "mt",
+      "quantity": 5,
+      "amount": 20
+    }
+  ]
+}]

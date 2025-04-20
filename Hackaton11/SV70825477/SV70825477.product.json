@@ -1,0 +1,8 @@
+[{
+  "_id": {
+    "$oid": "68043eda81d9bd38a69303cb"
+  },
+  "material": "Material",
+  "Name": "Mesa",
+  "quantity": 5
+}]
