@@ -11,7 +11,7 @@ const {
   Payment
 } = require('./schema');
 
-const mongoURI = 'mongodb+srv://root:Dhakongto2710@cluster0.jo4ikgi.mongodb.net/SV70006483?retryWrites=true&w=majority&appName=Cluster0';
+const mongoURI = 'mongodb+srv://root:SYGwo6HKnWQRLsC2@cluster0.jo4ikgi.mongodb.net/SV70006483?retryWrites=true&w=majority&appName=Cluster0';
 
 mongoose.connect(mongoURI)
   .then(async () => {
