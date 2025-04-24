@@ -19,3 +19,11 @@ exports.insert = (req,res)=>{
         res.status(500).send({message:error});
     })
 }
+
+exports.getById = (req,res)=>{
+    UserModel.findById(req.params.userId).then(data=>{
+        res.status(200).send(data);
+    }).catch(error=>{
+        res.status(500).send({message:error});
+    })
+}
