@@ -1,13 +1,8 @@
 const mongoose = require('mongoose');
-const options = {
-    autoIndex : false,
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-};
 
 const connectWithRetry=()=>{
     console.log("Conectandome a MongoDB");
-    mongoose.connect(process.env.MONGOURI,options).then(()=>{
+    mongoose.connect(process.env.MONGOURI).then(()=>{
         console.log("MongoDB Conectado")
     }).catch(error=>{
         console.log("Intentando de nuevo", error);
