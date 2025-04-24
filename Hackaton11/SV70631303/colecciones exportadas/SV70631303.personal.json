@@ -1,0 +1,45 @@
+[{
+  "_id": 1,
+  "nombres": "Juan Carlos",
+  "apellidos": "Méndez López",
+  "dni": "70631303",
+  "telefono": "4444-5679",
+  "cargo": "Carpintero",
+  "salario": 1500
+},
+{
+  "_id": 2,
+  "nombres": "María José",
+  "apellidos": "Ramírez García",
+  "dni": "40632333",
+  "telefono": "4444-9012",
+  "cargo": "Lijadora",
+  "salario": 1800
+},
+{
+  "_id": 3,
+  "nombres": "Roberto",
+  "apellidos": "Guzmán Flores",
+  "dni": "60345616",
+  "telefono": "4444-3456",
+  "cargo": "Encargado de Compras",
+  "salario": 2300
+},
+{
+  "_id": 4,
+  "nombres": "Lucía",
+  "apellidos": "Santos Morales",
+  "dni": "23723422",
+  "telefono": "4444-7890",
+  "cargo": "Pintora",
+  "salario": 1400
+},
+{
+  "_id": 5,
+  "nombres": "Carlos Eduardo",
+  "apellidos": "Vásquez Díaz",
+  "dni": "77835127",
+  "telefono": "4444-2345",
+  "cargo": "Supervisor de Producción",
+  "salario": 3200
+}]
