@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');
 
 class ShoppingListService {
   constructor(db) {
-    this.itemModel = db.collection('shopping_items'); // Asegúrate de que este nombre coincida con tu colección en MongoDB
+    this.itemModel = db.collection('shopping_items'); 
   }
 
   async createItem(nombre, descripcion) {
