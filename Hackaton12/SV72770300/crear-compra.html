@@ -120,7 +120,6 @@
 
     <script>
         const form = document.querySelector("#formulario-compra");
-        const mensaje = document.querySelector("#mensaje");
 
         form.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -141,18 +140,11 @@
                 body: JSON.stringify(compra),
             })
                 .then((response) => {
-                    if (response.ok) {
-                        mensaje.textContent = "Compra creada exitosamente.";
-                        mensaje.className = "message success";
-                        form.reset();
-                    } else {
-                        throw new Error("Error al guardar la compra.");
-                    }
+                    console.log(response);
+                    form.reset();
                 })
                 .catch((error) => {
                     console.error("Error:", error);
-                    mensaje.textContent = "Ocurrió un error al enviar la compra.";
-                    mensaje.className = "message error";
                 });
         });
     </script>
