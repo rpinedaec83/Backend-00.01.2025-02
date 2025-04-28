@@ -12,7 +12,7 @@ const UserRouter = require('./users/route.config');
 UserRouter.routesConfig(app);
 
 app.get('/',(req,res)=>{
-    res.render('index',{ name: 'roberto' })
+    res.render('index',{ name: 'emerson' })
     //res.send({message:"Hola desde mi API"})
 })
 

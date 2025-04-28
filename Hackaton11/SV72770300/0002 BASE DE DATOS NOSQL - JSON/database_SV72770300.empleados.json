@@ -1,0 +1,40 @@
+[{
+  "_id": {
+    "$oid": "6804174bb3caf449d38674c4"
+  },
+  "dni": "01456792",
+  "nombre": "Camila",
+  "apellido": "Vargas Quispe",
+  "cargo": "Gerente de Producción",
+  "sueldo": 2800.52
+},
+{
+  "_id": {
+    "$oid": "6804174bb3caf449d38674c5"
+  },
+  "dni": "23678901",
+  "nombre": "Sebastián",
+  "apellido": "Rojas Torres",
+  "cargo": "Supervisor de Producción",
+  "sueldo": 2200.19
+},
+{
+  "_id": {
+    "$oid": "6804174bb3caf449d38674c6"
+  },
+  "dni": "12789043",
+  "nombre": "Sofía",
+  "apellido": "Silva Ruiz",
+  "cargo": "Planificador de la Producción",
+  "sueldo": 2100.69
+},
+{
+  "_id": {
+    "$oid": "6804174bb3caf449d38674c7"
+  },
+  "dni": "89234506",
+  "nombre": "Gabriel",
+  "apellido": "Chávez Díaz",
+  "cargo": "Operario de Ensamblaje",
+  "sueldo": 1800.79
+}]

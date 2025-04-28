@@ -1,0 +1,56 @@
+<html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="Lista de compras">
+<meta name="author" content="Emerson Jerzy">
+
+<head>
+  <title>Lista de Compras</title>
+</head>
+
+<body>
+  <div>
+    <h1>Lista de Compras - Completas</h1>
+    <ul id="lista-compras"></ul>
+  </div>
+
+  <script>
+    fetch("/api/compras")
+      .then((response) => response.json())
+      .then((data) => {
+        const list = document.getElementById("lista-compras");
+
+        // Filtramos solo los elementos incompletos
+        const comprasIncompletas = data.data.filter((element) => element.is_Completed === true);
+
+        // Si hay compras incompletas, las mostramos
+        comprasIncompletas.forEach((element) => {
+          list.insertAdjacentHTML('beforeend', `
+              <li style="padding: 15px; margin-bottom: 10px; border-radius: 8px; background-color: #f3f4f6; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <span hidden>${element.id}</span>
+                  <span style="font-weight: 600; color: #111827; display: block;">${element.name}</span>
+                  <span style="color: #6b7280; font-size: 14px;">Descripción: ${element.description ?? 'Sin descripción'}</span>
+                  <br>
+                  <span style="color: #6b7280; font-size: 14px;">Cantidad: ${element.quantity ?? 'Sin cantidad'}</span>
+                  <br>
+                  <span style="color: #6b7280; font-size: 14px;">Unidad: ${element.unit ?? 'Sin unidad'}</span>
+                </div>
+
+                <!-- Solo mostramos los incompletos -->
+                <div>
+                  <span style="background-color: #10b981; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500;">Completo</span>
+                  <span style="color: #6b7280; font-size: 14px; margin-left: 10px;">${element.date ?? 'Sin fecha'}</span>
+                </div>
+              </li>
+            `);
+        });
+      })
+      .catch(error => {
+        console.error("Error al obtener los datos de la API:", error);
+      });
+  </script>
+</body>
+
+</html>

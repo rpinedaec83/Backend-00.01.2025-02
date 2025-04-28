@@ -1,0 +1,92 @@
+<html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="Lista de compras">
+<meta name="author" content="Emerson Jerzy">
+
+<head>
+  <title>Lista de Compras</title>
+</head>
+
+<body>
+  <div>
+    <h1>Lista de Compras - Incompletas</h1>
+    <ul id="lista-compras"></ul>
+  </div>
+
+  <script>
+    fetch("/api/compras")
+      .then((response) => response.json())
+      .then((data) => {
+        const list = document.getElementById("lista-compras");
+
+        const comprasIncompletas = data.data.filter((element) => element.is_Completed === false);
+
+        comprasIncompletas.forEach((element) => {
+          list.insertAdjacentHTML('beforeend', `
+              <li style="padding: 15px; margin-bottom: 10px; border-radius: 8px; background-color: #f3f4f6; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <span id="id-compra">${element.id}</span>
+                  <span style="font-weight: 600; color: #111827; display: block;">${element.name}</span>
+                  <span style="color: #6b7280; font-size: 14px;">Descripción: ${element.description ?? 'Sin descripción'}</span>
+                  <br>
+                  <span style="color: #6b7280; font-size: 14px;">Cantidad: ${element.quantity ?? 'Sin cantidad'}</span>
+                  <br>
+                  <span style="color: #6b7280; font-size: 14px;">Unidad: ${element.unit ?? 'Sin unidad'}</span>
+                </div>
+
+                <!-- Solo mostramos los incompletos -->
+                <div>
+                  <span style="background-color: #ff0000; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500;">Incompleto</span>
+                  <!-- Usamos data-id para almacenar el id de la compra -->
+                  <button data-id="${element.id}" class="button-completar" type="button" style="background-color: #00AAE4; cursor: pointer; border: none; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500;">Completar</button>
+                  <span style="color: #6b7280; font-size: 14px; margin-left: 10px;">${element.date ?? 'Sin fecha'}</span>
+                </div>
+              </li>
+            `);
+        });
+
+        list.addEventListener('click', (event) => {
+          if (event.target.classList.contains('button-completar')) {
+
+            const compraId = event.target.getAttribute('data-id');
+
+            const compra = {
+              id: compraId,
+            };
+
+            console.log(compra.id);
+
+            // Enviar la solicitud PATCH
+            fetch("/api/compras/actualizar", {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(compra),
+            })
+              .then((response) => {
+                if (response.ok) {
+                  alert("Compra actualizada exitosamente.");
+                  event.target.closest('li').remove();
+                } else {
+                  throw new Error("Error al actualizar la compra.");
+                }
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+                alert("Ocurrió un error al actualizar la compra.");
+              });
+          }
+        });
+
+      })
+      .catch(error => {
+        console.error("Error al obtener los datos de la API:", error);
+      });
+
+  </script>
+</body>
+
+</html>

@@ -1,5 +1,5 @@
 {
-  "name": "d19423",
+  "name": "sv72770300",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,9 @@
   "description": "",
   "dependencies": {
     "dotenv": "^16.5.0",
-    "mongodb": "^6.15.0",
-    "nodemon": "^3.1.9"
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mongoose": "^8.14.0",
+    "nodemon": "^3.1.10"
   }
 }

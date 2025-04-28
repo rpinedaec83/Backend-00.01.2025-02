@@ -1,0 +1,66 @@
+[{
+  "_id": {
+    "$oid": "68043937b3caf449d38674dd"
+  },
+  "tipo": "Empotrado",
+  "nombre": "Armario Empotrado Clásico",
+  "cantidad_total": 10,
+  "empleado": {
+    "$oid": "6804174bb3caf449d38674c4"
+  },
+  "detalle_produccion": [
+    {
+      "_id": {
+        "$oid": "68043937b3caf449d38674da"
+      },
+      "detalle_materia_id": {
+        "$oid": "680421a6b3caf449d38674ce"
+      },
+      "unidad_medicion": "Pliego",
+      "cantidad": 12
+    },
+    {
+      "_id": {
+        "$oid": "68043937b3caf449d38674dc"
+      },
+      "detalle_materia_id": {
+        "$oid": "680421a6b3caf449d38674d2"
+      },
+      "unidad_medicion": "Litro",
+      "cantidad": 2
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "68043937b3caf449d38674de"
+  },
+  "tipo": "Modular",
+  "nombre": "Armario Modular Personalizable",
+  "cantidad_total": 8,
+  "empleado": {
+    "$oid": "6804174bb3caf449d38674c7"
+  },
+  "detalle_produccion": [
+    {
+      "_id": {
+        "$oid": "68043adcb3caf449d38674df"
+      },
+      "detalle_materia_id": {
+        "$oid": "680421a6b3caf449d38674cd"
+      },
+      "unidad_medicion": "Pliego",
+      "cantidad": 10
+    },
+    {
+      "_id": {
+        "$oid": "68043adcb3caf449d38674e0"
+      },
+      "detalle_materia_id": {
+        "$oid": "680421a6b3caf449d38674d1"
+      },
+      "unidad_medicion": "Unidad",
+      "cantidad": 6
+    }
+  ]
+}]
