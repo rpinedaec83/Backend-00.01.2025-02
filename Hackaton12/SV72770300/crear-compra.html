@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nueva Compra</title>
+</head>
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9fafb;
+        color: #374151;
+        line-height: 1.5;
+    }
+
+    .card {
+        background-color: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+        color: #111827;
+        font-size: 22px;
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 500;
+        color: #4b5563;
+    }
+
+    input,
+    select {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 16px;
+        box-sizing: border-box;
+        transition: border-color 0.2s;
+        background-color: white;
+    }
+
+    button {
+        background-color: #ff0000;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 20px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-top: 10px;
+        font-size: 16px;
+    }
+
+    .form-grid {
+        display: grid;
+        gap: 16px;
+    }
+
+    .message {
+        margin-top: 15px;
+        font-weight: 500;
+    }
+
+    .success {
+        color: #1100ff;
+    }
+
+    .error {
+        color: #ef4444;
+    }
+</style>
+
+<body>
+    <h2>Compras</h2>
+    <div class="card">
+        <h2>Nueva Compra</h2>
+        <form id="formulario-compra" class="form-grid">
+            <div>
+                <label for="name">Nombre</label>
+                <input type="text" id="name" placeholder="Digitar el nombre" required />
+            </div>
+
+            <div>
+                <label for="description">Descripción</label>
+                <input type="text" id="description" placeholder="Digitar la descripción" required />
+            </div>
+
+            <div>
+                <label for="quantity">Cantidad</label>
+                <input type="number" min="1" value="1" id="quantity" required />
+            </div>
+
+            <div>
+                <label for="unit">Unidad</label>
+                <input type="text" id="unit" placeholder="Digitar la unidad" required />
+            </div>
+
+            <div>
+                <label for="date">Fecha</label>
+                <input type="date" id="date" required />
+            </div>
+
+
+            <button type="submit">Crear Compra</button>
+            <div id="mensaje" class="message"></div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.querySelector("#formulario-compra");
+        const mensaje = document.querySelector("#mensaje");
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const compra = {
+                name: document.querySelector("#name").value.trim(),
+                description: document.querySelector("#description").value.trim(),
+                quantity: parseInt(document.querySelector("#quantity").value, 10),
+                unit: document.querySelector("#unit").value.trim(),
+                date: document.querySelector("#date").value
+            };
+
+            fetch("/api/compras", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(compra),
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        mensaje.textContent = "Compra creada exitosamente.";
+                        mensaje.className = "message success";
+                        form.reset();
+                    } else {
+                        throw new Error("Error al guardar la compra.");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                    mensaje.textContent = "Ocurrió un error al enviar la compra.";
+                    mensaje.className = "message error";
+                });
+        });
+    </script>
+</body>
+
+</html>
