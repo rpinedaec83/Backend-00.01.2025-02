@@ -90,7 +90,7 @@ const server = http.createServer((req, res) => {
                 const { name, description, quantity, unit, date } = JSON.parse(body);
                 if (!name || !description || !quantity || !unit || !date) {
                     res.writeHead(400, { "Content-Type": "application/json" });
-                    return res.end(JSON.stringify({ message: "Faltan datos" }));
+                    return res.end(JSON.stringify({ message: "No hay datos de entradas" }));
                 }
 
                 listSales.push({
