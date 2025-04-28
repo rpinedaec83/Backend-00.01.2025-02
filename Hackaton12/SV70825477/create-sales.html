@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body
+    style="
+      font-family: 'Inter', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9fafb;
+      color: #374151;
+      line-height: 1.5;
+    "
+  >
+    <h2>Create Sale</h2>
+    <div
+      style="
+        background-color: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      "
+    >
+      <h2
+        style="
+          color: #111827;
+          font-size: 22px;
+          margin-top: 0;
+          margin-bottom: 20px;
+        "
+      >
+        Create Sale
+      </h2>
+      <form id="sale-form" style="display: grid; gap: 16px">
+        <div>
+          <label
+            for="name"
+            style="
+              display: block;
+              margin-bottom: 6px;
+              font-weight: 500;
+              color: #4b5563;
+            "
+            >Name</label
+          >
+          <input
+            type="text"
+            id="name"
+            placeholder="Enter sale name"
+            required
+            style="
+              width: 100%;
+              padding: 10px 14px;
+              border: 1px solid #d1d5db;
+              border-radius: 8px;
+              font-size: 16px;
+              transition: border-color 0.2s;
+              box-sizing: border-box;
+            "
+          />
+        </div>
+
+        <div>
+          <label
+            for="description"
+            style="
+              display: block;
+              margin-bottom: 6px;
+              font-weight: 500;
+              color: #4b5563;
+            "
+            >Description</label
+          >
+          <input
+            type="text"
+            id="description"
+            placeholder="Enter sale description"
+            required
+            style="
+              width: 100%;
+              padding: 10px 14px;
+              border: 1px solid #d1d5db;
+              border-radius: 8px;
+              font-size: 16px;
+              transition: border-color 0.2s;
+              box-sizing: border-box;
+            "
+          />
+        </div>
+
+        <div>
+          <label
+            for="date"
+            style="
+              display: block;
+              margin-bottom: 6px;
+              font-weight: 500;
+              color: #4b5563;
+            "
+            >Date</label
+          >
+          <input
+            type="date"
+            id="date"
+            required
+            style="
+              width: 100%;
+              padding: 10px 14px;
+              border: 1px solid #d1d5db;
+              border-radius: 8px;
+              font-size: 16px;
+              transition: border-color 0.2s;
+              box-sizing: border-box;
+            "
+          />
+        </div>
+
+        <div>
+          <label
+            for="isCompleted"
+            style="
+              display: block;
+              margin-bottom: 6px;
+              font-weight: 500;
+              color: #4b5563;
+            "
+            >Status</label
+          >
+          <select
+            id="isCompleted"
+            style="
+              width: 100%;
+              padding: 10px 14px;
+              border: 1px solid #d1d5db;
+              border-radius: 8px;
+              font-size: 16px;
+              transition: border-color 0.2s;
+              background-color: white;
+              box-sizing: border-box;
+            "
+          >
+            <option value="completed">Completed</option>
+            <option value="pending">Pending</option>
+          </select>
+        </div>
+
+        <button
+          type="submit"
+          style="
+            background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+            font-size: 16px;
+          "
+        >
+          Create Sale
+        </button>
+      </form>
+    </div>
+  </body>
+  <script>
+    const buttonCreate = document.querySelector("#sale-form");
+
+    buttonCreate.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const sale = {
+        name: document.querySelector("#name").value,
+        description: document.querySelector("#description").value,
+        date: document.querySelector("#date").value,
+        isCompleted: document.querySelector("#isCompleted").value,
+      };
+      console.log(sale);
+      x=JSON.stringify(sale)
+      
+      
+      fetch("/api/sales", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(sale),
+      });
+    });
+  </script>
+</html>
