@@ -1,0 +1,12 @@
+[
+  {
+    "_id": "680494a8a96d8c48f8ba25f7",
+    "employee": "680494a8a96d8c48f8ba25f5",
+    "date": "2025-04-13T00:00:00.000Z",
+    "entryTime": "2025-04-13T13:00:00.000Z",
+    "exitTime": "2025-04-13T22:00:00.000Z",
+    "observations": "Asistencia completa",
+    "isActive": true,
+    "__v": 0
+  }
+]

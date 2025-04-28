@@ -1,0 +1,13 @@
+[
+  {
+    "_id": "680494a8a96d8c48f8ba25fb",
+    "name": "Madera de roble",
+    "unit": "m²",
+    "quantity": 100,
+    "type": "materia",
+    "createdBy": "680494a6a96d8c48f8ba25f0",
+    "isActive": true,
+    "createdAt": "2025-04-20T06:31:04.714Z",
+    "__v": 0
+  }
+]

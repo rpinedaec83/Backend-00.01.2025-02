@@ -156,8 +156,8 @@ CREATE TABLE `materia_insumo`  (
 -- ----------------------------
 -- Records of materia_insumo
 -- ----------------------------
-INSERT INTO `materia_insumo` VALUES (1, 'Harina refinada', 'kg', 120.00, 'materia', 1, '2025-04-13 07:11:28', 1, '2025-04-13 07:11:55', 0);
-INSERT INTO `materia_insumo` VALUES (2, 'Harina de trigo', 'kg', 100.00, 'materia', 1, '2025-04-13 07:11:28', NULL, NULL, 1);
+INSERT INTO `materia_insumo` VALUES (1, 'Madera de roble', 'm²', 120.00, 'materia', 1, '2025-04-13 07:11:28', 1, '2025-04-13 07:11:55', 0);
+INSERT INTO `materia_insumo` VALUES (2, 'Madera de pino', 'm²', 100.00, 'materia', 1, '2025-04-13 07:11:28', NULL, NULL, 1);
 
 -- ----------------------------
 -- Table structure for pagos
@@ -204,7 +204,7 @@ CREATE TABLE `produccion`  (
 -- ----------------------------
 -- Records of produccion
 -- ----------------------------
-INSERT INTO `produccion` VALUES (1, 'Producto Final', 'Mermelada de Fresa', 180.00, 1, '2025-04-13 07:16:59', 1, '2025-04-13 07:17:31', 0);
+INSERT INTO `produccion` VALUES (1, 'Producto Final', 'Armario de roble', 180.00, 1, '2025-04-13 07:16:59', 1, '2025-04-13 07:17:31', 0);
 
 -- ----------------------------
 -- Table structure for proveedores
