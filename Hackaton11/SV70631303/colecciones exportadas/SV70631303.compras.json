@@ -1,0 +1,85 @@
+[{
+  "_id": 1,
+  "fecha_compra": {
+    "$date": "2025-01-15T00:00:00.000Z"
+  },
+  "insumos": [
+    {
+      "id": 1,
+      "precio_unitario": 150,
+      "cantidad": 285
+    },
+    {
+      "id": 2,
+      "precio_unitario": 120,
+      "cantidad": 265
+    },
+    {
+      "id": 3,
+      "precio_unitario": 130,
+      "cantidad": 320
+    }
+  ],
+  "materiaPrima": [
+    {
+      "id": 2,
+      "precio_unitario": 250,
+      "cantidad": 150
+    },
+    {
+      "id": 3,
+      "precio_unitario": 120,
+      "cantidad": 300
+    }
+  ]
+},
+{
+  "_id": 2,
+  "fecha_compra": {
+    "$date": "2025-02-21T00:00:00.000Z"
+  },
+  "insumos": [
+    {
+      "id": 1,
+      "precio_unitario": 150,
+      "cantidad": 285
+    }
+  ],
+  "materiaPrima": [
+    {
+      "id": 1,
+      "precio_unitario": 140,
+      "cantidad": 100
+    },
+    {
+      "id": 2,
+      "precio_unitario": 250,
+      "cantidad": 150
+    }
+  ]
+},
+{
+  "_id": 3,
+  "fecha_compra": {
+    "$date": "2025-03-28T00:00:00.000Z"
+  },
+  "insumos": [
+    {
+      "id": 2,
+      "precio_unitario": 250,
+      "cantidad": 120
+    },
+    {
+      "id": 3,
+      "precio_unitario": 130,
+      "cantidad": 270
+    }
+  ],
+  "materiaPrima": [
+    {
+      "id": 3,
+      "precio_unitario": 120,
+      "cantidad": 300
+    }
+  ]
+}]

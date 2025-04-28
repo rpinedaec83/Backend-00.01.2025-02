@@ -1,0 +1,651 @@
+use SV70631303; -- Creo la base de datos
+
+show collections; -- Ver las colecciones
+
+-- Insertando datos en la colección "proveedores"
+
+db.proveedores.insertMany([
+    {
+        _id: 1,
+        nombre: "Maderas del Norte",
+        telefono: "5555-1234",
+        email: "ventas@maderasnorte.com"
+    },
+    
+    {
+        _id: 2,
+        nombre: "Aserradero San Juan",
+        telefono: "5555-5678",
+        email: "info@aserradero.com"
+    },
+    
+    {
+        _id: 3,
+        nombre: "Distribuidora de Materiales",
+        telefono: "5555-9012",
+        email: "ventas@distrimateriales.com"
+    },
+
+    {
+        _id: 4,
+        nombre: "Ferretería Central",
+        telefono: "5555-3456",
+        email: "ventas@ferreteriacentral.com"
+    },
+
+    {
+        _id: 5,
+        nombre: "Químicos Industriales",
+        telefono: "5555-7890",
+        email: "ventas@quimicosindustriales.com"
+    }
+]);
+
+-- Insertando datos en la colección "materiaPrima"
+
+db.materiaPrima.insertMany([
+    {
+        _id: 1,
+        nombre: "Madera de Roble",
+        id_proveedor: 1
+    },
+    {
+        _id: 2,
+        nombre: "Madera de Pino",
+        id_proveedor: 2
+    },
+    {
+        _id: 3,
+        nombre: "Lámina de MDF",
+        id_proveedor: 3
+    }
+]);
+
+-- Insertando datos en la colección "insumos"
+
+db.insumos.insertMany([
+    {
+        _id: 1,
+        nombre: "Tornillos 2 pulgadas",
+        id_proveedor: 4,
+        tipo: "Herraje"
+    },
+
+    {
+        _id: 2,
+        nombre: "Pegamento Industrial",
+        id_proveedor: 5,
+        tipo: "Adhesivo"
+    },
+    {
+        _id: 3,
+        nombre: "Bisagras metálicas",
+        id_proveedor: 6,
+        tipo: "Herraje"
+    }
+]);
+
+-- Insertando datos en la colección "compras"
+
+db.compras.insertMany([
+    {
+        _id:1,
+        fecha_compra: new Date("2025-01-15"),
+        insumos: [
+            {id: 1, precio_unitario: 150, cantidad: 285},
+            {id: 2, precio_unitario: 120, cantidad: 265},
+            {id: 3, precio_unitario: 130, cantidad: 320}
+        ],
+        materiaPrima: [
+            {id: 2, precio_unitario: 250, cantidad: 150},
+            {id: 3, precio_unitario: 120, cantidad: 300}
+        ]
+    },
+
+    {
+        _id:2,
+        fecha_compra: new Date("2025-02-21"),
+        insumos: [
+            {id: 1, precio_unitario: 150, cantidad: 285}
+        ],
+        materiaPrima: [
+            {id: 1, precio_unitario: 140, cantidad: 100},
+            {id: 2, precio_unitario: 250, cantidad: 150}
+        ]
+    },
+
+    {
+        _id:3,
+        fecha_compra: new Date("2025-03-28"),
+        insumos: [
+            {id: 2, precio_unitario: 250, cantidad: 120},
+            {id: 3, precio_unitario: 130, cantidad: 270}
+        ],
+        materiaPrima: [
+            {id: 3, precio_unitario: 120, cantidad: 300}
+        ]
+    }
+])
+
+-- Insertando datos en la colección "personal"
+
+db.personal.insertMany([
+    {
+        _id: 1,
+        nombres: "Juan Carlos",
+        apellidos: "Méndez López",
+        dni: "70631303",
+        telefono: "4444-5679",
+        cargo: "Carpintero",
+        salario: 1500
+    },
+
+    {
+        _id: 2,
+        nombres: "María José",
+        apellidos: "Ramírez García",
+        dni: "40632333",
+        telefono: "4444-9012",
+        cargo: "Lijadora",
+        salario: 1800
+    },
+    
+    {
+        _id: 3,
+        nombres: "Roberto",
+        apellidos: "Guzmán Flores",
+        dni: "60345616",
+        telefono: "4444-3456",
+        cargo: "Encargado de Compras",
+        salario: 2300
+    },
+
+    {
+        _id: 4,
+        nombres: "Lucía",
+        apellidos: "Santos Morales",
+        dni: "23723422",
+        telefono: "4444-7890",
+        cargo: "Pintora",
+        salario: 1400
+    },
+
+    {
+        _id: 5,
+        nombres: "Carlos Eduardo",
+        apellidos: "Vásquez Díaz",
+        dni: "77835127",
+        telefono: "4444-2345",
+        cargo: "Supervisor de Producción",
+        salario: 3200
+    }
+]);
+
+-- Insertando datos en la colección "produccion"
+
+db.produccion.insertMany([
+    {
+        _id: 1,
+        tipo_armario: "Armario de 2 puertas",
+        descripcion: "Armario de roble con acabados finos",
+        fecha_inicio: new Date("2025-04-01"),
+        fecha_estimada_fin: new Date("2025-04-10"),
+        estado: "En proceso",
+        cliente: {
+            nombre: "Hotel California",
+            telefono: "7777-1234",
+            direccion: "Avenida Principal 123, Ciudad"
+        },
+        materiales: [
+            { codigo_material: 1, cantidad: 8 },
+            { codigo_material: 2, cantidad: 2 }
+        ],
+        insumos: [
+            { codigo_insumo: 1, cantidad: 50 },
+            { codigo_insumo: 2, cantidad: 1 },
+            { codigo_insumo: 3, cantidad: 6 }
+        ],
+        empleados_asignados: [1, 2, 4],
+        costo_total: 3200,
+        notas: "Cliente solicita acabado en barniz mate"
+    },
+
+    {
+        _id: 2,
+        tipo_armario: "Closet empotrado",
+        descripcion: "Closet de pino con puertas corredizas",
+        fecha_inicio: new Date("2025-04-05"),
+        fecha_estimada_fin: new Date("2025-04-18"),
+        estado: "En proceso",
+        cliente: {
+            nombre: "Residencial Los Pinos",
+            telefono: "7777-5678",
+            direccion: "Calle Secundaria 45, Ciudad"
+        },
+        materiales: [
+            { codigo_material: "MP002", cantidad: 12.0 },
+            { codigo_material: "MP003", cantidad: 3.0 }
+        ],
+        insumos: [
+            { codigo_insumo: "INS001", cantidad: 80 },
+            { codigo_insumo: "INS002", cantidad: 2 },
+            { codigo_insumo: "INS003", cantidad: 8 }
+        ],
+        empleados_asignados: [1, 4],
+        costo_total: 4500.00
+    },
+
+    {
+        _id: 3,
+        tipo_armario: "Armario de cocina",
+        descripcion: "Muebles de cocina completos en MDF",
+        fecha_inicio: new Date("2025-03-20"),
+        fecha_estimada_fin: new Date("2025-04-05"),
+        fecha_real_fin: new Date("2025-04-08"),
+        estado: "Finalizado",
+        cliente: {
+            nombre: "Restaurante El Sabor",
+            telefono: "7777-9012",
+            direccion: "Boulevard Principal 78, Ciudad"
+        },
+        materiales: [
+            { codigo_material: "MP003", cantidad: 8.0 }
+        ],
+        insumos: [
+            { codigo_insumo: "INS001", cantidad: 120 },
+            { codigo_insumo: "INS002", cantidad: 3 },
+            { codigo_insumo: "INS003", cantidad: 15 }
+        ],
+        empleados_asignados: ["EMP001", "EMP002", "EMP004"],
+        costo_total: 6800.00,
+        notas: "Se entregó con retraso de 3 días por modificaciones solicitadas por el cliente"
+    }
+]);
+
+show dbs; -- Visualizar la base de datos
+
+db.proveedores.find();
+db.materiaPrima.find();
+db.insumos.find();
+db.compras.find();
+db.personal.find();
+db.produccion.find();
+
+// Actualizar el número de telefono del proveedor
+db.proveedores.updateOne(
+  {_id: 1},
+  {$set: {telefono: "5555-9999"}}
+)
+
+// Actualizar el salario de un empleado
+db.personal.updateOne(
+  {_id: 2},
+  {$set: {salario: 2000}}
+)
+
+// Actualizar el estado de una orden de producción
+db.produccion.updateOne(
+  {_id: 1},
+  {$set: {estado: "Finalizado", fecha_real_fin: new Date("2025-04-09")}}
+)
+
+// Actualizar el salario de muchos empleados (en un 5%)
+db.personal.updateMany(
+  {salario: {$lt: 2000}},
+  {$mul: {salario: 1.05}}
+)
+
+// Agregar una nueva nota a la orden de producción
+db.produccion.updateOne(
+  {_id: 2},
+  {$set: {notas: "Cliente solicitó cambio de color en último momento"}}
+)
+
+// Agregar un nuevo empleado a la orden de producción
+db.produccion.updateOne(
+  {_id: 2},
+  {$push: {empleados_asignados: 5}}
+)
+
+// Elimina un empleado de la orden de producción
+db.produccion.updateOne(
+  {_id: 1},
+  {$pull: {empleados_asignados: 2}}
+)
+
+// Actualizar multiples campos en un documento de proveedor
+db.proveedores.updateOne(
+  {_id: 3},
+  {
+    $set: {
+      telefono: "5555-0000",
+      email: "contacto@distrimateriales.com",
+      direccion: "Avenida Industrial 456, Ciudad"
+    }
+  }
+)
+
+// Incrementar la cantidad de un material en especifico en una orden de producción
+db.produccion.updateOne(
+  {_id: 1, "materiales.codigo_material": 1},
+  {$inc: {"materiales.$.cantidad": 2}}
+)
+
+// Actualizar el costo de una orden de producción
+db.produccion.updateOne(
+  {_id: 2},
+  {
+    $set: {
+      costo_total: 4800,
+      costo_desglosado: {
+        materiales: 3200,
+        mano_obra: 1200,
+        insumos: 400
+      }
+    }
+  }
+)
+
+// Total gastado por proveedor
+db.compras.aggregate([
+  // Desenrollar los arrays de insumos y materia prima
+  {$unwind: {path: "$insumos", preserveNullAndEmptyArrays: true}},
+  
+  // Hacer lookup para obtener información del insumo
+  {$lookup: {
+    from: "insumos",
+    localField: "insumos.id",
+    foreignField: "_id",
+    as: "insumo_info"
+  }},
+  
+  // Desenrollar el resultado del lookup
+  {$unwind: {path: "$insumo_info", preserveNullAndEmptyArrays: true}},
+  
+  // Calcular subtotal y agrupar por proveedor
+  {$group: {
+    _id: "$insumo_info.id_proveedor",
+    total_gastado: {$sum: {$multiply: ["$insumos.precio_unitario", "$insumos.cantidad"]}},
+    total_compras: {$sum: 1}
+  }},
+  
+  // Hacer lookup para obtener nombre del proveedor
+  {$lookup: {
+    from: "proveedores",
+    localField: "_id",
+    foreignField: "_id",
+    as: "proveedor_info"
+  }},
+  
+  // Proyectar resultados formateados
+  {$project: {
+    _id: 0,
+    proveedor: {$arrayElemAt: ["$proveedor_info.nombre", 0]},
+    total_gastado: 1,
+    total_compras: 1
+  }},
+  
+  // Ordenar por total gastado (descendente)
+  {$sort: {total_gastado: -1}}
+])
+
+// Análisis de carga de trabajo por empleado
+db.produccion.aggregate([
+  // Desenrollar el array de empleados asignados
+  {$unwind: "$empleados_asignados"},
+  
+  // Agrupar por ID de empleado
+  {$group: {
+    _id: "$empleados_asignados",
+    proyectos_asignados: {$sum: 1},
+    proyectos: {$push: {
+      id: "$_id",
+      descripcion: "$descripcion",
+      estado: "$estado"
+    }}
+  }},
+  
+  // Lookup para obtener información del empleado
+  {$lookup: {
+    from: "personal",
+    localField: "_id",
+    foreignField: "_id",
+    as: "empleado_info"
+  }},
+  
+  // Proyectar resultados
+  {$project: {
+    _id: 0,
+    id_empleado: "$_id",
+    nombre_completo: {
+      $concat: [
+        {$arrayElemAt: ["$empleado_info.nombres", 0]}, " ",
+        {$arrayElemAt: ["$empleado_info.apellidos", 0]}
+      ]
+    },
+    cargo: {$arrayElemAt: ["$empleado_info.cargo", 0]},
+    proyectos_asignados: 1,
+    proyectos: 1
+  }},
+  
+  // Ordenar por cantidad de proyectos (descendente)
+  {$sort: {proyectos_asignados: -1}}
+])
+
+// Análisis de rendimiento por tipo de armario
+db.produccion.aggregate([
+  // Agrupar por tipo de armario
+  {$group: {
+    _id: "$tipo_armario",
+    cantidad_producida: {$sum: 1},
+    costo_promedio: {$avg: "$costo_total"},
+    costo_total: {$sum: "$costo_total"},
+    dias_produccion: {
+      $avg: {
+        $divide: [
+          {$subtract: [
+            {$ifNull: ["$fecha_real_fin", "$fecha_estimada_fin"]}, 
+            "$fecha_inicio"
+          ]},
+          1000 * 60 * 60 * 24 // Convertir milisegundos a días
+        ]
+      }
+    },
+    clientes: {$addToSet: "$cliente.nombre"}
+  }},
+  
+  // Ordenar por costo total (descendente)
+  {$sort: {costo_total: -1}}
+])
+
+// Análisis de rentabilidad por cliente
+db.produccion.aggregate([
+  // Agrupar por nombre de cliente
+  {$group: {
+    _id: "$cliente.nombre",
+    total_proyectos: {$sum: 1},
+    total_facturado: {$sum: "$costo_total"},
+    proyectos: {$push: {
+      id: "$_id",
+      tipo: "$tipo_armario",
+      descripcion: "$descripcion",
+      costo: "$costo_total",
+      estado: "$estado"
+    }}
+  }},
+  
+  // Calcular precio promedio por proyecto
+  {$addFields: {
+    precio_promedio: {$divide: ["$total_facturado", "$total_proyectos"]}
+  }},
+  
+  // Ordenar por total facturado (descendente)
+  {$sort: {total_facturado: -1}}
+])
+
+// Reporte mensual de producción
+db.produccion.aggregate([
+  // Crear campo de año y mes
+  {$addFields: {
+    year: {$year: "$fecha_inicio"},
+    month: {$month: "$fecha_inicio"}
+  }},
+  
+  // Agrupar por año y mes
+  {$group: {
+    _id: {year: "$year", month: "$month"},
+    total_proyectos: {$sum: 1},
+    proyectos_finalizados: {$sum: {$cond: [{$eq: ["$estado", "Finalizado"]}, 1, 0]}},
+    proyectos_en_proceso: {$sum: {$cond: [{$eq: ["$estado", "En proceso"]}, 1, 0]}},
+    facturacion_total: {$sum: "$costo_total"}
+  }},
+  
+  // Ordenar por año y mes
+  {$sort: {"_id.year": 1, "_id.month": 1}},
+  
+  // Proyectar resultados formateados
+  {$project: {
+    _id: 0,
+    periodo: {
+      $concat: [
+        {$toString: "$_id.year"}, "-",
+        {$toString: "$_id.month"}
+      ]
+    },
+    total_proyectos: 1,
+    proyectos_finalizados: 1,
+    proyectos_en_proceso: 1,
+    facturacion_total: 1,
+    tasa_finalizacion: {
+      $multiply: [
+        {$divide: ["$proyectos_finalizados", "$total_proyectos"]},
+        100
+      ]
+    }
+  }}
+])
+
+// Análisis de eficiencia por empleado
+db.produccion.aggregate([
+  // Incluir solo proyectos finalizados
+  {$match: {estado: "Finalizado"}},
+  
+  // Calcular tiempo real de producción
+  {$addFields: {
+    dias_planificados: {
+      $divide: [
+        {$subtract: ["$fecha_estimada_fin", "$fecha_inicio"]},
+        1000 * 60 * 60 * 24 // Convertir a días
+      ]
+    },
+    dias_reales: {
+      $divide: [
+        {$subtract: ["$fecha_real_fin", "$fecha_inicio"]},
+        1000 * 60 * 60 * 24 // Convertir a días
+      ]
+    }
+  }},
+  
+  // Desenrollar empleados asignados
+  {$unwind: "$empleados_asignados"},
+  
+  // Agrupar por empleado
+  {$group: {
+    _id: "$empleados_asignados",
+    proyectos_finalizados: {$sum: 1},
+    promedio_dias_planificados: {$avg: "$dias_planificados"},
+    promedio_dias_reales: {$avg: "$dias_reales"},
+    total_generado: {$sum: "$costo_total"}
+  }},
+  
+  // Calcular índice de eficiencia
+  {$addFields: {
+    indice_eficiencia: {
+      $multiply: [
+        {$divide: ["$promedio_dias_planificados", "$promedio_dias_reales"]},
+        100
+      ]
+    }
+  }},
+  
+  // Lookup para obtener información del empleado
+  {$lookup: {
+    from: "personal",
+    localField: "_id",
+    foreignField: "_id",
+    as: "empleado_info"
+  }},
+  
+  // Proyectar resultados
+  {$project: {
+    _id: 0,
+    id_empleado: "$_id",
+    nombre: {$arrayElemAt: ["$empleado_info.nombres", 0]},
+    apellidos: {$arrayElemAt: ["$empleado_info.apellidos", 0]},
+    cargo: {$arrayElemAt: ["$empleado_info.cargo", 0]},
+    proyectos_finalizados: 1,
+    indice_eficiencia: {$round: ["$indice_eficiencia", 2]},
+    valor_generado: {$round: ["$total_generado", 2]},
+    promedio_por_proyecto: {$round: [{$divide: ["$total_generado", "$proyectos_finalizados"]}, 2]}
+  }},
+  
+  // Ordenar por índice de eficiencia (descendente)
+  {$sort: {indice_eficiencia: -1}}
+])
+
+// Dashboard de proveedores con materiales
+db.proveedores.aggregate([
+  // Lookup para obtener materias primas asociadas
+  {$lookup: {
+    from: "materiaPrima",
+    localField: "_id",
+    foreignField: "id_proveedor",
+    as: "materiales"
+  }},
+  
+  // Lookup para obtener insumos asociados
+  {$lookup: {
+    from: "insumos",
+    localField: "_id",
+    foreignField: "id_proveedor",
+    as: "insumos"
+  }},
+  
+  // Proyectar resultados
+  {$project: {
+    _id: 1,
+    nombre: 1,
+    contacto: {
+      telefono: "$telefono",
+      email: "$email"
+    },
+    total_materiales: {$size: "$materiales"},
+    total_insumos: {$size: "$insumos"},
+    productos: {
+      $concatArrays: [
+        {$map: {
+          input: "$materiales",
+          as: "material",
+          in: {
+            tipo: "Materia Prima",
+            nombre: "$$material.nombre",
+            id: "$$material._id"
+          }
+        }},
+        {$map: {
+          input: "$insumos",
+          as: "insumo",
+          in: {
+            tipo: "Insumo",
+            nombre: "$$insumo.nombre",
+            id: "$$insumo._id",
+            categoria: "$$insumo.tipo"
+          }
+        }}
+      ]
+    }
+  }},
+  
+  // Ordenar por total de productos (descendente)
+  {$sort: {$add: ["$total_materiales", "$total_insumos"]: -1}}
+])

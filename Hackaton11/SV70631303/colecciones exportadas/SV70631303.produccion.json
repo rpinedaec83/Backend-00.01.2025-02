@@ -1,0 +1,141 @@
+[{
+  "_id": 1,
+  "tipo_armario": "Armario de 2 puertas",
+  "descripcion": "Armario de roble con acabados finos",
+  "fecha_inicio": {
+    "$date": "2025-04-01T00:00:00.000Z"
+  },
+  "fecha_estimada_fin": {
+    "$date": "2025-04-10T00:00:00.000Z"
+  },
+  "estado": "En proceso",
+  "cliente": {
+    "nombre": "Hotel California",
+    "telefono": "7777-1234",
+    "direccion": "Avenida Principal 123, Ciudad"
+  },
+  "materiales": [
+    {
+      "codigo_material": 1,
+      "cantidad": 8
+    },
+    {
+      "codigo_material": 2,
+      "cantidad": 2
+    }
+  ],
+  "insumos": [
+    {
+      "codigo_insumo": 1,
+      "cantidad": 50
+    },
+    {
+      "codigo_insumo": 2,
+      "cantidad": 1
+    },
+    {
+      "codigo_insumo": 3,
+      "cantidad": 6
+    }
+  ],
+  "empleados_asignados": [
+    1,
+    2,
+    4
+  ],
+  "costo_total": 3200,
+  "notas": "Cliente solicita acabado en barniz mate"
+},
+{
+  "_id": 2,
+  "tipo_armario": "Closet empotrado",
+  "descripcion": "Closet de pino con puertas corredizas",
+  "fecha_inicio": {
+    "$date": "2025-04-05T00:00:00.000Z"
+  },
+  "fecha_estimada_fin": {
+    "$date": "2025-04-18T00:00:00.000Z"
+  },
+  "estado": "En proceso",
+  "cliente": {
+    "nombre": "Residencial Los Pinos",
+    "telefono": "7777-5678",
+    "direccion": "Calle Secundaria 45, Ciudad"
+  },
+  "materiales": [
+    {
+      "codigo_material": "MP002",
+      "cantidad": 12
+    },
+    {
+      "codigo_material": "MP003",
+      "cantidad": 3
+    }
+  ],
+  "insumos": [
+    {
+      "codigo_insumo": "INS001",
+      "cantidad": 80
+    },
+    {
+      "codigo_insumo": "INS002",
+      "cantidad": 2
+    },
+    {
+      "codigo_insumo": "INS003",
+      "cantidad": 8
+    }
+  ],
+  "empleados_asignados": [
+    1,
+    4
+  ],
+  "costo_total": 4500
+},
+{
+  "_id": 3,
+  "tipo_armario": "Armario de cocina",
+  "descripcion": "Muebles de cocina completos en MDF",
+  "fecha_inicio": {
+    "$date": "2025-03-20T00:00:00.000Z"
+  },
+  "fecha_estimada_fin": {
+    "$date": "2025-04-05T00:00:00.000Z"
+  },
+  "fecha_real_fin": {
+    "$date": "2025-04-08T00:00:00.000Z"
+  },
+  "estado": "Finalizado",
+  "cliente": {
+    "nombre": "Restaurante El Sabor",
+    "telefono": "7777-9012",
+    "direccion": "Boulevard Principal 78, Ciudad"
+  },
+  "materiales": [
+    {
+      "codigo_material": "MP003",
+      "cantidad": 8
+    }
+  ],
+  "insumos": [
+    {
+      "codigo_insumo": "INS001",
+      "cantidad": 120
+    },
+    {
+      "codigo_insumo": "INS002",
+      "cantidad": 3
+    },
+    {
+      "codigo_insumo": "INS003",
+      "cantidad": 15
+    }
+  ],
+  "empleados_asignados": [
+    "EMP001",
+    "EMP002",
+    "EMP004"
+  ],
+  "costo_total": 6800,
+  "notas": "Se entregó con retraso de 3 días por modificaciones solicitadas por el cliente"
+}]
