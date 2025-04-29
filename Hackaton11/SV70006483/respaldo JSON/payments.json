@@ -1,0 +1,11 @@
+[
+  {
+    "_id": "680494a9a96d8c48f8ba2603",
+    "employee": "680494a8a96d8c48f8ba25f5",
+    "paymentDate": "2025-04-15T00:00:00.000Z",
+    "amount": 1600,
+    "description": "Pago de salario ajustado",
+    "isActive": false,
+    "__v": 0
+  }
+]

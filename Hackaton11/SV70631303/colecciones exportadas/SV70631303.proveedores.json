@@ -1,0 +1,30 @@
+[{
+  "_id": 1,
+  "nombre": "Maderas del Norte",
+  "telefono": "5555-1234",
+  "email": "ventas@maderasnorte.com"
+},
+{
+  "_id": 2,
+  "nombre": "Aserradero San Juan",
+  "telefono": "5555-5678",
+  "email": "info@aserradero.com"
+},
+{
+  "_id": 3,
+  "nombre": "Distribuidora de Materiales",
+  "telefono": "5555-9012",
+  "email": "ventas@distrimateriales.com"
+},
+{
+  "_id": 4,
+  "nombre": "Ferretería Central",
+  "telefono": "5555-3456",
+  "email": "ventas@ferreteriacentral.com"
+},
+{
+  "_id": 5,
+  "nombre": "Químicos Industriales",
+  "telefono": "5555-7890",
+  "email": "ventas@quimicosindustriales.com"
+}]

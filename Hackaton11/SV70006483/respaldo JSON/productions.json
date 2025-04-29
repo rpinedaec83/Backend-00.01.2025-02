@@ -1,0 +1,22 @@
+[
+  {
+    "_id": "680494a8a96d8c48f8ba25fd",
+    "type": "Producto Final",
+    "name": "Armario de roble",
+    "totalQuantity": 10,
+    "details": [
+      {
+        "material": "680494a8a96d8c48f8ba25fb",
+        "unit": "m²",
+        "quantity": 50,
+        "_id": "680494a8a96d8c48f8ba25fe"
+      }
+    ],
+    "createdBy": "680494a6a96d8c48f8ba25f0",
+    "updatedBy": "680494a6a96d8c48f8ba25f0",
+    "updatedAt": "2025-04-13T12:17:31.000Z",
+    "isActive": false,
+    "createdAt": "2025-04-20T06:31:04.841Z",
+    "__v": 0
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "_id": "680494a6a96d8c48f8ba25f0",
+    "username": "dhayroactualizado",
+    "password": "secreto123",
+    "email": "juan@example.com",
+    "role": "gerente",
+    "isActive": false,
+    "__v": 0
+  },
+  {
+    "_id": "680494a8a96d8c48f8ba25f3",
+    "username": "dhayrokong",
+    "password": "secreto123",
+    "email": "dhayrokong@example.com",
+    "role": "empleado",
+    "isActive": true,
+    "__v": 0
+  }
+]

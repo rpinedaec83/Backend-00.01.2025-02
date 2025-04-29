@@ -1,7 +1,9 @@
 {
-  "name": "d19423",
+  "name": "hackaton12",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
+  "devDependencies": {},
   "scripts": {
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,10 +11,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "type": "commonjs",
   "dependencies": {
-    "dotenv": "^16.5.0",
-    "mongodb": "^6.15.0",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.10"
   }
 }

@@ -1,18 +1,21 @@
 {
-  "name": "d19423",
+  "name": "sv70006483",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
+  "devDependencies": {
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  },
   "dependencies": {
     "dotenv": "^16.5.0",
-    "mongodb": "^6.15.0",
-    "nodemon": "^3.1.9"
+    "mongodb": "^6.16.0"
   }
 }

@@ -1,0 +1,83 @@
+{
+  "proveedores": [
+    { "_id": 1, "nombre": "maderas del sur", "contacto": "luis prado", "telefono": "987654321", "direccion": "calle 123", "is_activo": true },
+    { "_id": 2, "nombre": "cristales ica", "contacto": "sofia ramos", "telefono": "999888777", "direccion": "av. principal 456", "is_activo": true },
+    { "_id": 3, "nombre": "herrajes andinos", "contacto": "carlos vega", "telefono": "922112233", "direccion": "jr. comercio 789", "is_activo": true }
+  ],
+  "materia_prima": [
+    { "_id": 1, "nombre": "madera mdf", "unidad_medida": "m2", "stock_actual": 1500, "proveedor_id": 1 },
+    { "_id": 2, "nombre": "vidrio templado", "unidad_medida": "m2", "stock_actual": 600, "proveedor_id": 2 },
+    { "_id": 3, "nombre": "madera pino", "unidad_medida": "m2", "stock_actual": 1000, "proveedor_id": 1 }
+  ],
+  "insumos": [
+    { "_id": 1, "nombre": "tornillos", "unidad_medida": "unidad", "stock_actual": 25000, "proveedor_id": 1 },
+    { "_id": 2, "nombre": "pegamento", "unidad_medida": "litro", "stock_actual": 250, "proveedor_id": 1 },
+    { "_id": 3, "nombre": "bisagras", "unidad_medida": "unidad", "stock_actual": 8000, "proveedor_id": 3 }
+  ],
+  "empleados": [
+    { "_id": 1, "nombre": "juan", "apellido": "perez", "cargo": "armador", "fecha_ingreso": "2023-01-01T00:00:00.000Z", "salario_base": 1500 },
+    { "_id": 2, "nombre": "ana", "apellido": "gomez", "cargo": "armadora", "fecha_ingreso": "2022-06-15T00:00:00.000Z", "salario_base": 1600 },
+    { "_id": 3, "nombre": "carlos", "apellido": "diaz", "cargo": "armador", "fecha_ingreso": "2023-02-20T00:00:00.000Z", "salario_base": 1400 },
+    { "_id": 4, "nombre": "luisa", "apellido": "ramirez", "cargo": "armadora", "fecha_ingreso": "2023-05-10T00:00:00.000Z", "salario_base": 1550 }
+  ],
+  "productos": [
+    { "_id": 1, "codigo": "arm001", "nombre": "armario clasico", "descripcion": "armario de madera con 2 puertas", "stock_actual": 20 },
+    { "_id": 2, "codigo": "arm002", "nombre": "armario moderno", "descripcion": "armario con diseno minimalista", "stock_actual": 5 },
+    { "_id": 3, "codigo": "arm003", "nombre": "armario medio", "descripcion": "armario de tamano intermedio", "stock_actual": 10 },
+    { "_id": 4, "codigo": "arm004", "nombre": "armario lujoso", "descripcion": "armario con diseno lujoso", "stock_actual": 10 }
+  ],
+  "produccion": [
+    {
+      "_id": 1,
+      "fecha_inicio": "2025-04-01T00:00:00.000Z",
+      "fecha_fin": "2025-04-30T00:00:00.000Z",
+      "productos": [
+        { "id_producto": 1, "cantidad_estimado": 30 },
+        { "id_producto": 2, "cantidad_estimado": 20 },
+        { "id_producto": 3, "cantidad_estimado": 10 },
+        { "id_producto": 4, "cantidad_estimado": 40 }
+      ]
+    },
+    {
+      "_id": 2,
+      "fecha_inicio": "2025-05-01T00:00:00.000Z",
+      "fecha_fin": "2025-05-31T00:00:00.000Z",
+      "productos": [
+        { "id_producto": 1, "cantidad_estimado": 25 },
+        { "id_producto": 3, "cantidad_estimado": 15 }
+      ]
+    }
+  ],
+  "produccion_empleado": [
+    { "plan_id": 1, "empleado_id": 1, "producto_id": 1, "cantidad_armarios": 10, "pago_total": 300 },
+    { "plan_id": 1, "empleado_id": 2, "producto_id": 1, "cantidad_armarios": 12, "pago_total": 360 },
+    { "plan_id": 1, "empleado_id": 3, "producto_id": 2, "cantidad_armarios": 8, "pago_total": 240 },
+    { "plan_id": 1, "empleado_id": 4, "producto_id": 3, "cantidad_armarios": 5, "pago_total": 150 },
+    { "plan_id": 1, "empleado_id": 1, "producto_id": 4, "cantidad_armarios": 15, "pago_total": 450 }
+  ],
+  "inventario": [
+    { "producto_id": 1, "cantidad_disponible": 22, "ultima_actualizacion": "2025-04-20T00:00:00.000Z" },
+    { "producto_id": 2, "cantidad_disponible": 10, "ultima_actualizacion": "2025-04-20T00:00:00.000Z" },
+    { "producto_id": 3, "cantidad_disponible": 8, "ultima_actualizacion": "2025-04-20T00:00:00.000Z" },
+    { "producto_id": 4, "cantidad_disponible": 15, "ultima_actualizacion": "2025-04-20T00:00:00.000Z" }
+  ],
+  "compras": [
+    {
+      "_id": 1,
+      "fecha": "2025-04-20T00:00:00.000Z",
+      "proveedor_id": 1,
+      "detalles": [
+        { "tipo": "materia", "id_recurso": 1, "cantidad": 75, "unidad_medida": "m2", "descripcion": "compra de madera mdf" }
+      ]
+    },
+    {
+      "_id": 2,
+      "fecha": "2025-04-20T00:00:00.000Z",
+      "proveedor_id": 2,
+      "detalles": [
+        { "tipo": "materia", "id_recurso": 2, "cantidad": 30, "unidad_medida": "m2", "descripcion": "compra de vidrio templado" },
+        { "tipo": "insumo", "id_recurso": 1, "cantidad": 3000, "unidad_medida": "unidad", "descripcion": "compra de tornillos" }
+      ]
+    }
+  ]
+}

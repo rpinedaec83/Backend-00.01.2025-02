@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>Sales</title>
+  </head>
+
+  <body style="font-family: 'Inter', sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f9fafb; color: #374151; line-height: 1.5;">
+    <div style="background-color: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); margin-bottom: 30px;">
+      <h1 style="color: #111827; font-size: 28px; margin-top: 0; border-bottom: 1px solid #e5e7eb; padding-bottom: 15px;">Sales List</h1>
+      <ul id="sales-list" style="list-style-type: none; padding: 0; margin: 0;">
+       
+      </ul>
+    </div>
+  <script>
+    fetch("/api/sales")
+      .then((response) => response.json())
+      .then((data) => {
+        const list = document.getElementById("sales-list");
+        data.data.forEach((element) => {
+          // const li = document.createElement("li");
+          // li.textContent = element.product ?? "not found";
+          list.insertAdjacentHTML('beforeend',`
+           <li style="padding: 15px; margin-bottom: 10px; border-radius: 8px; background-color: #f3f4f6; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <span style="font-weight: 600; color: #111827; display: block;">${ element.product}</span>
+            <span style="color: #6b7280; font-size: 14px;">${ element.description}</span>
+          </div>
+          <div>
+            <span style="background-color: #10b981; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500;">${ element.isCompleted}</span>
+            <span style="color: #6b7280; font-size: 14px; margin-left: 10px;">${ element.date}</span>
+          </div>
+        </li>
+          `);
+        });
+      });
+  </script>
+</html>
