@@ -1,0 +1,23 @@
+{
+  "name": "d19423",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "dev":"nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-session": "^2.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^6.10.0",
+    "nodemon": "^3.1.10"
+  }
+}
