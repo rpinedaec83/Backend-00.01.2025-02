@@ -20,6 +20,18 @@ app.get('/',(req,res)=>{
     res.send({message:"Bienvenido a mi API"})
 })
 
+require('./app/routes/auth.routes')(app);
+
+const db = require('./app/models');
+db.mongoose.set('strictQuery',true);
+db.mongoose.connect(process.env.mongoURI,{}).then(()=>{
+    console.log("BD conectada");
+    db.init();
+}).catch((error)=>{
+    console.error(error);
+    process.exit();
+})
+
 app.listen(PORT, ()=>{
     console.log(`Escuchando en el puerto ${PORT}`);
 })
