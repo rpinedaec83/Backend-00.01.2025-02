@@ -60,7 +60,7 @@ db.compra_insumos.insertMany([
 // Crear y llenar la colección personal
 db.personal.insertMany([
   {
-    nombre: "Juan Pérez",
+    nombre: "Cesar Marcelo",
     dni: "12345678",
     cargo: "Carpintero",
     salario: 2000,
@@ -85,7 +85,7 @@ db.produccion.insertMany([
     fechaInicio: new Date("2025-04-15"),
     fechaFin: new Date("2025-04-18"),
     empleadosInvolucrados: [
-      { nombre: "Juan Pérez", dni: "12345678" },
+      { nombre: "Cesar Marcelo", dni: "12345678" },
       { nombre: "María López", dni: "87654321" }
     ],
     materiaPrimaUsada: [
