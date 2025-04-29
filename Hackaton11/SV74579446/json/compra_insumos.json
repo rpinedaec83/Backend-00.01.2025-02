@@ -1,0 +1,27 @@
+[
+    {
+      "nombre": "Tornillos",
+      "cantidad": 500,
+      "unidad": "unidades",
+      "proveedor": "Proveedor B",
+      "costo": 100,
+      "fechaCompra": "2025-04-10T00:00:00Z"
+    },
+    {
+      "nombre": "Tuercas",
+      "cantidad": 5000,
+      "unidad": "unidades",
+      "proveedor": "Proveedor B",
+      "costo": 100,
+      "fechaCompra": "2025-04-10T00:00:00Z"
+    },
+    {
+      "nombre": "Pegamento",
+      "cantidad": 20,
+      "unidad": "litros",
+      "proveedor": "Proveedor D",
+      "costo": 200,
+      "fechaCompra": "2025-04-11T00:00:00Z"
+    }
+  ]
+  
