@@ -95,4 +95,5 @@ db.produccion.insertMany([
       { nombre: "Tornillos", cantidad: 200, unidad: "unidades" }
     ]
   }
+
 ]);
