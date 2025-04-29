@@ -1,0 +1,39 @@
+[{
+  "_id": {
+    "$oid": "68040ca8e7d4cdf91b2b878f"
+  },
+  "nombre": "Madera",
+  "cantidad": 100,
+  "unidad": "m³",
+  "proveedor": "Proveedor A",
+  "costo": 5000,
+  "fechaCompra": {
+    "$date": "2025-04-01T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68040f13e7d4cdf91b2b8793"
+  },
+  "nombre": "Madera",
+  "cantidad": 10,
+  "unidad": "m³",
+  "proveedor": "Proveedor C",
+  "costo": 500,
+  "fechaCompra": {
+    "$date": "2025-04-01T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68040f13e7d4cdf91b2b8794"
+  },
+  "nombre": "Melamina",
+  "cantidad": 80,
+  "unidad": "m²",
+  "proveedor": "Proveedor B",
+  "costo": 4000,
+  "fechaCompra": {
+    "$date": "2025-04-05T00:00:00.000Z"
+  }
+}]

@@ -1,0 +1,15 @@
+[{
+  "_id": 1,
+  "nombre": "Madera de Roble",
+  "id_proveedor": 1
+},
+{
+  "_id": 2,
+  "nombre": "Madera de Pino",
+  "id_proveedor": 2
+},
+{
+  "_id": 3,
+  "nombre": "Lámina de MDF",
+  "id_proveedor": 3
+}]

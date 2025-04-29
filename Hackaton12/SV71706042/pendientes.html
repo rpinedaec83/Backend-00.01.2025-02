@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compras Pendientes</title>
+</head>
+<body style="font-family: Arial, sans-serif; max-width: 800px; margin: auto; padding: 20px;">
+  <h2>Lista de Compras Pendientes</h2>
+  <ul id="pendientes-list" style="list-style-type: none; padding: 0;"></ul>
+
+  <script>
+    fetch('/api/pendientes')
+      .then(res => res.json())
+      .then(data => {
+        const ul = document.getElementById('pendientes-list');
+        if (data.data.length === 0) {
+          ul.innerHTML = "<li>No hay compras pendientes 🎉</li>";
+        } else {
+          data.data.forEach(item => {
+            const li = document.createElement('li');
+            li.style.padding = "10px";
+            li.style.marginBottom = "5px";
+            li.style.background = "#fff";
+            li.style.border = "1px solid #ddd";
+            li.style.borderRadius = "8px";
+            li.innerHTML = `<strong>${item.Nombre}</strong> — ${item.Descripcion} <br><small>Fecha: ${item.Fecha}</small>`;
+            ul.appendChild(li);
+          });
+        }
+      });
+  </script>
+</body>
+</html>

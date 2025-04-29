@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lista de Compras</title>
+</head>
+<body
+  style="font-family: 'Inter', sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f9fafb; color: #374151;"
+>
+  <h2>Lista de Compras</h2>
+  <ul id="lista-compras" style="list-style-type: none; padding: 0;"></ul>
+
+  <script>
+    fetch('/api/sales')
+      .then(res => res.json())
+      .then(data => {
+        const ul = document.getElementById('lista-compras');
+        data.data.forEach(item => {
+          const li = document.createElement('li');
+          li.style.padding = "10px";
+          li.style.marginBottom = "5px";
+          li.style.background = "#fff";
+          li.style.border = "1px solid #ddd";
+          li.style.borderRadius = "8px";
+          li.innerHTML = `
+            <strong>${item.Nombre}</strong> — ${item.Descripcion} 
+            <br>
+            <small>Fecha: ${item.Fecha} | Estado: <span style="color: ${item.EsCompletado ? 'green' : 'orange'}">${item.EsCompletado ? 'Completado' : 'Pendiente'}</span></small>
+          `;
+          ul.appendChild(li);
+        });
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+use SV70146250
+already on db SV70146250
+
+ db.empleados.insertOne(
+{	
+	nombre: "Luis", 
+	apellido: "Gonzales",
+	cargo: "Especialista en armarios",
+	salario: 2000,
+	dni: "81234562"	
+}
+)
+{
+  acknowledged: true,
+  insertedId: ObjectId('680414daae869259a1ca348d')
+}
+db.proveedores.insertOne(
+{	
+	nombre: "Maderas SRL", 
+	ruc: "14145533341",
+	cel: "984493021"	
+}
+)
+{
+  acknowledged: true,
+  insertedId: ObjectId('6804154fae869259a1ca348e')
+}
+db.materia_insumo.insertOne(
+{	
+	nombre: "Tabla MDF Cedro", 
+	unidad_medicion: "unidad",
+	cantidad: 40,
+	tipo: "Material de armado"	
+}
+)
+{
+  acknowledged: true,
+  insertedId: ObjectId('680415bfae869259a1ca348f')
+}
+db.produccion.insertOne({
+  tipo: "Laminado",
+  nombre: "Armario Empotrado de Cedro",
+  cantidad_total: 10,
+  empleado: 81234562,
+  detalles: [{
+    materia_insumo_id: ObjectId("680415bfae869259a1ca348f"),
+    nombre: "Tabla MDF Cedro",
+		unidad_medida: "unidad"
+  }]
+})
+{
+  acknowledged: true,
+  insertedId: ObjectId('680419e0ae869259a1ca3490')
+}
+db.compra.insertOne({
+ruc:"14145533341",
+monto_total:3200.00,
+detalles:[{
+	materia_insumo_id: ObjectId("680415bfae869259a1ca348f"),
+	unidad_medicion: "unidad",
+	cantidad: 4,
+	monto: 800.00
+}]
+})
+{
+  acknowledged: true,
+  insertedId: ObjectId('68041b8bae869259a1ca3491')
+}
+
+
+show collections
+compra
+empleados
+materia_insumo
+produccion
+proveedores

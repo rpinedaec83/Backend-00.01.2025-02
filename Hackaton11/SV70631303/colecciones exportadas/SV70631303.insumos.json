@@ -1,0 +1,18 @@
+[{
+  "_id": 1,
+  "nombre": "Tornillos 2 pulgadas",
+  "id_proveedor": 4,
+  "tipo": "Herraje"
+},
+{
+  "_id": 2,
+  "nombre": "Pegamento Industrial",
+  "id_proveedor": 5,
+  "tipo": "Adhesivo"
+},
+{
+  "_id": 3,
+  "nombre": "Bisagras metálicas",
+  "id_proveedor": 6,
+  "tipo": "Herraje"
+}]

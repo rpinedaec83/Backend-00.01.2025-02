@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crear compra</title>
+</head>
+<body
+  style="font-family: 'Inter', sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f9fafb; color: #374151; line-height: 1.5;"
+>
+  <h2>Crear nueva compra</h2>
+  <div
+    style="background-color: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);"
+  >
+    <form id="sale-form" style="display: grid; gap: 16px">
+      <div>
+        <label for="name">Nombre</label>
+        <input type="text" id="name" required placeholder="Ej. Huevos" style="width: 100%; padding: 10px; border-radius: 8px;" />
+      </div>
+
+      <div>
+        <label for="description">Descripción</label>
+        <input type="text" id="description" required placeholder="Ej. 1 docena" style="width: 100%; padding: 10px; border-radius: 8px;" />
+      </div>
+
+      <div>
+        <label for="date">Fecha</label>
+        <input type="date" id="date" required style="width: 100%; padding: 10px; border-radius: 8px;" />
+      </div>
+
+      <div>
+        <label for="isCompleted">Estado</label>
+        <select id="isCompleted" style="width: 100%; padding: 10px; border-radius: 8px;">
+          <option value="pending">Pendiente</option>
+          <option value="completed">Completado</option>
+        </select>
+      </div>
+
+      <button type="submit" style="background-color: #10b981; color: white; border: none; border-radius: 8px; padding: 12px 20px;">
+        Crear compra
+      </button>
+    </form>
+  </div>
+
+  <script>
+    document.querySelector("#sale-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const sale = {
+        name: document.querySelector("#name").value,
+        description: document.querySelector("#description").value,
+        date: document.querySelector("#date").value,
+        isCompleted: document.querySelector("#isCompleted").value,
+      };
+
+      fetch("/api/sales", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sale),
+      })
+      .then(res => res.json())
+      .then(() => {
+        alert("Compra creada exitosamente");
+        window.location.href = "/web/sales";
+      });
+    });
+  </script>
+</body>
+</html>

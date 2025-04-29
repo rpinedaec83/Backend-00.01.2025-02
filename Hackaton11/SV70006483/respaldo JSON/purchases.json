@@ -1,0 +1,21 @@
+[
+  {
+    "_id": "680494a8a96d8c48f8ba2600",
+    "date": "2025-04-13T00:00:00.000Z",
+    "supplier": "680494a8a96d8c48f8ba25f9",
+    "totalAmount": 5000,
+    "details": [
+      {
+        "material": "680494a8a96d8c48f8ba25fb",
+        "unit": "m²",
+        "quantity": 100,
+        "amount": 5000,
+        "_id": "680494a8a96d8c48f8ba2601"
+      }
+    ],
+    "createdBy": "680494a6a96d8c48f8ba25f0",
+    "isActive": true,
+    "createdAt": "2025-04-20T06:31:04.951Z",
+    "__v": 0
+  }
+]

@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <title>Lista de Compras</title>
+  </head>
+  <body>
+    <div>
+      <h1>Lista de Compras</h1>
+      <ul id="shopping-list"></ul>
+    </div>
+    <script>
+      // Obtener los pendientes y mostrarlos en la lista
+      fetch("/api/shopping/pendientes")
+        .then((response) => response.json())
+        .then((data) => {
+          const shoppingList = document.getElementById("shopping-list");
+          data.data.forEach((item) => {
+            const li = document.createElement("li");
+            li.textContent = `${item.Nombre} - ${item.Descripcion} - ${item.Fecha}`;
+            shoppingList.appendChild(li);
+          });
+        });
+    </script>
+  </body>
+</html>

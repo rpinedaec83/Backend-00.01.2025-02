@@ -1,0 +1,79 @@
+use SV70825477 -- crear
+
+show collections -- ver colecciones
+
+db.name_collecion.insertOne({ -- insertando datos en la collecion
+key:"value"})
+
+
+show dbs -- visualizar base de datos
+
+
+
+db.name_collection.find() --visualizar los documentos o datos
+db.employees.find()
+
+
+-- agregar un id a un arreglo interno
+
+db.purchases.updateOne(
+{_id:ObjectId('68040e3140b8a9d89c43737e')},
+{$set:{
+details: [
+    {
+    _id: new ObjectId(),
+      materials: null,
+      unit_measure: 'lt',
+      quantity: 5,
+      amount: 20
+    },
+    {
+      _id:new ObjectId(),
+      materials: null
+    }
+  ]
+}});
+
+-- actualizar un objecto de un arreglo
+db.purchases.updateOne(
+{_id:ObjectId('68040e3140b8a9d89c43737e'),
+"details._id":ObjectId('68040f3840b8a9d89c437380')
+},
+{
+  $set:{
+      "details.$.unit_measure":"mt",
+      "details.$.quantity":2,
+      "details.$.amount":100
+      }
+})
+
+-- unir collections
+
+db.purchases.aggregate(
+[
+{
+  $lookup:{
+    from:"suppliers",
+    localField:"supplier",
+    foreignField:"_id",
+  as: "supplier"
+  }
+},
+{
+  $unwind:"$supplier"
+}
+]
+)
+
+
+
+
+
+
+
+
+
+
+
+
+ 
