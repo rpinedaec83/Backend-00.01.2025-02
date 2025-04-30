@@ -15,7 +15,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 }).then(() => console.log('Conectado a MongoDB'))
   .catch(err => console.error('Error de conexión a MongoDB:', err));
 
-// Definición del esquema y modelo de Compra
+// modelo de Compra
 const purchaseSchema = new mongoose.Schema({
   product: String,
   description: String,
@@ -26,8 +26,6 @@ const purchaseSchema = new mongoose.Schema({
 });
 
 const Purchase = mongoose.model('Purchase', purchaseSchema);
-
-// Rutas
 
 // Obtener todas las compras
 app.get('/api/purchases', async (req, res) => {
