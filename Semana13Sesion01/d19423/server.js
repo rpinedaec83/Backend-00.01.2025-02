@@ -21,6 +21,7 @@ app.get('/',(req,res)=>{
 })
 
 require('./app/routes/auth.routes')(app);
+require('./app/routes/user.routes')(app);
 
 const db = require('./app/models');
 db.mongoose.set('strictQuery',true);
