@@ -1,10 +1,15 @@
 const express = require('express');
 const cookieSession = require('cookie-session');
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('./swagger_output.json');
+
 
 const app = express();
 require('dotenv').config();
 const PORT = process.env.PORT || 8080;
 
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 

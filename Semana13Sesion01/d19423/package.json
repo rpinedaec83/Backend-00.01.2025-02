@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "dev":"nodemon server.js",
+    "dev": "nodemon server.js",
+    "swagger": "nodemon swagger.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -19,5 +20,11 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^6.10.0",
     "nodemon": "^3.1.10"
+  },
+  "devDependencies": {
+    "install": "^0.13.0",
+    "npm": "^11.3.0",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.1"
   }
 }
