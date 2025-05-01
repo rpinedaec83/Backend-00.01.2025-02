@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const User = db.user;
 
 exports.signup= async(req,res)=>{
+    // #swagger.tags = ['AUTH']
     try {
         let arrRoles =[];
         if(req.body.roles){
@@ -45,6 +46,7 @@ exports.signup= async(req,res)=>{
 }
 
 exports.signin =async(req,res)=>{
+    // #swagger.tags = ['AUTH']
     User.findOne({username: req.body.username})
         .populate("roles","-__v")
         .exec((err, user)=>{
@@ -86,6 +88,7 @@ exports.signin =async(req,res)=>{
 }
 
 exports.signout= async(req,res)=>{
+    // #swagger.tags = ['AUTH']
     try {
         req.session=null;
         return res.status(200).send({message:"Haz salido de la sesion"})
