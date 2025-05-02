@@ -15,7 +15,7 @@ module.exports= (app)=>{
     * @description ingresa a la pagina sin necesidad de logueo
     * @response 200 - devuelve mensaje
     */
-    app.get('/api/test/all',controller.allAccess);
+    app.get('/api/test/all',controller.allAccess); 
     app.get('/api/test/user',[authJwt.verifyToken],controller.onlyUser);
     app.get('/api/test/moderator',[authJwt.verifyToken, authJwt.isModerator], controller.onlyModerator)
     app.get('/api/test/admin',[authJwt.verifyToken, authJwt.isAdmin], controller.onlyAdmin)
