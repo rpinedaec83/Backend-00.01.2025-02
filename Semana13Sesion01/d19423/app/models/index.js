@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { count } = require('./user.model');
 mongoose.Promise = global.Promise;
 
 const db ={};

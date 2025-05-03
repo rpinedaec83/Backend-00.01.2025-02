@@ -16,4 +16,8 @@ module.exports = (app)=>{
         ],
         controller.signup
     );
+
+    app.post('/api/auth/signin', controller.signin);
+
+    app.get('/api/auth/signout', controller.signout);
 }
