@@ -6,7 +6,7 @@
 <meta name="author" content="Emerson Jerzy">
 
 <head>
-  <title>Lista de Compras</title>
+  <title>Lista de Compras - Completas</title>
 </head>
 
 <body>
@@ -21,11 +21,11 @@
       .then((data) => {
         const list = document.getElementById("lista-compras");
 
-        // Filtramos solo los elementos incompletos
         const comprasIncompletas = data.data.filter((element) => element.is_Completed === true);
 
-        // Si hay compras incompletas, las mostramos
         comprasIncompletas.forEach((element) => {
+          const fechaActual = element.date.toString().split("-");
+          let fechaConcatenada = `${fechaActual[2]}-${fechaActual[1]}-${fechaActual[0]}`;
           list.insertAdjacentHTML('beforeend', `
               <li style="padding: 15px; margin-bottom: 10px; border-radius: 8px; background-color: #f3f4f6; display: flex; justify-content: space-between; align-items: center;">
                 <div>
@@ -41,7 +41,7 @@
                 <!-- Solo mostramos los incompletos -->
                 <div>
                   <span style="background-color: #10b981; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 500;">Completo</span>
-                  <span style="color: #6b7280; font-size: 14px; margin-left: 10px;">${element.date ?? 'Sin fecha'}</span>
+                  <span style="color: #6b7280; font-size: 14px; margin-left: 10px;">${fechaConcatenada ?? 'Sin fecha'}</span>
                 </div>
               </li>
             `);

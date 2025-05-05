@@ -75,7 +75,14 @@ const server = http.createServer((req, res) => {
             JSON.stringify({
                 data: listSales,
             })
-        );
+        ); //JSON.stringify(listSales) transforma un objeto en una cadena de texto JSON
+    }
+
+    if (req.method === "GET" && path === "/api/compras/:id") {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        const id = parseInt(parseUrl.query.id);
+        const sale = listSales.find((sale) => sale.id === id);
+        return res.end(JSON.stringify({ data: sale }));
     }
 
     if (req.method === "POST" && path === "/api/compras") {
@@ -90,7 +97,7 @@ const server = http.createServer((req, res) => {
                 const { name, description, quantity, unit, date } = JSON.parse(body);
                 if (!name || !description || !quantity || !unit || !date) {
                     res.writeHead(400, { "Content-Type": "application/json" });
-                    return res.end(JSON.stringify({ message: "Faltan datos" }));
+                    return res.end(JSON.stringify({ message: "No hay datos de entradas" }));
                 }
 
                 listSales.push({
@@ -113,43 +120,44 @@ const server = http.createServer((req, res) => {
         });
     }
 
-    // Crear ruta para actualizar el estado deuna compra
+    // Crear ruta para actualizar el estado de una compra
 
     if (req.method === "PATCH" && path === "/api/compras/actualizar") {
-        console.log("Actualizar una nueva compra");
         let body = "";
 
         req.on("data", (chunk) => {
             body += chunk.toString();
         });
 
-        return req.on("end", () => {
+        req.on("end", () => {
             try {
+
                 const { id } = JSON.parse(body);
-                console.log("id:", id);
+                const parsedId = parseInt(id);
+                if (isNaN(parsedId)) {
+                    res.writeHead(400, { "Content-Type": "application/json" });
+                    return res.end(JSON.stringify({ message: "ID inválido" }));
+                }
 
-                const updatedList = listSales.map((item) => {
-                    if (item.id === id) {
-                        item.is_Completed = true;
-                    }
-                    return item;
-                });
+                const index = listSales.findIndex((item) => item.id === parsedId);
+                const separadorFechas = new Date().toISOString().split("T")[0];
 
-                console.log("updatedList:", updatedList);
+                if (index === -1) {
+                    res.writeHead(404, { "Content-Type": "application/json" });
+                    return res.end(JSON.stringify({ message: "Compra no encontrada" }));
+                }
+
+                listSales[index].is_Completed = true;
+                listSales[index].date = separadorFechas;
 
                 res.writeHead(200, { "Content-Type": "application/json" });
-                res.end(
-                    JSON.stringify({
-                        message: "Compra actualizada exitosamente",
-                        data: updatedList,
-                    })
-                );
+                return res.end(JSON.stringify({
+                    message: "Compra actualizada exitosamente",
+                    data: listSales[index],
+                }));
+
             } catch (error) {
-                console.error("Error al procesar la solicitud:", error);
-                res.writeHead(400, { "Content-Type": "application/json" });
-                return res.end(
-                    JSON.stringify({ message: "Datos de entrada inválidos" })
-                );
+                return res.end(JSON.stringify({ message: "Error en el servidor" }));
             }
         });
     }
