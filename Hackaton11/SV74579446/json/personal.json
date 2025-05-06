@@ -1,0 +1,19 @@
+[
+    {
+      "nombre": "Cesar Marcelo",
+      "dni": "12345678",
+      "cargo": "Carpintero",
+      "salario": 2000,
+      "fechaIngreso": "2024-06-01T00:00:00Z",
+      "turno": "mañana"
+    },
+    {
+      "nombre": "María López",
+      "dni": "87654321",
+      "cargo": "Supervisor",
+      "salario": 3000,
+      "fechaIngreso": "2023-01-15T00:00:00Z",
+      "turno": "tarde"
+    }
+  ]
+  

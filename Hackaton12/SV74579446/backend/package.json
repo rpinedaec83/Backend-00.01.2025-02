@@ -1,0 +1,19 @@
+{
+    "name": "sv74579446",
+    "version": "1.0.0",
+    "description": "Proyecto de compras para Juana Angela Marcelo Piscoya",
+    "main": "index.js",
+    "scripts": {
+      "dev": "nodemon index.js",
+      "start": "node index.js"
+    },
+    "author": "Juana Angela Marcelo Piscoya",
+    "license": "ISC",
+    "dependencies": {
+      "dotenv": "^16.5.0",
+      "express": "^5.1.0",
+      "mongoose": "^8.14.0",
+      "nodemon": "^3.1.0"
+    }
+  }
+  

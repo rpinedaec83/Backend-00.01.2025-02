@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Compras</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    section {
+      margin-bottom: 30px;
+    }
+    form input, form button {
+      margin: 5px 0;
+      display: block;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    .completed {
+      background-color: #d4edda;
+    }
+    .pending {
+      background-color: #f8d7da;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Gestión de Compras </h1>
+
+  <!-- Sección para crear nueva compra -->
+  <section>
+    <h2>Registrar Nueva Compra</h2>
+    <form id="purchaseForm">
+      <input type="text" id="product" placeholder="Producto" required>
+      <input type="text" id="description" placeholder="Descripción" required>
+      <input type="number" id="amount" placeholder="Cantidad" required>
+      <input type="text" id="unit" placeholder="Unidad (kg, litros, etc.)" required>
+      <input type="date" id="date" required>
+      <button type="submit">Registrar Compra</button>
+    </form>
+  </section>
+
+  <!-- Sección de compras pendientes -->
+  <section>
+    <h2>Compras Pendientes</h2>
+    <table id="pendingTable">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Descripción</th>
+          <th>Cantidad</th>
+          <th>Fecha</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+    </table>
+  </section>
+
+  <!-- Sección de compras completadas -->
+  <section>
+    <h2>Compras Completadas</h2>
+    <table id="completedTable">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Descripción</th>
+          <th>Cantidad</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+    </table>
+  </section>
+
+  <script>
+    async function cargarCompras() {
+      const response = await fetch('/api/purchases');
+      const data = await response.json();
+      const pendingTable = document.getElementById('pendingTable').querySelector('tbody');
+      const completedTable = document.getElementById('completedTable').querySelector('tbody');
+
+      pendingTable.innerHTML = '';
+      completedTable.innerHTML = '';
+
+      data.purchases.forEach(purchase => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${purchase.product}</td>
+          <td>${purchase.description}</td>
+          <td>${purchase.amount} ${purchase.unit}</td>
+          <td>${purchase.date}</td>
+          ${purchase.completed ? "" : `<td><button onclick="marcarComoCompletado(${purchase.id})">Marcar Completado</button></td>`}
+        `;
+        if (purchase.completed) {
+          completedTable.appendChild(row);
+        } else {
+          pendingTable.appendChild(row);
+        }
+      });
+    }
+
+    async function registrarCompra(event) {
+      event.preventDefault();
+      const product = document.getElementById('product').value;
+      const description = document.getElementById('description').value;
+      const amount = document.getElementById('amount').value;
+      const unit = document.getElementById('unit').value;
+      const date = document.getElementById('date').value;
+
+      const nuevaCompra = { product, description, amount, unit, date };
+
+      await fetch('/api/purchases', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(nuevaCompra)
+      });
+
+      document.getElementById('purchaseForm').reset();
+      cargarCompras();
+    }
+
+    async function marcarComoCompletado(id) {
+      await fetch('/api/purchases/update', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
+      cargarCompras();
+    }
+
+    document.getElementById('purchaseForm').addEventListener('submit', registrarCompra);
+
+    cargarCompras();
+  </script>
+
+</body>
+</html>
