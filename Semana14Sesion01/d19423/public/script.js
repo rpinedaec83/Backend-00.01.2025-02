@@ -32,7 +32,7 @@ function enviarTexto(event){
 }
 
 function onMessage(evt){
-    document.getElementById("mensajes").append(evt.data+"\n");
+    document.getElementById("mensajes").append(evt.data + "\n");
 }
 
 function onClose(evt){
