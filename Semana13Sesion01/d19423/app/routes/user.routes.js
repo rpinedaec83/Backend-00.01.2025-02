@@ -10,11 +10,6 @@ module.exports= (app)=>{
         next();
     });
 
-    /**
-    * @route GET /api/test/all
-    * @description ingresa a la pagina sin necesidad de logueo
-    * @response 200 - devuelve mensaje
-    */
     app.get('/api/test/all',controller.allAccess);
     app.get('/api/test/user',[authJwt.verifyToken],controller.onlyUser);
     app.get('/api/test/moderator',[authJwt.verifyToken, authJwt.isModerator], controller.onlyModerator)
