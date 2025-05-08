@@ -32,7 +32,19 @@ function enviarTexto(event){
 }
 
 function onMessage(evt){
+<<<<<<< HEAD
     document.getElementById("mensajes").append(evt.data + "\n");
+=======
+    console.log(evt.data)
+    let objMensaje = JSON.parse(evt.data);
+    if(objMensaje.message === 'clima'){
+        document.body.style.backgroundImage = `url('${objMensaje.answer.bg_image}')`;
+        document.body.style.backgroundSize = "auto";
+    }
+    console.log(objMensaje)
+
+    document.getElementById("mensajes").append(evt.data+"\n");
+>>>>>>> fuentes/main
 }
 
 function onClose(evt){
@@ -44,10 +56,17 @@ function onClose(evt){
 
 function onOpen(evt){
     document.getElementById("enviar").disabled= false;
-    doSend("Hola")
+    // doSend("Hola")
 }
 
 function doSend(msg){
+    let objMensaje = {}
+    if (msg.indexOf('clima') > -1)
+    {
+          objMensaje.message =  "clima";
+          objMensaje.query = msg.split(",")[1]
+    }
     console.log(`Enviando ${msg}`);
-    websocket.send(msg);
+    
+    websocket.send(JSON.stringify(objMensaje));
 }
