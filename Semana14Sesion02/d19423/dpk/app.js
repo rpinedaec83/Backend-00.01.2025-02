@@ -9,13 +9,8 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 const PORT = process.env.PORT || 8080;
-const openAIKey = process.env.openAIKey;
-
-const OpenAI = require('openai');
-const openai = new OpenAI({
-    apiKey: openAIKey
-});
-
+const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
+const DEEPSEEK_MODEL = process.env.DEEPSEEK_MODEL;
 
 
 
@@ -24,12 +19,13 @@ app.use(express.static("public"));
 io.on("connection", (socket) => {
     console.log("Nuevo Usuario conectado");
     const historialConversacion = [];
+    const max_tokens = 1024;
     socket.on("disconnect", () => { console.log("Usuario desconectado"); })
     socket.on("sendMessage", async (message, callback) => {
         historialConversacion.push({
             role: 'system',
             content: `Eres un chatbot de atencion a los estudiantes de la carrera de 
-            fotografia y tu nombre es 'Chatty', tu mision es darles informacion de lentes y configuraciones  para sus camaras
+            fotografia y tu nombre es 'Deeppy', tu mision es darles informacion de lentes y configuraciones  para sus camaras
             Tambien debes sugerir los siguientes cursos 'Fotografia de Moda' y 'Fotografia en exteriores' trata de hacer maximo 5 iteraciones con el usuario`
         })
         try {
@@ -38,12 +34,22 @@ io.on("connection", (socket) => {
                 role: 'user',
                 content: message
             });
-            const respuestaChat = await openai.chat.completions.create({
-                model: process.env.openAIModel,
-                messages: historialConversacion
-            });
-
-            const respuesta = respuestaChat.choices[0].message?.content;
+            const response = await axios.post(
+                'https://api.deepseek.com/v1/chat/completions',
+                {
+                  model: DEEPSEEK_MODEL,
+                  messages: historialConversacion,
+                  max_tokens,
+                },
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+                  },
+                }
+              );
+console.log(response.data.choices[0].message?.content);
+            const respuesta = response.data.choices[0].message?.content;
             historialConversacion.push({role:'assistant', content: respuesta})
             socket.emit("message",respuesta);
             callback();
