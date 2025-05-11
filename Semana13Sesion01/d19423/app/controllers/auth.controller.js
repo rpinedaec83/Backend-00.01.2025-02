@@ -5,25 +5,25 @@ const jwt = require('jsonwebtoken');
 
 const User = db.user;
 
-exports.signup= async(req,res)=>{
+exports.signup = async (req, res) => {
     // #swagger.tags = ['AUTH']
     try {
-        let arrRoles =[];
-        if(req.body.roles){
+        let arrRoles = [];
+        if (req.body.roles) {
             await Role.find({
                 name: {
                     $in: req.body.roles
-                 }
-            }).then(roles=>{
-                arrRoles = roles.map(role=>role._id);
+                }
+            }).then(roles => {
+                arrRoles = roles.map(role => role._id);
             })
         }
-        else{
+        else {
             await Role.findOne(
                 {
-                    name:'user'
+                    name: 'user'
                 }
-            ).then((roles)=>{
+            ).then((roles) => {
                 arrRoles = [roles._id];
             })
         }
@@ -31,36 +31,36 @@ exports.signup= async(req,res)=>{
         const user = new User({
             username: req.body.username,
             email: req.body.email,
-            password: bcrypt.hashSync(req.body.password,8),
-            roles : arrRoles
+            password: bcrypt.hashSync(req.body.password, 8),
+            roles: arrRoles
         });
-        user.save((err,user)=>{
-            if(err){
-                res.status(500).send({message:err});
+        user.save((err, user) => {
+            if (err) {
+                res.status(500).send({ message: err });
             }
-            res.send({message: 'Usuario Creado Correctamente'})
+            res.send({ message: 'Usuario Creado Correctamente' })
         })
     } catch (error) {
-        res.status(500).send({message:error})
+        res.status(500).send({ message: error })
     }
 }
 
-exports.signin =async(req,res)=>{
+exports.signin = async (req, res) => {
     // #swagger.tags = ['AUTH']
-    User.findOne({username: req.body.username})
-        .populate("roles","-__v")
-        .exec((err, user)=>{
-            if(err){
-                res.status(500).send({message:err});
+    User.findOne({ username: req.body.username })
+        .populate("roles", "-__v")
+        .exec((err, user) => {
+            if (err) {
+                res.status(500).send({ message: err });
                 return;
             }
-            if(!user){
-                res.status(404).send({message:"Usuario no encontrado"});
+            if (!user) {
+                res.status(404).send({ message: "Usuario no encontrado" });
                 return;
             }
             let passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-            if(!passwordIsValid){
-                return res.status(401).send({message:"Password Invalido"})
+            if (!passwordIsValid) {
+                return res.status(401).send({ message: "Password Invalido" })
             }
             const token = jwt.sign(
                 {
@@ -69,7 +69,7 @@ exports.signin =async(req,res)=>{
                 process.env.jwtSecret,
                 {
                     algorithm: "HS256",
-                    allowInsecureKeySizes:true,
+                    allowInsecureKeySizes: true,
                     expiresIn: 86400
                 }
             );
@@ -87,11 +87,11 @@ exports.signin =async(req,res)=>{
         });
 }
 
-exports.signout= async(req,res)=>{
+exports.signout = async (req, res) => {
     // #swagger.tags = ['AUTH']
     try {
-        req.session=null;
-        return res.status(200).send({message:"Haz salido de la sesion"})
+        req.session = null;
+        return res.status(200).send({ message: "Haz salido de la sesion" })
     } catch (error) {
         this.next(error);
     }

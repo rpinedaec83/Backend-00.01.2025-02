@@ -5,7 +5,7 @@
     "description": "Documentación de la API para la gestión de login",
     "version": "1.0.0"
   },
-  "host": "localhost:6969",
+  "host": "localhost:3000",
   "basePath": "/",
   "schemes": [
     "http"
