@@ -1,6 +1,5 @@
 const socket = io();
 
-// Función para obtener un nombre de usuario
 function obtenerNombreUsuario() {
     let nombre = localStorage.getItem('nombreUsuario');
     if (!nombre) {
@@ -15,10 +14,8 @@ function obtenerNombreUsuario() {
     return nombre;
 }
 
-// Obtener el nombre de usuario al cargar la página
 const nombreUsuario = obtenerNombreUsuario();
 
-// Función para actualizar el nombre de usuario en la interfaz
 function actualizarNombreUsuario() {
     $('#nombre-usuario').text(nombreUsuario);
 }
@@ -70,19 +67,18 @@ $('#ayuda-bot').click(function() {
     const entradaUsuario = prompt("¿Qué quieres preguntar al bot?");
     if (entradaUsuario) {
         socket.emit('mensaje al bot', entradaUsuario);
-        mostrarMensajeCarga(); // Mostrar mensaje de carga
+        mostrarMensajeCarga(); 
     }
 });
 socket.on('respuesta del bot', function(respuesta) {
-    mostrarMensajeCarga(false); // Eliminar mensaje de carga
-    agregarMensaje(respuesta); // Agregar la respuesta del bot al chat
+    mostrarMensajeCarga(false); 
+    agregarMensaje(respuesta); 
 });
 
 socket.on('mensaje editado', function(msgActualizado) {
     $(`p[data-id="${msgActualizado._id}"]`).text(msgActualizado.usuario + ': ' + msgActualizado.contenido);
 });
 
-// Función para mostrar y eliminar el mensaje de carga
 function mostrarMensajeCarga(mostrar = true) {
     if (mostrar) {
         const mensajeCarga = $('<p>').text('El bot está pensando...').addClass('mensaje-carga');
@@ -93,5 +89,4 @@ function mostrarMensajeCarga(mostrar = true) {
     }
 }
 
-// Actualizar el nombre de usuario en la interfaz
 actualizarNombreUsuario();

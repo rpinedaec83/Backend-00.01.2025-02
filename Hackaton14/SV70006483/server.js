@@ -27,7 +27,6 @@ app.use(express.static('public'));
 io.on('connection', (socket) => {
     console.log('Nuevo cliente conectado');
 
-    // Enviar historial de mensajes al cliente cuando se conecta
     Message.find().sort({ timestamp: 1 }).limit(50).then(messages => {
         socket.emit('cargar mensajes', messages);
     });
