@@ -23,7 +23,7 @@ io.on("connection", (socket) => {
 
   socket.on('chat event', (data) => {
     console.log( data);
-
+ 
     // guardar en la base de datos (mensaje, usuario) message
     if(data.message.includes("@botIdat")){
         
