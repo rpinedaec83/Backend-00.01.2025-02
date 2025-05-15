@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="styles/chat.css" rel="stylesheet">
+</head>
+
+<body style="background: #4e342e;">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    <div id="username">Hello user!</div>
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/logout">Logout Here</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="col-sm-6 col-sm-offset-3 frame">
+            <div class="chat-box">
+                <ul class="chat list-group" style="overflow-y:scroll;" id="chat">
+
+                </ul>
+            </div>
+            <div>
+                <form id="messageForm" autocomplete="off" style="width:100%;">
+                    <div class="status" style="color: red;"></div>
+                    <input type="hidden" name="username" class="username" value="">
+                    <input type="text" class="mytext" style="width:100%;" id="message" placeholder="Message">
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="/js/jquery.js"> </script>
+    <script src="/socket.io/socket.io.js"> </script>
+    <script>
+        $(function () {
+            let socket = io.connect();
+            let message = $('#message');
+            let messageForm = $('#messageForm');
+            let chat = $('#chat');
+            let username = $('#username');
+
+            let initial = 0;
+
+            socket.emit('username', 'farsante');
+            socket.emit('initial-messages', 'initial');
+
+            messageForm.submit((data) => {
+                data.preventDefault();
+                socket.emit('send-message', message.val(), username.html());
+                $('input').val('');
+
+            });
+
+            socket.on('username',
+                (data) => {
+                    username.text(data.username);
+                    user = data.username;
+                }
+            )
+
+            socket.on('new-message', (data) => {
+                if (data.username === user) {
+                    chat.append('<li > <div class="msj-rta macro"> <div class="text text-l">' + data.msg + '</div></div></li>');
+                } else {
+                    chat.append('<li > <div class="msj macro"> <div class="text text-r">' + data.username + '  :  ' + data.msg + '</div></div></li>');
+                }
+                $('.chat').scrollTop($("ul.chat").prop('scrollHeight'));
+            });
+
+            socket.on('initial-messages', (data) => {
+                if (initial === 0) {
+                    let arr = $.parseJSON(data.msg);
+                    arr.forEach(element => {
+                        if (element.user === user) {
+                            chat.append('<li > <div class="msj-rta macro"> <div class="text text-l">' + element.message + '</div></div></li>');
+                        }
+                        else {
+                            chat.append('<li > <div class="msj macro"> <div class="text text-r"><strong>' + element.user + '</strong>  :   ' + element.message + '</div></div></li>');
+                        }
+                    });
+                    $('.chat').scrollTop($("ul.chat").prop('scrollHeight'));
+                    initial++;
+                }
+            })
+
+            socket.on('typing', function (data) {
+                console.log(data)
+                $('.status').html(data.msg);
+            });
+            $('#message').focus(function () {
+                socket.emit('typing', user + ' is typing...');
+            });
+            $('#message').focusout(function () {
+                socket.emit('typing', '');
+            });
+        })
+
+
+
+    </script>
+
+</body>
+
+
+
+</html>
