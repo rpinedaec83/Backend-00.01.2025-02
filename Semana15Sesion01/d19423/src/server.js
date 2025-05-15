@@ -9,6 +9,7 @@ const session = require('express-session');
 
 const passport = require('passport');
 const cookieSession = require('cookie-session');
+const bcrypt = require('bcrypt');
 
 require('dotenv').config();
 
@@ -60,8 +61,9 @@ app.get('/google/callback',passport.authenticate("google",{
 })
 
 app.get('/success',(req,res)=>{
+    let pass =  bcrypt.hashSync('oauth', 8)
     let sql = `REPLACE INTO login (username, password)
-    values('${email}','oauth')`;
+    values('${email}','${pass}')`;
     CON.query(sql,(err,result)=>{
         if(err) throw err;
     });
@@ -91,7 +93,7 @@ function login(req,res){
         if(result.length === 1){
             let jsonString = JSON.stringify(result);
             let jsonData = JSON.parse(jsonString);
-            if(jsonData[0].password === password){
+            if(bcrypt.compareSync(password, jsonData[0].password)){
                 req.session.user = post.user;
                 username = post.user;
                 res.redirect('/chat_start');
@@ -111,6 +113,36 @@ app.get('/logout',(req,res)=>{
     req.session =null;
     res.redirect('/login');
 })
+let connections =[];
+function chat_start(){
+    io.sockets.on('connection',(socket)=>{
+        connections.push(socket);
+        socket.on('disconnect',(data)=>{
+            connections.splice(connections.indexOf(data),1);
+        });
+        socket.on('initial-messages',(data)=>{
+            let sql = 'SELECT * FROM messages';
+            CON.query(sql,(err,result,fields)=>{
+                let jsonMessages = JSON.stringify(result);
+                io.sockets.emit('initial-messages',{msg: jsonMessages});
+            })
+        });
+        socket.on('username',(data)=>{
+            socket.emit('username',{username: username});
+        });
+        socket.on('send-message',(data,user)=>{
+            let sql = `INSERT INTO message (message, user) VALUES('${data}','${user}')`
+            CON.query(sql,(err, result)=>{
+                if(err) throw err;
+            })
+            io.sockets.emit('new-message', {msg:data, username:user});
+        })
+    });
+
+
+}
+
+chat_start();
 
 server.listen(PORT, ()=>{
     console.log("Inicio el servidor en el puerto "+PORT)
