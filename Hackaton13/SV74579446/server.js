@@ -14,15 +14,14 @@ app.use(express.json());
 const authRoutes = require("./app/routes/auth.routes");
 app.use("/api/auth", authRoutes);
 
+const cuponRoutes = require("./app/routes/cupon.routes");
+app.use("/api/cupones", cuponRoutes);
+
 const cursoRoutes = require("./app/routes/curso.routes");
 app.use("/api/cursos", cursoRoutes);
 
 const ordenRoutes = require("./app/routes/orden.routes");
 app.use("/api/ordenes", ordenRoutes);
-
-const cuponRoutes = require("./app/routes/cupon.routes");
-app.use("/api/cupones", cuponRoutes);
-
 
 // Rutas base
 app.get("/", (req, res) => {
