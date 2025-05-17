@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicación de Chat</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div id="chat"></div>
+    <div>Usuario actual: <span id="nombre-usuario"></span></div>
+    <form id="formulario-chat">
+        <input id="mensaje" autocomplete="off" placeholder="Escribe un mensaje..."/>
+        <button type="submit">Enviar</button>
+    </form>
+    <button id="borrar-historial">Borrar Historial</button>
+    <button id="ayuda-bot">Preguntar al Bot</button>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
