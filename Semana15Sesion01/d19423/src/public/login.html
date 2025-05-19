@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles/login.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-container">
+            <div id="output"></div>
+            <div class="avatar"></div>
+            <div class="form-box">
+                <form action="/login" method="post">
+                    <input type="text" name="user" placeholder="username">
+                    <input type="password" name="password" placeholder="password">
+                    <button class="btn btn-info btn-block login" type="submit" >Login</button>
+                </form>
+                <h4>OR</h4>
+                <input class="btn btn-lg btn-block btn-google" id="google" value="Login Via Google">
+            </div>
+        </div>
+    </div>
+    
+    <script src="/js/jquery.js"></script>
+    <script src="/js/login.js"></script>
+</body>
+</html>
