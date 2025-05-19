@@ -1,0 +1,19 @@
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  // Emitir actualización
+  function enviarUbicacion(paqueteId, ubicacion, mensaje) {
+    socket.emit('actualizarUbicacion', {
+      paqueteId,
+      nuevaUbicacion: ubicacion,
+      mensaje
+    });
+  }
+
+  // Escuchar actualizaciones
+  socket.on('ubicacionActualizada', data => {
+    console.log('Ubicación actualizada:', data);
+    // Actualiza la UI con la nueva ubicación
+  });
+</script>
