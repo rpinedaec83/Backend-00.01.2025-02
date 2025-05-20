@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chat de Paquete</title>
+  <link rel="stylesheet" href="styleChat.css">
+</head>
+
+<body>
+  <div class="chat-container" role="main" aria-label="Chat de mensajes">
+    <header class="chat-header">
+      💬 Chat Moderno
+      <span id="user-name" aria-live="polite" aria-atomic="true"></span>
+    </header>
+
+    <section id="messages" class="chat-messages" tabindex="0" aria-live="polite" aria-relevant="additions"></section>
+
+    <form class="message-input" id="chat-form" aria-label="Formulario para enviar mensaje" onsubmit="return false;">
+      <input id="input" name="message" type="text" placeholder="Escribe tu mensaje..." autocomplete="off" aria-required="true" />
+      <button id="sendButton" type="submit" >Enviar</button>
+    </form>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="scriptChat.js"></script>
+</body>
+
+</html>
+

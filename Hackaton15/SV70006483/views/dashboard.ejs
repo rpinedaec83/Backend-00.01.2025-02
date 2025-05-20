@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Courier</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f4f4f4;
+    }
+
+    h1, h2 {
+        color: #2c3e50;
+    }
+
+    #new-package-form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    #new-package-form input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    #new-package-form button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    #new-package-form button:hover {
+        background-color: #2980b9;
+    }
+
+    .package {
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .package h3 {
+        margin-top: 0;
+        color: #2c3e50;
+    }
+
+    .package p {
+        margin: 5px 0;
+    }
+
+    .package .status {
+        font-weight: bold;
+        color: #e74c3c;
+    }
+
+    .package .current-location {
+        font-style: italic;
+    }
+
+    .locations-list, .messages-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .locations-list li, .messages-list li {
+        background-color: #ecf0f1;
+        padding: 10px;
+        margin-bottom: 5px;
+        border-radius: 4px;
+    }
+
+    .update-location-form, .add-message-form {
+        margin-top: 15px;
+    }
+
+    .update-location-form input[type="text"],
+    .add-message-form input[type="text"] {
+        width: calc(100% - 110px);
+        padding: 10px;
+        margin-right: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .update-location-form button,
+    .add-message-form button {
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .update-location-form button:hover,
+    .add-message-form button:hover {
+        background-color: #27ae60;
+    }
+    header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+#logout-button {
+    background-color: #e74c3c;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+#logout-button:hover {
+    background-color: #c0392b;
+}
+</style>
+</head>
+<body>
+    <header>
+        <h1>Bienvenido, <%= user.name %></h1>
+        <a href="/logout" id="logout-button">Cerrar Sesión</a>
+    </header>
+<h2>Crear Nuevo Paquete</h2>
+<form id="new-package-form">
+    <input type="text" name="destination" placeholder="Destino" required>
+    <input type="text" name="message" placeholder="Mensaje inicial (opcional)">
+    <button type="submit">Crear Paquete</button>
+</form>    
+<h2>Tus Paquetes</h2>
+<div id="packages-container">
+    <% if (packages && packages.length > 0) { %>
+        <% packages.forEach(function(package) { %>
+            <div class="package" data-id="<%= package.id %>">
+                <h3>Paquete #<%= package.id %></h3>
+                <p>Destino: <%= package.destination %></p>
+                <p>Estado: <span class="status"><%= package.status %></span></p>
+                <p>Ubicación actual: <span class="current-location"><%= package.current_location %></span></p>
+                
+                <h4>Historial de Ubicaciones</h4>
+                <ul class="locations-list">
+                    <% if (package.locations && Array.isArray(package.locations)) { %>
+                        <% package.locations.forEach(function(location) { %>
+                            <li><%= location.location %> - <%= new Date(location.timestamp).toLocaleString() %></li>
+                        <% }); %>
+                    <% } else { %>
+                        <li>No hay historial de ubicaciones disponible</li>
+                    <% } %>
+                </ul>
+                
+                <h4>Mensajes</h4>
+                <ul class="messages-list">
+                    <% if (package.messages && Array.isArray(package.messages)) { %>
+                        <% package.messages.forEach(function(message) { %>
+                            <li><%= message.content %> - <%= new Date(message.created_at).toLocaleString() %></li>
+                        <% }); %>
+                    <% } else { %>
+                        <li>No hay mensajes disponibles</li>
+                    <% } %>
+                </ul>
+                
+                <form class="update-location-form">
+                    <input type="text" name="location" placeholder="Nueva ubicación">
+                    <button type="submit">Actualizar Ubicación</button>
+                </form>
+                
+                <form class="add-message-form">
+                    <input type="text" name="content" placeholder="Nuevo mensaje">
+                    <button type="submit">Agregar Mensaje</button>
+                </form>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <p>No tienes paquetes en este momento.</p>
+    <% } %>
+</div>
+
+    <script>
+        const socket = io();
+
+        document.querySelectorAll('.update-location-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const packageId = this.closest('.package').dataset.id;
+                const location = this.location.value;
+                socket.emit('update_location', { packageId, location });
+                this.reset();
+            });
+        });
+
+        document.querySelectorAll('.add-message-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const packageId = this.closest('.package').dataset.id;
+                const content = this.content.value;
+                socket.emit('new_message', { packageId, content });
+                this.reset();
+            });
+        });
+
+        socket.on('location_updated', (data) => {
+            const packageElement = document.querySelector(`.package[data-id="${data.packageId}"]`);
+            if (packageElement) {
+                packageElement.querySelector('.current-location').textContent = data.location;
+                const locationsList = packageElement.querySelector('.locations-list');
+                const newLocation = document.createElement('li');
+                newLocation.textContent = `${data.location} - ${new Date().toLocaleString()}`;
+                locationsList.appendChild(newLocation);
+            }
+        });
+
+        socket.on('message_added', (data) => {
+            const packageElement = document.querySelector(`.package[data-id="${data.packageId}"]`);
+            if (packageElement) {
+                const messagesList = packageElement.querySelector('.messages-list');
+                const newMessage = document.createElement('li');
+                newMessage.textContent = `${data.content} - ${new Date().toLocaleString()}`;
+                messagesList.appendChild(newMessage);
+            }
+        });
+        document.getElementById('new-package-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const packageData = Object.fromEntries(formData);
+
+    try {
+        const response = await fetch('/packages', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(packageData),
+        });
+
+        if (response.ok) {
+            const newPackage = await response.json();
+            location.reload();
+        } else {
+            console.error('Error al crear el paquete');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+    </script>
+</body>
+</html>
