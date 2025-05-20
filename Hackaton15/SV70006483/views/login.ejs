@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema de Courier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #1a73e8;
+            margin-bottom: 1.5rem;
+        }
+        .google-btn {
+            display: inline-block;
+            background-color: #4285f4;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .google-btn:hover {
+            background-color: #357ae8;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Iniciar sesión</h1>
+        <a href="/auth/google" class="google-btn">Iniciar sesión con Google</a>
+    </div>
+</body>
+</html>
