@@ -27,7 +27,7 @@ app.get('/auth/google/callback',
 // Ruta protegida 
 app.get('/chat.html', (req, res) => {
   if (req.isAuthenticated()) {
-    res.sendFile(__dirname + '/public/chat.html');
+    res.sendFile(__dirname + '/chat.html');
   } else {
     res.redirect('/login.html');
   }
