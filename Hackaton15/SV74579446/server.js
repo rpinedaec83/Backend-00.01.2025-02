@@ -18,13 +18,13 @@ app.get('/auth/google',
 
 // Ruta de callback después del login
 app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login.html' }),
+  passport.authenticate('google', { failureRedirect: '/public/login.html' }),
   (req, res) => {
     res.redirect('/chat.html');
   }
 );
 
-// Ruta protegida (ejemplo)
+// Ruta protegida 
 app.get('/chat.html', (req, res) => {
   if (req.isAuthenticated()) {
     res.sendFile(__dirname + '/public/chat.html');
