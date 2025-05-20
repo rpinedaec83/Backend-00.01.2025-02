@@ -14,10 +14,10 @@ const server = http.createServer(app);
 const io = new webSocketServer(server);
 
 io.on("connection", (socket) => {
-    console.log("Usuario Conectado");
+    console.log("Se ha conectado el usuario");
 
     socket.on("disconnect", () => {
-        console.log("Usuario Desconectado");
+        console.log("Se ha desconectado el usuario");
     });
 
     socket.on('server:chatevent', async data => {
