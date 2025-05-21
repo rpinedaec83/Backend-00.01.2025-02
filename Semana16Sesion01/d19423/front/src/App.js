@@ -1,15 +1,15 @@
 import React from "react";
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Cancel from "./componets/Cancel";
 import Success from "./componets/Success";
 
-function App(){
-    return(
+function App() {
+    return (
         <BrowserRouter>
-         <Routes>
-            <Route path="/cancel" element={<Cancel/>}></Route>
-            <Route path="/success" element={<Success/>}></Route>
-         </Routes>
+            <Routes>
+                <Route path="/cancel" element={<Cancel />}></Route>
+                <Route path="/success" element={<Success />}></Route>
+            </Routes>
         </BrowserRouter>
     )
 }
