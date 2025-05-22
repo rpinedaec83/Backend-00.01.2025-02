@@ -7,10 +7,11 @@ import StripePayment from "./componets/StripePayment";
 function App() {
     return (
         <BrowserRouter>
-         <Routes>
-            <Route path="/cancel" element={<Cancel/>}></Route>
-            <Route path="/success" element={<Success/>}></Route>
-         </Routes>
+            <Routes>
+                <Route path="/" element={<StripePayment />}></Route>
+                <Route path="/cancel" element={<Cancel />}></Route>
+                <Route path="/success" element={<Success />}></Route>
+            </Routes>
         </BrowserRouter>
     )
 }
