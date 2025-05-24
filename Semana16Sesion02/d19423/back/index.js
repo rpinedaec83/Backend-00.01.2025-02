@@ -28,8 +28,9 @@ app.get('/', (req, res) => {
 
 app.post('/api/process/pay', async (req, res) => {
     const product = req.body;
+    console.log(product)
     await culqi.tokens.createToken({
-        card_number: product.creditCard,
+        card_number: product.creditcard,
         cvv: product.cvv,
         expiration_month: product.month,
         expiration_year: product.year,
@@ -54,6 +55,7 @@ app.post('/api/process/pay', async (req, res) => {
             res.status(500).send({msg: 'Error al procesar el pago', error});
         }
     }).catch((error)=>{ 
+        console.log(error)
         res.status(500).send({msg: 'Error al procesar el pago', error});
     });
 });
