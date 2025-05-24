@@ -1,0 +1,52 @@
+# version: '3.8'
+
+# services:
+#   mysql:
+#     image: mysql:8.0
+#     container_name: mysql
+#     restart: always
+#     environment:
+#       MYSQL_ROOT_PASSWORD: root
+#       MYSQL_DATABASE: mydatabase
+#       MYSQL_USER: admin
+#       MYSQL_PASSWORD: root
+#     ports:
+#       - "3306:3306"
+#     volumes:
+#       - mysql_data:/var/lib/mysql
+
+#   phpmyadmin:
+#     image: phpmyadmin:5.2.2-apache
+#     container_name: phpmyadmin
+#     restart: always
+#     environment:
+#       PMA_HOST: mysql
+#       MYSQL_ROOT_PASSWORD: root
+#     ports:
+#       - "8080:80"
+#     depends_on:
+#       - mysql
+
+# volumes:
+#   mysql_data:
+
+
+
+version: '3.8'
+
+services:
+  
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.2-apache
+    container_name: phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mysql-1455c145-idat-backend-test-24052025.h.aivencloud.com
+      PMA_PORT: 17910
+    ports:
+      - "8080:80"
+  
+
+volumes:
+  mysql_data:
