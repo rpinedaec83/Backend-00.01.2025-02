@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema de Pagos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Bienvenido al Sistema de Pagos</h1>
+
+  <section id="login">
+    <h2>Login</h2>
+    <input type="text" id="correo" placeholder="Correo">
+    <input type="password" id="clave" placeholder="Contraseña">
+    <button onclick="login()">Ingresar</button>
+  </section>
+
+  <section id="productos" style="display:none;">
+    <h2>Productos disponibles</h2>
+    <div id="lista-productos"></div>
+  </section>
+
+  <section id="historial" style="display:none;">
+    <h2>Historial de pagos</h2>
+    <div id="lista-pagos"></div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
