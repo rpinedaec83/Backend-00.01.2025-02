@@ -5,7 +5,7 @@ import Card from "react-bootstrap/Card";
 import { loadStripe } from "@stripe/stripe-js";
 
 function StripePayment() {
-    const [product, setProduct] = useState({
+    const [product] = useState({
         name: "Curso de IOS 2025",
         price: 199,
         productOwner: "Roberto Pineda",
@@ -15,7 +15,7 @@ function StripePayment() {
 
     const hacerPago = async () => {
         console.log("Hizo Click");
-        const stripe = await loadStripe("pk_test_51NcxTJAkNYfeym1I2nddmvG02uLV9OcwrG3HJIOq59ebzgXjXQ78wTOUd6WIpmdykJCJiXNbbq0yg2tp3ZwN2Fxc00a67VDtbf")
+        const stripe = await loadStripe("pk_test_51RQeNMP6Q9sEtuWJEF4UnTdVknHSUDWsgNpnGNQyyvffSG0scZb0djGy4z1UC9EC8ABwxgYRK5uiZ5dFJI5hZSMP00I3hLLVsn")
         const body = { product };
         console.log(body);
         const headers = {
