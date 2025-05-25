@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>¡Pago Exitoso!</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .success-container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .success-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .success-header h1 {
+      color: #28a745;
+      margin-bottom: 1rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+    }
+    
+    .btn-submit {
+      width: 100%;
+      padding: 1rem;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    
+    .btn-submit:hover {
+      background: #5a6fd8;
+    }
+    
+    .btn-submit:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    
+    .curso-info {
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 5px;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    .mensaje {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 5px;
+      display: none;
+    }
+    
+    .mensaje.exito {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .mensaje.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  </style>
+</head>
+<body>
+  <div class="success-container">
+    <div class="success-header">
+      <h1>🎉 ¡Pago Exitoso!</h1>
+      <p>Tu pago ha sido procesado correctamente. Completa tu inscripción:</p>
+    </div>
+
+    <div class="curso-info">
+      <h3>Curso Backend</h3>
+      <p>Precio: S/. 499.99</p>
+    </div>
+
+    <form id="inscripcion-form">
+      <div class="form-group">
+        <label for="nombres">Nombres *</label>
+        <input type="text" id="nombres" name="nombres" required>
+      </div>
+
+      <div class="form-group">
+        <label for="apellidos">Apellidos *</label>
+        <input type="text" id="apellidos" name="apellidos" required>
+      </div>
+
+      <div class="form-group">
+        <label for="correo">Correo Electrónico *</label>
+        <input type="email" id="correo" name="correo" required>
+      </div>
+
+      <div class="form-group">
+        <label for="telefono">Teléfono *</label>
+        <input type="tel" id="telefono" name="telefono" required>
+      </div>
+
+      <div class="form-group">
+        <label for="fechaNacimiento">Fecha de Nacimiento *</label>
+        <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+      </div>
+
+      <button type="submit" class="btn-submit" id="btn-submit">
+        Completar Inscripción
+      </button>
+    </form>
+
+    <div class="mensaje" id="mensaje"></div>
+  </div>
+
+  <script>
+    // Cargar datos del usuario autenticado
+    async function cargarDatosUsuario() {
+      try {
+        const response = await fetch('/auth/check');
+        const data = await response.json();
+        
+        if (data.loggedIn && data.user) {
+          document.getElementById('correo').value = data.user.email || '';
+          
+          if (data.user.nombre) {
+            const nombres = data.user.nombre.split(' ');
+            if (nombres.length >= 2) {
+              document.getElementById('nombres').value = nombres.slice(0, -1).join(' ');
+              document.getElementById('apellidos').value = nombres[nombres.length - 1];
+            } else {
+              document.getElementById('nombres').value = data.user.nombre;
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error al cargar datos del usuario:', error);
+      }
+    }
+
+    // Cargar datos al iniciar
+    cargarDatosUsuario();
+
+    // Manejar envío del formulario
+    document.getElementById('inscripcion-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const btnSubmit = document.getElementById('btn-submit');
+      const mensaje = document.getElementById('mensaje');
+      
+      btnSubmit.disabled = true;
+      btnSubmit.textContent = 'Procesando...';
+
+      try {
+        const formData = new FormData(this);
+        const datosAlumno = {
+          nombres: formData.get('nombres'),
+          apellidos: formData.get('apellidos'),
+          correo: formData.get('correo'),
+          telefono: formData.get('telefono'),
+          fechaNacimiento: formData.get('fechaNacimiento')
+        };
+
+        const response = await fetch('/inscribir-alumno', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(datosAlumno)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          mensaje.className = 'mensaje exito';
+          mensaje.textContent = '¡Inscripción completada exitosamente!';
+          mensaje.style.display = 'block';
+          
+          // Redirigir después de 2 segundos
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 2000);
+        } else {
+          mensaje.className = 'mensaje error';
+          mensaje.textContent = 'Error: ' + result.message;
+          mensaje.style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        mensaje.className = 'mensaje error';
+        mensaje.textContent = 'Error al procesar la inscripción. Inténtalo de nuevo.';
+        mensaje.style.display = 'block';
+      } finally {
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'Completar Inscripción';
+      }
+    });
+  </script>
+</body>
+</html>

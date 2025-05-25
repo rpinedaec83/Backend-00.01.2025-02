@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Compra de Cursos</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <h1>Catálogo de Cursos</h1>
+      <div class="user-area">
+        <!-- Área de autenticación -->
+        <div id="auth-buttons" class="auth-section">
+          <button id="login-btn" onclick="iniciarSesion()">Iniciar Sesión con Google</button>
+        </div>
+        
+        <!-- Área de usuario autenticado (inicialmente oculta) -->
+        <div id="user-info" class="user-section" style="display: none;">
+          <div class="user-profile">
+            <img id="user-avatar" src="" alt="Avatar" class="user-avatar">
+            <div class="user-details">
+              <span id="user-name">Usuario</span>
+              <span id="user-email">email@ejemplo.com</span>
+            </div>
+            <button id="logout-btn" onclick="cerrarSesion()">Cerrar Sesión</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <div class="curso">
+      <img src="https://picsum.photos/300/180?random=1" alt="Curso Backend" />
+      <h2>Curso Backend</h2>
+      <p>Aprende Node.js, Express y bases de datos desde cero.</p>
+      <button onclick="comprarCurso('Curso Backend', 499)">Comprar S/. 499</button>
+    </div>
+
+    <div class="curso">
+      <img src="https://picsum.photos/300/180?random=2" alt="Curso Frontend" />
+      <h2>Curso Frontend</h2>
+      <p>Domina HTML, CSS, JavaScript y React en un solo curso.</p>
+      <button onclick="comprarCurso('Curso Frontend', 399)">Comprar S/. 399</button>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
