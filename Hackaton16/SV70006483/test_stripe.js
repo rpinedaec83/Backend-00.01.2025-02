@@ -1,4 +1,4 @@
-const stripe = require('stripe')('sk_test_51RQeLJQPoY5O6I6JelgtronRZQ1Qp28yA9t7kROUOvUqtH35PAkyMYZUFa4WuGpYxJUivOadj7xdVbEZkKLlW0UN00f5ekjuaI');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 async function testStripeConnection() {
   try {
