@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Pagos</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        #orderItems {
+            margin-top: 10px;
+        }
+        .orderItem {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sistema de Pagos</h1>
+    <div id="auth">
+        <button onclick="login()">Iniciar sesión con Google</button>
+        <button onclick="logout()">Cerrar sesión</button>
+    </div>
+    <div>
+        <h2>Productos</h2>
+        <button onclick="getProducts()">Obtener Productos</button>
+        <form id="createProductForm">
+            <input type="text" id="productName" placeholder="Nombre del producto" required>
+            <input type="number" id="productPrice" placeholder="Precio" step="0.01" required>
+            <button type="submit">Crear Producto</button>
+        </form>
+    </div>
+    <div>
+        <h2>Órdenes</h2>
+        <button onclick="getOrders()">Obtener Órdenes</button>
+        <div>
+            <select id="productSelect"></select>
+            <input type="number" id="quantity" placeholder="Cantidad" min="1">
+            <button onclick="addToOrder()">Agregar a la Orden</button>
+        </div>
+        <div id="orderItems"></div>
+        <button onclick="createOrder()">Crear Orden</button>
+    </div>
+    <div>
+        <h2>Pagos</h2>
+        <form id="paymentForm">
+            <select id="orderSelect"></select>
+            <div id="card-element"></div>
+            <button type="submit">Pagar</button>
+        </form>
+    </div>
+    <div>
+        <h2>Reembolsos</h2>
+        <form id="refundForm">
+            <select id="completedOrderSelect"></select>
+            <button type="submit">Solicitar Reembolso</button>
+        </form>
+    </div>
+    <div id="results"></div>
+
+    <script>
+        const stripe = Stripe('tu_clave_publica_de_stripe');
+        const elements = stripe.elements();
+        const cardElement = elements.create('card');
+        cardElement.mount('#card-element');
+
+        let orderItems = [];
+
+        function login() {
+            window.location.href = '/auth/google';
+        }
+
+        function logout() {
+            fetch('/auth/logout', { method: 'GET' })
+                .then(() => {
+                    alert('Sesión cerrada');
+                    location.reload();
+                });
+        }
+
+        function getProducts() {
+            fetch('/products')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('results').innerHTML = JSON.stringify(data, null, 2);
+                    updateProductSelect(data);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        document.getElementById('createProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('productName').value;
+            const price = document.getElementById('productPrice').value;
+
+            fetch('/products', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, price }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Producto creado con éxito');
+                document.getElementById('results').innerHTML = JSON.stringify(data, null, 2);
+                this.reset();
+                getProducts();
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        function getOrders() {
+            fetch('/orders')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('results').innerHTML = JSON.stringify(data, null, 2);
+                    updateOrderSelects(data);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function addToOrder() {
+            const productSelect = document.getElementById('productSelect');
+            const quantity = document.getElementById('quantity').value;
+            const productId = productSelect.value;
+            const productName = productSelect.options[productSelect.selectedIndex].text;
+
+            if (quantity > 0) {
+                const existingItemIndex = orderItems.findIndex(item => item.product_id === productId);
+                if (existingItemIndex !== -1) {
+                    orderItems[existingItemIndex].quantity += parseInt(quantity);
+                } else {
+                    orderItems.push({ product_id: productId, quantity: parseInt(quantity), name: productName });
+                }
+                updateOrderItemsDisplay();
+                document.getElementById('quantity').value = '';
+            } else {
+                alert('Por favor, ingrese una cantidad válida.');
+            }
+        }
+
+        function updateOrderItemsDisplay() {
+            const orderItemsDiv = document.getElementById('orderItems');
+            orderItemsDiv.innerHTML = '';
+            orderItems.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'orderItem';
+                itemDiv.textContent = `${item.name} - Cantidad: ${item.quantity}`;
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Eliminar';
+                removeButton.onclick = () => removeOrderItem(index);
+                itemDiv.appendChild(removeButton);
+                orderItemsDiv.appendChild(itemDiv);
+            });
+        }
+
+        function removeOrderItem(index) {
+            orderItems.splice(index, 1);
+            updateOrderItemsDisplay();
+        }
+
+        function createOrder() {
+    if (orderItems.length === 0) {
+        alert('Por favor, agregue al menos un producto a la orden.');
+        return;
+    }
+
+    fetch('/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: orderItems }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert('Orden creada con éxito');
+        document.getElementById('results').innerHTML = JSON.stringify(data, null, 2);
+        orderItems = [];
+        updateOrderItemsDisplay();
+        getOrders();
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+        document.getElementById('paymentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const orderId = document.getElementById('orderSelect').value;
+
+            try {
+                const response = await fetch('/payments/create-payment-intent', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ orderId }),
+                });
+                const data = await response.json();
+
+                const result = await stripe.confirmCardPayment(data.clientSecret, {
+                    payment_method: {
+                        card: cardElement,
+                    }
+                });
+
+                if (result.error) {
+                    alert('Error en el pago: ' + result.error.message);
+                } else {
+                    const confirmResponse = await fetch('/payments/confirm-payment', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ paymentIntentId: result.paymentIntent.id }),
+                    });
+                    const confirmData = await confirmResponse.json();
+
+                    if (confirmData.success) {
+                        alert('Pago completado con éxito');
+                        getOrders();
+                    } else {
+                        alert('Error al confirmar el pago');
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al procesar el pago');
+            }
+        });
+
+        document.getElementById('refundForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const orderId = document.getElementById('completedOrderSelect').value;
+
+            fetch('/payments/refund', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ orderId }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Reembolso procesado con éxito');
+                    getOrders();
+                } else {
+                    alert('Error al procesar el reembolso: ' + data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        function updateProductSelect(products) {
+            const select = document.getElementById('productSelect');
+            select.innerHTML = '';
+            products.forEach(product => {
+                const option = document.createElement('option');
+                option.value = product.id;
+                option.textContent = `${product.name} - ${product.price}`;
+                select.appendChild(option);
+            });
+        }
+
+        function updateOrderSelects(orders) {
+            const orderSelect = document.getElementById('orderSelect');
+            const completedOrderSelect = document.getElementById('completedOrderSelect');
+            orderSelect.innerHTML = '';
+            completedOrderSelect.innerHTML = '';
+            orders.forEach(order => {
+                const option = document.createElement('option');
+                option.value = order.id;
+                option.textContent = `Orden #${order.id} - ${order.total_amount}`;
+                if (order.status === 'pending') {
+                    orderSelect.appendChild(option);
+                } else if (order.status === 'completed') {
+                    completedOrderSelect.appendChild(option.cloneNode(true));
+                }
+            });
+        }
+
+        getProducts();
+        getOrders();
+    </script>
+</body>
+</html>
