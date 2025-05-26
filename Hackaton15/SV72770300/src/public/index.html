@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Bienvenido de nuevo</h1>
+            <p>Por favor ingresa tus credenciales para continuar</p>
+        </div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" placeholder="Ingresa email" required />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required />
+            </div>
+
+            <button type="submit" class="login-button">Iniciar Sesión</button>
+        </form>
+    </div>
+</body>
+<script>
+    document.getElementById("login-form").addEventListener("submit", async function (event) {
+        event.preventDefault(); 
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+    
+        const res = await fetch("/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+        });
+    
+        if (res.ok) {
+            const data = await res.json();
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user));
+            window.location.href = "/chat.html";
+        } else {
+            const error = await res.json();
+            console.log(error.message);
+            alert("Error al iniciar sesión");
+        }
+    });
+    </script>
+</html>

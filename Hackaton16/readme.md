@@ -10,7 +10,7 @@ Demostrarás todo lo aprendido en este reto que se basará en las clases dictada
 
 ### III.	Descripción del reto
 - Investigar y resolver las preguntas y ejercicios planteados
-- Resolver problemas, definir algoritmos, utilizando las nuevas funcionalidades NodeJS, API y socket.io
+- Resolver problemas, definir algoritmos, utilizando las nuevas funcionalidades NodeJS, API, Culqi y Stripe
 
 ### IV.	Pasos a seguir para resolver los retos: 
 
@@ -18,11 +18,11 @@ Demostrarás todo lo aprendido en este reto que se basará en las clases dictada
 
 ## Reto 1:
 
-### TÍTULO: Sistema de Curier online
+### TÍTULO: Sistema de Pagos online
 Utilizar un motor de base de datos SQL para definir las consultas mediante el uso de Objetos de Base de datos para resolver el problema
 #### EL PROBLEMA: 
 
-Crear un sistema de curier persistente que guarde los paquetes, mensajes, ubicacion del paquete hasta su recepcion que se emitan desde los diferentes clientes logueados por OAUTH.
+Crear un sistema de pagos persistente que guarde los productos comprados, pagos y devoluciones a los clientes logueados por OAUTH.
 
 
 
