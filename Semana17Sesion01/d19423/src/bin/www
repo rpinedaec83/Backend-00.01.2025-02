@@ -1,0 +1,51 @@
+#!/usr/bin/env node
+var app = require('../app');
+var http =  require('http');
+
+var PORT = normalizePort(process.env.PORT || 9000);
+app.set('port', PORT);
+
+var server = http.createServer(app);
+
+server.listen(PORT);
+server.on('listening', onListening);
+server.on('error', onError);
+
+
+function normalizePort(val){
+    var port = parseInt(val,10);
+    if(isNaN(port)){
+        return val;
+    }
+    if(port>=0){
+        return port;
+    }
+    return false;
+}
+
+function onError(error){
+    if(error.syscall!=='listen'){
+        throw error;
+    }
+    var bind = typeof PORT === 'string' ? 'Pipe '+ PORT : 'Port '+ PORT;
+    
+    switch (error.code) {
+        case 'EACCES':
+                console.error(bind + ' Se necesitan Privilegios elevados');
+                process.exit(1);
+            break;
+        case 'EADDRINUSE':
+                console.error(bind + ' esta en uso');
+                process.exit(1);
+            break;
+        default:
+            throw error;
+            break;
+    }
+}
+
+function onListening(){
+    var addr = server.address();
+    var bind = typeof addr === 'string' ? 'Pipe '+ addr : 'Port '+ addr.port;
+    console.log("Escuchando en " + bind);
+}
