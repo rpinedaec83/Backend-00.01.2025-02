@@ -32,9 +32,7 @@ function enviarTexto(event){
 }
 
 function onMessage(evt){
-<<<<<<< HEAD
     document.getElementById("mensajes").append(evt.data + "\n");
-=======
     console.log(evt.data)
     let objMensaje = JSON.parse(evt.data);
     if(objMensaje.message === 'clima'){
@@ -44,7 +42,6 @@ function onMessage(evt){
     console.log(objMensaje)
 
     document.getElementById("mensajes").append(evt.data+"\n");
->>>>>>> fuentes/main
 }
 
 function onClose(evt){
