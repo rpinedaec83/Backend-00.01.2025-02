@@ -1,0 +1,28 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Z@rverus11
+    ports:
+      - '5432:5432'
+    volumes:
+      - addressbook-db:/var/lib/postgresql/data
+  addressbook:
+    build: 
+      context: .
+    environment:
+      DB_SCHEMA: postgres
+      DB_USER: postgres
+      DB_PASSWORD: Z@rverus11
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_SSL: false
+    depends_on:
+      - postgres
+    ports:
+      - '9000:9000'
+
+volumes:
+  addressbook-db:
