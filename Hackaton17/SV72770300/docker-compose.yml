@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "E@jerzy24"
+      MYSQL_DATABASE: dockerPayment
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  app:
+    build: .
+    container_name: payment-app
+    ports:
+      - "4000:4000"
+    environment:
+      PORT: 4000
+      DB_HOST: db
+      DB_USERNAME: root
+      DB_PASSWORD: "E@jerzy24"
+      DB_NAME: dockerPayment
+      SECRET_TOKEN: "O8Qt£&0qQ1uTeU0SZn"
+      STRIPE_WEBHOOK_SECRET: whsec_uYxqBj9sFVk3An0Gyzw8JUii6heExLgv
+      KEY_SECRET_STRIPE: 
+      KEY_PUBLIC_STRIPE: pk_test_51RQeNMP6Q9sEtuWJEF4UnTdVknHSUDWsgNpnGNQyyvffSG0scZb0djGy4z1UC9EC8ABwxgYRK5uiZ5dFJI5hZSMP00I3hLLVsn
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
