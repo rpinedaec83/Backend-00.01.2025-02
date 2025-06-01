@@ -112,6 +112,7 @@ function sumar(primerNumero: number, segundoNumero: number): number{
     return primerNumero + segundoNumero;
 }
 
+
 function saludar(nombre?:string):void{
     if(nombre){
         console.log(`Hola ${nombre}`)
