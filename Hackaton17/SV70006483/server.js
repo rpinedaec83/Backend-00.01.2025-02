@@ -2,6 +2,8 @@ require('dotenv').config();
 console.log('GOOGLE_CLIENT_ID:', process.env.GOOGLE_CLIENT_ID);
 console.log('GOOGLE_CLIENT_SECRET:', process.env.GOOGLE_CLIENT_SECRET);
 console.log('GOOGLE_CALLBACK_URL:', process.env.GOOGLE_CALLBACK_URL);
+console.log('STRIPE_SECRET_KEY:', process.env.STRIPE_SECRET_KEY); // Añade esta línea
+
 
 const express = require('express');
 const session = require('express-session');

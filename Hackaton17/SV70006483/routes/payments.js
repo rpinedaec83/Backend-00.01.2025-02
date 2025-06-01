@@ -44,8 +44,8 @@ router.post('/create-payment-intent', async (req, res) => {
       return res.status(400).json({ error: `PaymentIntent en estado inesperado: ${paymentIntent.status}` });
     }
 
-    await pool.query('UPDATE orders SET payment_intent_id = ?, status = ? WHERE id = ?', 
-      [paymentIntent.id, 'payment_pending', order.id]);
+await pool.query('UPDATE orders SET payment_intent_id = ?, status = ? WHERE id = ?', 
+  [paymentIntent.id, 'pending', order.id]);
 
     console.log('Orden actualizada con PaymentIntent ID');
 
