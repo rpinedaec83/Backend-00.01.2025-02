@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head><title>Chat App</title></head>
+<body>
+  <h1>Chat Hackathon</h1>
+  <input id="msg" /><button onclick="sendMsg()">Enviar</button>
+  <ul id="messages"></ul>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    function sendMsg() {
+      const msg = document.getElementById('msg').value;
+      socket.emit('mensaje', msg);
+    }
+    socket.on('mensaje', msg => {
+      const li = document.createElement('li');
+      li.innerText = msg;
+      document.getElementById('messages').appendChild(li);
+    });
+  </script>
+</body>
+</html>
