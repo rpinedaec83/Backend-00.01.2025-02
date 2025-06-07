@@ -1,0 +1,105 @@
+<%- include('./partials/header') %>
+<%- include('./partials/navigation') %>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h3>Mi Perfil</h3>
+        </div>
+        <div class="card-body text-center">
+          <img src="https://ui-avatars.com/api/?name=<%= user.firstName %>+<%= user.lastName %>&size=200" 
+               class="rounded-circle mb-3" alt="Avatar">
+          <h4><%= user.firstName %> <%= user.lastName %></h4>
+          <p class="text-muted"><%= user.email %></p>
+          <span class="badge bg-primary"><%= user.role %></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h4>Información Personal</h4>
+        </div>
+        <div class="card-body">
+          <form action="/profile" method="POST">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="firstName" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="firstName" name="firstName" 
+                       value="<%= user.firstName %>" required>
+              </div>
+              <div class="col-md-6">
+                <label for="lastName" class="form-label">Apellido</label>
+                <input type="text" class="form-control" id="lastName" name="lastName" 
+                       value="<%= user.lastName %>" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="email" 
+                     value="<%= user.email %>" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Actualizar Perfil</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header">
+          <h4>Cambiar Contraseña</h4>
+        </div>
+        <div class="card-body">
+          <form action="/profile/password" method="POST">
+            <div class="mb-3">
+              <label for="currentPassword" class="form-label">Contraseña Actual</label>
+              <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+            </div>
+            <div class="mb-3">
+              <label for="newPassword" class="form-label">Nueva Contraseña</label>
+              <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+            </div>
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirmar Nueva Contraseña</label>
+              <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h4>Mis Órdenes Recientes</h4>
+        </div>
+        <div class="card-body">
+          <% if (orders.length === 0) { %>
+            <p>No has realizado ninguna orden aún.</p>
+            <a href="/courses" class="btn btn-primary">Explorar Cursos</a>
+          <% } else { %>
+            <div class="list-group">
+              <% orders.forEach(order => { %>
+                <a href="/orders/<%= order._id %>" class="list-group-item list-group-item-action">
+                  <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Orden #<%= order.orderNumber %></h5>
+                    <small class="text-muted"><%= new Date(order.createdAt).toLocaleDateString() %></small>
+                  </div>
+                  <p class="mb-1"><%= order.courses.length %> curso(s)</p>
+                  <div class="d-flex justify-content-between">
+                    <small class="text-muted"><%= order.status %></small>
+                    <strong>$<%= order.finalAmount.toFixed(2) %></strong>
+                  </div>
+                </a>
+              <% }) %>
+            </div>
+            <a href="/orders" class="btn btn-outline-primary mt-3">Ver todas mis órdenes</a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('./partials/footer') %>

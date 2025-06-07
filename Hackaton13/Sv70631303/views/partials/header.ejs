@@ -1,0 +1,19 @@
+<header class="bg-primary text-white p-3">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1><a href="/" class="text-white text-decoration-none">Cursos Online</a></h1>
+      <% if (user) { %>
+        <div class="d-flex align-items-center">
+          <span class="me-3">Hola, <%= user.firstName %></span>
+          <a href="/profile" class="btn btn-light me-2">Perfil</a>
+          <a href="/auth/logout" class="btn btn-outline-light">Cerrar sesión</a>
+        </div>
+      <% } else { %>
+        <div>
+          <a href="/auth/login" class="btn btn-light me-2">Iniciar sesión</a>
+          <a href="/auth/register" class="btn btn-outline-light">Registrarse</a>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</header>

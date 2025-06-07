@@ -1,0 +1,62 @@
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="text-center">Crear Nuevo Cupón</h3>
+      </div>
+      <div class="card-body">
+        <form action="/coupons" method="POST">
+          <div class="mb-3">
+            <label for="code" class="form-label">Código del Cupón</label>
+            <input type="text" class="form-control" id="code" name="code" required>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Descripción</label>
+            <input type="text" class="form-control" id="description" name="description" required>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="discountType" class="form-label">Tipo de Descuento</label>
+              <select class="form-select" id="discountType" name="discountType" required>
+                <option value="percentage">Porcentaje</option>
+                <option value="fixed">Monto Fijo</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="discountValue" class="form-label">Valor del Descuento</label>
+              <input type="number" step="0.01" min="0" class="form-control" id="discountValue" name="discountValue" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="minPurchaseAmount" class="form-label">Monto Mínimo de Compra</label>
+              <input type="number" step="0.01" min="0" class="form-control" id="minPurchaseAmount" name="minPurchaseAmount" value="0">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="maxDiscountAmount" class="form-label">Máximo Descuento (para porcentajes)</label>
+              <input type="number" step="0.01" min="0" class="form-control" id="maxDiscountAmount" name="maxDiscountAmount">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="usageLimit" class="form-label">Límite de Usos (opcional)</label>
+              <input type="number" min="1" class="form-control" id="usageLimit" name="usageLimit">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="validFrom" class="form-label">Fecha de Inicio</label>
+              <input type="date" class="form-control" id="validFrom" name="validFrom" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="validUntil" class="form-label">Fecha de Fin</label>
+            <input type="date" class="form-control" id="validUntil" name="validUntil" required>
+          </div>
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">Crear Cupón</button>
+            <a href="/coupons" class="btn btn-secondary">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

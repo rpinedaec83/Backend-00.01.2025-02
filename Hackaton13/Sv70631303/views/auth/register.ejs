@@ -1,0 +1,37 @@
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="text-center">Registro de Usuario</h3>
+      </div>
+      <div class="card-body">
+        <form action="/auth/register" method="POST">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="firstName" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="firstName" name="firstName" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="lastName" class="form-label">Apellido</label>
+              <input type="text" class="form-control" id="lastName" name="lastName" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="password" name="password" minlength="6" required>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Registrarse</button>
+          </div>
+        </form>
+        <div class="mt-3 text-center">
+          <p>¿Ya tienes cuenta? <a href="/auth/login">Inicia sesión aquí</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

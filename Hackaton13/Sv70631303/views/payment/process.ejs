@@ -1,0 +1,110 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navigation') %>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h3>Procesar Pago</h3>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-info">
+            <h5>Resumen de la Orden</h5>
+            <p><strong>N° Orden:</strong> <%= order.orderNumber %></p>
+            <p><strong>Total a pagar:</strong> $<%= order.finalAmount.toFixed(2) %></p>
+          </div>
+
+          <form id="paymentForm" action="/payments/process" method="POST">
+            <input type="hidden" name="orderId" value="<%= order._id %>">
+            
+            <div class="mb-3">
+              <label for="paymentMethod" class="form-label">Método de pago</label>
+              <select class="form-select" id="paymentMethod" name="paymentMethod" required>
+                <option value="tarjeta" <%= order.paymentMethod === 'tarjeta' ? 'selected' : '' %>>Tarjeta de crédito/débito</option>
+                <option value="transferencia" <%= order.paymentMethod === 'transferencia' ? 'selected' : '' %>>Transferencia bancaria</option>
+                <option value="paypal" <%= order.paymentMethod === 'paypal' ? 'selected' : '' %>>PayPal</option>
+              </select>
+            </div>
+
+            <!-- Tarjeta -->
+            <div id="cardFields" class="payment-method-fields">
+              <div class="mb-3">
+                <label for="cardNumber" class="form-label">Número de tarjeta</label>
+                <input type="text" class="form-control" id="cardNumber" name="paymentData[cardNumber]" placeholder="1234 5678 9012 3456">
+              </div>
+              <div class="mb-3">
+                <label for="cardHolder" class="form-label">Nombre en la tarjeta</label>
+                <input type="text" class="form-control" id="cardHolder" name="paymentData[cardHolder]" placeholder="Juan Pérez">
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="expiryDate" class="form-label">Fecha de expiración</label>
+                  <input type="text" class="form-control" id="expiryDate" name="paymentData[expiryDate]" placeholder="MM/AA">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="cvv" class="form-label">CVV</label>
+                  <input type="text" class="form-control" id="cvv" name="paymentData[cvv]" placeholder="123">
+                </div>
+              </div>
+            </div>
+
+            <!-- Transferencia -->
+            <div id="transferFields" class="payment-method-fields d-none">
+              <div class="mb-3">
+                <label for="accountNumber" class="form-label">Número de cuenta</label>
+                <input type="text" class="form-control" id="accountNumber" name="paymentData[accountNumber]" placeholder="12345678901234567890">
+              </div>
+              <div class="alert alert-warning">
+                <p>Por favor realiza la transferencia a:</p>
+                <p><strong>Banco:</strong> Mi Banco</p>
+                <p><strong>Cuenta:</strong> 98765432109876543210</p>
+                <p><strong>Beneficiario:</strong> Cursos Online S.A.</p>
+                <p><strong>Referencia:</strong> <%= order.orderNumber %></p>
+              </div>
+            </div>
+
+            <!-- PayPal -->
+            <div id="paypalFields" class="payment-method-fields d-none">
+              <div class="mb-3">
+                <label for="paypalEmail" class="form-label">Email de PayPal</label>
+                <input type="email" class="form-control" id="paypalEmail" name="paymentData[paypalEmail]" placeholder="tu@email.com">
+              </div>
+              <div class="alert alert-warning">
+                Serás redirigido a PayPal para completar el pago.
+              </div>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary">Realizar Pago</button>
+              <a href="/orders/<%= order._id %>" class="btn btn-outline-secondary">Cancelar</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Mostrar campos según método de pago seleccionado
+  document.getElementById('paymentMethod').addEventListener('change', function() {
+    const method = this.value;
+    document.querySelectorAll('.payment-method-fields').forEach(el => {
+      el.classList.add('d-none');
+    });
+    
+    if (method === 'tarjeta') {
+      document.getElementById('cardFields').classList.remove('d-none');
+    } else if (method === 'transferencia') {
+      document.getElementById('transferFields').classList.remove('d-none');
+    } else if (method === 'paypal') {
+      document.getElementById('paypalFields').classList.remove('d-none');
+    }
+  });
+
+  // Mostrar campos iniciales según método seleccionado
+  document.getElementById('paymentMethod').dispatchEvent(new Event('change'));
+</script>
+
+<%- include('../partials/footer') %>

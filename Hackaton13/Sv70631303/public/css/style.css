@@ -1,0 +1,22 @@
+body {
+  padding-top: 56px;
+}
+
+.card-img-top {
+  height: 180px;
+  object-fit: cover;
+}
+
+.course-detail-img {
+  max-height: 400px;
+  object-fit: cover;
+}
+
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}

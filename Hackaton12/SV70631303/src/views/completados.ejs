@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compras Completadas</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    ul { list-style: none; padding: 0; }
+    li { padding: 10px; margin: 5px 0; border: 1px solid #ddd; }
+    .back-link { display: block; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Compras Completadas</h1>
+  
+  <% if (compras.length === 0) { %>
+    <p>No hay compras completadas</p>
+  <% } else { %>
+    <ul>
+      <% compras.forEach(compra => { %>
+        <li>
+          <strong><%= compra.Nombre %></strong>
+          <% if (compra.Descripcion) { %> - <%= compra.Descripcion %><% } %>
+          <br>
+          <small>Completado el: <%= compra.Fecha.toLocaleDateString() %></small>
+        </li>
+      <% }); %>
+    </ul>
+  <% } %>
+  
+  <a href="/" class="back-link">← Volver al inicio</a>
+</body>
+</html>

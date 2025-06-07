@@ -1,0 +1,9 @@
+# Configuración de la base de datos
+MONGODB_URI=mongodb://localhost:27017/course-system
+
+# Configuración JWT
+JWT_SECRET=your-secret-key
+
+# Configuración del servidor
+PORT=3000
+NODE_ENV=development
