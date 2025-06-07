@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Pagos - Planes</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #f9f9f9; }
+    h1 { color: #333; }
+    section { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 8px #eee; }
+    label { display: block; margin-top: 10px; }
+    input, select { margin-top: 5px; }
+    button { margin-top: 10px; }
+    ul { padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Gestión de Pagos de Planes</h1>
+
+  <section>
+    <h2>Crear Plan</h2>
+    <form id="form-plan">
+      <label>Título: <input type="text" id="titulo-plan" required></label>
+      <label>Detalle: <input type="text" id="detalle-plan"></label>
+      <label>Precio: <input type="number" id="precio-plan" required></label>
+      <button type="submit">Crear</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Planes Disponibles</h2>
+    <ul id="lista-planes"></ul>
+  </section>
+
+  <section>
+    <h2>Registrar Abono</h2>
+    <form id="form-abono">
+      <label>Plan:
+        <select id="select-plan"></select>
+      </label>
+      <label>Cantidad: <input type="number" id="cantidad-abono" required></label>
+      <button type="submit">Abonar</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Registrar Reintegro</h2>
+    <form id="form-reintegro">
+      <label>Plan:
+        <select id="select-plan-rein"></select>
+      </label>
+      <label>Cantidad: <input type="number" id="cantidad-reintegro" required></label>
+      <button type="submit">Reintegrar</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Mis Movimientos</h2>
+    <ul id="lista-movimientos"></ul>
+  </section>
+
+  <script>
+    async function cargarPlanes() {
+      const res = await fetch('/api/planes');
+      const planes = await res.json();
+      const lista = document.getElementById('lista-planes');
+      const select = document.getElementById('select-plan');
+      const selectRein = document.getElementById('select-plan-rein');
+      lista.innerHTML = '';
+      select.innerHTML = '';
+      selectRein.innerHTML = '';
+      planes.forEach(p => {
+        lista.innerHTML += `<li>${p.titulo} - S/ ${p.precio} (${p.detalle || ''})</li>`;
+        select.innerHTML += `<option value="${p.id}">${p.titulo} - S/ ${p.precio}</option>`;
+        selectRein.innerHTML += `<option value="${p.id}">${p.titulo} - S/ ${p.precio}</option>`;
+      });
+    }
+
+    async function cargarMovimientos() {
+      const res = await fetch('/api/movimientos');
+      const movs = await res.json();
+      const lista = document.getElementById('lista-movimientos');
+      lista.innerHTML = '';
+      movs.forEach(m => {
+        lista.innerHTML += `<li>${m.clase === 'abono' ? 'Abono' : 'Reintegro'} - ${m.plan} - S/ ${m.cantidad} - ${m.fecha}</li>`;
+      });
+    }
+
+    document.getElementById('form-plan').onsubmit = async e => {
+      e.preventDefault();
+      const titulo = document.getElementById('titulo-plan').value;
+      const detalle = document.getElementById('detalle-plan').value;
+      const precio = document.getElementById('precio-plan').value;
+      await fetch('/api/planes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ titulo, detalle, precio })
+      });
+      await cargarPlanes();
+      document.getElementById('form-plan').reset();
+    };
+
+    document.getElementById('form-abono').onsubmit = async e => {
+      e.preventDefault();
+      const plan_id = document.getElementById('select-plan').value;
+      const cantidad = document.getElementById('cantidad-abono').value;
+      await fetch('/api/abonos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan_id, cantidad })
+      });
+      await cargarMovimientos();
+      document.getElementById('form-abono').reset();
+    };
+
+    document.getElementById('form-reintegro').onsubmit = async e => {
+      e.preventDefault();
+      const plan_id = document.getElementById('select-plan-rein').value;
+      const cantidad = document.getElementById('cantidad-reintegro').value;
+      await fetch('/api/reintegros', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan_id, cantidad })
+      });
+      await cargarMovimientos();
+      document.getElementById('form-reintegro').reset();
+    };
+
+    cargarPlanes();
+    cargarMovimientos();
+  </script>
+</body>
+</html>
