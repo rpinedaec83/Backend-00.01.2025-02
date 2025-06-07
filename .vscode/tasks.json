@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "dev",
+			"path": "Hackaton07/SV70006483",
+			"problemMatcher": [],
+			"label": "npm: dev - Hackaton07/SV70006483",
+			"detail": "nodemon index.js"
+		}
+	]
+}

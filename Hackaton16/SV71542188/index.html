@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema de Pagos Online</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #f9f9f9; }
+    h1 { color: #333; }
+    section { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 8px #eee; }
+    label { display: block; margin-top: 10px; }
+    input, select { margin-top: 5px; }
+    button { margin-top: 10px; }
+    ul { padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Sistema de Pagos Online</h1>
+
+  <section>
+    <h2>Crear Producto</h2>
+    <form id="form-producto">
+      <label>Nombre: <input type="text" id="nombre-producto" required></label>
+      <label>Precio: <input type="number" id="precio-producto" required></label>
+      <button type="submit">Crear</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Productos Disponibles</h2>
+    <ul id="lista-productos"></ul>
+  </section>
+
+  <section>
+    <h2>Realizar Pago</h2>
+    <form id="form-pago">
+      <label>Producto:
+        <select id="select-producto"></select>
+      </label>
+      <label>Monto: <input type="number" id="monto-pago" required></label>
+      <button type="submit">Pagar</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Mis Pagos</h2>
+    <ul id="lista-pagos"></ul>
+  </section>
+
+  <section>
+    <h2>Registrar Devolución</h2>
+    <form id="form-devolucion">
+      <label>Pago:
+        <select id="select-pago"></select>
+      </label>
+      <label>Monto: <input type="number" id="monto-devolucion" required></label>
+      <button type="submit">Devolver</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Mis Devoluciones</h2>
+    <ul id="lista-devoluciones"></ul>
+  </section>
+
+  <script>
+    // Utilidades para recargar datos
+    async function cargarProductos() {
+      const res = await fetch('/api/productos');
+      const productos = await res.json();
+      const lista = document.getElementById('lista-productos');
+      const select = document.getElementById('select-producto');
+      lista.innerHTML = '';
+      select.innerHTML = '';
+      productos.forEach(p => {
+        lista.innerHTML += `<li>${p.nombre} - S/ ${p.precio}</li>`;
+        select.innerHTML += `<option value="${p.id}">${p.nombre} - S/ ${p.precio}</option>`;
+      });
+    }
+
+    async function cargarPagos() {
+      const res = await fetch('/api/pagos');
+      const pagos = await res.json();
+      const lista = document.getElementById('lista-pagos');
+      const select = document.getElementById('select-pago');
+      lista.innerHTML = '';
+      select.innerHTML = '';
+      pagos.forEach(p => {
+        lista.innerHTML += `<li>ID: ${p.id} - Producto: ${p.producto_id} - S/ ${p.monto} - Estado: ${p.estado}</li>`;
+        select.innerHTML += `<option value="${p.id}">Pago #${p.id} - S/ ${p.monto}</option>`;
+      });
+    }
+
+    async function cargarDevoluciones() {
+      const res = await fetch('/api/devoluciones');
+      const devoluciones = await res.json();
+      const lista = document.getElementById('lista-devoluciones');
+      lista.innerHTML = '';
+      devoluciones.forEach(d => {
+        lista.innerHTML += `<li>ID: ${d.id} - Pago: ${d.pago_id} - S/ ${d.monto}</li>`;
+      });
+    }
+
+    // Crear producto
+    document.getElementById('form-producto').onsubmit = async e => {
+      e.preventDefault();
+      const nombre = document.getElementById('nombre-producto').value;
+      const precio = document.getElementById('precio-producto').value;
+      await fetch('/api/productos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, precio })
+      });
+      await cargarProductos();
+      document.getElementById('form-producto').reset();
+    };
+
+    // Realizar pago
+    document.getElementById('form-pago').onsubmit = async e => {
+      e.preventDefault();
+      const producto_id = document.getElementById('select-producto').value;
+      const monto = document.getElementById('monto-pago').value;
+      await fetch('/api/pagos', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ producto_id, monto })
+      });
+      await cargarPagos();
+      document.getElementById('form-pago').reset();
+    };
+
+    // Registrar devolución
+    document.getElementById('form-devolucion').onsubmit = async e => {
+      e.preventDefault();
+      const pago_id = document.getElementById('select-pago').value;
+      const monto = document.getElementById('monto-devolucion').value;
+      await fetch('/api/devoluciones', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pago_id, monto })
+      });
+      await cargarDevoluciones();
+      await cargarPagos();
+      document.getElementById('form-devolucion').reset();
+    };
+
+    // Inicializar
+    cargarProductos();
+    cargarPagos();
+    cargarDevoluciones();
+  </script>
+</body>
+</html>
