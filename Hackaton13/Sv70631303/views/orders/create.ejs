@@ -1,0 +1,45 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navigation') %>
+
+<div class="container mt-4">
+  <h1 class="mb-4">Crear Nueva Orden</h1>
+
+  <div class="card">
+    <div class="card-body">
+      <form action="/orders" method="POST">
+        <div class="mb-3">
+          <label for="courses" class="form-label">Cursos</label>
+          <select multiple class="form-select" id="courses" name="courses" required>
+            <% courses.forEach(course => { %>
+              <option value="<%= course._id %>">
+                <%= course.name %> - $<%= course.valor.toFixed(2) %>
+              </option>
+            <% }) %>
+          </select>
+          <small class="text-muted">Mantén presionado Ctrl para seleccionar múltiples cursos</small>
+        </div>
+
+        <div class="mb-3">
+          <label for="couponCode" class="form-label">Cupón de descuento (opcional)</label>
+          <input type="text" class="form-control" id="couponCode" name="couponCode">
+        </div>
+
+        <div class="mb-3">
+          <label for="paymentMethod" class="form-label">Método de pago</label>
+          <select class="form-select" id="paymentMethod" name="paymentMethod" required>
+            <option value="tarjeta">Tarjeta de crédito/débito</option>
+            <option value="transferencia">Transferencia bancaria</option>
+            <option value="paypal">PayPal</option>
+          </select>
+        </div>
+
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-primary">Crear Orden</button>
+          <a href="/orders" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,82 @@
+<div class="row">
+  <div class="col-md-8">
+    <div class="card mb-4">
+      <img src="<%= course.portada %>" class="card-img-top" alt="<%= course.name %>">
+      <div class="card-body">
+        <h2 class="card-title"><%= course.name %></h2>
+        <p class="card-text"><%= course.description %></p>
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="text-success">$<%= course.valor.toFixed(2) %></h4>
+          <% if (user) { %>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#purchaseModal">
+              Comprar Curso
+            </button>
+          <% } else { %>
+            <a href="/auth/login" class="btn btn-primary">Inicia sesión para comprar</a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">
+        <h5>Información del Curso</h5>
+      </div>
+      <div class="card-body">
+        <p><strong>Creado por:</strong> <%= course.createdBy.firstName %> <%= course.createdBy.lastName %></p>
+        <p><strong>Fecha de creación:</strong> <%= course.createdAt.toLocaleDateString() %></p>
+        <% if (user && (user.role === 'moderador' || user.role === 'admin')) { %>
+          <div class="d-grid gap-2">
+            <a href="/courses/<%= course._id %>/edit" class="btn btn-warning">Editar Curso</a>
+            <% if (user.role === 'admin') { %>
+              <form action="/courses/<%= course._id %>?_method=DELETE" method="POST">
+                <button type="submit" class="btn btn-danger w-100">Eliminar Curso</button>
+              </form>
+            <% } %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Compra -->
+<div class="modal fade" id="purchaseModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Comprar: <%= course.name %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="purchaseForm" action="/orders" method="POST">
+          <input type="hidden" name="courses[]" value="<%= course._id %>">
+          <div class="mb-3">
+            <label for="couponCode" class="form-label">Código de Cupón (opcional)</label>
+            <input type="text" class="form-control" id="couponCode" name="couponCode">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Método de Pago</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="paymentMethod" id="tarjeta" value="tarjeta" checked>
+              <label class="form-check-label" for="tarjeta">Tarjeta de Crédito</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="paymentMethod" id="transferencia" value="transferencia">
+              <label class="form-check-label" for="transferencia">Transferencia Bancaria</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="paymentMethod" id="paypal" value="paypal">
+              <label class="form-check-label" for="paypal">PayPal</label>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <h5>Total: $<span id="totalAmount"><%= course.valor.toFixed(2) %></span></h5>
+            <button type="submit" class="btn btn-primary">Confirmar Compra</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
