@@ -63,6 +63,8 @@ const server = http.createServer((req, res) => {
   // Ruta no encontrada
   res.writeHead(404, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify({ message: 'Ruta no encontrada' }));
+
+  
 });
 
 // Iniciar el servidor

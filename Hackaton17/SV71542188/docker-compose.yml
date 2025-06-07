@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  backend:
+    build: .
+    ports:
+      - "3500:3500"
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=bd
+      - DB_USER=admin
+      - DB_PASS=miclave
+      - DB_NOMBRE=gestion_pagos
+    depends_on:
+      - bd
+  bd:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: miclave
+      MYSQL_DATABASE: gestion_pagos
+    ports:
+      - "3307:3306"
+    volumes:
+      - datos_bd:/var/lib/mysql
+volumes:
+  datos_bd:
