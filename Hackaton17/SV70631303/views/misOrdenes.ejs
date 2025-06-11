@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <%- include('partials/header') %>
+  <title><%= title %> - Mi Tienda</title>
+  <style>
+    .order-card {
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+    }
+    .order-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    }
+    .order-card.pendiente {
+      border-left-color: #ffc107;
+    }
+    .order-card.procesando {
+      border-left-color: #0d6efd;
+    }
+    .order-card.completada {
+      border-left-color: #198754;
+    }
+    .order-card.cancelada {
+      border-left-color: #dc3545;
+    }
+    .badge-pendiente {
+      background-color: #fff3cd;
+      color: #664d03;
+    }
+    .badge-procesando {
+      background-color: #cfe2ff;
+      color: #084298;
+    }
+    .badge-completada {
+      background-color: #d1e7dd;
+      color: #0a3622;
+    }
+    .badge-cancelada {
+      background-color: #f8d7da;
+      color: #58151c;
+    }
+    .product-img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      border-radius: 4px;
+      border: 1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-4 py-lg-5">
+
+    <h1 class="mb-4"><i class="bi bi-receipt me-2"></i>Mis Órdenes</h1>
+
+    <% if (ordenes.length === 0) { %>
+      <div class="card border-0 shadow-sm">
+        <div class="card-body text-center py-5">
+          <i class="bi bi-cart-x display-5 text-muted mb-3"></i>
+          <h3 class="h5">No has realizado ninguna orden</h3>
+          <p class="text-muted">Cuando hagas una compra, aparecerá aquí tu historial de órdenes.</p>
+          <a href="/" class="btn btn-primary mt-3">Ir a comprar</a>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="accordion" id="ordersAccordion">
+        <% ordenes.forEach((orden, index) => { %>
+          <div class="card mb-3 order-card <%= orden.status %>">
+            <div class="card-header bg-white" id="heading<%= index %>">
+              <div class="d-flex justify-content-between align-items-center">
+                <button class="btn btn-link text-decoration-none p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= index %>" aria-expanded="true" aria-controls="collapse<%= index %>">
+                  <div class="d-flex align-items-center">
+                    <div class="me-3">
+                      <span class="badge rounded-pill badge-<%= orden.status %> text-capitalize">
+                        <%= orden.status %>
+                      </span>
+                    </div>
+                    <div>
+                      <h5 class="mb-0 h6">Orden #<%= orden._id %></h5>
+                      <small class="text-muted">Fecha: <%= orden.createdAt.toLocaleDateString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></small>
+                    </div>
+                  </div>
+                </button>
+                <div class="text-end">
+                  <div class="h5 mb-0">S/ <%= orden.total.toFixed(2) %></div>
+                  <small class="text-muted">Método: <%= orden.metodoDePago %></small>
+                </div>
+              </div>
+            </div>
+
+            <div id="collapse<%= index %>" class="collapse <%= index === 0 ? 'show' : '' %>" aria-labelledby="heading<%= index %>" data-parent="#ordersAccordion">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-borderless">
+                    <thead>
+                      <tr>
+                        <th>Producto</th>
+                        <th class="text-end">Precio</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-end">Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% orden.items.forEach(item => { %>
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <% if (item.producto.imagen) { %>
+                                <img src="/uploads/<%= item.producto.imagen || 'default-product.jpg' %>" 
+                     alt="<%= item.producto.nombre %>" 
+                     class="product-img"
+                     onerror="this.onerror=null;this.src='/uploads/default-product.jpg'" class="product-img me-3">
+                              <% } else { %>
+                                <div class="product-img bg-light d-flex align-items-center justify-content-center me-3">
+                                  <i class="bi bi-image text-muted"></i>
+                                </div>
+                              <% } %>
+                              <div>
+                                <h6 class="mb-0"><%= item.nombreProducto %></h6>
+                              </div>
+                            </div>
+                          </td>
+                          <td class="text-end">S/ <%= item.precioUnitario.toFixed(2) %></td>
+                          <td class="text-center"><%= item.cantidad %></td>
+                          <td class="text-end">S/ <%= item.subtotal.toFixed(2) %></td>
+                        </tr>
+                      <% }) %>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colspan="3" class="text-end fw-bold">Subtotal:</td>
+                        <td class="text-end">S/ <%= orden.total.toFixed(2) %></td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" class="text-end fw-bold">Envío:</td>
+                        <td class="text-end text-success">Gratis</td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" class="text-end fw-bold">Total:</td>
+                        <td class="text-end fw-bold">S/ <%= orden.total.toFixed(2) %></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+
+                <div class="row mt-3">
+                  <div class="col-md-6">
+                    <div class="card border-0 bg-light">
+                      <div class="card-body">
+                        <h6 class="mb-3"><i class="bi bi-truck me-2"></i>Información de envío</h6>
+                        <% if (orden.direccionEnvio) { %>
+                          <p class="mb-1"><strong>Dirección:</strong> <%= orden.direccionEnvio.direccion %></p>
+                          <p class="mb-1"><strong>Ciudad y departamento:</strong> <%= orden.direccionEnvio.ciudad %>, <%= orden.direccionEnvio.departamento %></p>
+                          <p class="mb-1"><strong>Codigo postal:</strong> <%= orden.direccionEnvio.codigoPostal %></p>
+                          <p class="mb-0"><strong>Telefono:</strong> <%= orden.direccionEnvio.telefono %></p>
+                        <% } else { %>
+                          <p class="text-muted mb-0">No hay información de envío disponible</p>
+                        <% } %>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card border-0 bg-light">
+                      <div class="card-body">
+                        <h6 class="mb-3"><i class="bi bi-credit-card me-2"></i>Información de pago</h6>
+                        <p class="mb-1"><strong>Método:</strong> <%= orden.metodoDePago %></p>
+                        <p class="mb-1"><strong>Estado:</strong> <span class="text-capitalize"><%= orden.status %></span></p>
+                        <p class="mb-1"><strong>Fecha:</strong> <%= orden.createdAt.toLocaleDateString('es-PE', { day: '2-digit', month: 'long', year: 'numeric' }) %></p>
+                        <p class="mb-0"><strong>N° de orden:</strong> <%= orden._id.toString().toUpperCase() %></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+
+  <%- include('partials/footer') %>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Inicializar tooltips
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+
+      // Guardar estado del acordeón en localStorage
+      const accordion = document.getElementById('ordersAccordion');
+      if (accordion) {
+        // Restaurar estado al cargar la página
+        const activeOrder = localStorage.getItem('activeOrder');
+        if (activeOrder) {
+          const collapse = document.getElementById(activeOrder);
+          if (collapse) {
+            new bootstrap.Collapse(collapse, { show: true });
+          }
+        }
+
+        // Guardar estado cuando se cambia
+        accordion.addEventListener('shown.bs.collapse', function(event) {
+          localStorage.setItem('activeOrder', event.target.id);
+        });
+
+        accordion.addEventListener('hidden.bs.collapse', function(event) {
+          localStorage.removeItem('activeOrder');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

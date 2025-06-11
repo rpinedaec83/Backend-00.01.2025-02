@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <%- include('partials/header') %>
+  <title>Tu carrito</title>
+  <style>
+    .product-img {
+      max-height: 120px;
+      object-fit: contain;
+    }
+    .quantity-input {
+      width: 60px;
+      text-align: center;
+    }
+    
+    /* Estilos mejorados para los botones */
+    .btn-update {
+      background-color: #4e73df;
+      color: white;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      transition: all 0.3s ease;
+      padding: 8px 12px;
+    }
+    
+    .btn-update:hover {
+      background-color: #2e59d9;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .btn-delete {
+      background-color: #e74a3b;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .btn-delete:hover {
+      background-color: #d62c1a;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .btn-delete i, .btn-update i {
+      margin-right: 5px;
+    }
+    
+    .input-group {
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border-radius: 4px;
+    }
+    
+    .quantity-input {
+      border: 1px solid #d1d3e2;
+      border-right: none;
+      padding: 8px;
+    }
+    
+    .quantity-input:focus {
+      box-shadow: none;
+      border-color: #bac8f3;
+    }
+    
+    .btn-checkout {
+      background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+      border: none;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    
+    .btn-checkout:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(78, 115, 223, 0.4);
+    }
+  </style>
+  <!-- Agregamos Font Awesome para los íconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+  <div class="container py-5">
+    <h1 class="mb-4">Tu carrito</h1>
+    
+    <% if (items.length === 0) { %>
+      <div class="alert alert-info">
+        Tu carrito está vacío
+      </div>
+      <a href="/" class="btn btn-primary">Ver productos</a>
+    <% } else { %>
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">Productos</h5>
+              
+              <% items.forEach(item => { %>
+                <div class="row mb-4 border-bottom pb-3 align-items-center">
+                  <div class="col-md-2">
+                    <img src="/uploads/<%= item.producto.imagen || 'default-product.jpg' %>" 
+                         alt="<%= item.producto.nombre %>" 
+                         class="img-fluid product-img rounded"
+                         onerror="this.onerror=null;this.src='/uploads/default-product.jpg'">
+                  </div>
+                  <div class="col-md-4">
+                    <h5><%= item.producto.nombre %></h5>
+                    <p class="text-muted small"><%= item.producto.descripcion %></p>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="d-flex flex-column">
+                      <span class="text-muted small">Precio unitario</span>
+                      <span class="fw-bold">S/. <%= item.producto.precio.toFixed(2) %></span>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <form action="/carrito/actualizar/<%= item._id %>" method="POST" class="mb-2">
+                      <div class="input-group">
+                        <input type="number" 
+                              name="cantidad" 
+                              value="<%= item.cantidad %>" 
+                              min="1" 
+                              max="<%= item.producto.stock %>"
+                              class="form-control quantity-input">
+                        <button type="submit" class="btn btn-update">
+                          <i class="fas fa-sync-alt"></i>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="col-md-2">
+                    <form action="/carrito/eliminar/<%= item._id %>" method="POST">
+                      <button type="submit" class="btn btn-delete">
+                        <i class="fas fa-trash-alt"></i> Eliminar
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Resumen de compra</h5>
+              
+              <div class="d-flex justify-content-between mb-2">
+                <span>Subtotal:</span>
+                <span>S/. <%= total.toFixed(2) %></span>
+              </div>
+              <div class="d-flex justify-content-between mb-3">
+                <span>Envío:</span>
+                <span>Gratis</span>
+              </div>
+              <hr>
+              <div class="d-flex justify-content-between fw-bold mb-4">
+                <span>Total:</span>
+                <span>S/. <%= total.toFixed(2) %></span>
+              </div>
+              
+              <a href="/carrito/checkout" class="btn btn-primary btn-checkout w-100 py-2">
+                <i class="fas fa-credit-card"></i> Proceder al pago
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+  <%- include('partials/footer') %>
+</body>
+</html>
