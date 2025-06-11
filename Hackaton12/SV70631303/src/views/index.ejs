@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    form { margin: 20px 0; }
+    input, button { padding: 8px; margin: 5px 0; }
+    .nav { margin: 20px 0; }
+    .nav a { margin-right: 15px; text-decoration: none; color: #0066cc; }
+  </style>
+</head>
+<body>
+  <h1><%= title %></h1>
+  
+  <form action="/compras" method="POST">
+    <div>
+      <label for="Nombre">Nombre:</label>
+      <input type="text" id="Nombre" name="Nombre" required>
+    </div>
+    <div>
+      <label for="Descripcion">Descripción:</label>
+      <input type="text" id="Descripcion" name="Descripcion">
+    </div>
+    <button type="submit">Agregar Compra</button>
+  </form>
+  
+  <div class="nav">
+    <a href="/compras/pendientes">Ver Pendientes</a>
+    <a href="/compras/completados">Ver Completados</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compras Pendientes</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+    ul { list-style: none; padding: 0; }
+    li { padding: 10px; margin: 5px 0; border: 1px solid #ddd; display: flex; justify-content: space-between; }
+    button { background: #4CAF50; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+    .back-link { display: block; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Compras Pendientes</h1>
+  
+  <% if (compras.length === 0) { %>
+    <p>No hay compras pendientes</p>
+  <% } else { %>
+    <ul>
+      <% compras.forEach(compra => { %>
+        <li>
+          <span>
+            <strong><%= compra.Nombre %></strong>
+            <% if (compra.Descripcion) { %> - <%= compra.Descripcion %><% } %>
+          </span>
+          <form action="/compras/<%= compra._id %>/completar" method="POST" style="display: inline;">
+            <button type="submit">Marcar como Completado</button>
+          </form>
+        </li>
+      <% }); %>
+    </ul>
+  <% } %>
+  
+  <a href="/" class="back-link">← Volver al inicio</a>
+</body>
+</html>

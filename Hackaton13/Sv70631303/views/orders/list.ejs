@@ -1,0 +1,72 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navigation') %>
+
+<div class="container mt-4">
+  <h1 class="mb-4">Lista de Órdenes</h1>
+
+  <div class="mb-3">
+    <% if (user.role === 'moderador' || user.role === 'admin') { %>
+      <a href="/orders/create" class="btn btn-primary">Crear Nueva Orden</a>
+    <% } %>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>N° Orden</th>
+            <th>Fecha</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% orders.forEach(order => { %>
+            <tr>
+              <td><%= order.orderNumber %></td>
+              <td><%= new Date(order.createdAt).toLocaleDateString() %></td>
+              <td>$<%= order.finalAmount.toFixed(2) %></td>
+              <td>
+                <span class="badge 
+                  <%= order.status === 'pendiente' ? 'bg-warning' : '' %>
+                  <%= order.status === 'pagado' ? 'bg-info' : '' %>
+                  <%= order.status === 'completado' ? 'bg-success' : '' %>
+                  <%= order.status === 'cancelado' ? 'bg-danger' : '' %>">
+                  <%= order.status %>
+                </span>
+              </td>
+              <td>
+                <a href="/orders/<%= order._id %>" class="btn btn-sm btn-outline-primary">Ver</a>
+                <% if ((user.role === 'moderador' || user.role === 'admin') && order.status === 'pendiente') { %>
+                  <a href="/orders/<%= order._id %>/edit" class="btn btn-sm btn-outline-secondary">Editar</a>
+                <% } %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <% if (currentPage > 1) { %>
+            <li class="page-item"><a class="page-link" href="?page=<%= currentPage-1 %>">Anterior</a></li>
+          <% } %>
+          
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+            </li>
+          <% } %>
+          
+          <% if (currentPage < totalPages) { %>
+            <li class="page-item"><a class="page-link" href="?page=<%= currentPage+1 %>">Siguiente</a></li>
+          <% } %>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

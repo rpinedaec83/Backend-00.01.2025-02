@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <%- include('partials/header') %>
+  <title>Finalizar Compra - Mi Tienda</title>
+  <style>
+    .payment-method-card {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .payment-method-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+    .payment-method-card.selected {
+      border-color: #0d6efd;
+      background-color: #f8f9fa;
+    }
+    .card-icon {
+      font-size: 1.75rem;
+      margin-bottom: 0.5rem;
+    }
+    .bank-logo {
+      height: 30px;
+      margin-right: 10px;
+    }
+    .address-section {
+      margin-bottom: 2rem;
+    }
+    .address-card {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .address-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+    .address-card.selected {
+      border-color: #0d6efd;
+      background-color: #f8f9fa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-4 py-lg-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="/carrito">Carrito</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+      </ol>
+    </nav>
+
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <form id="payment-form" action="/carrito/<%= carrito._id %>/orden" method="POST" class="needs-validation" novalidate>
+          <!-- Sección de dirección -->
+          <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white border-bottom py-3">
+              <h2 class="h5 mb-0"><i class="bi bi-truck me-2"></i>Dirección de envío</h2>
+            </div>
+            <div class="card-body">
+              <div class="mb-4">
+                
+                <!-- Formulario de dirección -->
+                <div id="nueva-direccion-form" class="p-3 border rounded-3 bg-light">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label for="direccion" class="form-label">Dirección</label>
+                      <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Av. Ejemplo 123" required>
+                      <div class="invalid-feedback">Por favor ingresa tu dirección</div>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="referencia" class="form-label">Referencia (opcional)</label>
+                      <input type="text" class="form-control" id="referencia" name="referencia" placeholder="Cerca al parque...">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="departamento" class="form-label">Departamento</label>
+                      <select class="form-select" id="departamento" name="departamento" required>
+                        <option value="" selected disabled>Seleccionar...</option>
+                        <option value="Lima">Lima</option>
+                        <option value="Arequipa">Arequipa</option>
+                        <option value="Cusco">Cusco</option>
+                        <option value="La Libertad">La Libertad</option>
+                        <option value="Piura">Piura</option>
+                        <option value="Lambayeque">Lambayeque</option>
+                        <option value="Junín">Junín</option>
+                        <option value="Puno">Puno</option>
+                        <option value="Ancash">Ancash</option>
+                        <option value="Ica">Ica</option>
+                      </select>
+                      <div class="invalid-feedback">Selecciona un departamento</div>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="ciudad" class="form-label">Ciudad</label>
+                      <input type="text" class="form-control" id="ciudad" name="ciudad" required>
+                      <div class="invalid-feedback">Por favor ingresa tu ciudad</div>
+                    </div>
+                    <div class="col-md-4">
+                      <label for="codigoPostal" class="form-label">Código Postal</label>
+                      <input type="text" class="form-control" id="codigoPostal" name="codigoPostal" required>
+                      <div class="invalid-feedback">Por favor ingresa tu código postal</div>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="telefono" class="form-label">Teléfono de contacto</label>
+                      <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="987654321" required>
+                      <div class="invalid-feedback">Por favor ingresa tu teléfono</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sección de pago -->
+          <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-bottom py-3">
+              <h2 class="h5 mb-0"><i class="bi bi-credit-card me-2"></i>Método de pago</h2>
+            </div>
+            <div class="card-body">
+              <!-- Selección de método de pago con cards -->
+              <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                  <div class="payment-method-card card h-100 border rounded-3 p-3 text-center selected" data-method="tarjeta">
+                    <div class="card-icon text-primary"><i class="bi bi-credit-card-2-front"></i></div>
+                    <input class="form-check-input d-none" type="radio" name="metodoDePago" id="tarjeta" value="tarjeta" checked required>
+                    <label class="form-check-label fw-medium" for="tarjeta">Tarjeta</label>
+                    <div class="mt-2">
+                      <img src="https://cdn-icons-png.flaticon.com/512/196/196578.png" alt="Visa" class="bank-logo">
+                      <img src="https://cdn-icons-png.flaticon.com/512/196/196561.png" alt="Mastercard" class="bank-logo">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="payment-method-card card h-100 border rounded-3 p-3 text-center" data-method="paypal">
+                    <input class="form-check-input d-none" type="radio" name="metodoDePago" id="paypal" value="paypal">
+                    <label class="form-check-label fw-medium" for="paypal">PayPal</label>
+                    <div class="card-icon text-primary"><img src="https://support.arturia.com/hc/article_attachments/18028411705628" alt="paypal" class="bank-logo"></div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="payment-method-card card h-100 border rounded-3 p-3 text-center" data-method="transferencia">
+                    <div class="card-icon text-primary"><i class="bi bi-bank2"></i></div>
+                    <input class="form-check-input d-none" type="radio" name="metodoDePago" id="transferencia" value="transferencia">
+                    <label class="form-check-label fw-medium" for="transferencia">Transferencia</label>
+                    <div class="mt-2">
+                      <span class="badge bg-light text-dark">Perú</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sección de datos de tarjeta -->
+              <div id="tarjeta-data" class="p-4 border rounded-3 mb-4 bg-light">
+                <h5 class="mb-3"><i class="bi bi-credit-card me-2"></i>Datos de tarjeta</h5>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="card-number" class="form-label">Número de tarjeta</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="card-number" placeholder="1234 5678 9012 3456">
+                      <span class="input-group-text"><i class="bi bi-credit-card"></i></span>
+                    </div>
+                    <div class="invalid-feedback">Ingrese un número de tarjeta válido (16 dígitos)</div>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="card-expiry" class="form-label">Fecha exp.</label>
+                    <input type="text" class="form-control" id="card-expiry" placeholder="MM/AA" required pattern="(0[1-9]|1[0-2])\/[0-9]{2}">
+                    <div class="invalid-feedback">Formato MM/AA</div>
+                  </div>
+                  <div class="col-md-3">
+                    <label for="card-cvc" class="form-label">CVC</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="card-cvc" placeholder="123" required pattern="\d{3,4}">
+                      <span class="input-group-text" data-bs-toggle="tooltip" title="Los 3 dígitos en el reverso de tu tarjeta">
+                        <i class="bi bi-question-circle"></i>
+                      </span>
+                    </div>
+                    <div class="invalid-feedback">Ingrese el código de seguridad</div>
+                  </div>
+                  <div class="col-12">
+                    <label for="card-name" class="form-label">Nombre en la tarjeta</label>
+                    <input type="text" class="form-control" id="card-name" placeholder="JUAN PEREZ" required>
+                    <div class="invalid-feedback">Ingrese el nombre como aparece en la tarjeta</div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Sección de datos PayPal -->
+              <div id="paypal-data" class="p-4 border rounded-3 mb-4 bg-light" style="display: none;">
+                <div class="alert alert-info d-flex align-items-center">
+                  <i class="bi bi-info-circle-fill me-2"></i>
+                  <div>Serás redirigido a PayPal para completar tu pago</div>
+                </div>
+                <div class="mb-3">
+                  <label for="paypal-email" class="form-label">Correo electrónico de PayPal</label>
+                  <input type="email" class="form-control" id="paypal-email" placeholder="tucorreo@example.com" disabled required>
+                  <div class="invalid-feedback">Ingrese su correo de PayPal</div>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="paypal-terms" disabled required>
+                  <label class="form-check-label" for="paypal-terms">
+                    Acepto los <a href="#" data-bs-toggle="modal" data-bs-target="#paypalTermsModal">términos y condiciones</a> de PayPal
+                  </label>
+                  <div class="invalid-feedback">Debe aceptar los términos</div>
+                </div>
+              </div>
+              
+              <!-- Sección de transferencia bancaria -->
+              <div id="transferencia-data" class="p-4 border rounded-3 mb-4 bg-light" style="display: none;">
+                <div class="alert alert-warning d-flex align-items-center">
+                  <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                  <div>
+                    <strong>Importante:</strong> Envíe el comprobante a <a href="mailto:pagos@mitienda.pe">pagos@mitienda.pe</a><br>
+                    Incluya su número de pedido en el asunto
+                  </div>
+                </div>
+                
+                <h5 class="mb-3"><i class="bi bi-bank me-2"></i>Datos bancarios</h5>
+                
+                <div class="row g-3 mb-4">
+                  <div class="col-md-6">
+                    <div class="card h-100 border-primary">
+                      <div class="card-body">
+                        <div class="d-flex align-items-center mb-2">
+                          <img src="https://mallaventura.pe/uploads/shares/Logos/BCP.png" alt="BCP" style="height: 25px;" class="me-2">
+                          <h6 class="mb-0">Banco de Crédito (BCP)</h6>
+                        </div>
+                        <ul class="list-unstyled small">
+                          <li class="mb-1"><strong>Cuenta Soles:</strong> 191-23456789-0-12</li>
+                          <li class="mb-1"><strong>CCI:</strong> 00219112345678901234</li>
+                          <li class="mb-1"><strong>Titular:</strong> Mi Tienda SAC</li>
+                          <li><strong>RUC:</strong> 20123456789</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="card h-100 border-primary">
+                      <div class="card-body">
+                        <div class="d-flex align-items-center mb-2">
+                          <img src="https://www.fide.edu.pe/wp-content/uploads/2021/08/bbva-1-1024x767.jpg" alt="BBVA" style="height: 25px;" class="me-2">
+                          <h6 class="mb-0">BBVA Perú</h6>
+                        </div>
+                        <ul class="list-unstyled small">
+                          <li class="mb-1"><strong>Cuenta Soles:</strong> 0011-0234-0203456789</li>
+                          <li class="mb-1"><strong>CCI:</strong> 0111230020345678912</li>
+                          <li class="mb-1"><strong>Titular:</strong> Mi Tienda SAC</li>
+                          <li><strong>RUC:</strong> 20123456789</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="transferencia-comprobante" class="form-label">Subir comprobante (opcional)</label>
+                  <input type="file" class="form-control" id="transferencia-comprobante" accept="image/*,.pdf">
+                  <div class="form-text">Puede subirlo ahora o enviarlo luego por correo</div>
+                </div>
+                
+                <div class="mb-3">
+                  <label for="transferencia-fecha" class="form-label">Fecha de transferencia</label>
+                  <input type="date" class="form-control" id="transferencia-fecha" disabled required>
+                  <div class="invalid-feedback">Seleccione la fecha de transferencia</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary btn-lg py-3" id="submit-btn">
+              <i class="bi bi-lock-fill me-2"></i>Confirmar y pagar S/ <%= total.toFixed(2) %>
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <div class="col-lg-4">
+        <div class="card border-0 shadow-sm sticky-top" style="top: 20px;">
+          <div class="card-header bg-white border-bottom py-3">
+            <h2 class="h5 mb-0"><i class="bi bi-cart-check me-2"></i>Resumen</h2>
+          </div>
+          <div class="card-body">
+            <div class="list-group list-group-flush mb-3">
+              <% items.forEach(item => { %>
+                <div class="list-group-item border-0 px-0 py-2">
+                  <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                      <div>
+                        <h6 class="mb-1"><%= item.producto.nombre %></h6>
+                        <small class="text-muted"><%= item.cantidad %> x S/ <%= item.producto.precio.toFixed(2) %></small>
+                      </div>
+                    </div>
+                    <span class="fw-medium">S/ <%= (item.producto.precio * item.cantidad).toFixed(2) %></span>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+            
+            <div class="d-flex justify-content-between mb-2">
+              <span>Subtotal:</span>
+              <span>S/ <%= total.toFixed(2) %></span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Envío:</span>
+              <span class="text-success">Gratis</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Descuento:</span>
+              <span>S/ 0.00</span>
+            </div>
+            
+            <hr>
+            <div class="d-flex justify-content-between fw-bold fs-5">
+              <span>Total:</span>
+              <span>S/ <%= total.toFixed(2) %></span>
+            </div>
+            
+            <div class="alert alert-success mt-3 mb-0">
+              <i class="bi bi-check-circle me-2"></i>
+              <small>Tienes envío gratis porque tu pedido supera los S/ 100.00</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Términos PayPal -->
+  <div class="modal fade" id="paypalTermsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-paypal me-2"></i>Términos de PayPal</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h6 class="mb-3">Condiciones para pagos con PayPal en Perú:</h6>
+          <ul class="mb-3">
+            <li class="mb-2">Los pagos pueden demorar hasta 72 horas en ser verificados</li>
+            <li class="mb-2">Aceptamos PayPal tanto en soles peruanos como en dólares americanos</li>
+            <li class="mb-2">No almacenamos información de tu cuenta PayPal</li>
+            <li class="mb-2">Para consultas sobre tu pago, contacta directamente a PayPal Perú</li>
+          </ul>
+          <p class="small text-muted">Al seleccionar PayPal, serás redirigido a su plataforma segura para completar el pago.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Entendido</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('partials/footer') %>
+
+  <script>
+    // Inicialización de tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+      // Activar tooltips
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+
+      // Selección de método de pago con cards
+      const paymentCards = document.querySelectorAll('.payment-method-card');
+      paymentCards.forEach(card => {
+        card.addEventListener('click', function() {
+          // Remover clase selected de todas las cards
+          paymentCards.forEach(c => c.classList.remove('selected'));
+          
+          // Agregar clase selected a la card clickeada
+          this.classList.add('selected');
+          
+          // Marcar el radio button correspondiente
+          const method = this.dataset.method;
+          document.getElementById(method).checked = true;
+          
+          // Disparar evento change
+          document.getElementById(method).dispatchEvent(new Event('change'));
+        });
+      });
+
+      // Mostrar/ocultar secciones según método de pago
+      document.querySelectorAll('input[name="metodoDePago"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+          const sections = {
+            'tarjeta': document.getElementById('tarjeta-data'),
+            'paypal': document.getElementById('paypal-data'),
+            'transferencia': document.getElementById('transferencia-data')
+          };
+          
+          // Ocultar todas las secciones primero
+          Object.values(sections).forEach(section => {
+            if (section) section.style.display = 'none';
+          });
+          
+          // Mostrar la sección correspondiente
+          if (sections[this.value]) {
+            sections[this.value].style.display = 'block';
+          }
+          
+          // Habilitar/deshabilitar campos según selección
+          const allInputs = document.querySelectorAll('#tarjeta-data input, #paypal-data input, #transferencia-data input');
+          allInputs.forEach(input => {
+            input.disabled = true;
+            input.required = false;
+          });
+          
+          if (this.value === 'tarjeta') {
+            document.querySelectorAll('#tarjeta-data input').forEach(input => {
+              input.disabled = false;
+              input.required = true;
+            });
+          } else if (this.value === 'paypal') {
+            document.getElementById('paypal-email').disabled = false;
+            document.getElementById('paypal-email').required = true;
+            document.getElementById('paypal-terms').disabled = false;
+            document.getElementById('paypal-terms').required = true;
+          } else if (this.value === 'transferencia') {
+            document.getElementById('transferencia-fecha').disabled = false;
+            document.getElementById('transferencia-fecha').required = true;
+          }
+        });
+      });
+
+      // Inicializar con el método seleccionado por defecto
+      const selectedMethod = document.querySelector('input[name="metodoDePago"]:checked');
+      if (selectedMethod) {
+        selectedMethod.dispatchEvent(new Event('change'));
+      }
+
+      // Validación del formulario
+      const form = document.getElementById('payment-form');
+      form.addEventListener('submit', function(event) {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        } else {
+          // Mostrar spinner de carga
+          const submitBtn = document.getElementById('submit-btn');
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Procesando pago...';
+        }
+        
+        form.classList.add('was-validated');
+      }, false);
+
+      // Formatear número de tarjeta
+      const cardNumber = document.getElementById('card-number');
+      if (cardNumber) {
+        cardNumber.addEventListener('input', function(e) {
+          let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+          let matches = value.match(/\d{4,16}/g);
+          let match = matches && matches[0] || '';
+          let parts = [];
+          
+          for (let i=0, len=match.length; i<len; i+=4) {
+            parts.push(match.substring(i, i+4));
+          }
+          
+          if (parts.length) {
+            e.target.value = parts.join(' ');
+          } else {
+            e.target.value = value;
+          }
+        });
+      }
+
+      // Formatear fecha de expiración
+      const cardExpiry = document.getElementById('card-expiry');
+      if (cardExpiry) {
+        cardExpiry.addEventListener('input', function(e) {
+          let value = e.target.value.replace(/\D/g, '');
+          if (value.length > 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+          }
+          e.target.value = value;
+        });
+      }
+
+      // Selección de dirección
+      const addressCards = document.querySelectorAll('.address-card');
+      addressCards.forEach(card => {
+        card.addEventListener('click', function() {
+          // Remover clase selected de todas las cards
+          addressCards.forEach(c => c.classList.remove('selected'));
+          
+          // Agregar clase selected a la card clickeada
+          this.classList.add('selected');
+          
+          // Marcar el radio button correspondiente
+          const addressType = this.dataset.address;
+          document.getElementById(`${addressType}Direccion`).checked = true;
+        });
+      });
+    });
+  </script>
+</body>
+</html>
